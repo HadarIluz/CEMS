@@ -66,7 +66,6 @@ public class MainFormController {
 		
 	}
 	
-	
 	//display the "TestForm" after pressing btnTest from Main.
 	public void pressTableBtn(ActionEvent event) throws Exception {
 		FXMLLoader loader = new FXMLLoader();
