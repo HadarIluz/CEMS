@@ -34,6 +34,14 @@ public class DBController {
 		}
 		return false;
 	}
+	
+	public void updateTestTime() {
+		
+	}
+	
+	public void getTestTable() {
+		
+	}
 
 	public boolean addUserToDB(ArrayList<String> UserInfo) {
 		PreparedStatement pstmt;
