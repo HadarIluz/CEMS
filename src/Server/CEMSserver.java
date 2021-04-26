@@ -6,10 +6,13 @@ package Server;
 import java.io.*;
 import java.util.Vector;
 
+import com.mysql.cj.jdbc.result.UpdatableResultSet;
+
 import logic.Faculty;
 import logic.Request;
 import logic.Student;
 import logic.TestTableRequest;
+import logic.UpdateDataRequest;
 import ocsf.server.*;
 
 /**
@@ -61,11 +64,12 @@ public class CEMSserver extends AbstractServer
   {
 	 //int flag=0;
 	    System.out.println("Message received: " + msg + " from " + client);
-	    if (msg instanceof Request) {
-	    	if (msg instanceof TestTableRequest) {
-	    		dbController.getTestTable();
-	    	}
-	    }
+    	if (msg instanceof TestTableRequest) {
+    		dbController.getTestTable();
+    	}
+    	else if (msg instanceof UpdateDataRequest) {
+    		dbController.updateTestTime((UpdateDataRequest) msg);
+    	}
 	    else {
 	    	System.out.println("Error in request");
 	    }
