@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 
-public class TestFormController {
+public class TestController {
 
     @FXML
     private Button btnTest;
@@ -20,4 +20,6 @@ public class TestFormController {
 
     @FXML
     private Font x3;
+    
+    
 }
