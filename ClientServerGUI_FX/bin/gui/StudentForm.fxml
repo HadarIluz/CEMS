@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="349.0" prefWidth="312.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.StudentFormController">
+   <children>
+      <Button fx:id="btnclose" layoutX="212.0" layoutY="293.0" mnemonicParsing="false" onAction="#getBtnclose" onMouseClicked="#getBtnclose" prefHeight="25.0" prefWidth="75.0" text="Close" />
+      <Button fx:id="btnSave" layoutX="47.0" layoutY="293.0" mnemonicParsing="false" onAction="#getBtnSave" onMouseClicked="#getBtnSave" prefHeight="25.0" prefWidth="75.0" text="Save" />
+      <Label fx:id="IbStID" layoutX="37.0" layoutY="56.0" text="St. ID:" />
+      <Label id="lblName" layoutX="34.0" layoutY="107.0" text="Name:" />
+      <Label id="lblSurname" layoutX="34.0" layoutY="165.0" text="Surname:" />
+      <ComboBox id="cmbFaculty" fx:id="cmbFaculty" layoutX="99.0" layoutY="253.0" prefWidth="150.0" />
+      <Label id="lblFaculty" layoutX="34.0" layoutY="258.0" text="Faculty:" />
+      <TextField fx:id="txtstudID" layoutX="104.0" layoutY="52.0" />
+      <TextField id="lblName" fx:id="txtName" layoutX="104.0" layoutY="102.0" />
+      <TextField id="lblSurname" fx:id="txtSurname" layoutX="104.0" layoutY="160.0" />
+   </children>
+</AnchorPane>
