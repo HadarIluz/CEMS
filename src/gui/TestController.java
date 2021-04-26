@@ -6,16 +6,19 @@ import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class TestController {
 
     @FXML
-    private Button btnTest;
+    private Button btnTest=null;
 
     @FXML
     private Button btnTable;
@@ -44,7 +47,6 @@ public class TestController {
     @FXML
     private Font x3;
     
-  //Cleanup
     
 
 	// return the Exam ID
@@ -126,14 +128,27 @@ public class TestController {
 		}//END else
 
 	}
-	  
+	
+	public void start(Stage primaryStage) throws Exception {	
+		Parent root = FXMLLoader.load(getClass().getResource("/gui/AcademicFrame.fxml"));
+				
+		Scene scene = new Scene(root);
+		scene.getStylesheets().add(getClass().getResource("/gui/AcademicFrame.css").toExternalForm());
+		primaryStage.setTitle("Academic Managment Tool");
+		primaryStage.setScene(scene);
+		
+		primaryStage.show();	 	   
+	}
+	
+	
+	/*
 	
 	//need to be on Table form....THINK.
 	//the function refresh and update the table filed.
 	private void refreshTable() {
 		
 	}
-	
+	*/
 	
 
 }
