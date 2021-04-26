@@ -18,7 +18,6 @@ public class ClientUI extends Application {
 		 
 		 
 		MainFormController MainForm = new MainFormController(); // create the MainFrame
-		
 		MainForm.start(primaryStage);
 	}
 	
