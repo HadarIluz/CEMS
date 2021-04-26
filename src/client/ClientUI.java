@@ -16,7 +16,6 @@ public class ClientUI extends Application {
 		 chat= new ClientController("localhost", 5555);
 		// TODO Auto-generated method stub
 		 
-		 
 		MainFormController MainForm = new MainFormController(); // create the MainFrame
 		MainForm.start(primaryStage);
 	}

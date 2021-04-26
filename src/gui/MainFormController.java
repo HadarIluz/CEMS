@@ -31,6 +31,8 @@ public class MainFormController {
 	@FXML
 	private Font x3;
 	
+	
+	
 	//Display MainPrototypeForm after connection
 	public void start(Stage primaryStage) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/MainPrototypeForm.fxml"));
@@ -45,7 +47,7 @@ public class MainFormController {
 	}
 	
 	//display the "TestForm" after pressing btnTest from Main.
-	public void btnTest(ActionEvent event) throws Exception {
+	public void pressUpdateTestBtn(ActionEvent event) throws Exception {
 		FXMLLoader loader = new FXMLLoader();
 		System.out.println("Test Fram Tool"); //message to console.
 
@@ -62,8 +64,12 @@ public class MainFormController {
 		primaryStage.setScene(scene);		
 		primaryStage.show();
 		
-
-		
 	}
+	
+	
+	//display the "TestForm" after pressing btnTest from Main.
+		public void pressTableBtn(ActionEvent event) throws Exception {
+			
+		}
 
 }
