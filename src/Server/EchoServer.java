@@ -21,7 +21,7 @@ import ocsf.server.*;
  * @version July 2000
  */
 
-public class CEMSserver extends AbstractServer 
+public class EchoServer extends AbstractServer 
 {
   //Class variables *************************************************
   
@@ -40,7 +40,7 @@ public class CEMSserver extends AbstractServer
    */
  //public static Student [] students=new Student[4];
 
-  public CEMSserver(int port) 
+  public EchoServer(int port) 
   {
     super(port);
   }

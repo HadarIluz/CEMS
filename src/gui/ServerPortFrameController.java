@@ -21,7 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import logic.Faculty;
 import logic.Student;
-import Server.CEMSserver;
+import Server.EchoServer;
 import Server.ServerUI;
 
 public class ServerPortFrameController  {
