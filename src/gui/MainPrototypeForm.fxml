@@ -73,12 +73,12 @@
                   </Pane>
                   <ImageView fitHeight="116.0" fitWidth="116.0" layoutX="45.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../OneDrive/שולחן%20העבודה/הדר%20אבטיפוס-%20רעיונות/myJavaFX/LogoCEMS.PNG" />
+                        <Image url="@../../image/LogoCEMS.PNG" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="16.0" fitWidth="29.0" layoutX="6.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../OneDrive/שולחן%20העבודה/הדר%20אבטיפוס-%20רעיונות/myJavaFX/hat2.PNG" />
+                        <Image url="@../../image/hat2.PNG" />
                      </image>
                   </ImageView>
             <Label layoutX="11.0" layoutY="2.0" minWidth="60.0" prefHeight="42.0" prefWidth="62.0" text="Menu" textAlignment="CENTER" textFill="WHITE">
@@ -94,7 +94,7 @@
                      <children>
                         <ImageView fitHeight="551.0" fitWidth="670.0" pickOnBounds="true" smooth="false">
                            <image>
-                              <Image url="@../../../../OneDrive/שולחן%20העבודה/הדר%20אבטיפוס-%20רעיונות/Background.jpg" />
+                              <Image url="@../../image/Background.jpg" />
                            </image>
                         </ImageView>
                      </children>
