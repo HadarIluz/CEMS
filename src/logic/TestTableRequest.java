@@ -2,7 +2,7 @@ package logic;
 
 import java.util.ArrayList;
 
-public class TestTableRequest implements Request{
+public class TestTableRequest{
 	private ArrayList<TestRow> testTableData;
 
 	public TestTableRequest() {
