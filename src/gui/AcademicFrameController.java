@@ -91,6 +91,7 @@ public  class AcademicFrameController   {
 		System.out.println("exit Academic Tool");		
 	}
 	
+	//this function load the student information after press "send"
 	public void loadStudent(Student s1) {
 		this.sfc.loadStudent(s1);
 	}	
