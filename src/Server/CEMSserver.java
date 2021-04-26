@@ -7,7 +7,9 @@ import java.io.*;
 import java.util.Vector;
 
 import logic.Faculty;
+import logic.Request;
 import logic.Student;
+import logic.TestTableRequest;
 import ocsf.server.*;
 
 /**
@@ -39,6 +41,7 @@ public class CEMSserver extends AbstractServer
    * 
    */
  //public static Student [] students=new Student[4];
+	private static DBController dbController = new DBController();
 
   public CEMSserver(int port) 
   {
@@ -56,8 +59,16 @@ public class CEMSserver extends AbstractServer
    */
   public void handleMessageFromClient  (Object msg, ConnectionToClient client)
   {
-	 int flag=0;
+	 //int flag=0;
 	    System.out.println("Message received: " + msg + " from " + client);
+	    if (msg instanceof Request) {
+	    	if (msg instanceof TestTableRequest) {
+	    		dbController.getTestTable();
+	    	}
+	    }
+	    else {
+	    	System.out.println("Error in request");
+	    }
 //	    for(int  i=0;i<4;i++) {
 //			if(students[i].getId().equals(msg))
 //			{ 
