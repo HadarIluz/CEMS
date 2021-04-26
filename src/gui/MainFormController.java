@@ -62,6 +62,8 @@ public class MainFormController {
 		primaryStage.setScene(scene);		
 		primaryStage.show();
 		
+
+		
 	}
 
 }
