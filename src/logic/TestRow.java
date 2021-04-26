@@ -7,7 +7,6 @@ public class TestRow {
 	private String timeAllotedForTest;
 	private String pointsPerQuestion;
 	
-	
 	public String getExamID() {
 		return examID;
 	}
