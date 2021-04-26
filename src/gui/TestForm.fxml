@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TestController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -98,19 +98,47 @@
                               <Image url="@../../image/Background.jpg" />
                            </image>
                         </ImageView>
-                        <TextField layoutX="247.0" layoutY="101.0" />
-                        <TextField layoutX="247.0" layoutY="147.0" />
-                        <Label layoutX="14.0" layoutY="96.0" text="Time Alloted For Test" textFill="#ace580">
+                        <TextField fx:id="txtExamID" layoutX="148.0" layoutY="115.0" prefHeight="35.0" prefWidth="213.0" />
+                        <TextField fx:id="txtTimeForTest" layoutX="148.0" layoutY="215.0" prefHeight="36.0" prefWidth="212.0" />
+                        <Label layoutX="148.0" layoutY="80.0" text="Exam ID Number:" textFill="#ace580">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label layoutX="14.0" layoutY="142.0" text="Exam number" textFill="#ace580">
+                        <ImageView fitHeight="16.0" fitWidth="18.0" layoutX="147.0" layoutY="155.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/asterisk.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="148.0" layoutY="182.0" text="Time Alloted For Test:" textFill="#ace580">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="18.0" />
                            </font>
                         </Label>
-                        <Button fx:id="btnSave" layoutX="452.0" layoutY="323.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="78.0" text="Save" />
+                        <ImageView fitHeight="16.0" fitWidth="18.0" layoutX="147.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/asterisk.png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="pressUpdateTable" layoutX="150.0" layoutY="331.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="170.0" style="-fx-background-color: #ace580;" text="update exam`s time">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Button>
+                        <ImageView fitHeight="51.0" fitWidth="35.0" layoutX="112.0" layoutY="375.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/UpdateImage.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="152.0" layoutY="384.0" text="Table status:" textFill="WHITE">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="textUpdated" layoutX="249.0" layoutY="386.0" text="updated !" textFill="#29d00f" underline="true" visible="false">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
                      </children>
             </AnchorPane>
           </content>
