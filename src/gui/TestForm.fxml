@@ -110,17 +110,19 @@
                               <Image url="@../../image/asterisk.png" />
                            </image>
                         </ImageView>
+                        <Label fx:id="ReqFiledMessage1" layoutX="166.0" layoutY="155.0" prefHeight="17.0" prefWidth="116.0" textFill="#d16767" />
                         <Label layoutX="148.0" layoutY="182.0" text="Time Alloted For Test:" textFill="#ace580">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <ImageView fitHeight="16.0" fitWidth="18.0" layoutX="147.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="16.0" fitWidth="18.0" layoutX="149.0" layoutY="255.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../image/asterisk.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="pressUpdateTable" layoutX="150.0" layoutY="331.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="170.0" style="-fx-background-color: #ace580;" text="update exam`s time">
+                        <Label fx:id="ReqFiledMessage2" layoutX="167.0" layoutY="255.0" prefHeight="17.0" prefWidth="105.0" textFill="#d16767" />
+                        <Button fx:id="pressUpdateTable" layoutX="150.0" layoutY="331.0" mnemonicParsing="false" onMouseClicked="#Save" prefHeight="35.0" prefWidth="170.0" style="-fx-background-color: #ace580;" text="update exam`s time">
                            <font>
                               <Font size="16.0" />
                            </font></Button>
@@ -134,7 +136,7 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <Label fx:id="textUpdated" layoutX="249.0" layoutY="386.0" text="updated !" textFill="#29d00f" underline="true" visible="false">
+                        <Label fx:id="statusMessage" layoutX="249.0" layoutY="386.0" text="updated !" textFill="#29d00f" underline="true">
                            <font>
                               <Font size="14.0" />
                            </font>

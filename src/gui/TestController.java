@@ -1,44 +1,58 @@
 package gui;
 
+
 import client.ChatClient;
 import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 public class TestController {
 
-	@FXML
-	private Button btnTest=null;
+    @FXML
+    private Button btnTest;
 
-	@FXML
-	private Button btnTable;
+    @FXML
+    private Button btnTable;
 
-	@FXML
-	private Font x1;
+    @FXML
+    private Font x1;
 
-	@FXML
-	private TextField txtExamID;
+    @FXML
+    private TextField txtExamID;
 
-	@FXML
-	private TextField txtTimeForTest;
+    @FXML
+    private TextField txtTimeForTest;
 
-	@FXML
-	private Button btnSave;
+    @FXML
+    private Label ReqFiledMessage1;
 
-	@FXML
-	private Font x3;
+    @FXML
+    private Label ReqFiledMessage2;
+
+    @FXML
+    private Button pressUpdateTable;
+
+    @FXML
+    private Label statusMessage;
+
+    @FXML
+    private Font x3;
+    
+  //Cleanup
+    
 
 	// return the Exam ID
 	private String getExamID() {
 		return txtExamID.getId();
+	}
+	private String getTimeForTest() {
+		return txtTimeForTest.getId();
 	}
 
 	/*
@@ -51,29 +65,47 @@ public class TestController {
 	 */
 	public void Save(ActionEvent event) throws Exception {
 		String ExamID;
-		FXMLLoader loader = new FXMLLoader();
+		String TimeForTest;
+		FXMLLoader loader = new FXMLLoader();  //??think..
+		//Clean
+		ReqFiledMessage1.setText("");
+		ReqFiledMessage2.setText("");
+		statusMessage.setText("");
 
 		// get the exam id`s number that user typed
 		ExamID = getExamID();
 		if (ExamID.trim().isEmpty()) {
 			System.out.println("You must enter an  exam id number"); // message to console.
-			// add ReqFiled functionality !!
-
+			//ReqFiled functionality.
+			ReqFiledMessage1.setTextFill(Paint.valueOf("Red"));
+			ReqFiledMessage1.setText("exanID is Req filed");
 		}
-		// in case filed not empty check if exist in DB
+		
+		TimeForTest = getExamID();
+		if (TimeForTest.trim().isEmpty()) {
+			System.out.println("You must enter an  exam id number"); // message to console.
+			//ReqFiled functionality.
+			ReqFiledMessage1.setTextFill(Paint.valueOf("Red"));
+			ReqFiledMessage1.setText("time is Req filed.");
+		}
+		// in case filed not empty checks if exist in DB
 		else {
 			ClientUI.chat.accept(ExamID);
 			
 			//in case Error return from server..
 			if(ChatClient.s1.getId().equals("Error"))
 			{
-				System.out.println("Student ID Not Found"); //message to console.
-				// add ReqFiled functionality !!
+				System.out.println("Exam ID Not Found"); //message to console.
+				//ReqFiled functionality.
+				statusMessage.setTextFill(Paint.valueOf("Red"));
+				statusMessage.setText("Exam ID Not Found.");
 			}
 			
 			//Handle a case ExamID found,
 			else {
-				System.out.println("Student ID Found");
+				System.out.println("Exam ID Found");
+				statusMessage.setTextFill(Paint.valueOf("Green"));
+				statusMessage.setText("updated.");
 				
 				
 				
@@ -94,6 +126,7 @@ public class TestController {
 		}//END else
 
 	}
+	  
 	
 	//need to be on Table form....THINK.
 	//the function refresh and update the table filed.

@@ -33,6 +33,7 @@ public class MainFormController {
 	
 	
 	
+	
 	//Display MainPrototypeForm after connection
 	public void start(Stage primaryStage) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/MainPrototypeForm.fxml"));
