@@ -9,7 +9,7 @@ import java.util.Vector;
 import gui.AcademicFrameController;
 import gui.ServerPortFrameController;
 import gui.StudentFormController;
-import Server.CEMSserver;
+import Server.EchoServer;
 
 public class ServerUI extends Application {
 	final public static int DEFAULT_PORT = 5555;
@@ -42,7 +42,7 @@ public class ServerUI extends Application {
 	        	System.out.println("ERROR - Could not connect!");
 	        }
 	    	
-	        CEMSserver sv = new CEMSserver(port);
+	        EchoServer sv = new EchoServer(port);
 	        
 	        try 
 	        {

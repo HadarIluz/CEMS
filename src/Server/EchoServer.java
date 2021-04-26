@@ -38,7 +38,7 @@ public class CEMSserver extends AbstractServer
    * @param port The port number to connect on.
    * 
    */
- public static Student [] students=new Student[4];
+ //public static Student [] students=new Student[4];
 
   public CEMSserver(int port) 
   {
@@ -58,19 +58,19 @@ public class CEMSserver extends AbstractServer
   {
 	 int flag=0;
 	    System.out.println("Message received: " + msg + " from " + client);
-	    for(int  i=0;i<4;i++) {
-			if(students[i].getId().equals(msg))
-			{ 
-				System.out.println("Server Found");
-				this.sendToAllClients(students[i].toString());
-				flag=1;
-			}
-		
-		}
-	    if (flag!=1) {
-			System.out.println("Not Found");
-			this.sendToAllClients("Error");
-		}        
+//	    for(int  i=0;i<4;i++) {
+//			if(students[i].getId().equals(msg))
+//			{ 
+//				System.out.println("Server Found");
+//				this.sendToAllClients(students[i].toString());
+//				flag=1;
+//			}
+//		
+//		}
+//	    if (flag!=1) {
+//			System.out.println("Not Found");
+//			this.sendToAllClients("Error");
+//		}        
   }
    
   /**
@@ -80,10 +80,10 @@ public class CEMSserver extends AbstractServer
   protected void serverStarted()
   {
     System.out.println ("Server listening for connections on port " + getPort());
-    students[0]=new Student("12345","Yossi","Cohen",new Faculty("SE","9901000"));
-    students[1]=new Student("66666","Yossefa","Levi",new Faculty("IE","9901123"));
-    students[2]=new Student("77777","moshe","galili",Faculty.getFaculty("SE"));
-    students[3]=new Student("77778","moran","galil",Faculty.getFaculty("SE")); 
+//    students[0]=new Student("12345","Yossi","Cohen",new Faculty("SE","9901000"));
+//    students[1]=new Student("66666","Yossefa","Levi",new Faculty("IE","9901123"));
+//    students[2]=new Student("77777","moshe","galili",Faculty.getFaculty("SE"));
+//    students[3]=new Student("77778","moran","galil",Faculty.getFaculty("SE")); 
 
   }
   /**
