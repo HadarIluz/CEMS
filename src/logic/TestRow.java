@@ -8,7 +8,6 @@ public class TestRow {
 	private String pointsPerQuestion;
 	
 	
-	
 	public String getExamID() {
 		return examID;
 	}
