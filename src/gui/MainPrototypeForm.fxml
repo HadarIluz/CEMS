@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainFormController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -59,12 +59,12 @@
           <children>
                   <Pane prefHeight="551.0" prefWidth="222.0" style="-fx-background-color: #000000;">
                      <children>
-                      <Button fx:id="btnTest" alignment="CENTER" layoutX="45.0" layoutY="151.0" mnemonicParsing="false" onAction="#pressUpdateTestBtn" prefHeight="51.0" prefWidth="132.0" text="Update Test Fields">
+                      <Button fx:id="btnTest" alignment="CENTER" layoutX="45.0" layoutY="151.0" mnemonicParsing="false" onAction="#pressUpdateTestBtn" onKeyPressed="#pressUpdateTestBtn" prefHeight="51.0" prefWidth="132.0" text="Update Test Fields">
                            <font>
                               <Font size="13.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnTable" layoutX="45.0" layoutY="235.0" mnemonicParsing="false" onAction="#pressTableBtn" prefHeight="51.0" prefWidth="132.0" text="Show Table">
+                        <Button fx:id="btnTable" layoutX="45.0" layoutY="235.0" mnemonicParsing="false" onAction="#pressTableBtn" onKeyPressed="#pressTableBtn" prefHeight="51.0" prefWidth="132.0" text="Show Table">
                            <font>
                               <Font size="13.0" />
                            </font>

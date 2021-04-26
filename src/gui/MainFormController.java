@@ -68,8 +68,23 @@ public class MainFormController {
 	
 	
 	//display the "TestForm" after pressing btnTest from Main.
-		public void pressTableBtn(ActionEvent event) throws Exception {
+	public void pressTableBtn(ActionEvent event) throws Exception {
+		FXMLLoader loader = new FXMLLoader();
+		System.out.println("Table Fram Tool"); //message to console.
+
+		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary(Main) window
+		Stage primaryStage = new Stage();
+		Pane root = loader.load(getClass().getResource("/gui/TableForm.fxml").openStream());
+		TestController testController = loader.getController();	//ASK?	
+		//testController.loadStudent(ChatClient.s1);
+	
+		Scene scene = new Scene(root);			
+		scene.getStylesheets().add(getClass().getResource("/gui/TableForm.css").toExternalForm());
+		primaryStage.setTitle("Table Fram");
+
+		primaryStage.setScene(scene);		
+		primaryStage.show();		
 			
-		}
+	}
 
 }
