@@ -16,6 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainFormController">
   <children>
@@ -97,6 +98,11 @@
                               <Image url="@../../image/Background.jpg" />
                            </image>
                         </ImageView>
+                        <Text fill="#b5b4b4" layoutX="148.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Client" textAlignment="CENTER" wrappingWidth="314.13671875">
+                           <font>
+                              <Font name="Eras Bold ITC" size="44.0" />
+                           </font>
+                        </Text>
                      </children>
             </AnchorPane>
           </content>

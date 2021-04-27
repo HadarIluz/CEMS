@@ -5,64 +5,61 @@ import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import logic.Faculty;
+import logic.TestRow;
+import logic.TestTableRequest;
 import logic.UpdateDataRequest;
 
 public class TestController {
 
 	public UpdateDataRequest upDataReq;
+	public TestTableRequest test_Treq;
+	public TestRow testR;
 
-	@FXML
-	private Button btnTest = null;
+    @FXML
+    private Button btnTest;
 
-	@FXML
-	private Button btnTable;
+    @FXML
+    private Button btnTable;
 
-	@FXML
-	private Font x1;
+    @FXML
+    private Font x1;
 
-	@FXML
-	private TextField txtExamID;
+    @FXML
+    private TextField txtExamID;
 
-	@FXML
-	private TextField txtTimeForTest;
+    @FXML
+    private TextField txtTimeForTest;
 
-	@FXML
-	private Label ReqFiledMessage1;
+    @FXML
+    private Label ReqFiledMessage1;
 
-	@FXML
-	private Label ReqFiledMessage2;
+    @FXML
+    private Label ReqFiledMessage2;
 
-	@FXML
-	private Button pressUpdateTable;
+    @FXML
+    private Button pressUpdateTable;
 
-	@FXML
-	private Label statusMessage;
+    @FXML
+    private Label statusMessage;
 
-	@FXML
-	private Font x3;
+    @FXML
+    private Font x3;
 
-	// return the Exam ID
-	private String getExamID() {
-		return txtExamID.getId();
-	}
-
-	private String getTimeForTest() {
-		return txtTimeForTest.getText();
-	}
 
 	/*
 	 * the function active when user press on save button.
 	 * 
 	 */
+	@FXML
 	public void Save(ActionEvent event) throws Exception {
 		String ExamID;
 		String TimeForTest;
@@ -93,7 +90,7 @@ public class TestController {
 			ClientUI.chat.accept(ExamID);
 
 			// in case Error return from server..
-			if (ChatClient.s1.getId().equals("Error")) {
+			if (ChatClient.testsTable.toString().equals("ERROR")) { //verify with server team.
 				System.out.println("Exam ID Not Found"); // message to console.
 				// ReqFiled functionality.
 				statusMessage.setTextFill(Paint.valueOf("Red"));
@@ -116,6 +113,46 @@ public class TestController {
 		} // END else
 
 	}
+	
+	// return the Exam ID
+	private String getExamID() {
+		return txtExamID.getId();
+	}
+
+	private String getTimeForTest() {
+		return txtTimeForTest.getText();
+	}	
+	
+	public void pressBtnTable(ActionEvent event) throws Exception{
+		FXMLLoader loader = new FXMLLoader();
+		System.out.println("Table Fram Tool"); //message to console.
+
+		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary(Test) window
+		Stage primaryStage = new Stage();
+		Pane root = loader.load(getClass().getResource("/gui/TableForm.fxml").openStream());
+		//TestController testController = loader.getController();	//ASK?	
+		//testController.loadStudent(ChatClient.s1);
+	
+		Scene scene = new Scene(root);			
+		scene.getStylesheets().add(getClass().getResource("/gui/TableForm.css").toExternalForm());
+		primaryStage.setTitle("Table Fram");
+
+		primaryStage.setScene(scene);		
+		primaryStage.show();	
+	}
+	
+	
+	
+	//ask Nadav again..
+	/*
+	public void loadTable(TestRow t1) {		
+		this.testR=t1;
+		this.txtExamID.setText(testR.getExamID() );
+		this.txtTimeForTest.setText(testR.getTimeAllotedForTest());
+		//this.txtSurname.setText(testR.getLName());		
+		//this.cmbFaculty.setValue(testR.getFc().getFName());
+	}
+	*/
 
 
 }

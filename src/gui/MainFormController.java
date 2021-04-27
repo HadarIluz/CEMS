@@ -2,6 +2,7 @@ package gui;
 
 import java.io.IOException;
 
+import client.ChatClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,12 +13,10 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import logic.TestTableRequest;
 
 public class MainFormController {
 
-	private TestController test_Fc;
-	private TableController table_Fc;
-	private static int itemIndex = 3; // ASK?
 	@FXML
 	private Button btnTest = null;
 
@@ -41,7 +40,6 @@ public class MainFormController {
 		//message to primaryStage
 		primaryStage.setTitle("Main Prototype Fram Tool");
 		primaryStage.setScene(scene);
-
 		primaryStage.show();
 	}
 	
@@ -53,8 +51,8 @@ public class MainFormController {
 		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary(Main) window
 		Stage primaryStage = new Stage();
 		Pane root = loader.load(getClass().getResource("/gui/TestForm.fxml").openStream());
-		TestController testController = loader.getController();	//ASK?	
-		//testController.loadStudent(ChatClient.s1);
+		//TestController testController = loader.getController();	//ASK?	
+		//testController.loadTable(ChatClient.testsTable.getTableData());
 	
 		Scene scene = new Scene(root);			
 		scene.getStylesheets().add(getClass().getResource("/gui/TestForm.css").toExternalForm());
@@ -73,7 +71,7 @@ public class MainFormController {
 		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary(Main) window
 		Stage primaryStage = new Stage();
 		Pane root = loader.load(getClass().getResource("/gui/TableForm.fxml").openStream());
-		TestController testController = loader.getController();	//ASK?	
+		//TestController testController = loader.getController();	//ASK?	
 		//testController.loadStudent(ChatClient.s1);
 	
 		Scene scene = new Scene(root);			

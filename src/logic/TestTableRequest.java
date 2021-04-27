@@ -6,7 +6,6 @@ public class TestTableRequest{
 	private ArrayList<TestRow> testTableData;
 
 	public TestTableRequest() {
-		super();
 		testTableData = new ArrayList<>();
 	}
 	

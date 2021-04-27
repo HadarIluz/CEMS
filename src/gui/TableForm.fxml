@@ -61,7 +61,7 @@
           <children>
                   <Pane prefHeight="551.0" prefWidth="222.0" style="-fx-background-color: #000000;">
                      <children>
-                      <Button fx:id="btnTest" alignment="CENTER" layoutX="45.0" layoutY="151.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="132.0" text="Update Test Fields">
+                      <Button fx:id="btnTest" alignment="CENTER" layoutX="45.0" layoutY="151.0" mnemonicParsing="false" onAction="#pressUpdateTesFiledtBtn" onMouseClicked="#pressUpdateTesFiledtBtn" prefHeight="51.0" prefWidth="132.0" text="Update Test Fields">
                            <font>
                               <Font size="13.0" />
                            </font>

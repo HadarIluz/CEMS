@@ -12,6 +12,7 @@ import logic.Student;
 import logic.TestTableRequest;
 
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * This class overrides some of the methods defined in the abstract superclass
@@ -30,9 +31,11 @@ public class ChatClient extends AbstractClient {
 	 * method in the client.
 	 */
 	ChatIF clientUI;
-	public static Student s1 = new Student(null, null, null, new Faculty(null, null));
+	
+	//new:
+	public static TestTableRequest testsTable;
 	public static boolean awaitResponse = false;
-	public TestTableRequest testsTable;
+	
 
 	// Constructors ****************************************************
 
@@ -57,22 +60,16 @@ public class ChatClient extends AbstractClient {
 	 *
 	 * @param msg The message from the server.
 	 */
+	
+	
 	public void handleMessageFromServer(Object msg) {
 		System.out.println("--> handleMessageFromServer");
 
 		awaitResponse = false;
 		if (msg instanceof TestTableRequest) {
 			testsTable = (TestTableRequest) msg; //new updated table
-			System.out.println("Table Updated Arrived");
+			System.out.println("Table Updated Arrived");		
 		}
-		String st;
-		st = msg.toString();
-		String[] result = st.split("\\s");
-		s1.setId(result[0]);
-		s1.setPName(result[1]);
-		s1.setLName(result[2]);
-		s1.setFc(new Faculty(result[3], result[4]));
-
 	}
 
 	/**
@@ -85,8 +82,9 @@ public class ChatClient extends AbstractClient {
 		try {
 			openConnection();// in order to send more than one message
 			awaitResponse = true;
+			
 			sendToServer(message);
-			// wait for response
+			// wait for response from server
 			while (awaitResponse) {
 				try {
 					Thread.sleep(100);
@@ -94,11 +92,13 @@ public class ChatClient extends AbstractClient {
 					e.printStackTrace();
 				}
 			}
+			//return.this.response; //Response
 		} catch (IOException e) {
 			e.printStackTrace();
 			clientUI.display("Could not send message to server: Terminating client." + e);
 			quit();
 		}
+		//return null;
 	}
 
 	/**

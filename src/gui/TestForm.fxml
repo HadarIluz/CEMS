@@ -65,7 +65,7 @@
                               <Font size="13.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnTable" layoutX="45.0" layoutY="236.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="132.0" text="Table">
+                        <Button fx:id="btnTable" layoutX="45.0" layoutY="236.0" mnemonicParsing="false" onAction="#pressBtnTable" onMouseClicked="#pressBtnTable" prefHeight="51.0" prefWidth="132.0" text="Table">
                            <font>
                               <Font size="24.0" />
                            </font>
