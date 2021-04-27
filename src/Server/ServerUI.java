@@ -1,19 +1,15 @@
 package Server;
 
+import java.util.Vector;
+
+import gui.ServerPortFrameController;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import logic.Faculty;
-import logic.Student;
-
-import java.util.Vector;
-import gui.AcademicFrameController;
-import gui.ServerPortFrameController;
-import gui.StudentFormController;
-import Server.CEMSserver;
+import logic.TestRow;
 
 public class ServerUI extends Application {
 	final public static int DEFAULT_PORT = 5555;
-	public static Vector<Student> students=new Vector<Student>();
+	public static Vector<TestRow> students=new Vector<TestRow>();
 
 	public static void main( String args[] ) throws Exception
 	   {   
