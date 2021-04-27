@@ -18,6 +18,17 @@ public class TableController {
     @FXML
     private Font x3;
     
-    //lior
+    
+    
+    
+    
+    
+	/*
+	 * 
+	 * //need to be on Table form....THINK. //the function refresh and update the
+	 * table filed. private void refreshTable() {
+	 * 
+	 * }
+	 */
     
 }
