@@ -53,9 +53,11 @@ public class TestController {
 	private String getExamID() {
 		return txtExamID.getId();
 	}
+	
 	private String getTimeForTest() {
-		return txtTimeForTest.getId();
+		return txtTimeForTest.getText();
 	}
+	
 
 	/*
 	 * private String getTimeForTest() { return txtTimeForTest.getId(); }
@@ -83,15 +85,15 @@ public class TestController {
 			ReqFiledMessage1.setText("exanID is Req filed");
 		}
 		
-		TimeForTest = getExamID();
+		TimeForTest = getTimeForTest();
 		if (TimeForTest.trim().isEmpty()) {
-			System.out.println("You must enter an  exam id number"); // message to console.
+			System.out.println("You must enter an time number"); // message to console.
 			//ReqFiled functionality.
 			ReqFiledMessage1.setTextFill(Paint.valueOf("Red"));
 			ReqFiledMessage1.setText("time is Req filed.");
 		}
 		// in case filed not empty checks if exist in DB
-		else {
+		else if(!ExamID.trim().isEmpty()) {
 			ClientUI.chat.accept(ExamID);
 			
 			//in case Error return from server..
@@ -105,40 +107,18 @@ public class TestController {
 			
 			//Handle a case ExamID found,
 			else {
-				System.out.println("Exam ID Found");
+				System.out.println("Exam ID Found"); //message to console.
 				statusMessage.setTextFill(Paint.valueOf("Green"));
 				statusMessage.setText("updated.");
 				
+				//func that send to server "update " + .toString().....
 				
-				
-				
-				//((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
-				//Stage primaryStage = new Stage();
-				//Pane root = loader.load(getClass().getResource("/gui/StudentForm.fxml").openStream());
-				//StudentFormController studentFormController = loader.getController();		
-				//studentFormController.loadStudent(ChatClient.s1);
-			
-				//Scene scene = new Scene(root);			
-				//scene.getStylesheets().add(getClass().getResource("/gui/StudentForm.css").toExternalForm());
-				//primaryStage.setTitle("Student Managment Tool");
-	
-				//primaryStage.setScene(scene);		
-				//primaryStage.show();
+
 			}
 		}//END else
 
 	}
 	
-	public void start(Stage primaryStage) throws Exception {	
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/AcademicFrame.fxml"));
-				
-		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/gui/AcademicFrame.css").toExternalForm());
-		primaryStage.setTitle("Academic Managment Tool");
-		primaryStage.setScene(scene);
-		
-		primaryStage.show();	 	   
-	}
 	
 	
 	/*

@@ -2,7 +2,6 @@ package gui;
 
 import java.io.IOException;
 
-import client.ChatClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,11 +12,11 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import logic.Student;
 
 public class MainFormController {
 
 	private TestController test_Fc;
+	private TableController table_Fc;
 	private static int itemIndex = 3; // ASK?
 	@FXML
 	private Button btnTest = null;
@@ -31,8 +30,7 @@ public class MainFormController {
 	@FXML
 	private Font x3;
 	
-	
-	
+		
 	
 	//Display MainPrototypeForm after connection
 	public void start(Stage primaryStage) throws IOException {
@@ -48,7 +46,7 @@ public class MainFormController {
 	}
 	
 	//display the "TestForm" after pressing btnTest from Main.
-	public void pressUpdateTestBtn(ActionEvent event) throws Exception {
+	public void pressUpdateTesFiledtBtn(ActionEvent event) throws Exception {
 		FXMLLoader loader = new FXMLLoader();
 		System.out.println("Test Fram Tool"); //message to console.
 

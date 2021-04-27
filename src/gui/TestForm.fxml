@@ -136,7 +136,7 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <Label fx:id="statusMessage" layoutX="249.0" layoutY="386.0" text="updated !" textFill="#29d00f" underline="true">
+                        <Label fx:id="statusMessage" layoutX="249.0" layoutY="386.0" textFill="#29d00f" underline="true">
                            <font>
                               <Font size="14.0" />
                            </font>
