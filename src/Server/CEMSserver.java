@@ -64,8 +64,8 @@ public class CEMSserver extends AbstractServer
   {
 	 //int flag=0;
 	    System.out.println("Message received: " + msg + " from " + client);
-    	if (msg instanceof TestTableRequest) {
-    		dbController.getTestTable();
+    	if (msg.equals("Table")) {
+    		this.sendToAllClients(dbController.getTestTable());
     	}
     	else if (msg instanceof UpdateDataRequest) {
     		dbController.updateTestTime((UpdateDataRequest) msg);

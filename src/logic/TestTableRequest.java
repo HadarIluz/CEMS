@@ -18,5 +18,9 @@ public class TestTableRequest{
 		return testTableData;
 	}
 	
+	public String toString() {
+		return testTableData.toString();
+	}
+	
 	
 }

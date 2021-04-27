@@ -37,5 +37,9 @@ public class TestRow {
 	public void setPointsPerQuestion(String pointsPerQuestion) {
 		this.pointsPerQuestion = pointsPerQuestion;
 	}
+	
+	public String toString() {
+		return getExamID()+" "+getProfession()+" "+getCourse()+" "+getTimeAllotedForTest()+" "+getPointsPerQuestion() + "\n";
+	}
 
 }

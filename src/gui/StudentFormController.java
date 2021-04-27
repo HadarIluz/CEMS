@@ -44,7 +44,9 @@ public class StudentFormController implements Initializable {
 	
 	ObservableList<String> list;
 		
+	
 	public void loadStudent(Student s1) {
+		
 		this.s=s1;
 		this.txtName.setText(s.getPName());
 		this.txtSurname.setText(s.getLName());		
