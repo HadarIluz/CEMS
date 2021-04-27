@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TableController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -99,13 +99,13 @@
                               <Image url="@../../image/Background.jpg" />
                            </image>
                         </ImageView>
-                        <TableView layoutX="82.0" layoutY="62.0">
+                        <TableView fx:id="table" layoutX="82.0" layoutY="62.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="examID" />
-                            <TableColumn prefWidth="75.0" text="profession" />
-                              <TableColumn prefWidth="75.0" text="course" />
-                              <TableColumn prefWidth="121.79998779296875" text="timeAllotedForTest" />
-                              <TableColumn minWidth="0.0" prefWidth="125.0" text="pointsPerQuestion" />
+                            <TableColumn fx:id="examID_col" prefWidth="75.0" text="examID" />
+                            <TableColumn fx:id="profession_col" prefWidth="75.0" text="profession" />
+                              <TableColumn fx:id="course_col" prefWidth="75.0" text="course" />
+                              <TableColumn fx:id="time_col" prefWidth="121.79998779296875" text="timeAllotedForTest" />
+                              <TableColumn fx:id="points_col" minWidth="0.0" prefWidth="125.0" text="pointsPerQuestion" />
                           </columns>
                         </TableView>
                      </children>
