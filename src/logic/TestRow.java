@@ -1,6 +1,9 @@
 package logic;
 
-public class TestRow {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class TestRow implements Serializable{
 	private String examID;
 	private String profession;
 	private String course;

@@ -1,6 +1,9 @@
 package logic;
 
-public class UpdateDataRequest {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class UpdateDataRequest implements Serializable {
 	
 	private String examID;
 	private String timeAllotedForTest;

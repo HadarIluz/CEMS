@@ -1,8 +1,10 @@
 package logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TestTableRequest{
+@SuppressWarnings("serial")
+public class TestTableRequest implements Serializable{
 	private ArrayList<TestRow> testTableData;
 
 	public TestTableRequest() {
