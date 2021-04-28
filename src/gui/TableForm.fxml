@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.TextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -9,8 +10,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,8 +17,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TableController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TableController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -63,7 +63,7 @@
                      <children>
                       <Button fx:id="btnTest" alignment="CENTER" layoutX="45.0" layoutY="151.0" mnemonicParsing="false" onAction="#pressUpdateTesFiledtBtn" onMouseClicked="#pressUpdateTesFiledtBtn" prefHeight="51.0" prefWidth="132.0" text="Update Test Fields">
                            <font>
-                              <Font size="13.0" />
+                              <Font size="14.0" />
                            </font>
                         </Button>
                         <Button fx:id="btnTable" disable="true" layoutX="45.0" layoutY="235.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="132.0" text="Table">
@@ -99,15 +99,62 @@
                               <Image url="@../../image/Background.jpg" />
                            </image>
                         </ImageView>
-                        <TableView fx:id="table" layoutX="82.0" layoutY="62.0">
-                          <columns>
-                            <TableColumn fx:id="examID_col" prefWidth="75.0" text="examID" />
-                            <TableColumn fx:id="profession_col" prefWidth="75.0" text="profession" />
-                              <TableColumn fx:id="course_col" prefWidth="75.0" text="course" />
-                              <TableColumn fx:id="time_col" prefWidth="121.79998779296875" text="timeAllotedForTest" />
-                              <TableColumn fx:id="points_col" minWidth="0.0" prefWidth="125.0" text="pointsPerQuestion" />
-                          </columns>
-                        </TableView>
+                        <Label fx:id="lblExamID" layoutX="27.0" layoutY="55.0" prefHeight="30.0" prefWidth="132.0" text="Enter examID:" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtExamID" layoutX="164.0" layoutY="58.0" prefHeight="25.0" prefWidth="125.0" />
+                        <Button fx:id="btnShow" layoutX="325.0" layoutY="57.0" mnemonicParsing="false" onAction="#pressShowBtn" onMouseClicked="#pressShowBtn" prefHeight="0.0" prefWidth="68.0" text="Show">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Button>
+                        <Label fx:id="lblProfession" layoutX="31.0" layoutY="144.0" prefHeight="25.0" prefWidth="89.0" text="Profession:" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblCourse" layoutX="31.0" layoutY="204.0" prefWidth="62.0" text="Course:" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblTime" layoutX="34.0" layoutY="263.0" text="Time alloted for test:" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblPoints" layoutX="34.0" layoutY="320.0" text="Points per question:" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Text fx:id="txtProfession" fill="WHITE" layoutX="120.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="87.13671875">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="txtCourse" fill="WHITE" layoutX="93.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="87.13671875">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="txtTime" fill="WHITE" layoutX="196.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="87.13671875">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="txtPoints" fill="WHITE" layoutX="196.0" layoutY="338.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="87.13671875">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="txtReqFiledMessage" fill="RED" layoutX="27.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="202.93675994873047">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
                      </children>
             </AnchorPane>
           </content>
