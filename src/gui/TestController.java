@@ -14,15 +14,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import logic.StatusMsg;
 import logic.TestRow;
-import logic.TestTableRequest;
 import logic.UpdateDataRequest;
 
 public class TestController {
 
 	public UpdateDataRequest upDataReq;
-	public TestTableRequest test_Treq;
+	//public TestTableRequest test_Treq;
 	public TestRow testR;
+	public StatusMsg status;
 
     @FXML
     private Button btnTest;
@@ -63,7 +64,7 @@ public class TestController {
 	public void Save(ActionEvent event) throws Exception {
 		String ExamID;
 		String TimeForTest;
-		// FXMLLoader loader = new FXMLLoader(); //??think..
+		String text;
 		// Clean
 		ReqFiledMessage1.setText("");
 		ReqFiledMessage2.setText("");
@@ -75,27 +76,31 @@ public class TestController {
 			System.out.println("You must enter an  exam id number"); // message to console.
 			// ReqFiled functionality.
 			ReqFiledMessage1.setTextFill(Paint.valueOf("Red"));
-			ReqFiledMessage1.setText("exanID is Req filed");
+			text=ChatClient.s.getDescription().toString();
+			ReqFiledMessage1.setText(text);
+			//ReqFiledMessage1.setText("exanID is Req filed");
 		}
 
 		TimeForTest = getTimeForTest();
 		if (TimeForTest.trim().isEmpty()) {
 			System.out.println("You must enter an time number"); // message to console.
 			// ReqFiled functionality.
-			ReqFiledMessage1.setTextFill(Paint.valueOf("Red"));
-			ReqFiledMessage1.setText("time is Req filed.");
+			ReqFiledMessage2.setTextFill(Paint.valueOf("Red"));
+			text=ChatClient.s.getDescription().toString();
+			ReqFiledMessage2.setText(text);
+			//ReqFiledMessage1.setText("time is Req filed.");
 		}
 		// in case filed not empty checks if exist in DB
 		else if (!ExamID.trim().isEmpty()) {
-			ClientUI.chat.accept(ExamID);
 
 			// in case Error return from server..
-			// create Class for error msg and change to chatClient.error... ?
-			if (ChatClient.testsTable.toString().equals("ERROR")) { //verify with server team.
+			if (ChatClient.s.getStatus().toString().equals("SUCCESS")) { 
 				System.out.println("Exam ID Not Found"); // message to console.
 				// ReqFiled functionality.
+				text=ChatClient.s.getDescription().toString();
 				statusMessage.setTextFill(Paint.valueOf("Red"));
-				statusMessage.setText("Exam ID Not Found.");
+				statusMessage.setText(text);
+				//statusMessage.setText("Exam ID Not Found.");
 			}
 
 			// Handle a case ExamID found,
@@ -108,8 +113,6 @@ public class TestController {
 				upDataReq.getTimeAllotedForTest();
 
 				System.out.println(upDataReq.toString()); // message for console
-			
-
 			}
 		} // END else
 
@@ -147,18 +150,4 @@ public class TestController {
 		primaryStage.show();	
 	}
 	
-	
-	
-	//ask Nadav again..
-	/*
-	public void loadTable(TestRow t1) {		
-		this.testR=t1;
-		this.txtExamID.setText(testR.getExamID() );
-		this.txtTimeForTest.setText(testR.getTimeAllotedForTest());
-		//this.txtSurname.setText(testR.getLName());		
-		//this.cmbFaculty.setValue(testR.getFc().getFName());
-	}
-	*/
-
-
 }

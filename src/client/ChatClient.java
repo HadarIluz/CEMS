@@ -8,6 +8,7 @@ import ocsf.client.*;
 import client.*;
 import common.ChatIF;
 import logic.Faculty;
+import logic.StatusMsg;
 import logic.Student;
 import logic.TestRow;
 import logic.TestTableRequest;
@@ -34,6 +35,7 @@ public class ChatClient extends AbstractClient {
 	ChatIF clientUI;
 	
 	//new:
+	public static StatusMsg s;
 	public static TestRow testRow = new TestRow();
 	public static boolean awaitResponse = false;
 
