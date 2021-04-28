@@ -105,7 +105,7 @@ public class ChatClient extends AbstractClient {
 	
 	public void handleMessageFromClientUI(Object obj) {
 		try {
-			openConnection();// in order to send more than one message
+			openConnection();
 			awaitResponse = true;
 			
 			sendToServer(obj);
