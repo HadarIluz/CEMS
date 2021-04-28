@@ -2,8 +2,8 @@
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 package client;
-import java.io.*;
-import client.*;
+import java.io.IOException;
+
 import common.ChatIF;
 import logic.TestTableRequest;
 
@@ -67,6 +67,12 @@ public class ClientController implements ChatIF
   public void accept(String str) 
   {
 	  client.handleMessageFromClientUI(str);
+  }
+  
+  //prototype: we sand string in order to check if exist.
+  public void accept(Object obj) 
+  {
+	  client.handleMessageFromClientUI(obj);
   }
   
   /**
