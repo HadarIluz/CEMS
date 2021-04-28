@@ -9,7 +9,6 @@ import java.util.Vector;
 import com.mysql.cj.jdbc.result.UpdatableResultSet;
 
 import logic.Faculty;
-import logic.Request;
 import logic.Student;
 import logic.TestTableRequest;
 import logic.UpdateDataRequest;
