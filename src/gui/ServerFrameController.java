@@ -71,10 +71,10 @@ public class ServerFrameController {
 //	}
 
 	public void start(Stage primaryStage) throws Exception {
-		Pane root = FXMLLoader.load(getClass().getResource("/gui/ServerPortFrame.fxml"));
+		Pane root = FXMLLoader.load(getClass().getResource("/gui/ServerGUI.fxml"));
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/gui/ServerPort.css").toExternalForm());
-		primaryStage.setTitle("Client");
+		//scene.getStylesheets().add(getClass().getResource("/gui/ServerPort.css").toExternalForm());
+		primaryStage.setTitle("CEMS Server");
 		primaryStage.setScene(scene);
 
 		primaryStage.show();
