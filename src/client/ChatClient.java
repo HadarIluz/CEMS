@@ -7,6 +7,9 @@ package client;
 import ocsf.client.*;
 import client.*;
 import common.ChatIF;
+import logic.Faculty;
+import logic.Student;
+import logic.TestRow;
 import logic.TestTableRequest;
 
 import java.io.*;
@@ -31,9 +34,9 @@ public class ChatClient extends AbstractClient {
 	ChatIF clientUI;
 	
 	//new:
-	public static TestTableRequest testsTable;
+	public static TestRow testRow = new TestRow();
 	public static boolean awaitResponse = false;
-	
+
 
 	// Constructors ****************************************************
 
@@ -64,11 +67,12 @@ public class ChatClient extends AbstractClient {
 		System.out.println("--> handleMessageFromServer");
 
 		awaitResponse = false;
-		if (msg instanceof TestTableRequest) {
-			testsTable = (TestTableRequest) msg; //new updated table
+		if (msg instanceof TestRow) {
+			 
+			testRow = (TestRow) msg; //new updated table
 			// call method to populate table in TableControllers
 			// clientUI.display(testTable) --> TableContoller 
-			clientUI.display(testsTable);
+			clientUI.display(testRow.toString());
 			System.out.println("Table Updated Arrived");		
 		}
 	}

@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 
 import client.ChatClient;
+import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +17,7 @@ import javafx.stage.Stage;
 import logic.TestTableRequest;
 
 public class MainFormController {
-
+	
 	@FXML
 	private Button btnTest = null;
 
@@ -29,7 +30,7 @@ public class MainFormController {
 	@FXML
 	private Font x3;
 	
-		
+	
 	
 	//Display MainPrototypeForm after connection
 	public void start(Stage primaryStage) throws IOException {
@@ -71,8 +72,8 @@ public class MainFormController {
 		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary(Main) window
 		Stage primaryStage = new Stage();
 		Pane root = loader.load(getClass().getResource("/gui/TableForm.fxml").openStream());
-		//TestController testController = loader.getController();	//ASK?	
-		//testController.loadStudent(ChatClient.s1);
+		TableController tableController = loader.getController();
+		tableController.setTable(ChatClient.testRow);
 	
 		Scene scene = new Scene(root);			
 		scene.getStylesheets().add(getClass().getResource("/gui/TableForm.css").toExternalForm());

@@ -93,7 +93,7 @@ public class TableController {
 
 	//Method that initialize the page with the names.
 	@SuppressWarnings("unchecked")
-	public void setTable() {
+	public void setTable(TestRow testRow) {
 		
 		// create observable object from testTableRequest arrayList
 		// 
