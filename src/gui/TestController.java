@@ -1,7 +1,6 @@
 package gui;
 
 import client.ChatClient;
-import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +16,7 @@ import javafx.stage.Stage;
 import logic.StatusMsg;
 import logic.TestRow;
 import logic.UpdateDataRequest;
+
 
 public class TestController {
 
@@ -126,7 +126,7 @@ public class TestController {
 	private String getTimeForTest() {
 		return txtTimeForTest.getText();
 	}	
-	
+	@FXML
 	public void pressBtnTable(ActionEvent event) throws Exception{
 		FXMLLoader loader = new FXMLLoader();
 		System.out.println("Table Fram Tool"); //message to console.
@@ -143,7 +143,7 @@ public class TestController {
 
 		
 		Scene scene = new Scene(root);			
-		scene.getStylesheets().add(getClass().getResource("/gui/TableForm.css").toExternalForm());
+		//scene.getStylesheets().add(getClass().getResource("/gui/TableForm.css").toExternalForm());
 		primaryStage.setTitle("Table Fram");
 
 		primaryStage.setScene(scene);		

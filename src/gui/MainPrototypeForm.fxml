@@ -58,25 +58,21 @@
       <items>
         <AnchorPane>
           <children>
-                  <Pane prefHeight="551.0" prefWidth="222.0" style="-fx-background-color: #000000;">
+                  <Pane prefHeight="551.0" prefWidth="222.0">
                      <children>
-                      <Button fx:id="btnTest" alignment="CENTER" layoutX="45.0" layoutY="151.0" mnemonicParsing="false" onAction="#pressUpdateTesFiledtBtn" onKeyPressed="#pressUpdateTestBtn" prefHeight="51.0" prefWidth="132.0" text="Update Test Fields">
+                      <Button fx:id="btnTest" alignment="CENTER" layoutX="45.0" layoutY="151.0" mnemonicParsing="false" onAction="#pressUpdateTesFiledtBtn" onMouseClicked="#pressUpdateTesFiledtBtn" prefHeight="51.0" prefWidth="132.0" text="Update Test Fields">
                            <font>
                               <Font size="13.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnTable" layoutX="45.0" layoutY="235.0" mnemonicParsing="false" onAction="#pressTableBtn" onKeyPressed="#pressTableBtn" prefHeight="51.0" prefWidth="132.0" text="Show Table">
+                        <Button fx:id="btnTable" layoutX="45.0" layoutY="235.0" mnemonicParsing="false" onAction="#pressTableBtn" onMouseClicked="#pressTableBtn" prefHeight="51.0" prefWidth="132.0" text="Show Table">
                            <font>
                               <Font size="13.0" />
                            </font>
                         </Button>
                      </children>
                   </Pane>
-                  <ImageView fitHeight="116.0" fitWidth="116.0" layoutX="45.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/LogoCEMS.PNG" />
-                     </image>
-                  </ImageView>
+                  <ImageView fitHeight="116.0" fitWidth="116.0" layoutX="45.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fitHeight="16.0" fitWidth="29.0" layoutX="6.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../image/hat2.PNG" />

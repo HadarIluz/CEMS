@@ -18,26 +18,26 @@ import logic.TestTableRequest;
 
 public class MainFormController {
 	
-	@FXML
-	private Button btnTest = null;
+    @FXML
+    private Button btnTest;
 
-	@FXML
-	private Button btnTable = null;
+    @FXML
+    private Button btnTable;
 
-	@FXML
-	private Font x1;
+    @FXML
+    private Font x1;
 
-	@FXML
-	private Font x3;
-	
-	
+    @FXML
+    private Font x3;
+
+
 	
 	//Display MainPrototypeForm after connection
 	public void start(Stage primaryStage) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/MainPrototypeForm.fxml"));
 
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/gui/MainPrototypeForm.css").toExternalForm());
+		//scene.getStylesheets().add(getClass().getResource("/gui/MainPrototypeForm.css").toExternalForm());
 		//message to primaryStage
 		primaryStage.setTitle("Main Prototype Fram Tool");
 		primaryStage.setScene(scene);
@@ -49,14 +49,15 @@ public class MainFormController {
 		FXMLLoader loader = new FXMLLoader();
 		System.out.println("Test Fram Tool"); //message to console.
 
-		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary(Main) window
+		//((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary(Main) window
 		Stage primaryStage = new Stage();
-		Pane root = loader.load(getClass().getResource("/gui/TestForm.fxml").openStream());
+		System.out.println("BEFORE ");
+		Pane root = loader.load(getClass().getResource("TestForm.fxml").openStream());
 		//TestController testController = loader.getController();	//ASK?	
 		//testController.loadTable(ChatClient.testsTable.getTableData());
-	
+		System.out.println("BEFORE SCENE");
 		Scene scene = new Scene(root);			
-		scene.getStylesheets().add(getClass().getResource("/gui/TestForm.css").toExternalForm());
+		//scene.getStylesheets().add(getClass().getResource("/gui/TestForm.css").toExternalForm());
 		primaryStage.setTitle("Test Fram");
 
 		primaryStage.setScene(scene);		
@@ -76,7 +77,7 @@ public class MainFormController {
 //		tableController.setTable(ChatClient.testRow);
 	
 		Scene scene = new Scene(root);			
-		scene.getStylesheets().add(getClass().getResource("/gui/TableForm.css").toExternalForm());
+		//scene.getStylesheets().add(getClass().getResource("/gui/TableForm.css").toExternalForm());
 		primaryStage.setTitle("Table Fram");
 
 		primaryStage.setScene(scene);		

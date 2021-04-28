@@ -72,7 +72,7 @@ public class TableController {
 		Pane root = loader.load(getClass().getResource("/gui/TestForm.fxml").openStream());
 
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/gui/TestForm.css").toExternalForm());
+		//scene.getStylesheets().add(getClass().getResource("/gui/TestForm.css").toExternalForm());
 		primaryStage.setTitle("Test Fram");
 
 		primaryStage.setScene(scene);
