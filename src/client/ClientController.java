@@ -5,6 +5,7 @@ package client;
 import java.io.IOException;
 
 import common.ChatIF;
+import logic.TestRow;
 import logic.TestTableRequest;
 
 
@@ -87,10 +88,5 @@ public class ClientController implements ChatIF
     System.out.println("> " + message);
   }
   
-  public void display(TestTableRequest table) 
-  {
-	  // call loadTable from tableController
-    
-  }
 }
 //End of ConsoleChat class

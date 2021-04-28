@@ -7,6 +7,8 @@ package client;
 import ocsf.client.*;
 import client.*;
 import common.ChatIF;
+import logic.StatusMsg;
+import logic.TestRow;
 import logic.TestTableRequest;
 
 import java.io.*;
@@ -31,9 +33,10 @@ public class ChatClient extends AbstractClient {
 	ChatIF clientUI;
 	
 	//new:
-	public static TestTableRequest testsTable;
+	public static StatusMsg s;
+	public static TestRow testRow = new TestRow();
 	public static boolean awaitResponse = false;
-	
+
 
 	// Constructors ****************************************************
 
@@ -64,11 +67,12 @@ public class ChatClient extends AbstractClient {
 		System.out.println("--> handleMessageFromServer");
 
 		awaitResponse = false;
-		if (msg instanceof TestTableRequest) {
-			testsTable = (TestTableRequest) msg; //new updated table
+		if (msg instanceof TestRow) {
+			 
+			testRow = (TestRow) msg; //new updated table
 			// call method to populate table in TableControllers
 			// clientUI.display(testTable) --> TableContoller 
-			clientUI.display(testsTable);
+			clientUI.display(testRow.toString());
 			System.out.println("Table Updated Arrived");		
 		}
 	}
@@ -85,6 +89,30 @@ public class ChatClient extends AbstractClient {
 			awaitResponse = true;
 			
 			sendToServer(message);
+			// wait for response from server
+			while (awaitResponse) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			//return.this.response; //Response
+		} catch (IOException e) {
+			e.printStackTrace();
+			clientUI.display("Could not send message to server: Terminating client." + e);
+			quit();
+		}
+		//return null;
+	}
+	
+	
+	public void handleMessageFromClientUI(Object obj) {
+		try {
+			openConnection();
+			awaitResponse = true;
+			
+			sendToServer(obj);
 			// wait for response from server
 			while (awaitResponse) {
 				try {
