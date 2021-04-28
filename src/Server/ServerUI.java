@@ -11,6 +11,7 @@ import logic.TestRow;
 public class ServerUI extends Application {
 	final public static int DEFAULT_PORT = 5555;
 	public static Vector<TestRow> students=new Vector<TestRow>();
+	public static ServerFrameController sFrame;
 
 	public static void main( String args[] ) throws Exception
 	   {   
@@ -20,7 +21,7 @@ public class ServerUI extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub				  		
-		ServerFrameController sFrame = new ServerFrameController(); // create StudentFrame
+		sFrame = new ServerFrameController(); // create StudentFrame
 		 
 		sFrame.start(primaryStage);
 	}
@@ -39,7 +40,8 @@ public class ServerUI extends Application {
 	        	System.out.println("ERROR - Could not connect!");
 	        }
 	    	
-	        CEMSserver sv = new CEMSserver(port);
+	        // instead of loader - need to put object that is the ui controller...
+	        CEMSserver sv = new CEMSserver(port, sFrame);
 	        
 	        try 
 	        {

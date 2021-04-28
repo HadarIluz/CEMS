@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import com.mysql.cj.jdbc.result.UpdatableResultSet;
 
+import gui.ServerFrameController;
 import logic.StatusMsg;
 import logic.TestTableRequest;
 import logic.UpdateDataRequest;
@@ -31,10 +32,12 @@ public class CEMSserver extends AbstractServer
    * 
    */
 	private static DBController dbController = new DBController();
+	private static ServerFrameController serverUI;
 
-  public CEMSserver(int port) 
+  public CEMSserver(int port, ServerFrameController serverUI) 
   {
     super(port);
+    this.serverUI = serverUI;
   }
 
   //Instance methods ************************************************
@@ -69,6 +72,8 @@ public class CEMSserver extends AbstractServer
     	}
 	    else {
 	    	System.out.println("Error in request");
+	    	// create this method
+	    	serverUI.printToTextArea("Error in request");
 	    }
   
   }

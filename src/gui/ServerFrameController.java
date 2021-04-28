@@ -85,4 +85,10 @@ public class ServerFrameController {
 		System.exit(0);
 	}
 
+
+	public void printToTextArea(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
