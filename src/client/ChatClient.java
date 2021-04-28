@@ -33,7 +33,7 @@ public class ChatClient extends AbstractClient {
 	ChatIF clientUI;
 	
 	//new:
-	public static StatusMsg s;
+	public static StatusMsg statusMsg;
 	public static TestRow testRow = new TestRow();
 	public static boolean awaitResponse = false;
 

@@ -70,8 +70,6 @@ public class TableController {
 		((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Table) window
 		Stage primaryStage = new Stage();
 		Pane root = loader.load(getClass().getResource("/gui/TestForm.fxml").openStream());
-		// TestController testController = loader.getController(); //ASK?
-		// testController.loadTable(ChatClient.testsTable.getTableData());
 
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("/gui/TestForm.css").toExternalForm());
@@ -90,8 +88,8 @@ public class TableController {
 			System.out.println("You must enter an  exam id number"); // message to console.
 			txtReqFiledMessage.setText("Exam ID is Req filed");
 		} else {
-			ClientUI.chat.accept(examID);
-			if (ChatClient.testRow.getExamID().equals("Error")) // Check that the test exists
+			ClientUI.chat.accept("getRow " + examID);
+			if (ChatClient.testRow.getExamID().equals("ERROR")) // Check that the test exists
 			{
 				System.out.println("Exam ID Not Found");
 				txtReqFiledMessage.setText("Exam ID Not Found");

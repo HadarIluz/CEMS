@@ -76,7 +76,7 @@ public class TestController {
 			System.out.println("You must enter an  exam id number"); // message to console.
 			// ReqFiled functionality.
 			ReqFiledMessage1.setTextFill(Paint.valueOf("Red"));
-			text=ChatClient.s.getDescription().toString();
+			text=ChatClient.statusMsg.getDescription().toString();
 			ReqFiledMessage1.setText(text);
 			//ReqFiledMessage1.setText("exanID is Req filed");
 		}
@@ -86,7 +86,7 @@ public class TestController {
 			System.out.println("You must enter an time number"); // message to console.
 			// ReqFiled functionality.
 			ReqFiledMessage2.setTextFill(Paint.valueOf("Red"));
-			text=ChatClient.s.getDescription().toString();
+			text=ChatClient.statusMsg.getDescription().toString();
 			ReqFiledMessage2.setText(text);
 			//ReqFiledMessage1.setText("time is Req filed.");
 		}
@@ -94,10 +94,10 @@ public class TestController {
 		else if (!ExamID.trim().isEmpty()) {
 
 			// in case Error return from server..
-			if (ChatClient.s.getStatus().toString().equals("SUCCESS")) { 
+			if (ChatClient.statusMsg.getStatus().toString().equals("ERROR")) { 
 				System.out.println("Exam ID Not Found"); // message to console.
 				// ReqFiled functionality.
-				text=ChatClient.s.getDescription().toString();
+				text=ChatClient.statusMsg.getDescription().toString();
 				statusMessage.setTextFill(Paint.valueOf("Red"));
 				statusMessage.setText(text);
 				//statusMessage.setText("Exam ID Not Found.");

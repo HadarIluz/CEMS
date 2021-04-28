@@ -8,7 +8,7 @@ import java.util.Vector;
 
 import com.mysql.cj.jdbc.result.UpdatableResultSet;
 
-
+import logic.StatusMsg;
 import logic.TestTableRequest;
 import logic.UpdateDataRequest;
 import ocsf.server.*;
@@ -50,11 +50,22 @@ public class CEMSserver extends AbstractServer
   {
 	 //int flag=0;
 	    System.out.println("Message received: " + msg + " from " + client);
-    	if (msg.equals("Table")) {
-    		this.sendToAllClients(dbController.getTestTable());
+    	if (msg instanceof String) {
+    		String req = (String)msg;
+    		if (req.contains("getRow")) {
+    			this.sendToAllClients(dbController.getTestRow(req.split(" ")[1]));
+    		}
     	}
     	else if (msg instanceof UpdateDataRequest) {
-    		dbController.updateTestTime((UpdateDataRequest) msg);
+    		StatusMsg status = new StatusMsg();
+    		if (dbController.updateTestTime((UpdateDataRequest) msg)) {
+    			status.setStatus("SUCCESS");
+    		}
+    		else {
+    			status.setStatus("ERROR");
+    		}
+    		this.sendToAllClients(status);
+
     	}
 	    else {
 	    	System.out.println("Error in request");
