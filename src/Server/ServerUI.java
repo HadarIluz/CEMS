@@ -2,7 +2,8 @@ package Server;
 
 import java.util.Vector;
 
-import gui.ServerPortFrameController;
+import gui.ServerFrameController;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import logic.TestRow;
@@ -19,9 +20,9 @@ public class ServerUI extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub				  		
-		ServerPortFrameController aFrame = new ServerPortFrameController(); // create StudentFrame
+		ServerFrameController sFrame = new ServerFrameController(); // create StudentFrame
 		 
-		aFrame.start(primaryStage);
+		sFrame.start(primaryStage);
 	}
 	
 	public static void runServer(String p)
