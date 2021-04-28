@@ -68,6 +68,7 @@ public class ChatClient extends AbstractClient {
 			testsTable = (TestTableRequest) msg; //new updated table
 			// call method to populate table in TableControllers
 			// clientUI.display(testTable) --> TableContoller 
+			clientUI.display(testsTable);
 			System.out.println("Table Updated Arrived");		
 		}
 	}

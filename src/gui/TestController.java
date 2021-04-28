@@ -88,9 +88,13 @@ public class TestController {
 		// in case filed not empty checks if exist in DB
 		else if (!ExamID.trim().isEmpty()) {
 			ClientUI.chat.accept(ExamID);
-			// create new accept method with updateRequest (not string)
-			//ClientUI.chat.accept(upDataReq);
+<<<<<<< HEAD
+
+
+=======
+
 			
+>>>>>>> branch 'main' of https://github.com/yuval96/CEMSprototype.git
 			// in case Error return from server..
 			// create Class for error msg and change to chatClient.error... ?
 			if (ChatClient.testsTable.toString().equals("ERROR")) { //verify with server team.
