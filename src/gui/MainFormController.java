@@ -72,8 +72,8 @@ public class MainFormController {
 		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary(Main) window
 		Stage primaryStage = new Stage();
 		Pane root = loader.load(getClass().getResource("/gui/TableForm.fxml").openStream());
-		TableController tableController = loader.getController();
-		tableController.setTable(ChatClient.testRow);
+//		TableController tableController = loader.getController();
+//		tableController.setTable(ChatClient.testRow);
 	
 		Scene scene = new Scene(root);			
 		scene.getStylesheets().add(getClass().getResource("/gui/TableForm.css").toExternalForm());

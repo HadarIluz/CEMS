@@ -88,13 +88,7 @@ public class TestController {
 		// in case filed not empty checks if exist in DB
 		else if (!ExamID.trim().isEmpty()) {
 			ClientUI.chat.accept(ExamID);
-<<<<<<< HEAD
 
-
-=======
-
-			
->>>>>>> branch 'main' of https://github.com/yuval96/CEMSprototype.git
 			// in case Error return from server..
 			// create Class for error msg and change to chatClient.error... ?
 			if (ChatClient.testsTable.toString().equals("ERROR")) { //verify with server team.
@@ -137,8 +131,9 @@ public class TestController {
 		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary(Test) window
 		Stage primaryStage = new Stage();
 		Pane root = loader.load(getClass().getResource("/gui/TableForm.fxml").openStream());
-		//TestController testController = loader.getController();	//ASK?	
-		//testController.loadStudent(ChatClient.s1);
+		
+//		TableController tableController = loader.getController();
+//		tableController.setTable(ChatClient.testRow);
 	
 		// call clientUI.chat.accept() --- send request for table data
 		//ClientUI.chat.accept(request table data???);
