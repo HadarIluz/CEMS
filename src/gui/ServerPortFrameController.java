@@ -19,13 +19,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import logic.Faculty;
-import logic.Student;
+
 import Server.CEMSserver;
 import Server.ServerUI;
 
 public class ServerPortFrameController  {
-	private StudentFormController sfc;	
+	//private StudentFormController sfc;	
 	
 	String temp="";
 	
