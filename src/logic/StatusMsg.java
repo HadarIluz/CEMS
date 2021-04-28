@@ -19,4 +19,6 @@ public class StatusMsg {
 		this.description = description;
 	}
 
+	
+	
 }
