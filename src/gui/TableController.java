@@ -26,6 +26,8 @@ import logic.TestRow;
 import logic.TestTableRequest;
 
 public class TableController {
+	
+	private TestRow test;
 
 	@FXML
 	private Button btnTest;
@@ -94,11 +96,12 @@ public class TableController {
 				System.out.println("Exam ID Not Found");
 				txtReqFiledMessage.setText("Exam ID Not Found");
 			} else {
+				test = ChatClient.testRow;
 				System.out.println("Exam ID Found"); // message to console.
-				txtProfession.setText(testRow.getProfession());
-				txtCourse.setText(testRow.getCourse());
-				txtTime.setText(testRow.getTimeAllotedForTest());
-				txtPoints.setText(testRow.getPointsPerQuestion());
+				txtProfession.setText(test.getProfession());
+				txtCourse.setText(test.getCourse());
+				txtTime.setText(test.getTimeAllotedForTest());
+				txtPoints.setText(test.getPointsPerQuestion());
 			}
 		}
 	}
