@@ -35,7 +35,6 @@ public class ServerFrameController {
 		return portxt.getText();
 	}
 	
-	//
 	
 	//connect between messages to present in txtLogArea
 	public String messagesConnector(String oldStr,String addStr) {

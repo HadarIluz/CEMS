@@ -61,13 +61,8 @@
           <children>
                   <Pane prefHeight="551.0" prefWidth="222.0" style="-fx-background-color: #000000;">
                      <children>
-<<<<<<< HEAD
-                        <TextField fx:id="portxt" layoutX="45.0" layoutY="183.0" prefHeight="25.0" prefWidth="132.0" promptText="port (default 5555)" />
-                      <Button fx:id="btnStart" alignment="CENTER" layoutX="45.0" layoutY="236.0" mnemonicParsing="false" onAction="#pressStartServerBtn" prefHeight="51.0" prefWidth="132.0" text="Start Server">
-=======
-                        <TextField fx:id="txtFieldPort" layoutX="45.0" layoutY="183.0" prefHeight="25.0" prefWidth="132.0" promptText="port (default 5555)" />
-                      <Button alignment="CENTER" layoutX="45.0" layoutY="236.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="132.0" text="Start Server">
->>>>>>> branch 'main' of https://github.com/yuval96/CEMSprototype.git
+                        <TextField fx:id="portxt" layoutX="45.0" layoutY="183.0" onAction="#pressStartServerBtn" prefHeight="25.0" prefWidth="132.0" promptText="port (default 5555)" />
+                      <Button fx:id="btnStartServer" alignment="CENTER" layoutX="45.0" layoutY="236.0" mnemonicParsing="false" onAction="#pressStartServerBtn" prefHeight="51.0" prefWidth="132.0" text="Start Server">
                            <font>
                               <Font size="18.0" />
                            </font>
