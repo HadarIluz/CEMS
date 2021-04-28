@@ -66,6 +66,8 @@ public class ChatClient extends AbstractClient {
 		awaitResponse = false;
 		if (msg instanceof TestTableRequest) {
 			testsTable = (TestTableRequest) msg; //new updated table
+			// call method to populate table in TableControllers
+			// clientUI.display(testTable) --> TableContoller 
 			System.out.println("Table Updated Arrived");		
 		}
 	}

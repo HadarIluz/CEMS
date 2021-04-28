@@ -107,7 +107,9 @@ public class TestController {
 				upDataReq.getTimeAllotedForTest();
 
 				System.out.println(upDataReq.toString()); // message for console
-				ClientUI.chat.accept("update " + upDataReq.toString());
+				
+				// create new accept method with updateRequest (not string)
+				//ClientUI.chat.accept(upDataReq);
 
 			}
 		} // END else
@@ -133,6 +135,10 @@ public class TestController {
 		//TestController testController = loader.getController();	//ASK?	
 		//testController.loadStudent(ChatClient.s1);
 	
+		// call clientUI.chat.accept() --- send request for table data
+		//ClientUI.chat.accept(request table data???);
+
+		
 		Scene scene = new Scene(root);			
 		scene.getStylesheets().add(getClass().getResource("/gui/TableForm.css").toExternalForm());
 		primaryStage.setTitle("Table Fram");

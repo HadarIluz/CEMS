@@ -55,11 +55,11 @@ public class TableController {
 	@FXML
 	private Font x3;
 
-	@FXML
-	public void pressTable(ActionEvent event) {
-		ClientUI.chat.accept("Table"); // send message to get all table rows
-
-	}
+//	@FXML
+//	public void pressTable(ActionEvent event) {
+//		ClientUI.chat.accept("Table"); // send message to get all table rows
+//
+//	}
 	
 	//display the "TestForm" after pressing btnTest from Main.
 	public void pressUpdateTesFiledtBtn(ActionEvent event) throws Exception {
@@ -94,6 +94,9 @@ public class TableController {
 	//Method that initialize the page with the names.
 	@SuppressWarnings("unchecked")
 	public void setTable() {
+		
+		// create observable object from testTableRequest arrayList
+		// 
 		TableColumn<TestRow, Integer> idColumn = new TableColumn<>("examID");
 		idColumn.setCellValueFactory(new PropertyValueFactory<>("examID"));
 		TableColumn<TestRow, String> profColumn = new TableColumn<>("profession");
