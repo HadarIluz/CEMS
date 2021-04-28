@@ -8,22 +8,10 @@ import java.util.Vector;
 
 import com.mysql.cj.jdbc.result.UpdatableResultSet;
 
-import logic.Faculty;
-import logic.Student;
+
 import logic.TestTableRequest;
 import logic.UpdateDataRequest;
 import ocsf.server.*;
-
-/**
- * This class overrides some of the methods in the abstract 
- * superclass in order to give more functionality to the server.
- *
- * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;re
- * @author Fran&ccedil;ois B&eacute;langer
- * @author Paul Holden
- * @version July 2000
- */
 
 public class CEMSserver extends AbstractServer 
 {
@@ -42,7 +30,6 @@ public class CEMSserver extends AbstractServer
    * @param port The port number to connect on.
    * 
    */
- //public static Student [] students=new Student[4];
 	private static DBController dbController = new DBController();
 
   public CEMSserver(int port) 
@@ -72,19 +59,7 @@ public class CEMSserver extends AbstractServer
 	    else {
 	    	System.out.println("Error in request");
 	    }
-//	    for(int  i=0;i<4;i++) {
-//			if(students[i].getId().equals(msg))
-//			{ 
-//				System.out.println("Server Found");
-//				this.sendToAllClients(students[i].toString());
-//				flag=1;
-//			}
-//		
-//		}
-//	    if (flag!=1) {
-//			System.out.println("Not Found");
-//			this.sendToAllClients("Error");
-//		}        
+  
   }
    
   /**
@@ -94,10 +69,6 @@ public class CEMSserver extends AbstractServer
   protected void serverStarted()
   {
     System.out.println ("Server listening for connections on port " + getPort());
-//    students[0]=new Student("12345","Yossi","Cohen",new Faculty("SE","9901000"));
-//    students[1]=new Student("66666","Yossefa","Levi",new Faculty("IE","9901123"));
-//    students[2]=new Student("77777","moshe","galili",Faculty.getFaculty("SE"));
-//    students[3]=new Student("77778","moran","galil",Faculty.getFaculty("SE")); 
 
   }
   /**
