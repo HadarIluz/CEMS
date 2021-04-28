@@ -88,8 +88,11 @@ public class TestController {
 		// in case filed not empty checks if exist in DB
 		else if (!ExamID.trim().isEmpty()) {
 			ClientUI.chat.accept(ExamID);
-
+			// create new accept method with updateRequest (not string)
+			//ClientUI.chat.accept(upDataReq);
+			
 			// in case Error return from server..
+			// create Class for error msg and change to chatClient.error... ?
 			if (ChatClient.testsTable.toString().equals("ERROR")) { //verify with server team.
 				System.out.println("Exam ID Not Found"); // message to console.
 				// ReqFiled functionality.
@@ -107,9 +110,7 @@ public class TestController {
 				upDataReq.getTimeAllotedForTest();
 
 				System.out.println(upDataReq.toString()); // message for console
-				
-				// create new accept method with updateRequest (not string)
-				//ClientUI.chat.accept(upDataReq);
+			
 
 			}
 		} // END else
