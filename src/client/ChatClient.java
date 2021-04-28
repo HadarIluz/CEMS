@@ -7,9 +7,7 @@ package client;
 import ocsf.client.*;
 import client.*;
 import common.ChatIF;
-import logic.Faculty;
 import logic.StatusMsg;
-import logic.Student;
 import logic.TestRow;
 import logic.TestTableRequest;
 
