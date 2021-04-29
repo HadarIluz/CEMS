@@ -52,7 +52,7 @@ public class MainFormController {
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 			Stage primaryStage = new Stage();
 			System.out.println("BEFORE ");
-			Pane root = loader.load(getClass().getResource("TestForm.fxml").openStream());
+			Pane root = loader.load(getClass().getResource("TableForm.fxml").openStream());
 
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("Test Fram");
@@ -69,20 +69,20 @@ public class MainFormController {
 	@FXML
 	public void pressBtnTableForm(ActionEvent event) throws Exception {
 		try {
-			FXMLLoader loader2 = new FXMLLoader();
+			FXMLLoader loader = new FXMLLoader();
 			System.out.println("Table Fram Tool"); // message to console.
 
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
-			Stage primaryStage2 = new Stage();
-			Pane root2 = loader2.load(getClass().getResource("TableForm.fxml").openStream());
+			Stage primaryStage = new Stage();
+			Pane root = loader.load(getClass().getResource("TableForm.fxml").openStream());
 //		TableController tableController = loader.getController();
 //		tableController.setTable(ChatClient.testRow);
 
-			Scene scene2 = new Scene(root2);
-			primaryStage2.setTitle("Table Fram");
+			Scene scene = new Scene(root);
+			primaryStage.setTitle("Table Fram");
 
-			primaryStage2.setScene(scene2);
-			primaryStage2.show();
+			primaryStage.setScene(scene);
+			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

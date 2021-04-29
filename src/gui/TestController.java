@@ -78,7 +78,7 @@ public class TestController {
 			//text = ChatClient.statusMsg.getDescription().toString();
 			//System.out.println(text);
 			//ReqFiledMessage1.setText(text);
-			ReqFiledMessage1.setText("exanID is Req filed");
+			ReqFiledMessage1.setText("examID is Req filed");
 		}
 
 		TimeForTest = txtTimeForTest.getText();
