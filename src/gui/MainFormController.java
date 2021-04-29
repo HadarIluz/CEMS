@@ -52,7 +52,7 @@ public class MainFormController {
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 			Stage primaryStage = new Stage();
 			System.out.println("BEFORE ");
-			Pane root = loader.load(getClass().getResource("TableForm.fxml").openStream());
+			Pane root = loader.load(getClass().getResource("TestForm.fxml").openStream());
 
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("Test Fram");
