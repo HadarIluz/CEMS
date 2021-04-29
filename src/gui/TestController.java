@@ -1,11 +1,17 @@
 package gui;
 
+//import java.io.IOException;
+
+import gui.TableController;
+import gui.TestController;
+
 import client.ChatClient;
 import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -125,29 +131,17 @@ public class TestController {
 
 	@FXML
 	public void pressBtnTableForm(ActionEvent event) throws Exception {
+		
 		try {
-			FXMLLoader loader = new FXMLLoader();
 			System.out.println("Table Fram Tool display"); // message to console.
-
-			System.out.println("befor hiding");
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Test) window
-			System.out.println("after hiding");
+			Parent root = FXMLLoader.load(getClass().getResource("TableForm.fxml"));
 			Stage primaryStage = new Stage();
-			System.out.println("befor root");
-			Pane root = loader.load(getClass().getResource("TableForm.fxml").openStream());
-
-//		TableController tableController = loader.getController();
-//		tableController.setTable(ChatClient.testRow);
-
-			// call clientUI.chat.accept() --- send request for table data
-			// ClientUI.chat.accept(request table data???);
-
 			Scene scene = new Scene(root);
-			primaryStage.setTitle("Table Fram");
-
+			primaryStage.setTitle("");
 			primaryStage.setScene(scene);
 			primaryStage.show();
-		} catch (Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}

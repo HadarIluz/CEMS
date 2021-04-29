@@ -92,15 +92,13 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <ImageView fitHeight="16.0" fitWidth="18.0" layoutX="147.0" layoutY="155.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="ReqFiledMessage1" layoutX="166.0" layoutY="155.0" prefHeight="17.0" prefWidth="279.0" textFill="#d16767" />
+                        <Label fx:id="ReqFiledMessage1" layoutX="150.0" layoutY="155.0" prefHeight="17.0" prefWidth="279.0" textFill="#d16767" />
                         <Label layoutX="148.0" layoutY="182.0" text="Time Alloted For Test:" textFill="#ace580">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <ImageView fitHeight="16.0" fitWidth="18.0" layoutX="149.0" layoutY="255.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="ReqFiledMessage2" layoutX="167.0" layoutY="255.0" prefHeight="17.0" prefWidth="273.0" textFill="#d16767" />
+                        <Label fx:id="ReqFiledMessage2" layoutX="150.0" layoutY="255.0" prefHeight="17.0" prefWidth="273.0" textFill="#d16767" />
                         <Button fx:id="pressUpdateTableReq" layoutX="150.0" layoutY="331.0" mnemonicParsing="false" onAction="#pressUpdateTableReq" onMouseClicked="#pressUpdateTableReq" prefHeight="35.0" prefWidth="170.0" style="-fx-background-color: #ace580;" text="update exam`s time">
                            <font>
                               <Font size="16.0" />

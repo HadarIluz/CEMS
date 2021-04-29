@@ -1,6 +1,7 @@
 package client;
 import gui.MainFormController;
 import gui.TableController;
+import gui.TestController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -17,8 +18,8 @@ public class ClientUI extends Application {
 		 chat= new ClientController("localhost", 5555);
 		// TODO Auto-generated method stub
 		 
-		MainFormController MainForm = new MainFormController(); // create the MainFrame
-		MainForm.start(primaryStage);
+		 MainFormController MainForm = new MainFormController(); // create the TestFrame
+		 MainForm.start(primaryStage);
 	}
 
 	

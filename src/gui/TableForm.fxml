@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.TextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -10,13 +9,13 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TableController">
   <children>
@@ -86,62 +85,42 @@
             <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="669.0">
                      <children>
                         <ImageView fitHeight="551.0" fitWidth="670.0" pickOnBounds="true" smooth="false" />
-                        <Label fx:id="lblExamID" layoutX="35.0" layoutY="55.0" prefHeight="30.0" prefWidth="132.0" text="Enter examID:" textFill="#ace580">
+                        <Label layoutX="35.0" layoutY="55.0" prefHeight="30.0" prefWidth="132.0" text="Enter examID:" textFill="#ace580">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtExamID" layoutX="173.0" layoutY="58.0" prefHeight="25.0" prefWidth="125.0" />
-                        <Button fx:id="btnShow" layoutX="325.0" layoutY="57.0" mnemonicParsing="false" onAction="#pressShowBtn" onMouseClicked="#pressShowBtn" prefHeight="0.0" prefWidth="68.0" text="Show">
+                        <TextField fx:id="txtExamID" layoutX="167.0" layoutY="58.0" />
+                        <Button fx:id="pressShowBtn" layoutX="325.0" layoutY="56.0" mnemonicParsing="false" onAction="#pressShowBtn" onMouseClicked="#pressShowBtn" prefHeight="0.0" prefWidth="68.0" text="Show">
                            <font>
                               <Font size="13.0" />
                            </font>
                         </Button>
-                        <Label fx:id="lblProfession" layoutX="35.0" layoutY="144.0" prefHeight="25.0" prefWidth="89.0" text="Profession:" textFill="#ace580">
+                        <Label layoutX="35.0" layoutY="144.0" prefHeight="25.0" prefWidth="89.0" text="Profession:" textFill="#ace580">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lblCourse" layoutX="36.0" layoutY="204.0" prefWidth="62.0" text="Course:" textFill="#ace580">
+                        <Label layoutX="36.0" layoutY="204.0" prefWidth="62.0" text="Course:" textFill="#ace580">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lblTime" layoutX="34.0" layoutY="263.0" text="Time alloted for test:" textFill="#ace580">
+                        <Label layoutX="34.0" layoutY="263.0" text="Time alloted for test:" textFill="#ace580">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lblPoints" layoutX="34.0" layoutY="324.0" text="Points per question:" textFill="#ace580">
+                        <Label layoutX="34.0" layoutY="324.0" text="Points per question:" textFill="#ace580">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Text fx:id="txtProfession" fill="WHITE" layoutX="120.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="87.13671875">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="txtCourse" fill="WHITE" layoutX="93.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="87.13671875">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="txtTime" fill="WHITE" layoutX="196.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="87.13671875">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="txtPoints" fill="WHITE" layoutX="196.0" layoutY="342.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="87.13671875">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="txtReqFiledMessage" fill="RED" layoutX="27.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="202.93675994873047">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Text>
+                        <Label fx:id="txtReqFiledMessage" layoutX="176.0" layoutY="86.0" prefHeight="22.0" prefWidth="229.0" />
+                        <Label fx:id="txtTime" layoutX="197.0" layoutY="267.0" prefHeight="17.0" prefWidth="164.0" />
+                        <Label fx:id="txtCourse" layoutX="99.0" layoutY="207.0" prefHeight="17.0" prefWidth="216.0" />
+                        <Label fx:id="txtProfession" layoutX="124.0" layoutY="148.0" prefHeight="17.0" prefWidth="174.0" />
+                        <Label fx:id="txtPoints" layoutX="192.0" layoutY="328.0" prefHeight="17.0" prefWidth="197.0" />
                      </children>
             </AnchorPane>
           </content>

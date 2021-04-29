@@ -64,7 +64,7 @@
                               <Font size="13.0" />
                            </font>
                         </Button>
-                        <Button fx:id="pressBtnTableForm" layoutX="45.0" layoutY="235.0" mnemonicParsing="false" onAction="#pressBtnTableForm" onMouseClicked="#pressBtnTableForm" prefHeight="51.0" prefWidth="132.0" text="Show Table">
+                        <Button fx:id="pressBtnTableForm" layoutX="45.0" layoutY="235.0" mnemonicParsing="false" onAction="#pressBtnTableForm" onMouseClicked="#pressBtnUpdateTesFiledtForm" prefHeight="51.0" prefWidth="132.0" text="Show Table">
                            <font>
                               <Font size="13.0" />
                            </font>
