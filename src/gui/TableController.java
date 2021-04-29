@@ -54,9 +54,9 @@ public class TableController {
 
     @FXML
     private Font x3;
-
+    
+    @FXML
     // display the "TestForm" after pressing btnTest from Main.
-	@FXML
 	public void pressBtnUpdateTesFiledtForm(ActionEvent event) throws Exception {		
 		try {
 			System.out.println("Test Fram Tool display"); // message to console.
@@ -75,9 +75,9 @@ public class TableController {
 		
 
 	}
-
-	// Displays information for a requested test
+	
 	@FXML
+	// Displays information for a requested test
 	public void pressShowBtn(MouseEvent event) throws Exception {
 		String examID = txtExamID.getText();
 		TestRow test;

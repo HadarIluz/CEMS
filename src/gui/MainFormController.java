@@ -1,7 +1,8 @@
 package gui;
 
 import java.io.IOException;
-
+import gui.TableController;
+import gui.TestController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -75,11 +76,6 @@ public class MainFormController {
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 			Stage primaryStage = new Stage();
 			Pane root = loader.load(getClass().getResource("TableForm.fxml").openStream());
-<<<<<<< HEAD
-=======
-//		TableController tableController = loader.getController();
-//		tableController.setTable(ChatClient.testRow);
->>>>>>> branch 'main' of https://github.com/yuval96/CEMSprototype.git
 
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("Table Fram");
