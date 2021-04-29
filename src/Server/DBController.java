@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import logic.StatusMsg;
 import logic.TestRow;
 import logic.TestTableRequest;
 import logic.UpdateDataRequest;
@@ -71,6 +72,7 @@ public class DBController {
 		TestTableRequest testsTable = new TestTableRequest();
 
 		try {
+			
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM test;");
 			while (rs.next()) { // while we have lines in test table in DB
@@ -90,6 +92,31 @@ public class DBController {
 		}
 
 		return testsTable;
+	}
+	
+	public TestRow getTestRow(String examID) {
+		TestRow newRow= new TestRow();
+
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM test WHERE examID=?;");
+			pstmt.setString(1, examID);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) { // while we have lines in test table in DB
+				newRow.setExamID(rs.getString(1));
+				newRow.setProfession(rs.getString(2));
+				newRow.setCourse(rs.getString(3));
+				newRow.setTimeAllotedForTest(rs.getString(4));
+				newRow.setPointsPerQuestion(rs.getString(5));
+			}
+			rs.close();
+		}
+
+		catch (SQLException ex) {
+			System.out.println("SQLException: " + ex.getMessage());
+			newRow.setExamID("ERROR");
+		}
+		return newRow;
 	}
 	
 	

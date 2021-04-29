@@ -7,17 +7,9 @@ import Server.CEMSserver;
 import Server.ServerUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-<<<<<<< HEAD
-=======
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
->>>>>>> branch 'main' of https://github.com/yuval96/CEMSprototype.git
 import javafx.scene.control.Button;
-<<<<<<< HEAD
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
-=======
->>>>>>> branch 'main' of https://github.com/yuval96/CEMSprototype.git
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -96,7 +88,6 @@ public class ServerFrameController {
 	{
 		 int port = 0; //Port to listen on
 
-<<<<<<< HEAD
 	        try
 	        {
 	        	port = Integer.parseInt(p); //Set port to 5555
@@ -119,20 +110,6 @@ public class ServerFrameController {
 	   	 btnStartServer.setDisable(true);
 	       
 	        }
-=======
-	public void start(Stage primaryStage) throws Exception {
-		try {
-		Pane root = FXMLLoader.load(getClass().getResource("ServerGUI.fxml"));
-		Scene scene = new Scene(root);
-		//scene.getStylesheets().add(getClass().getResource("/gui/ServerPort.css").toExternalForm());
-		primaryStage.setTitle("CEMS Server");
-		primaryStage.setScene(scene);
-
-		primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
->>>>>>> branch 'main' of https://github.com/yuval96/CEMSprototype.git
 	}
 
 	
@@ -141,12 +118,6 @@ public class ServerFrameController {
 	public void getExitBtn(ActionEvent event) throws Exception {
 		System.out.println("exit Academic Tool");
 		System.exit(0);
-	}
-
-
-	public void printToTextArea(String string) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

@@ -9,7 +9,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -58,30 +57,21 @@
       <items>
         <AnchorPane>
           <children>
-                  <Pane prefHeight="551.0" prefWidth="222.0" style="-fx-background-color: #000000;">
+                  <Pane prefHeight="551.0" prefWidth="222.0">
                      <children>
-                      <Button fx:id="btnTest" alignment="CENTER" layoutX="45.0" layoutY="151.0" mnemonicParsing="false" onAction="#pressUpdateTesFiledtBtn" onKeyPressed="#pressUpdateTestBtn" prefHeight="51.0" prefWidth="132.0" text="Update Test Fields">
+                      <Button fx:id="pressBtnUpdateTesFiledtForm" alignment="CENTER" layoutX="45.0" layoutY="151.0" mnemonicParsing="false" onAction="#pressBtnUpdateTesFiledtForm" onMouseClicked="#pressBtnUpdateTesFiledtForm" prefHeight="51.0" prefWidth="132.0" text="Update Test Fields">
                            <font>
                               <Font size="13.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnTable" layoutX="45.0" layoutY="235.0" mnemonicParsing="false" onAction="#pressTableBtn" onKeyPressed="#pressTableBtn" prefHeight="51.0" prefWidth="132.0" text="Show Table">
+                        <Button fx:id="pressBtnTableForm" layoutX="45.0" layoutY="235.0" mnemonicParsing="false" onAction="#pressBtnTableForm" onMouseClicked="#pressBtnTableForm" prefHeight="51.0" prefWidth="132.0" text="Show Table">
                            <font>
                               <Font size="13.0" />
                            </font>
                         </Button>
                      </children>
                   </Pane>
-                  <ImageView fitHeight="116.0" fitWidth="116.0" layoutX="45.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/LogoCEMS.PNG" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="16.0" fitWidth="29.0" layoutX="6.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/hat2.PNG" />
-                     </image>
-                  </ImageView>
+                  <ImageView fitHeight="116.0" fitWidth="116.0" layoutX="45.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
             <Label layoutX="11.0" layoutY="2.0" minWidth="60.0" prefHeight="42.0" prefWidth="62.0" text="Menu" textAlignment="CENTER" textFill="WHITE">
               <font>
                 <Font size="18.0" fx:id="x1" />
@@ -93,12 +83,7 @@
           <content>
             <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="669.0">
                      <children>
-                        <ImageView fitHeight="551.0" fitWidth="670.0" pickOnBounds="true" smooth="false">
-                           <image>
-                              <Image url="@../../image/Background.jpg" />
-                           </image>
-                        </ImageView>
-                        <Text fill="#b5b4b4" layoutX="148.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Client" textAlignment="CENTER" wrappingWidth="314.13671875">
+                        <Text fill="#adabab" layoutX="148.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Client" textAlignment="CENTER" wrappingWidth="314.13671875">
                            <font>
                               <Font name="Eras Bold ITC" size="44.0" />
                            </font>
@@ -117,7 +102,7 @@
           </font>
         </Label>
         <Pane prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: #00000;" HBox.hgrow="ALWAYS" />
-        <Label font="$x3" maxWidth="-1.0" text="Right status" HBox.hgrow="NEVER" />
+        <Label font="$x3" maxWidth="-1.0" text="Prototype" HBox.hgrow="NEVER" />
       </children>
       <padding>
         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />

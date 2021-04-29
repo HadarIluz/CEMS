@@ -1,7 +1,6 @@
 package gui;
 
 import client.ChatClient;
-import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +17,7 @@ import logic.StatusMsg;
 import logic.TestRow;
 import logic.UpdateDataRequest;
 
+
 public class TestController {
 
 	public UpdateDataRequest upDataReq;
@@ -26,10 +26,10 @@ public class TestController {
 	public StatusMsg status;
 
     @FXML
-    private Button btnTest;
+    private Button Btn_showTestForm;
 
     @FXML
-    private Button btnTable;
+    private Button pressBtnTableForm;
 
     @FXML
     private Font x1;
@@ -47,7 +47,7 @@ public class TestController {
     private Label ReqFiledMessage2;
 
     @FXML
-    private Button pressUpdateTable;
+    private Button pressUpdateTableReq;
 
     @FXML
     private Label statusMessage;
@@ -55,13 +55,12 @@ public class TestController {
     @FXML
     private Font x3;
 
-
 	/*
 	 * the function active when user press on save button.
 	 * 
 	 */
 	@FXML
-	public void Save(ActionEvent event) throws Exception {
+	public void pressUpdateTableReq(ActionEvent event) throws Exception {
 		String ExamID;
 		String TimeForTest;
 		String text;
@@ -73,10 +72,10 @@ public class TestController {
 		// get the exam id`s number that user typed
 		ExamID = getExamID();
 		if (ExamID.trim().isEmpty()) {
-			System.out.println("You must enter an  exam id number"); // message to console.
+			System.out.println("You must enter an exam id number"); // message to console.
 			// ReqFiled functionality.
 			ReqFiledMessage1.setTextFill(Paint.valueOf("Red"));
-			text=ChatClient.s.getDescription().toString();
+			text=ChatClient.statusMsg.getDescription().toString();
 			ReqFiledMessage1.setText(text);
 			//ReqFiledMessage1.setText("exanID is Req filed");
 		}
@@ -86,7 +85,7 @@ public class TestController {
 			System.out.println("You must enter an time number"); // message to console.
 			// ReqFiled functionality.
 			ReqFiledMessage2.setTextFill(Paint.valueOf("Red"));
-			text=ChatClient.s.getDescription().toString();
+			text=ChatClient.statusMsg.getDescription().toString();
 			ReqFiledMessage2.setText(text);
 			//ReqFiledMessage1.setText("time is Req filed.");
 		}
@@ -94,10 +93,10 @@ public class TestController {
 		else if (!ExamID.trim().isEmpty()) {
 
 			// in case Error return from server..
-			if (ChatClient.s.getStatus().toString().equals("SUCCESS")) { 
+			if (ChatClient.statusMsg.getStatus().toString().equals("ERROR")) { 
 				System.out.println("Exam ID Not Found"); // message to console.
 				// ReqFiled functionality.
-				text=ChatClient.s.getDescription().toString();
+				text=ChatClient.statusMsg.getDescription().toString();
 				statusMessage.setTextFill(Paint.valueOf("Red"));
 				statusMessage.setText(text);
 				//statusMessage.setText("Exam ID Not Found.");
@@ -126,14 +125,18 @@ public class TestController {
 	private String getTimeForTest() {
 		return txtTimeForTest.getText();
 	}	
-	
-	public void pressBtnTable(ActionEvent event) throws Exception{
+	@FXML
+	public void pressBtnTableForm(ActionEvent event) throws Exception{
+		try {
 		FXMLLoader loader = new FXMLLoader();
-		System.out.println("Table Fram Tool"); //message to console.
+		System.out.println("Table Fram Tool display"); //message to console.
 
+		System.out.println("befor hiding");
 		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary(Test) window
+		System.out.println("after hiding");
 		Stage primaryStage = new Stage();
-		Pane root = loader.load(getClass().getResource("/gui/TableForm.fxml").openStream());
+		System.out.println("befor root");
+		Pane root = loader.load(getClass().getResource("TableForm.fxml").openStream());
 		
 //		TableController tableController = loader.getController();
 //		tableController.setTable(ChatClient.testRow);
@@ -142,12 +145,14 @@ public class TestController {
 		//ClientUI.chat.accept(request table data???);
 
 		
-		Scene scene = new Scene(root);			
-		scene.getStylesheets().add(getClass().getResource("/gui/TableForm.css").toExternalForm());
+		Scene scene = new Scene(root);
 		primaryStage.setTitle("Table Fram");
 
 		primaryStage.setScene(scene);		
-		primaryStage.show();	
+		primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
