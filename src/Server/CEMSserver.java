@@ -32,13 +32,16 @@ public class CEMSserver extends AbstractServer
    * 
    */
 	private static DBController dbController = new DBController();
-	private static ServerFrameController serverUI;
+	private   ServerFrameController serverFrame;
 
+
+  
   public CEMSserver(int port, ServerFrameController serverUI) 
   {
     super(port);
-    this.serverUI = serverUI;
+    this.serverFrame = serverUI;
   }
+
 
   //Instance methods ************************************************
   
@@ -73,7 +76,7 @@ public class CEMSserver extends AbstractServer
 	    else {
 	    	System.out.println("Error in request");
 	    	// create this method
-	    	serverUI.printToTextArea("Error in request");
+	    	serverFrame.printToTextArea("Error in request");
 	    }
   
   }
@@ -84,15 +87,14 @@ public class CEMSserver extends AbstractServer
    */
   protected void serverStarted()
   {
-    System.out.println ("Server listening for connections on port " + getPort());
-
+	  serverFrame.printToTextArea("Server listening for connections on port " + getPort());
+	  dbController.connectDB(serverFrame);
   }
   /**
    * This method overrides the one in the superclass.  Called
    * when the server stops listening for connections.
    */
   protected void serverStopped()  {
-    System.out.println ("Server has stopped listening for connections.");
+	  serverFrame.printToTextArea("Server has stopped listening for connections.");
   }  
 }
-//End of EchoServer class

@@ -1,152 +1,100 @@
 package gui;
 
+import java.io.IOException;
 
-
+//import com.sun.prism.Image;
 
 import Server.CEMSserver;
+import Server.DBController;
 import Server.ServerUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-<<<<<<< HEAD
-=======
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
->>>>>>> branch 'main' of https://github.com/yuval96/CEMSprototype.git
 import javafx.scene.control.Button;
-<<<<<<< HEAD
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
-=======
->>>>>>> branch 'main' of https://github.com/yuval96/CEMSprototype.git
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+
 
 public class ServerFrameController {
 
+	final public static String DEFAULT_PORT = "5555";
 	@FXML
-    private VBox rootOfMain;
+	private VBox rootOfMain;
+	@FXML
+	private SplitPane paneSplitter;
+	@FXML
+	private Pane serevrUserInteraction;
+	@FXML
+	private TextField portxt;
+	@FXML
+	private Button btnStartServer;
+	@FXML
+	private Button btnStop;
+	@FXML
+	private Font x1;
+	@FXML
+	private TextArea txtArea;
+	@FXML
+	private Font x3;
+	@FXML
+	private Button ClearLogBtn;
 
-   
-
-    @FXML
-    private SplitPane paneSplitter;
-
-    @FXML
-    private Pane serevrUserInteraction;
-
-    @FXML
-    private TextField portxt;
-
-    @FXML
-    private Button btnStartServer;
-
-    @FXML
-    private Button btnStop;
-
-    @FXML
-    private Font x1;
-
-    @FXML
-    private TextArea txtArea;
-
-    @FXML
-    private Font x3;
+	private CEMSserver Eserver;
+	private DBController dbControl;
 
 	private String getPort() {
 		return portxt.getText();
 	}
-	
-	
-	
-    @FXML
-	void initialize() {
-		//miscellaneousVBox.setVisible(false);
-    
-		
-		txtArea.setEditable(false);
-			}
-    
-	
-	
-	//connect between messages to present in txtLogArea
-	public String messagesConnector(String oldStr,String addStr) {
-		return oldStr + "\n" + addStr;
+	public void pressStopServerBtn(ActionEvent event) throws Exception {
+		String port=getPort();
+		if (port.trim().isEmpty())
+		ServerUI.closeServer(DEFAULT_PORT, this);
+		else
+		ServerUI.closeServer(port, this);
+		btnStartServer.setDisable(false);
+		btnStop.setDisable(true);
 	}
 
 	public void pressStartServerBtn(ActionEvent event) throws Exception {
 		String p;
-				p = getPort();
+		p = getPort();
+		txtArea.setEditable(false); //user can not write in text area
 		if (p.trim().isEmpty()) {
-			runServer("5555");// default port
-			txtArea.appendText("Server listening for connections on port 5555\n");
-			 btnStartServer.setDisable(true);
-			 btnStop.setDisable(false);
-			
+			ServerUI.runServer(DEFAULT_PORT, this);// default port
+			btnStartServer.setDisable(true);
+			btnStop.setDisable(false);
+
 		} else {
-			runServer(p);
-			txtArea.appendText("Server listening for connections on port " + p +"\n");
-			
+			ServerUI.runServer(p, this);
+			btnStartServer.setDisable(true);
+			btnStop.setDisable(false);
 		}
 
 	}
 
-	public  void runServer(String p) 
-	{
-		 int port = 0; //Port to listen on
+	public void ClearLogTextArea(ActionEvent event) throws Exception {
+		txtArea.clear();
+		txtArea.setPromptText("");// clear the opening sentence of the text area
+	}
 
-<<<<<<< HEAD
-	        try
-	        {
-	        	port = Integer.parseInt(p); //Set port to 5555
-	          
-	        }
-	        catch(Throwable t)
-	        {
-	        	System.out.println("ERROR - Could not connect!\n");
-	        }
-	    	
-	        CEMSserver sv = new CEMSserver(port);
-	        
-	        try 
-	        {
-	          sv.listen(); //Start listening for connections
-	        } 
-	        catch (Exception ex) 
-	        {
-	        txtArea.appendText("ERROR - Could not listen for clients!\n");
-	   	 btnStartServer.setDisable(true);
-	       
-	        }
-=======
-	public void start(Stage primaryStage) throws Exception {
-		try {
-		Pane root = FXMLLoader.load(getClass().getResource("ServerGUI.fxml"));
+	public void start(Stage primaryStage) throws IOException {
+		Pane root = FXMLLoader.load(getClass().getResource("/gui/ServerGUI.fxml"));
 		Scene scene = new Scene(root);
-		//scene.getStylesheets().add(getClass().getResource("/gui/ServerPort.css").toExternalForm());
 		primaryStage.setTitle("CEMS Server");
 		primaryStage.setScene(scene);
-
 		primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
->>>>>>> branch 'main' of https://github.com/yuval96/CEMSprototype.git
+
 	}
 
-	
-
-
-	public void getExitBtn(ActionEvent event) throws Exception {
-		System.out.println("exit Academic Tool");
-		System.exit(0);
-	}
-
-
-	public void printToTextArea(String string) {
-		// TODO Auto-generated method stub
-		
+	public void printToTextArea(String msg) {
+		txtArea.appendText(msg + "\n");
 	}
 
 }
