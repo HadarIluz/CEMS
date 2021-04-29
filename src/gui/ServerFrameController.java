@@ -1,39 +1,65 @@
 package gui;
 
-import java.awt.TextArea;
 
+
+
+import Server.CEMSserver;
 import Server.ServerUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 public class ServerFrameController {
 
-	String temp = "";
-
 	@FXML
-	private Button btnStartServer = null;
-	@FXML
-	private Button btnStopServer = null;
+    private VBox rootOfMain;
 
-	@FXML
-	private TextField portxt;
+   
 
-	@FXML
-	private TextArea txtLogArea;
+    @FXML
+    private SplitPane paneSplitter;
 
-	
+    @FXML
+    private Pane serevrUserInteraction;
+
+    @FXML
+    private TextField portxt;
+
+    @FXML
+    private Button btnStartServer;
+
+    @FXML
+    private Button btnStop;
+
+    @FXML
+    private Font x1;
+
+    @FXML
+    private TextArea txtArea;
+
+    @FXML
+    private Font x3;
+
 	private String getPort() {
 		return portxt.getText();
 	}
+	
+	
+	
+    @FXML
+	void initialize() {
+		//miscellaneousVBox.setVisible(false);
+    
+		
+		txtArea.setEditable(false);
+			}
+    
 	
 	
 	//connect between messages to present in txtLogArea
@@ -43,42 +69,51 @@ public class ServerFrameController {
 
 	public void pressStartServerBtn(ActionEvent event) throws Exception {
 		String p;
-
-		p = getPort();
+				p = getPort();
 		if (p.trim().isEmpty()) {
-			ServerUI.runServer("5555");// default port
-			txtLogArea.setText("Server listening for connections on port 5555");
+			runServer("5555");// default port
+			txtArea.appendText("Server listening for connections on port 5555\n");
+			 btnStartServer.setDisable(true);
+			 btnStop.setDisable(false);
+			
 		} else {
-			ServerUI.runServer(p);
-			txtLogArea.setText("Server listening for connections on port " + p);
+			runServer(p);
+			txtArea.appendText("Server listening for connections on port " + p +"\n");
+			
 		}
 
 	}
 
-//	public void Done(ActionEvent event) throws Exception {
-//		String p;
-//
-//		p = getport();
-//		if (p.trim().isEmpty()) {
-//			System.out.println("You must enter a port number");
-//
-//		} else {
-//			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
-//			Stage primaryStage = new Stage();
-//			FXMLLoader loader = new FXMLLoader();
-//			ServerUI.runServer(p);
-//		}
-//	}
+	public  void runServer(String p) 
+	{
+		 int port = 0; //Port to listen on
 
-	public void start(Stage primaryStage) throws Exception {
-		Pane root = FXMLLoader.load(getClass().getResource("/gui/ServerGUI.fxml"));
-		Scene scene = new Scene(root);
-		//scene.getStylesheets().add(getClass().getResource("/gui/ServerPort.css").toExternalForm());
-		primaryStage.setTitle("CEMS Server");
-		primaryStage.setScene(scene);
-
-		primaryStage.show();
+	        try
+	        {
+	        	port = Integer.parseInt(p); //Set port to 5555
+	          
+	        }
+	        catch(Throwable t)
+	        {
+	        	System.out.println("ERROR - Could not connect!\n");
+	        }
+	    	
+	        CEMSserver sv = new CEMSserver(port);
+	        
+	        try 
+	        {
+	          sv.listen(); //Start listening for connections
+	        } 
+	        catch (Exception ex) 
+	        {
+	        txtArea.appendText("ERROR - Could not listen for clients!\n");
+	   	 btnStartServer.setDisable(true);
+	       
+	        }
 	}
+
+	
+
 
 	public void getExitBtn(ActionEvent event) throws Exception {
 		System.out.println("exit Academic Tool");
