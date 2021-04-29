@@ -6,11 +6,8 @@ import Server.ServerUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -71,13 +68,17 @@ public class ServerFrameController {
 //	}
 
 	public void start(Stage primaryStage) throws Exception {
-		Pane root = FXMLLoader.load(getClass().getResource("/gui/ServerGUI.fxml"));
+		try {
+		Pane root = FXMLLoader.load(getClass().getResource("ServerGUI.fxml"));
 		Scene scene = new Scene(root);
 		//scene.getStylesheets().add(getClass().getResource("/gui/ServerPort.css").toExternalForm());
 		primaryStage.setTitle("CEMS Server");
 		primaryStage.setScene(scene);
 
 		primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void getExitBtn(ActionEvent event) throws Exception {

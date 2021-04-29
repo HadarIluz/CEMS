@@ -70,20 +70,23 @@ public class TableController {
 	@FXML
 	// display the "TestForm" after pressing btnTest from Main.
 	public void pressBtnUpdateTesFiledtForm(MouseEvent event) throws Exception {
+		try {
 		FXMLLoader loader = new FXMLLoader();
 
 		System.out.println("Test Fram Tool"); // message to console.
 
 		((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Table) window
 		Stage primaryStage = new Stage();
-		Pane root = loader.load(getClass().getResource("/gui/TestForm.fxml").openStream());
+		Pane root = loader.load(getClass().getResource("TestForm.fxml").openStream());
 
 		Scene scene = new Scene(root);
-		//scene.getStylesheets().add(getClass().getResource("/gui/TestForm.css").toExternalForm());
 		primaryStage.setTitle("Test Fram");
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 

@@ -83,7 +83,7 @@
           <content>
             <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="669.0">
                      <children>
-                        <Text fill="#b5b4b4" layoutX="148.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Client" textAlignment="CENTER" wrappingWidth="314.13671875">
+                        <Text fill="#adabab" layoutX="148.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Client" textAlignment="CENTER" wrappingWidth="314.13671875">
                            <font>
                               <Font name="Eras Bold ITC" size="44.0" />
                            </font>
