@@ -1,6 +1,7 @@
 package gui;
 
 import client.ChatClient;
+import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,47 +14,43 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import logic.StatusMsg;
-import logic.TestRow;
 import logic.UpdateDataRequest;
-
 
 public class TestController {
 
 	public UpdateDataRequest upDataReq;
-	//public TestTableRequest test_Treq;
-	public TestRow testR;
-	public StatusMsg status;
+	// public TestTableRequest test_Treq;
+	//public StatusMsg status;
 
-    @FXML
-    private Button Btn_showTestForm;
+	@FXML
+	private Button Btn_showTestForm;
 
-    @FXML
-    private Button pressBtnTableForm;
+	@FXML
+	private Button pressBtnTableForm;
 
-    @FXML
-    private Font x1;
+	@FXML
+	private Font x1;
 
-    @FXML
-    private TextField txtExamID;
+	@FXML
+	private TextField txtExamID;
 
-    @FXML
-    private TextField txtTimeForTest;
+	@FXML
+	private TextField txtTimeForTest;
 
-    @FXML
-    private Label ReqFiledMessage1;
+	@FXML
+	private Label ReqFiledMessage1;
 
-    @FXML
-    private Label ReqFiledMessage2;
+	@FXML
+	private Label ReqFiledMessage2;
 
-    @FXML
-    private Button pressUpdateTableReq;
+	@FXML
+	private Button pressUpdateTableReq;
 
-    @FXML
-    private Label statusMessage;
+	@FXML
+	private Label statusMessage;
 
-    @FXML
-    private Font x3;
+	@FXML
+	private Font x3;
 
 	/*
 	 * the function active when user press on save button.
@@ -63,43 +60,51 @@ public class TestController {
 	public void pressUpdateTableReq(ActionEvent event) throws Exception {
 		String ExamID;
 		String TimeForTest;
-		String text;
+		//String text;
 		// Clean
 		ReqFiledMessage1.setText("");
 		ReqFiledMessage2.setText("");
 		statusMessage.setText("");
 
 		// get the exam id`s number that user typed
-		ExamID = getExamID();
+		ExamID = txtExamID.getText();
+		System.out.println(ExamID); // test
 		if (ExamID.trim().isEmpty()) {
-			System.out.println("You must enter an exam id number"); // message to console.
+			System.out.println("You must enter an exam id number\n"); // message to console.
 			// ReqFiled functionality.
+
 			ReqFiledMessage1.setTextFill(Paint.valueOf("Red"));
-			text=ChatClient.statusMsg.getDescription().toString();
-			ReqFiledMessage1.setText(text);
-			//ReqFiledMessage1.setText("exanID is Req filed");
+			//DEBUG: message from server not working...
+			//text = ChatClient.statusMsg.getDescription().toString();
+			//System.out.println(text);
+			//ReqFiledMessage1.setText(text);
+			ReqFiledMessage1.setText("exanID is Req filed");
 		}
 
-		TimeForTest = getTimeForTest();
+		TimeForTest = txtTimeForTest.getText();
+		System.out.println(TimeForTest); // test
 		if (TimeForTest.trim().isEmpty()) {
-			System.out.println("You must enter an time number"); // message to console.
+			System.out.println("You must enter an time number\n"); // message to console.
 			// ReqFiled functionality.
 			ReqFiledMessage2.setTextFill(Paint.valueOf("Red"));
-			text=ChatClient.statusMsg.getDescription().toString();
-			ReqFiledMessage2.setText(text);
-			//ReqFiledMessage1.setText("time is Req filed.");
+			//text = ChatClient.statusMsg.getDescription().toString();
+			//ReqFiledMessage2.setText(text);
+			ReqFiledMessage2.setText("time is Req filed.");
 		}
 		// in case filed not empty checks if exist in DB
 		else if (!ExamID.trim().isEmpty()) {
 
 			// in case Error return from server..
-			if (ChatClient.statusMsg.getStatus().toString().equals("ERROR")) { 
+			String msg = ChatClient.statusMsg.getStatus(); //DEBUG
+			System.out.println(msg);
+			
+			if (msg.equals("ERROR")) {
 				System.out.println("Exam ID Not Found"); // message to console.
 				// ReqFiled functionality.
-				text=ChatClient.statusMsg.getDescription().toString();
+				//text = ChatClient.statusMsg.getDescription().toString();
 				statusMessage.setTextFill(Paint.valueOf("Red"));
-				statusMessage.setText(text);
-				//statusMessage.setText("Exam ID Not Found.");
+				//statusMessage.setText(text);
+				statusMessage.setText("Exam ID Not Found.");
 			}
 
 			// Handle a case ExamID found,
@@ -107,52 +112,44 @@ public class TestController {
 				System.out.println("Exam ID Found"); // message to console.
 				statusMessage.setTextFill(Paint.valueOf("Green"));
 				statusMessage.setText("updated.");
+				
+				upDataReq.setExamID(ExamID);
+				upDataReq.setTimeAllotedForTest(TimeForTest);
+				ClientUI.chat.accept("getRow "+upDataReq.toString());
 
-				upDataReq.getExamID();
-				upDataReq.getTimeAllotedForTest();
-
-				System.out.println(upDataReq.toString()); // message for console
+				System.out.println(upDataReq.toString()); // message for console				
 			}
 		} // END else
-
-	}
-	
-	// return the Exam ID
-	private String getExamID() {
-		return txtExamID.getId();
-	}
-
-	private String getTimeForTest() {
-		return txtTimeForTest.getText();
-	}	
-	@FXML
-	public void pressBtnTableForm(ActionEvent event) throws Exception{
-		try {
-		FXMLLoader loader = new FXMLLoader();
-		System.out.println("Table Fram Tool display"); //message to console.
-
-		System.out.println("befor hiding");
-		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary(Test) window
-		System.out.println("after hiding");
-		Stage primaryStage = new Stage();
-		System.out.println("befor root");
-		Pane root = loader.load(getClass().getResource("TableForm.fxml").openStream());
 		
+	}
+
+	@FXML
+	public void pressBtnTableForm(ActionEvent event) throws Exception {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			System.out.println("Table Fram Tool display"); // message to console.
+
+			System.out.println("befor hiding");
+			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Test) window
+			System.out.println("after hiding");
+			Stage primaryStage = new Stage();
+			System.out.println("befor root");
+			Pane root = loader.load(getClass().getResource("TableForm.fxml").openStream());
+
 //		TableController tableController = loader.getController();
 //		tableController.setTable(ChatClient.testRow);
-	
-		// call clientUI.chat.accept() --- send request for table data
-		//ClientUI.chat.accept(request table data???);
 
-		
-		Scene scene = new Scene(root);
-		primaryStage.setTitle("Table Fram");
+			// call clientUI.chat.accept() --- send request for table data
+			// ClientUI.chat.accept(request table data???);
 
-		primaryStage.setScene(scene);		
-		primaryStage.show();
+			Scene scene = new Scene(root);
+			primaryStage.setTitle("Table Fram");
+
+			primaryStage.setScene(scene);
+			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

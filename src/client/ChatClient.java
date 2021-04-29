@@ -31,12 +31,11 @@ public class ChatClient extends AbstractClient {
 	 * method in the client.
 	 */
 	ChatIF clientUI;
-	
-	//new:
-	public static StatusMsg statusMsg;
+
+	// new:
+	public static StatusMsg statusMsg = new StatusMsg();
 	public static TestRow testRow = new TestRow();
 	public static boolean awaitResponse = false;
-
 
 	// Constructors ****************************************************
 
@@ -61,19 +60,22 @@ public class ChatClient extends AbstractClient {
 	 *
 	 * @param msg The message from the server.
 	 */
-	
-	
+
 	public void handleMessageFromServer(Object msg) {
 		System.out.println("--> handleMessageFromServer");
 
 		awaitResponse = false;
 		if (msg instanceof TestRow) {
-			 
-			testRow = (TestRow) msg; //new updated table
+
+			testRow = (TestRow) msg; // new updated table
 			// call method to populate table in TableControllers
-			// clientUI.display(testTable) --> TableContoller 
+			// clientUI.display(testTable) --> TableContoller
 			clientUI.display(testRow.toString());
-			System.out.println("Table Updated Arrived");		
+			System.out.println("Table Updated Arrived");
+		}
+		if (msg instanceof StatusMsg) {
+			statusMsg = (StatusMsg) msg;
+			clientUI.display(statusMsg.toString());
 		}
 	}
 
@@ -87,7 +89,7 @@ public class ChatClient extends AbstractClient {
 		try {
 			openConnection();// in order to send more than one message
 			awaitResponse = true;
-			
+
 			sendToServer(message);
 			// wait for response from server
 			while (awaitResponse) {
@@ -97,21 +99,20 @@ public class ChatClient extends AbstractClient {
 					e.printStackTrace();
 				}
 			}
-			//return.this.response; //Response
+			// return.this.response; //Response
 		} catch (IOException e) {
 			e.printStackTrace();
 			clientUI.display("Could not send message to server: Terminating client." + e);
 			quit();
 		}
-		//return null;
+		// return null;
 	}
-	
-	
+
 	public void handleMessageFromClientUI(Object obj) {
 		try {
 			openConnection();
 			awaitResponse = true;
-			
+
 			sendToServer(obj);
 			// wait for response from server
 			while (awaitResponse) {
@@ -121,13 +122,13 @@ public class ChatClient extends AbstractClient {
 					e.printStackTrace();
 				}
 			}
-			//return.this.response; //Response
+			// return.this.response; //Response
 		} catch (IOException e) {
 			e.printStackTrace();
 			clientUI.display("Could not send message to server: Terminating client." + e);
 			quit();
 		}
-		//return null;
+		// return null;
 	}
 
 	/**
