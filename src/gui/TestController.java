@@ -26,10 +26,10 @@ public class TestController {
 	public StatusMsg status;
 
     @FXML
-    private Button btnTest;
+    private Button Btn_showTestForm;
 
     @FXML
-    private Button btnTable;
+    private Button pressBtnTableForm;
 
     @FXML
     private Font x1;
@@ -47,7 +47,7 @@ public class TestController {
     private Label ReqFiledMessage2;
 
     @FXML
-    private Button pressUpdateTable;
+    private Button pressUpdateTableReq;
 
     @FXML
     private Label statusMessage;
@@ -55,13 +55,12 @@ public class TestController {
     @FXML
     private Font x3;
 
-
 	/*
 	 * the function active when user press on save button.
 	 * 
 	 */
 	@FXML
-	public void Save(ActionEvent event) throws Exception {
+	public void pressUpdateTableReq(ActionEvent event) throws Exception {
 		String ExamID;
 		String TimeForTest;
 		String text;
@@ -127,7 +126,7 @@ public class TestController {
 		return txtTimeForTest.getText();
 	}	
 	@FXML
-	public void pressBtnTable(ActionEvent event) throws Exception{
+	public void pressBtnTableForm(ActionEvent event) throws Exception{
 		FXMLLoader loader = new FXMLLoader();
 		System.out.println("Table Fram Tool"); //message to console.
 

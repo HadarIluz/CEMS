@@ -18,57 +18,58 @@ import javafx.scene.Node;
 
 public class TableController {
 
-	@FXML
-	private Button btnTest;
+    @FXML
+    private Button pressBtnUpdateTesFiledtForm;
 
-	@FXML
-	private Button btnTable;
+    @FXML
+    private Button btnTable;
 
-	@FXML
-	private Font x1;
+    @FXML
+    private Font x1;
 
-	@FXML
-	private Label lblExamID;
+    @FXML
+    private Label lblExamID;
 
-	@FXML
-	private TextField txtExamID;
+    @FXML
+    private TextField txtExamID;
 
-	@FXML
-	private Button btnShow;
+    @FXML
+    private Button pressShowBtn;
 
-	@FXML
-	private Label lblProfession;
+    @FXML
+    private Label lblProfession;
 
-	@FXML
-	private Label lblCourse;
+    @FXML
+    private Label lblCourse;
 
-	@FXML
-	private Label lblTime;
+    @FXML
+    private Label lblTime;
 
-	@FXML
-	private Label lblPoints;
+    @FXML
+    private Label lblPoints;
 
-	@FXML
-	private Text txtProfession;
+    @FXML
+    private Text txtProfession;
 
-	@FXML
-	private Text txtCourse;
+    @FXML
+    private Text txtCourse;
 
-	@FXML
-	private Text txtTime;
+    @FXML
+    private Text txtTime;
 
-	@FXML
-	private Text txtPoints;
+    @FXML
+    private Text txtPoints;
 
-	@FXML
-	private Text txtReqFiledMessage;
+    @FXML
+    private Text txtReqFiledMessage;
 
-	@FXML
-	private Font x3;
+    @FXML
+    private Font x3;
+
 
 	@FXML
 	// display the "TestForm" after pressing btnTest from Main.
-	public void pressUpdateTesFiledtBtn(MouseEvent event) throws Exception {
+	public void pressBtnUpdateTesFiledtForm(MouseEvent event) throws Exception {
 		FXMLLoader loader = new FXMLLoader();
 
 		System.out.println("Test Fram Tool"); // message to console.
