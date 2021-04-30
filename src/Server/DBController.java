@@ -31,7 +31,7 @@ public ServerFrameController serverFrame;
 
 		try {// Connection conn =DriverManager.getConnection("jdbc:mysql://localhost/sys/?serverTimezone=IST","root","yadin95");
 			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cems_prototype?serverTimezone=IST", "root",
-					"nadav5858");
+					"Aa123456");
 			serverFrame.printToTextArea("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
