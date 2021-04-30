@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TableController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TableController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -116,7 +116,7 @@
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="txtReqFiledMessage" layoutX="176.0" layoutY="86.0" prefHeight="22.0" prefWidth="229.0" />
+                        <Label fx:id="txtReqFiledMessage" layoutX="167.0" layoutY="86.0" prefHeight="22.0" prefWidth="229.0" />
                         <Label fx:id="txtTime" layoutX="197.0" layoutY="267.0" prefHeight="17.0" prefWidth="164.0" />
                         <Label fx:id="txtCourse" layoutX="99.0" layoutY="207.0" prefHeight="17.0" prefWidth="216.0" />
                         <Label fx:id="txtProfession" layoutX="124.0" layoutY="148.0" prefHeight="17.0" prefWidth="174.0" />

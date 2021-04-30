@@ -1,9 +1,7 @@
 package gui;
 
-//import java.io.IOException;
 
 import gui.TestController;
-
 import client.ChatClient;
 import client.ClientUI;
 import javafx.event.ActionEvent;
