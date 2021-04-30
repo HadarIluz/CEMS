@@ -52,7 +52,7 @@ public class CEMSserver extends AbstractServer
    * @param client The connection from which the message originated.
    * @param 
    */
-  public void handleMessageFromClient  (Object msg, ConnectionToClient client)
+  public void handleMessageFromClient(Object msg, ConnectionToClient client)
   {
 	 //int flag=0;
 	    System.out.println("Message received: " + msg + " from " + client);

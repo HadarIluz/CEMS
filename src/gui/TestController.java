@@ -24,7 +24,7 @@ import logic.UpdateDataRequest;
 
 public class TestController {
 
-	public UpdateDataRequest upDataReq;
+	public UpdateDataRequest upDataReq=new UpdateDataRequest();
 	// public TestTableRequest test_Treq;
 	// public StatusMsg status;
 
@@ -99,12 +99,15 @@ public class TestController {
 			}
 
 			// in case filed not empty checks if exist in DB
-			else if (!ExamID.trim().isEmpty()) {
+			if (!ExamID.trim().isEmpty()) {
 
-				//send request to server to check if exam ID exist
-				//ClientUI.chat.accept("getRow " + ExamID);
-				//
-				
+				// send request to server to check if exam ID exist
+				// ClientUI.chat.accept("getRow " + ExamID);
+				System.out.println("line 106");
+
+				upDataReq.setExamID(ExamID);
+				upDataReq.setTimeAllotedForTest(TimeForTest);
+				ClientUI.chat.accept(upDataReq);
 
 				if (ChatClient.statusMsg.getStatus().equals("ERROR")) {
 					System.out.println("Exam ID Not Found"); // message to console.
@@ -120,10 +123,10 @@ public class TestController {
 					System.out.println("Exam ID Found"); // message to console.
 					upDataReq.setExamID(ExamID);
 					upDataReq.setTimeAllotedForTest(TimeForTest);
-					//ClientUI.chat.accept("getRow " + upDataReq.toString());
-					
+					// ClientUI.chat.accept("getRow " + upDataReq.toString());
+
 					ClientUI.chat.accept(upDataReq);
-					
+
 					statusMessage.setTextFill(Paint.valueOf("Green"));
 					statusMessage.setText("updated.");
 
@@ -132,7 +135,7 @@ public class TestController {
 			} // END else
 
 		} catch (Exception e) {
-			//return;
+			// return;
 		}
 
 	}

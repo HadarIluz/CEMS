@@ -1,6 +1,9 @@
 package logic;
 
-public class StatusMsg {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class StatusMsg implements Serializable {
 	
 	private String status;
 	private String description = null;
