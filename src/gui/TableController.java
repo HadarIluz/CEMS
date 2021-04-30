@@ -79,21 +79,32 @@ public class TableController {
 	@FXML
 	// Displays information for a requested test
 	public void pressShowBtn(ActionEvent event) throws Exception {
-		String examID = txtExamID.getText();
+		String examID;
 		TestRow test;
-
+		
+		// Clean
+		txtReqFiledMessage.setText("");
+		txtProfession.setText("");
+		txtCourse.setText("");
+		txtTime.setText("");
+		txtPoints.setText("");
+		
+		// get the exam id`s number that user typed
+		examID = txtExamID.getText();
+		
+		// in case filed examID is empty
 		if (examID.trim().isEmpty()) {
 			System.out.println("You must enter an  exam id number"); // message to console.
 			txtReqFiledMessage.setTextFill(Paint.valueOf("Red"));
 			txtReqFiledMessage.setText("Exam ID is Req filed");
-		} else {
+		} else { 
 			ClientUI.chat.accept("getRow " + examID);
 			if (ChatClient.testRow.getExamID().equals("ERROR")) // Check that the test exists
 			{
-				System.out.println("Exam ID Not Found");
+				System.out.println("Exam ID Not Found"); // message to console.
 				txtReqFiledMessage.setTextFill(Paint.valueOf("Red"));
 				txtReqFiledMessage.setText("Exam ID Not Found");
-			} else {
+			} else { // Handle a case ExamID found,
 				test = ChatClient.testRow;
 				System.out.println("Exam ID Found"); // message to console.
 				txtProfession.setText(test.getProfession());
