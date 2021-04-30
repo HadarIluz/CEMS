@@ -94,14 +94,13 @@ public class TableController {
 				showMsg(txtReqFiledMessage, "Invalid number");
 			} else {
 				ClientUI.chat.accept("getRow " + examID);
-
-				if (ChatClient.testRow.getExamID().equals("ERROR")) // Check if the test exists
+				test = ChatClient.testRow;
+				if (test.getExamID().equals("DoesntExist") || test.getExamID().equals("ERROR")) // Check if the test exists
 				{
 					System.out.println("Exam ID Not Found"); // message to console.
 					showMsg(txtReqFiledMessage, "Exam ID Not Found");
 					// Handle a case ExamID found
 				} else {
-					test = ChatClient.testRow;
 					System.out.println("Exam ID Found"); // message to console.
 					txtProfession.setText(test.getProfession());
 					txtCourse.setText(test.getCourse());

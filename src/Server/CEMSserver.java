@@ -55,7 +55,6 @@ public class CEMSserver extends AbstractServer
   public void handleMessageFromClient(Object msg, ConnectionToClient client)
   {StatusMsg status = new StatusMsg();
   
-	 //int flag=0;
 	    serverFrame.printToTextArea("Message received: " + msg + " from " + client);
 	    	    
     	if (msg instanceof String) {

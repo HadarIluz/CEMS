@@ -77,6 +77,8 @@ public ServerFrameController serverFrame;
 			newRow.setPointsPerQuestion(rs.getString(5));
 			rs.close();
 			}
+			if(newRow.getExamID() == null)
+				newRow.setExamID("DoesntExist");
 		}
 
 		catch (SQLException ex) {
