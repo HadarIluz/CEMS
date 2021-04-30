@@ -23,5 +23,10 @@ public class StatusMsg implements Serializable {
 	}
 
 	
+	public String toString() {
+		
+		return "Status:" + getStatus() +" : " +getDescription() ;
+	}
+	
 	
 }

@@ -22,6 +22,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import logic.UpdateDataRequest;
 
+@SuppressWarnings("unused")
 public class TestController {
 
 	public UpdateDataRequest upDataReq=new UpdateDataRequest();
@@ -57,6 +58,8 @@ public class TestController {
 
 	@FXML
 	private Font x3;
+	
+  
 
 	/*
 	 * the function active when user press on save button.

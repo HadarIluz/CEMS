@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="rootOfMain" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ServerFrameController">
+<VBox fx:id="rootOfMain" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ServerFrameController">
   <children>
     <MenuBar fx:id="manubar" VBox.vgrow="NEVER">
       <menus>
@@ -71,6 +71,7 @@
                               <Font size="18.0" />
                            </font>
                         </Button>
+                        <Button fx:id="btnExit" layoutX="85.0" layoutY="437.0" mnemonicParsing="false" onAction="#ExitFromServer" text="Exit" />
                      </children>
                   </Pane>
                   <ImageView fitHeight="116.0" fitWidth="116.0" layoutX="45.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">

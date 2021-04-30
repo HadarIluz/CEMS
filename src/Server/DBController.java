@@ -18,9 +18,10 @@ import logic.UpdateDataRequest;
 
 public class DBController {
 	public Connection conn;
-
+public ServerFrameController serverFrame;
 	public void connectDB(ServerFrameController serverFrame) {
 		try {
+			this.serverFrame= serverFrame;
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			serverFrame.printToTextArea("Driver definition succeed");
 		} catch (Exception ex) {
@@ -30,7 +31,7 @@ public class DBController {
 
 		try {// Connection conn =DriverManager.getConnection("jdbc:mysql://localhost/sys/?serverTimezone=IST","root","yadin95");
 			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cems_prototype?serverTimezone=IST", "root",
-					"yadin95");
+					"nadav5858");
 			serverFrame.printToTextArea("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
@@ -39,12 +40,7 @@ public class DBController {
 		}
 	}
 
-	/*
-	 * public void parsingTheData(Object msg) { if (msg instanceof ArrayList<?>) {
-	 * List<TestRow> DetailsArr = new ArrayList<TestRow>(Arrays.asList(((String)
-	 * msg).split(" "))); if (DetailsArr.get(0).equals("Update"))
-	 * updateTestTime(DetailsArr); // else { // getTestTable(); // } } }
-	 */
+
 
 	public boolean updateTestTime(UpdateDataRequest UpdateExam) {
 		PreparedStatement pstmt;
@@ -55,12 +51,11 @@ public class DBController {
 			pstmt.setString(2, UpdateExam.getExamID());
 			check = pstmt.executeUpdate();
 			if (check == 1) {
-				System.out.println("Details Of Exam Updated!");
+			//	System.out.println("Details Of Exam Updated!");
 				return true;
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Details Of Exam Not Updated!");
 			e.printStackTrace();
 		}
 		return false;
@@ -74,17 +69,18 @@ public class DBController {
 			pstmt = conn.prepareStatement("SELECT * FROM test WHERE examID=?;");
 			pstmt.setString(1, examID);
 			ResultSet rs = pstmt.executeQuery();
-			rs.next();
+			if (rs.next()) {
 			newRow.setExamID(rs.getString(1));
 			newRow.setProfession(rs.getString(2));
 			newRow.setCourse(rs.getString(3));
 			newRow.setTimeAllotedForTest(rs.getString(4));
 			newRow.setPointsPerQuestion(rs.getString(5));
 			rs.close();
+			}
 		}
 
 		catch (SQLException ex) {
-			System.out.println("SQLException: " + ex.getMessage());
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			newRow.setExamID("ERROR");
 		}
 		return newRow;

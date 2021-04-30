@@ -45,14 +45,21 @@ public class ServerFrameController {
 	private Font x3;
 	@FXML
 	private Button ClearLogBtn;
+	  @FXML
+	    private Button btnExit;
 
 	private CEMSserver Eserver;
+	
 	private DBController dbControl;
+	
+	private boolean IsConnected =false;
 
 	private String getPort() {
 		return portxt.getText();
 	}
 	public void pressStopServerBtn(ActionEvent event) throws Exception {
+		
+		
 		String port=getPort();
 		if (port.trim().isEmpty())
 		ServerUI.closeServer(DEFAULT_PORT, this);
@@ -60,7 +67,10 @@ public class ServerFrameController {
 		ServerUI.closeServer(port, this);
 		btnStartServer.setDisable(false);
 		btnStop.setDisable(true);
+		IsConnected=false;
+		
 	}
+
 
 	public void pressStartServerBtn(ActionEvent event) throws Exception {
 		String p;
@@ -76,8 +86,26 @@ public class ServerFrameController {
 			btnStartServer.setDisable(true);
 			btnStop.setDisable(false);
 		}
+		IsConnected=true;
 
 	}
+	
+	
+	  @FXML
+	    void ExitFromServer(ActionEvent event) throws InterruptedException {
+	    		    	
+	    	
+	    	if(IsConnected)
+	    	{
+
+	    	 	btnStop.fire();
+	    	    	  		
+	    	  		
+	    	}
+	       	 		System.exit(0);
+	    	  	
+
+	    }
 
 	public void ClearLogTextArea(ActionEvent event) throws Exception {
 		txtArea.clear();
@@ -96,5 +124,10 @@ public class ServerFrameController {
 	public void printToTextArea(String msg) {
 		txtArea.appendText(msg + "\n");
 	}
+	
+	
+	
+	
+  
 
 }

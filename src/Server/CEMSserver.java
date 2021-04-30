@@ -53,9 +53,11 @@ public class CEMSserver extends AbstractServer
    * @param 
    */
   public void handleMessageFromClient(Object msg, ConnectionToClient client)
-  {
+  {StatusMsg status = new StatusMsg();
+  
 	 //int flag=0;
-	    System.out.println("Message received: " + msg + " from " + client);
+	    serverFrame.printToTextArea("Message received: " + msg + " from " + client);
+	    	    
     	if (msg instanceof String) {
     		String req = (String)msg;
     		if (req.contains("getRow")) {
@@ -63,20 +65,26 @@ public class CEMSserver extends AbstractServer
     		}
     	}
     	else if (msg instanceof UpdateDataRequest) {
-    		StatusMsg status = new StatusMsg();
+    		
     		if (dbController.updateTestTime((UpdateDataRequest) msg)) {
     			status.setStatus("SUCCESS");
+    			status.setDescription(" Table Updated");
+    			serverFrame.printToTextArea(status.toString());
+    			
     		}
     		else {
     			status.setStatus("ERROR");
+    			status.setDescription(" Incorrect exam ID");
+    			serverFrame.printToTextArea(status.toString());
     		}
     		this.sendToAllClients(status);
 
     	}
 	    else {
-	    	System.out.println("Error in request");
-	    	// create this method
-	    	serverFrame.printToTextArea("Error in request");
+	     	status.setStatus("ERROR");
+			status.setDescription("Error in request");
+			serverFrame.printToTextArea(status.toString());
+	    	
 	    }
   
   }

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 import gui.ServerFrameController;
-import gui.ServerFrameController1;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
