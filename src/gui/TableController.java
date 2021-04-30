@@ -78,7 +78,7 @@ public class TableController {
 	
 	@FXML
 	// Displays information for a requested test
-	public void pressShowBtn(MouseEvent event) throws Exception {
+	public void pressShowBtn(ActionEvent event) throws Exception {
 		String examID = txtExamID.getText();
 		TestRow test;
 
