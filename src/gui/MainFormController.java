@@ -1,8 +1,6 @@
 package gui;
 
 import java.io.IOException;
-import gui.TableController;
-import gui.TestController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

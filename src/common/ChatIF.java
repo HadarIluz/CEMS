@@ -4,8 +4,6 @@
 
 package common;
 
-import logic.TestRow;
-
 /**
  * This interface implements the abstract method used to display
  * objects onto the client or server UIs.

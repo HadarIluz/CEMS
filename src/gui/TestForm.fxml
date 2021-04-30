@@ -99,7 +99,7 @@
                            </font>
                         </Label>
                         <Label fx:id="ReqFiledMessage2" layoutX="150.0" layoutY="255.0" prefHeight="17.0" prefWidth="273.0" textFill="#d16767" />
-                        <Button fx:id="pressUpdateTableReq" layoutX="150.0" layoutY="331.0" mnemonicParsing="false" onAction="#pressUpdateTableReq" onMouseClicked="#pressUpdateTableReq" prefHeight="35.0" prefWidth="170.0" style="-fx-background-color: #ace580;" text="update exam`s time">
+                        <Button fx:id="pressUpdateTableReq" layoutX="150.0" layoutY="331.0" mnemonicParsing="false" onAction="#pressUpdateTableReq" prefHeight="35.0" prefWidth="170.0" style="-fx-background-color: #ace580;" text="update exam`s time">
                            <font>
                               <Font size="16.0" />
                            </font></Button>

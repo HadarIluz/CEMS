@@ -5,14 +5,10 @@
 package client;
 
 import ocsf.client.*;
-import client.*;
 import common.ChatIF;
 import logic.StatusMsg;
 import logic.TestRow;
-import logic.TestTableRequest;
-
 import java.io.*;
-import java.util.ArrayList;
 
 /**
  * This class overrides some of the methods defined in the abstract superclass

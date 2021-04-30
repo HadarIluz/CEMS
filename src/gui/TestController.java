@@ -2,7 +2,6 @@ package gui;
 
 //import java.io.IOException;
 
-import gui.TableController;
 import gui.TestController;
 
 import client.ChatClient;
@@ -16,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;

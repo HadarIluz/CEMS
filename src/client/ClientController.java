@@ -5,8 +5,6 @@ package client;
 import java.io.IOException;
 
 import common.ChatIF;
-import logic.TestRow;
-import logic.TestTableRequest;
 
 
 /**
