@@ -58,7 +58,7 @@
       <items>
         <AnchorPane>
           <children>
-                  <Pane prefHeight="551.0" prefWidth="222.0">
+                  <Pane prefHeight="551.0" prefWidth="222.0" style="-fx-background-color: BLACK;">
                      <children>
                         <ImageView fitHeight="16.0" fitWidth="29.0" layoutX="6.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                            <image>

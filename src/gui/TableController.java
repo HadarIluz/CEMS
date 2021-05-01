@@ -59,7 +59,6 @@ public class TableController {
 	public void pressBtnUpdateTesFiledtForm(ActionEvent event) throws Exception {
 		try {
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Test) window
-			System.out.println("try");
 			Parent root = FXMLLoader.load(getClass().getResource("TestForm.fxml"));
 			Stage primaryStage = new Stage();
 			Scene scene = new Scene(root);

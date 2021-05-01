@@ -58,7 +58,7 @@
       <items>
         <AnchorPane>
           <children>
-                  <Pane prefHeight="551.0" prefWidth="222.0">
+                  <Pane prefHeight="551.0" prefWidth="222.0" style="-fx-background-color: BLACK;">
                      <children>
                         <Button fx:id="Btn_showTestForm" alignment="CENTER" disable="true" layoutX="45.0" layoutY="151.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="132.0" text="Update Test Fields">
                            <font>
@@ -72,12 +72,12 @@
                         </Button>
                      </children>
                   </Pane>
-                  <ImageView fitHeight="116.0" fitWidth="116.0" layoutX="45.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" >
+                  <ImageView fitHeight="116.0" fitWidth="116.0" layoutX="45.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                   <Image url="img/LogoCEMS.png" />
                   </image>
                   </ImageView>
-                  <ImageView fitHeight="16.0" fitWidth="29.0" layoutX="6.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" >
+                  <ImageView fitHeight="16.0" fitWidth="29.0" layoutX="6.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                   <Image url="img/hat2.PNG" />
                   </image>
@@ -116,7 +116,11 @@
                            <font>
                               <Font size="16.0" />
                            </font></Button>
-                        <ImageView fitHeight="51.0" fitWidth="35.0" layoutX="112.0" layoutY="375.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="51.0" fitWidth="35.0" layoutX="112.0" layoutY="375.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                  <Image url="img/UpdateImage.png" />
+                  </image>
+                  </ImageView>
                         <Label layoutX="152.0" layoutY="384.0" text="Table status:" textFill="#eeb060">
                            <font>
                               <Font name="System Bold" size="15.0" />
