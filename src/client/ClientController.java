@@ -8,8 +8,8 @@ import common.CemsIF;
 
 
 /**
- * This class constructs the UI for a chat client.  It implements the
- * chat interface in order to activate the display() method.
+ * This class constructs the UI for a cems client.  It implements the
+ * cems interface in order to activate the display() method.
  * Warning: Some of the code here is cloned in ServerConsole 
  *
  * @author Fran&ccedil;ois B&eacute;langer
@@ -29,7 +29,7 @@ public class ClientController implements CemsIF
   //Instance variables **********************************************
   
   /**
-   * The instance of the client that created this ConsoleChat.
+   * The instance of the client that created this ConsoleCems.
    */
   CEMSClient client;
 
@@ -75,7 +75,7 @@ public class ClientController implements CemsIF
   }
   
   /**
-   * This method overrides the method in the ChatIF interface.  It
+   * This method overrides the method in the CemsIF interface.  It
    * displays a message onto the screen.
    *
    * @param message The string to be displayed.
@@ -87,4 +87,4 @@ public class ClientController implements CemsIF
   }
   
 }
-//End of ConsoleChat class
+//End of ConsoleCems class

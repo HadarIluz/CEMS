@@ -36,7 +36,7 @@ public class CEMSClient extends AbstractClient {
 	// Constructors ****************************************************
 
 	/**
-	 * Constructs an instance of the chat client.
+	 * Constructs an instance of the cems client.
 	 *
 	 * @param host     The server to connect to.
 	 * @param port     The port number to connect on.
@@ -138,4 +138,4 @@ public class CEMSClient extends AbstractClient {
 		System.exit(0);
 	}
 }
-//End of ChatClient class
+//End of cemsClient class

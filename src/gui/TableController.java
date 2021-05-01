@@ -93,7 +93,7 @@ public class TableController {
 				System.out.println("You must enter an  exam id number"); // message to console.
 				showMsg(txtReqFiledMessage, "Invalid number");
 			} else {
-				ClientUI.chat.accept("getRow " + examID);
+				ClientUI.cems.accept("getRow " + examID);
 				test = CEMSClient.testRow;
 				if (test.getExamID().equals("DoesntExist") || test.getExamID().equals("ERROR")) // Check if the test exists
 				{
