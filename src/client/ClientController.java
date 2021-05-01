@@ -4,12 +4,12 @@
 package client;
 import java.io.IOException;
 
-import common.ChatIF;
+import common.CEMSIF;
 
 
 /**
- * This class constructs the UI for a chat client.  It implements the
- * chat interface in order to activate the display() method.
+ * This class constructs the UI for a cems client.  It implements the
+ * cems interface in order to activate the display() method.
  * Warning: Some of the code here is cloned in ServerConsole 
  *
  * @author Fran&ccedil;ois B&eacute;langer
@@ -17,7 +17,7 @@ import common.ChatIF;
  * @author Dr Robert Lagani&egrave;re
  * @version July 2000
  */
-public class ClientController implements ChatIF 
+public class ClientController implements CEMSIF 
 {
   //Class variables *************************************************
   
@@ -29,9 +29,9 @@ public class ClientController implements ChatIF
   //Instance variables **********************************************
   
   /**
-   * The instance of the client that created this ConsoleChat.
+   * The instance of the client that created this ConsoleCEMS.
    */
-  ChatClient client;
+  CEMSClient client;
 
   //Constructors ****************************************************
 
@@ -45,7 +45,7 @@ public class ClientController implements ChatIF
   {
     try 
     {
-      client= new ChatClient(host, port, this);
+      client= new CEMSClient(host, port, this);
     } 
     catch(IOException exception) 
     {
@@ -75,7 +75,7 @@ public class ClientController implements ChatIF
   }
   
   /**
-   * This method overrides the method in the ChatIF interface.  It
+   * This method overrides the method in the CEMSIF interface.  It
    * displays a message onto the screen.
    *
    * @param message The string to be displayed.
@@ -87,4 +87,4 @@ public class ClientController implements ChatIF
   }
   
 }
-//End of ConsoleChat class
+//End of ConsoleCEMS class

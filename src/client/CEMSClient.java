@@ -5,7 +5,7 @@
 package client;
 
 import ocsf.client.*;
-import common.ChatIF;
+import common.CEMSIF;
 import logic.StatusMsg;
 import logic.TestRow;
 import java.io.*;
@@ -19,14 +19,14 @@ import java.io.*;
  * @author Fran&ccedil;ois B&eacute;langer
  * @version July 2000
  */
-public class ChatClient extends AbstractClient {
+public class CEMSClient extends AbstractClient {
 	// Instance variables **********************************************
 
 	/**
 	 * The interface type variable. It allows the implementation of the display
 	 * method in the client.
 	 */
-	ChatIF clientUI;
+	CEMSIF clientUI;
 
 	// new:
 	public static StatusMsg statusMsg = new StatusMsg();
@@ -36,14 +36,14 @@ public class ChatClient extends AbstractClient {
 	// Constructors ****************************************************
 
 	/**
-	 * Constructs an instance of the chat client.
+	 * Constructs an instance of the cems client.
 	 *
 	 * @param host     The server to connect to.
 	 * @param port     The port number to connect on.
 	 * @param clientUI The interface type variable.
 	 */
 
-	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
+	public CEMSClient(String host, int port, CEMSIF clientUI) throws IOException {
 		super(host, port); // Call the superclass constructor
 		this.clientUI = clientUI;
 		// openConnection();
@@ -138,4 +138,4 @@ public class ChatClient extends AbstractClient {
 		System.exit(0);
 	}
 }
-//End of ChatClient class
+//End of CEMSClient class
