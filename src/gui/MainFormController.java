@@ -46,8 +46,6 @@ public class MainFormController {
 	public void pressBtnUpdateTesFiledtForm(ActionEvent event) throws Exception {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			System.out.println("Test Fram Tool"); // message to console.
-
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 			Stage primaryStage = new Stage();
 			
@@ -69,8 +67,6 @@ public class MainFormController {
 	public void pressBtnTableForm(ActionEvent event) throws Exception {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			System.out.println("Table Fram Tool"); // message to console.
-
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 			Stage primaryStage = new Stage();
 			Pane root = loader.load(getClass().getResource("TableForm.fxml").openStream());

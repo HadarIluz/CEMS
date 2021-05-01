@@ -53,11 +53,11 @@ public class TableController {
 	@FXML
 	private Font x3;
 
-	@FXML
+	
 	// display the "TestForm" after pressing btnTest from Main.
+	@FXML
 	public void pressBtnUpdateTesFiledtForm(ActionEvent event) throws Exception {
 		try {
-			System.out.println("Test Fram Tool display"); // message to console.
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Test) window
 			System.out.println("try");
 			Parent root = FXMLLoader.load(getClass().getResource("TestForm.fxml"));
@@ -72,8 +72,9 @@ public class TableController {
 
 	}
 
-	@FXML
+	
 	// Displays information for a requested test
+	@FXML
 	public void pressShowBtn(ActionEvent event) throws Exception {
 		String examID;
 		TestRow test;
@@ -87,35 +88,26 @@ public class TableController {
 
 		// get the exam id`s number that user typed
 		examID = txtExamID.getText();
-		try {
-			// in case filed examID is empty
-			if (examID.trim().isEmpty()|| examID.length()!=6 ) {
-				System.out.println("You must enter an  exam id number"); // message to console.
-				showMsg(txtReqFiledMessage, "Invalid number");
+		// in case filed examID is empty
+		if (examID.trim().isEmpty() || examID.length() != 6) {
+			showMsg(txtReqFiledMessage, "Invalid number");
+		} else {
+			ClientUI.cems.accept("getRow " + examID);
+			test = CEMSClient.testRow;
+			if (test.getExamID().equals("DoesntExist") || test.getExamID().equals("ERROR")) // Check if the test exists
+			{
+				showMsg(txtReqFiledMessage, "Exam ID Not Found");
+			// Handle a case ExamID found
 			} else {
-				ClientUI.cems.accept("getRow " + examID);
-				test = CEMSClient.testRow;
-				if (test.getExamID().equals("DoesntExist") || test.getExamID().equals("ERROR")) // Check if the test exists
-				{
-					System.out.println("Exam ID Not Found"); // message to console.
-					showMsg(txtReqFiledMessage, "Exam ID Not Found");
-					// Handle a case ExamID found
-				} else {
-					System.out.println("Exam ID Found"); // message to console.
-					txtProfession.setText(test.getProfession());
-					txtCourse.setText(test.getCourse());
-					txtTime.setText(test.getTimeAllotedForTest());
-					txtPoints.setText(test.getPointsPerQuestion());
-				}
+				txtProfession.setText(test.getProfession());
+				txtCourse.setText(test.getCourse());
+				txtTime.setText(test.getTimeAllotedForTest());
+				txtPoints.setText(test.getPointsPerQuestion());
 			}
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		} // Hadar note: need to DEBUG with server: > null null null null null
+		}
 
 	}
-	
-	
-	
+
 	// show red commend to client.
 	private void showMsg(Label label, String msg) {
 		label.setTextFill(Paint.valueOf("Red"));

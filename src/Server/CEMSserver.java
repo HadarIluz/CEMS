@@ -73,7 +73,7 @@ public class CEMSserver extends AbstractServer
     		}
     		else {
     			status.setStatus("ERROR");
-    			status.setDescription(" Incorrect exam ID");
+    			status.setDescription(" Incorrect value");
     			serverFrame.printToTextArea(status.toString());
     		}
     		this.sendToAllClients(status);
