@@ -63,22 +63,19 @@ public class TestController {
 
 		String ExamID = txtExamID.getText();
 		String TimeForTest = txtTimeForTest.getText();
-		ClientUI.cems.accept(upDataReq);
 		if (ExamID.trim().isEmpty()) {
-			showMsg(ReqFiledMessage1);
+			showMsg(ReqFiledMessage1, "Exam ID is required field.");
 		}
 		if (TimeForTest.trim().isEmpty() || Integer.parseInt(TimeForTest) <= 0) {
-			showMsg(ReqFiledMessage2);
+			showMsg(ReqFiledMessage2, "Invalid Time.");
 		}
 		// in case fields not empty checks if exist in DB
-		else if (!ExamID.trim().isEmpty()|| ExamID.length() != 6) {
+		else if (!ExamID.trim().isEmpty() || ExamID.length() != 6) {
 			upDataReq.setExamID(ExamID);
 			upDataReq.setTimeAllotedForTest(TimeForTest);
 			ClientUI.cems.accept(upDataReq);
-			showMsg(ReqFiledMessage1);
-
 			if (CEMSClient.statusMsg.getStatus().equals("ERROR")) {
-				showMsg(statusMessage);
+				showMsg(statusMessage, "Incorrect Value.");
 			}
 			// Handle a case ExamID found
 			else {
@@ -88,14 +85,13 @@ public class TestController {
 
 				statusMessage.setTextFill(Paint.valueOf("Green"));
 				statusMessage.setText("updated.");
-			} 
+			}
 		}
 
 	}
 
 	// show red commend to client.
-	private void showMsg(Label label) {
-		String msg = CEMSClient.statusMsg.getDescription();
+	private void showMsg(Label label, String msg) {
 		label.setTextFill(Paint.valueOf("Red"));
 		label.setText(msg);
 	}

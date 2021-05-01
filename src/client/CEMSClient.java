@@ -62,8 +62,6 @@ public class CEMSClient extends AbstractClient {
 	
 		if (msg instanceof TestRow) {
 			testRow = (TestRow) msg; // new updated table
-			// call method to populate table in TableControllers
-			// clientUI.display(testTable) --> TableContoller
 			clientUI.display(testRow.toString());
 			System.out.println("Table Updated Arrived");
 			awaitResponse = false;
