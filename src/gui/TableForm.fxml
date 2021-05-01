@@ -129,11 +129,11 @@
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="txtReqFiledMessage" layoutX="167.0" layoutY="86.0" prefHeight="22.0" prefWidth="229.0" />
-                        <Label fx:id="txtTime" layoutX="197.0" layoutY="267.0" prefHeight="17.0" prefWidth="164.0" />
-                        <Label fx:id="txtCourse" layoutX="99.0" layoutY="207.0" prefHeight="17.0" prefWidth="216.0" />
-                        <Label fx:id="txtProfession" layoutX="124.0" layoutY="148.0" prefHeight="17.0" prefWidth="174.0" />
-                        <Label fx:id="txtPoints" layoutX="192.0" layoutY="328.0" prefHeight="17.0" prefWidth="197.0" />
+                        <Label fx:id="txtReqFiledMessage" layoutX="167.0" layoutY="86.0" prefHeight="22.0" prefWidth="229.0" textFill="#FFFFFF" />
+                        <Label fx:id="txtTime" layoutX="197.0" layoutY="267.0" prefHeight="17.0" prefWidth="164.0" textFill="#FFFFFF" />
+                        <Label fx:id="txtCourse" layoutX="99.0" layoutY="207.0" prefHeight="17.0" prefWidth="216.0"  textFill="#FFFFFF"/>
+                        <Label fx:id="txtProfession" layoutX="124.0" layoutY="148.0" prefHeight="17.0" prefWidth="174.0" textFill="#FFFFFF" />
+                        <Label fx:id="txtPoints" layoutX="192.0" layoutY="328.0" prefHeight="17.0" prefWidth="197.0" textFill="#FFFFFF" />
                      </children>
             </AnchorPane>
           </content>
