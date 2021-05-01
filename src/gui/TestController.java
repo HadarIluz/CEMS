@@ -56,7 +56,6 @@ public class TestController {
 	 */
 	@FXML
 	public void pressUpdateTableReq(ActionEvent event) throws Exception {
-		String text;
 		// Clean
 		ReqFiledMessage1.setText("");
 		ReqFiledMessage2.setText("");
@@ -66,22 +65,20 @@ public class TestController {
 		String TimeForTest = txtTimeForTest.getText();
 		ClientUI.cems.accept(upDataReq);
 		if (ExamID.trim().isEmpty()) {
-			text = CEMSClient.statusMsg.getDescription();
-			showMsg(ReqFiledMessage1, text);
+			showMsg(ReqFiledMessage1);
 		}
 		if (TimeForTest.trim().isEmpty() || Integer.parseInt(TimeForTest) <= 0) {
-			text = CEMSClient.statusMsg.getDescription();
-			showMsg(ReqFiledMessage2, text);
+			showMsg(ReqFiledMessage2);
 		}
 		// in case fields not empty checks if exist in DB
-		else if (!ExamID.trim().isEmpty()) {
+		else if (!ExamID.trim().isEmpty()|| ExamID.length() != 6) {
 			upDataReq.setExamID(ExamID);
 			upDataReq.setTimeAllotedForTest(TimeForTest);
 			ClientUI.cems.accept(upDataReq);
+			showMsg(ReqFiledMessage1);
 
 			if (CEMSClient.statusMsg.getStatus().equals("ERROR")) {
-				text = CEMSClient.statusMsg.getDescription();
-				showMsg(statusMessage, text);
+				showMsg(statusMessage);
 			}
 			// Handle a case ExamID found
 			else {
@@ -91,14 +88,14 @@ public class TestController {
 
 				statusMessage.setTextFill(Paint.valueOf("Green"));
 				statusMessage.setText("updated.");
-
-			} // END else1
-		} // END else
+			} 
+		}
 
 	}
 
 	// show red commend to client.
-	private void showMsg(Label label, String msg) {
+	private void showMsg(Label label) {
+		String msg = CEMSClient.statusMsg.getDescription();
 		label.setTextFill(Paint.valueOf("Red"));
 		label.setText(msg);
 	}
