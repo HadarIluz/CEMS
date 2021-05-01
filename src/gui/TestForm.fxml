@@ -127,7 +127,7 @@
             <Font size="11.0" fx:id="x3" />
           </font>
         </Label>
-        <Pane prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: #00000;" HBox.hgrow="ALWAYS" />
+        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
         <Label font="$x3" maxWidth="-1.0" text="Right status" HBox.hgrow="NEVER" />
       </children>
       <padding>

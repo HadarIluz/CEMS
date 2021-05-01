@@ -58,7 +58,7 @@
       <items>
         <AnchorPane>
           <children>
-                  <Pane fx:id="serevrUserInteraction" prefHeight="551.0" prefWidth="222.0" style="-fx-background-color: #000000;">
+                  <Pane fx:id="serevrUserInteraction" prefHeight="551.0" prefWidth="222.0">
                      <children>
                         <TextField fx:id="portxt" layoutX="45.0" layoutY="183.0" onAction="#pressStartServerBtn" prefHeight="25.0" prefWidth="132.0" promptText="port (default 5555)" />
                       <Button fx:id="btnStartServer" alignment="CENTER" layoutX="45.0" layoutY="236.0" mnemonicParsing="false" onAction="#pressStartServerBtn" prefHeight="51.0" prefWidth="132.0" text="Start Server">
@@ -115,7 +115,7 @@
             <Font size="11.0" fx:id="x3" />
           </font>
         </Label>
-        <Pane prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: #00000;" HBox.hgrow="ALWAYS" />
+        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
         <Label font="$x3" maxWidth="-1.0" text="Right status" HBox.hgrow="NEVER" />
       </children>
       <padding>

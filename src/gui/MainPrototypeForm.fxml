@@ -81,7 +81,7 @@
         </AnchorPane>
         <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
           <content>
-            <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="669.0" styleClass=".AnchorPane" stylesheets="@MainPrototypeForm.css">
+            <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="669.0" styleClass=".AnchorPane">
                      <children>
                         <Text fill="#adabab" layoutX="148.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Client" textAlignment="CENTER" wrappingWidth="314.13671875">
                            <font>
@@ -101,7 +101,7 @@
             <Font size="11.0" fx:id="x3" />
           </font>
         </Label>
-        <Pane prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: #00000;" HBox.hgrow="ALWAYS" />
+        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
         <Label font="$x3" maxWidth="-1.0" text="Prototype" HBox.hgrow="NEVER" />
       </children>
       <padding>
