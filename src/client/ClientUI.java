@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class ClientUI extends Application {
-	public static ClientController cems; //only one instance
+	public static ClientController chat; //only one instance
 
 	public static void main( String args[] ) throws Exception
 	   { 
@@ -13,7 +13,7 @@ public class ClientUI extends Application {
 	 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		 cems= new ClientController("localhost", 5555);
+		 chat= new ClientController("localhost", 5555);
 		// TODO Auto-generated method stub
 		 
 		 MainFormController MainForm = new MainFormController(); // create the TestFrame

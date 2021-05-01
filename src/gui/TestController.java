@@ -2,7 +2,7 @@ package gui;
 
 
 import gui.TestController;
-import client.CEMSClient;
+import client.ChatClient;
 import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -70,26 +70,30 @@ public class TestController {
 		if (ExamID.trim().isEmpty()) {
 			System.out.println("You must enter an exam id number"); // message to console.
 			showMsg(ReqFiledMessage1, "ExamID is Req field.");
-			
+			//text = ChatClient.statusMsg.getDescription();
+			//System.out.println(text); //test
+			//showMsg(ReqFiledMessage1, text);
 		}
 		// try {
 		String TimeForTest = txtTimeForTest.getText();
 		if (TimeForTest.trim().isEmpty()) {
 			System.out.println("You must enter an time number"); // message to console.
 			showMsg(ReqFiledMessage2, "time is Req field.");
-			
+			// text = ChatClient.statusMsg.getDescription();
+			// showMsg(ReqFiledMessage2, text);
 		}
 		// in case fields not empty checks if exist in DB
 		else if (!ExamID.trim().isEmpty()) {
 			try {
 				upDataReq.setExamID(ExamID);
 				upDataReq.setTimeAllotedForTest(TimeForTest);
-				ClientUI.cems.accept(upDataReq);
+				ClientUI.chat.accept(upDataReq);
 
-				if (CEMSClient.statusMsg.getStatus().equals("ERROR")) {
+				if (ChatClient.statusMsg.getStatus().equals("ERROR")) {
 					System.out.println("Exam ID Not Found"); // message to console.
 					showMsg(statusMessage, "Exam ID Not Found.");
-					
+					// text = ChatClient.statusMsg.getDescription();
+					// showMsg(statusMessage, text);
 				}
 				// try {
 				// Handle a case ExamID found,
@@ -98,7 +102,7 @@ public class TestController {
 						System.out.println("Exam ID Found"); // message to console.
 						upDataReq.setExamID(ExamID);
 						upDataReq.setTimeAllotedForTest(TimeForTest);
-						ClientUI.cems.accept(upDataReq);
+						ClientUI.chat.accept(upDataReq);
 
 						statusMessage.setTextFill(Paint.valueOf("Green"));
 						statusMessage.setText("updated.");

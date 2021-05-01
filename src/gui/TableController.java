@@ -2,7 +2,7 @@ package gui;
 
 import gui.TableController;
 
-import client.CEMSClient;
+import client.ChatClient;
 import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -93,8 +93,8 @@ public class TableController {
 				System.out.println("You must enter an  exam id number"); // message to console.
 				showMsg(txtReqFiledMessage, "Invalid number");
 			} else {
-				ClientUI.cems.accept("getRow " + examID);
-				test = CEMSClient.testRow;
+				ClientUI.chat.accept("getRow " + examID);
+				test = ChatClient.testRow;
 				if (test.getExamID().equals("DoesntExist") || test.getExamID().equals("ERROR")) // Check if the test exists
 				{
 					System.out.println("Exam ID Not Found"); // message to console.
