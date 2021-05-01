@@ -4,7 +4,7 @@
 package client;
 import java.io.IOException;
 
-import common.ChatIF;
+import common.CemsIF;
 
 
 /**
@@ -17,7 +17,7 @@ import common.ChatIF;
  * @author Dr Robert Lagani&egrave;re
  * @version July 2000
  */
-public class ClientController implements ChatIF 
+public class ClientController implements CemsIF 
 {
   //Class variables *************************************************
   
@@ -31,7 +31,7 @@ public class ClientController implements ChatIF
   /**
    * The instance of the client that created this ConsoleChat.
    */
-  ChatClient client;
+  CEMSClient client;
 
   //Constructors ****************************************************
 
@@ -45,7 +45,7 @@ public class ClientController implements ChatIF
   {
     try 
     {
-      client= new ChatClient(host, port, this);
+      client= new CEMSClient(host, port, this);
     } 
     catch(IOException exception) 
     {

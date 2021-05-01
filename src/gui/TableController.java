@@ -2,7 +2,7 @@ package gui;
 
 import gui.TableController;
 
-import client.ChatClient;
+import client.CEMSClient;
 import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -94,7 +94,7 @@ public class TableController {
 				showMsg(txtReqFiledMessage, "Invalid number");
 			} else {
 				ClientUI.chat.accept("getRow " + examID);
-				test = ChatClient.testRow;
+				test = CEMSClient.testRow;
 				if (test.getExamID().equals("DoesntExist") || test.getExamID().equals("ERROR")) // Check if the test exists
 				{
 					System.out.println("Exam ID Not Found"); // message to console.

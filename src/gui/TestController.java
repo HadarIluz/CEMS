@@ -2,7 +2,7 @@ package gui;
 
 
 import gui.TestController;
-import client.ChatClient;
+import client.CEMSClient;
 import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -89,7 +89,7 @@ public class TestController {
 				upDataReq.setTimeAllotedForTest(TimeForTest);
 				ClientUI.chat.accept(upDataReq);
 
-				if (ChatClient.statusMsg.getStatus().equals("ERROR")) {
+				if (CEMSClient.statusMsg.getStatus().equals("ERROR")) {
 					System.out.println("Exam ID Not Found"); // message to console.
 					showMsg(statusMessage, "Exam ID Not Found.");
 					// text = ChatClient.statusMsg.getDescription();
