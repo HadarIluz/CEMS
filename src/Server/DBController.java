@@ -29,7 +29,7 @@ public ServerFrameController serverFrame;
 			serverFrame.printToTextArea("Driver definition failed");
 		}
 
-		try {// Connection conn =DriverManager.getConnection("jdbc:mysql://localhost/sys/?serverTimezone=IST","root","yadin95");
+		try {
 			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cems_prototype?serverTimezone=IST", "root",
 					"Aa123456");
 			serverFrame.printToTextArea("SQL connection succeed");
@@ -87,13 +87,5 @@ public ServerFrameController serverFrame;
 		}
 		return newRow;
 	}
-
-//	public static void main(String[] args) {
-//		DBController db = new DBController();
-//		TestRow tst = new TestRow();
-//		db.connectDB();
-//		tst = db.getTestRow("010203");
-//		System.out.println(tst);
-//	}
 
 }

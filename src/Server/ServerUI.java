@@ -43,7 +43,7 @@ public class ServerUI extends Application {
 			serverFrame.printToTextArea("ERROR - Could not connect!");
 		}
 
-		// instead of loader - need to put object that is the ui controller...
+		// instead of loader - need to put object that is the gui controller...
 		 sv = new CEMSserver(port,serverFrame);
 		
 		try {
@@ -62,7 +62,7 @@ public class ServerUI extends Application {
 		} catch (Throwable t) {
 			serverFrame.printToTextArea("ERROR - Wrong Port!");
 		}
-		//CEMSserver sv = new CEMSserver(port,serverFrame);
+		
 		try {
 			sv.close();
 		} catch (IOException e) {
