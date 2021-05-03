@@ -10,8 +10,6 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -72,16 +70,6 @@
                         </Button>
                      </children>
                   </Pane>
-                  <ImageView fitHeight="116.0" fitWidth="116.0" layoutX="45.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                  <Image url="img/LogoCEMS.png" />
-                  </image>
-                  </ImageView>
-                  <ImageView fitHeight="16.0" fitWidth="29.0" layoutX="6.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                  <Image url="img/hat2.PNG" />
-                  </image>
-                  </ImageView>
             <Label layoutX="11.0" layoutY="2.0" minWidth="60.0" prefHeight="42.0" prefWidth="62.0" text="Menu" textAlignment="CENTER" textFill="WHITE">
               <font>
                 <Font size="18.0" fx:id="x1" />
@@ -93,11 +81,6 @@
           <content>
             <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="669.0">
                      <children>
-                        <ImageView fitHeight="551.0" fitWidth="656.0" pickOnBounds="true" smooth="false">
-                        <image>
-                              <Image url="img/Background.jpg" />
-                        </image>
-                        </ImageView>
                         <TextField fx:id="txtExamID" layoutX="148.0" layoutY="115.0" prefHeight="35.0" prefWidth="213.0" />
                         <TextField fx:id="txtTimeForTest" layoutX="148.0" layoutY="215.0" prefHeight="36.0" prefWidth="212.0" />
                         <Label layoutX="148.0" layoutY="80.0" text="Exam ID Number:" textFill="#ace580">
@@ -116,11 +99,6 @@
                            <font>
                               <Font size="16.0" />
                            </font></Button>
-                        <ImageView fitHeight="51.0" fitWidth="35.0" layoutX="112.0" layoutY="375.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                  <Image url="img/UpdateImage.png" />
-                  </image>
-                  </ImageView>
                         <Label layoutX="152.0" layoutY="384.0" text="Table status:" textFill="#eeb060">
                            <font>
                               <Font name="System Bold" size="15.0" />
