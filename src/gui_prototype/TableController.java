@@ -1,9 +1,8 @@
-package gui;
-
-import gui.TableController;
+package gui_prototype;
 
 import client.CEMSClient;
 import client.ClientUI;
+import gui_prototype.TableController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -1,8 +1,8 @@
-package gui;
+package gui_prototype;
 
-import gui.TestController;
 import client.CEMSClient;
 import client.ClientUI;
+import gui_prototype.TestController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

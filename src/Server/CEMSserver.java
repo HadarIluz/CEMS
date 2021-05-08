@@ -8,7 +8,7 @@ import java.util.Vector;
 
 import com.mysql.cj.jdbc.result.UpdatableResultSet;
 
-import gui.ServerFrameController;
+import gui_prototype.ServerFrameController;
 import logic.StatusMsg;
 import logic.TestTableRequest;
 import logic.UpdateDataRequest;

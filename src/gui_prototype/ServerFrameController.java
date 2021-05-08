@@ -1,4 +1,4 @@
-package gui;
+package gui_prototype;
 
 import java.io.IOException;
 

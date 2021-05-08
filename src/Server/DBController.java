@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import gui.ServerFrameController;
+import gui_prototype.ServerFrameController;
 import logic.StatusMsg;
 import logic.TestRow;
 import logic.TestTableRequest;
