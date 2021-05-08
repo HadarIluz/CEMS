@@ -12,23 +12,24 @@ public class DisplayScreenTask extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			GridPane root = new GridPane();
-			Scene scene = new Scene(root, 1004, 626);
+			//Scene scene = new Scene(root, 900, 600); //SignUp
+			Scene scene = new Scene(root, 988, 586); //SCREENS
+			
+			//LEFT SCREENS:
 			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("StudentMenuLeft.fxml"));
-			//newMnueLef newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
+			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
 			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("PrincipalMenuLeft.fxml"));
+			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
+			
 			root.add(newMnueLeft, 0, 0);
 			// root.getChildren().add(newMnueLeft);
 			// --
 			
 			//STUDENT:
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
-			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterAnExam.fxml"));
+			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("ViewExam.fxml"));
-			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_step1.fxml"));
-			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_step1.fxml"));
-			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_step1.fxml"));
-			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_step1.fxml"));
 			
 			//TEACHER:
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("TeacherStatistics.fxml"));
