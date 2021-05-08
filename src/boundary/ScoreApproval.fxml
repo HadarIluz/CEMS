@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text fill="#5e87c0" layoutX="278.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score Approval" textAlignment="CENTER" wrappingWidth="204.74680742621422">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="95.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter ExamID">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text layoutX="93.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select student:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <ComboBox disable="true" layoutX="333.0" layoutY="197.0" prefWidth="150.0" promptText="student ID " />
+      <TextField fx:id="CurrentGrade" layoutX="333.0" layoutY="238.0" style="-fx-background-color: #e4faa0; -fx-border-color: BLACK;" />
+      <Text layoutX="91.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current exam grade:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text fill="#bc2525" layoutX="78.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="22.13671875">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Text>
+      <TextArea fx:id="GradeChangeReasons" layoutX="94.0" layoutY="319.0" prefHeight="120.0" prefWidth="489.0" text="Required field- in case grade has been updated." />
+      <ScrollBar layoutX="568.0" layoutY="323.0" orientation="VERTICAL" prefHeight="114.0" prefWidth="14.0" />
+      <Text layoutX="92.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reasons for grade change:" wrappingWidth="297.1312255859375">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text fill="#79b06c" layoutX="95.0" layoutY="474.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter new grade:">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Text>
+      <TextField fx:id="newGradeField" layoutX="329.0" layoutY="454.0" promptText="new grade" />
+      <Button disable="true" layoutX="464.0" layoutY="491.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="117.0" text="Update" />
+      <TextField fx:id="examID" layoutX="333.0" layoutY="158.0" promptText="exam ID" />
+      <Button layoutX="279.0" layoutY="491.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="117.0" text="View student exam" />
+      <Label fx:id="ReqField" layoutX="483.0" layoutY="458.0" prefHeight="17.0" prefWidth="263.0" text="Must add a reason in case of an update" textFill="#db2424" />
+   </children>
+</AnchorPane>

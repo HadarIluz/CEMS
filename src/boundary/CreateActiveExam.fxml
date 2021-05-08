@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button fx:id="btnBack" layoutX="64.0" layoutY="500.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="122.0" text="Cancel" />
+      <Button fx:id="btnNext" disable="true" layoutX="590.0" layoutY="500.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="Done" />
+      <Text layoutX="208.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profession:">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Text>
+      <ComboBox layoutX="384.0" layoutY="166.0" prefWidth="150.0" promptText="choose profession" />
+      <Text layoutX="208.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Course:">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Text>
+      <ComboBox layoutX="384.0" layoutY="211.0" prefWidth="150.0" promptText="choose course" />
+      <Text fill="#e44d4d" layoutX="195.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Text>
+      <Text fill="#e44d4d" layoutX="196.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Text>
+      <Text fill="#e44d4d" layoutX="198.0" layoutY="324.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Text>
+      <Text layoutX="209.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam Code:">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Text>
+      <TextField editable="false" layoutX="384.0" layoutY="301.0" prefWidth="150.0" promptText="4 digits and letters" />
+      <Text fill="#4672ae" layoutX="245.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Active Exam" wrappingWidth="287.5">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Text>
+      <Text layoutX="208.0" layoutY="277.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam:">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Text>
+      <ComboBox disable="true" layoutX="384.0" layoutY="256.0" prefWidth="150.0" promptText="choose exam id" />
+      <Text fill="#e44d4d" layoutX="196.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Text>
+      <Text fill="#545454" layoutX="205.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose profession and course, than you will get a list of possible exam IDs" textAlignment="CENTER" wrappingWidth="326.61106872558594">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+      <Text fill="#e44d4d" layoutX="198.0" layoutY="371.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Text>
+      <Text layoutX="209.0" layoutY="366.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Text>
+      <ComboBox layoutX="384.0" layoutY="346.0" prefWidth="150.0" promptText="choose time" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="298.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../images/wall-clock.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
