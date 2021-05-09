@@ -5,20 +5,26 @@ import java.io.Serializable;
 //Entity class - define user in the CEMS system.
 @SuppressWarnings("serial")
 public class User implements Serializable {
-	public User(String id, String password, String userName, boolean isLogged) {
+
+	private int id;
+	private String password;
+	private String userName; //for left side screen.(I don't think we need first name and last name)
+	private String email;
+	private boolean isLogged;
+	
+	public User(int id, String password, String userName, String email, boolean isLogged) {
 		this.id = id;
 		this.password = password;
 		this.userName = userName;
+		this.email = email;
 		this.isLogged = isLogged;
 	}
-	private String id;
-	private String password;
-	private String userName; //for left side screen.
-	private boolean isLogged;
-	public String getId() {
+	
+	
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getPassword() {
@@ -33,6 +39,12 @@ public class User implements Serializable {
 	public void setUsername(String username) {
 		this.userName = username;
 	}
+	public String isEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public boolean isLogged() {
 		return isLogged;
 	}
@@ -45,5 +57,22 @@ public class User implements Serializable {
 	public String toString() {
 		return "User [id=" + id + ", password=" + password + ", userName=" + userName + ", isLogged=" + isLogged + "]";
 	}
-
+	
+	/*equal method in order to checks if users are equal,
+	and checks if a user already connected to system or not.*/
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		//return super.equals(obj);
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		User user=(User) obj;
+		//return true if all parameters are equals in order to indicate if this user is already logged into CEMS system..
+		return	id== user.id &&
+				password== user.password &&
+				userName==user.userName && 
+				email==user.email &&
+				isLogged==true;
+	}
+	
 }
