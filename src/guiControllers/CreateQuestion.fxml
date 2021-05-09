@@ -10,9 +10,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.CreateQuestionController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.CreateQuestionController">
    <children>
-      <TextField editable="false" layoutX="236.0" layoutY="134.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Question" text="How much is 2+2?" />
+      <TextField editable="false" layoutX="236.0" layoutY="134.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Question" />
       <Text layoutX="59.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Qustion:">
          <font>
             <Font name="System Bold" size="16.0" />
@@ -47,25 +47,25 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Text>
-      <TextField editable="false" layoutX="235.0" layoutY="219.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" text="2" />
+      <TextField editable="false" layoutX="235.0" layoutY="219.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" />
       <Text layoutX="58.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 1:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField editable="false" layoutX="234.0" layoutY="262.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" text="3" />
+      <TextField editable="false" layoutX="234.0" layoutY="262.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" />
       <Text layoutX="57.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 2:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField editable="false" layoutX="233.0" layoutY="308.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" text="4" />
+      <TextField editable="false" layoutX="233.0" layoutY="308.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" />
       <Text layoutX="56.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField editable="false" layoutX="232.0" layoutY="351.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" text="6" />
+      <TextField editable="false" layoutX="232.0" layoutY="351.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" />
       <Text layoutX="55.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 4:">
          <font>
             <Font name="System Bold" size="16.0" />
@@ -91,7 +91,7 @@
             <Font size="21.0" />
          </font>
       </Text>
-      <ComboBox layoutX="230.0" layoutY="398.0" prefHeight="25.0" prefWidth="193.0" promptText="3" />
+      <ComboBox layoutX="230.0" layoutY="398.0" prefHeight="25.0" prefWidth="193.0" promptText="choose correct answer" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="607.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/question.png" />
