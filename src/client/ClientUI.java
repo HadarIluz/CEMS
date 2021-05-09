@@ -1,6 +1,5 @@
 package client;
 
-import guiControllers.DisplayScreenTask;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -20,9 +19,9 @@ public class ClientUI extends Application {
 		cems = new ClientController("localhost", 5555);
 		// TODO Auto-generated method stub
 
-		 DisplayScreenTask MainForm = new DisplayScreenTask(); // create the TestFrame
-		 MainForm.start(primaryStage);
-/*
+		 //DisplayScreenTask MainForm = new DisplayScreenTask(); // create the TestFrame
+		 //MainForm.start(primaryStage);
+///*
 		try {
 			GridPane root = new GridPane();
 			// Scene scene = new Scene(root, 900, 600); //SignUp
@@ -70,7 +69,7 @@ public class ClientUI extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		*/
+		//*/
 	}
 	
 }

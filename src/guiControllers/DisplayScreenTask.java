@@ -8,7 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class DisplayScreenTask extends Application {
-	
+	@Override
 	public void start(Stage primaryStage) {
 		try {
 			GridPane root = new GridPane();
