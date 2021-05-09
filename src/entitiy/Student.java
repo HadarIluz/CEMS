@@ -14,12 +14,12 @@ public class Student extends User implements Serializable {
 	 * private boolean isLogged;
 	 */
 	private float studentAvg;
-	private int departmentID;  //In the story: Math==(02)
+	private int professionID;  //In the story: Math==(02)
 
-	public Student(int id, String password, String studentName, String StudentEmail, boolean isLogged, float studentAvg, int departmentID) {
+	public Student(int id, String password, String studentName, String StudentEmail, boolean isLogged, float studentAvg, int professionID) {
 		super(id, password, studentName, StudentEmail, isLogged);
 		this.studentAvg = studentAvg;
-		this.departmentID = departmentID;
+		this.professionID = professionID;
 	}
 
 	public float getStudentAvg() {
@@ -31,16 +31,16 @@ public class Student extends User implements Serializable {
 	}
 
 	public int getDepartmentID() {
-		return departmentID;
+		return professionID;
 	}
 
-	public void setDepartmentID(int departmentID) {
-		this.departmentID = departmentID;
+	public void setDepartmentID(int professionID) {
+		this.professionID = professionID;
 	}
 
 	@Override
 	public String toString() {
-		return "Student [studentID=" + this.getId() + ", studentAvg=" + studentAvg + ", departmentID=" + departmentID+ "]";
+		return "Student [studentID=" + this.getId() + ", studentAvg=" + studentAvg + ", departmentID=" + professionID+ "]";
 	}
 
 }
