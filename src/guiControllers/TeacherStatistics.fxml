@@ -57,7 +57,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.TeacherStatisticsController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -251,7 +251,7 @@
             <Font size="11.0" fx:id="x3" />
           </font>
           <textFill>
-            <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
+            <Color blue="0.625" green="0.625" red="0.625" fx:id="x4" />
           </textFill>
         </Label>
         <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />

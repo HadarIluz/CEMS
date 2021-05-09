@@ -16,7 +16,7 @@ public class DisplayScreenTask extends Application {
 			Scene scene = new Scene(root, 988, 586); //SCREENS
 			
 			//LEFT SCREENS:
-			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("StudentMenuLeft.fxml"));
+			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("/boundary/StudentMenuLeft.fxml"));
 			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
 			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("PrincipalMenuLeft.fxml"));
 			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
@@ -26,7 +26,7 @@ public class DisplayScreenTask extends Application {
 			// --
 			
 			//STUDENT:
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/giuControllers/StartManualExam.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("ViewExam.fxml"));

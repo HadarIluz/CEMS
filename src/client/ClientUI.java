@@ -1,5 +1,6 @@
 package client;
 
+import guiControllers.DisplayScreenTask;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,16 +20,16 @@ public class ClientUI extends Application {
 		cems = new ClientController("localhost", 5555);
 		// TODO Auto-generated method stub
 
-		// DisplayScreenTask MainForm = new DisplayScreenTask(); // create the TestFrame
-		// MainForm.start(primaryStage);
-
+		 DisplayScreenTask MainForm = new DisplayScreenTask(); // create the TestFrame
+		 MainForm.start(primaryStage);
+/*
 		try {
 			GridPane root = new GridPane();
 			// Scene scene = new Scene(root, 900, 600); //SignUp
 			Scene scene = new Scene(root, 988, 586); // SCREENS
 
 			// LEFT SCREENS:
-			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("StudentMenuLeft.fxml"));
+			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("/boundary/StudentMenuLeft.fxml"));
 			// Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
 			// Pane newMnueLeft = FXMLLoader.load(getClass().getResource("PrincipalMenuLeft.fxml"));
 			// Pane newMnueLeft = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
@@ -38,7 +39,7 @@ public class ClientUI extends Application {
 			// --
 
 			// STUDENT:
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/giuControllers/StartManualExam.fxml"));
 			// Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			// Pane newPaneRight = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
 			// Pane newPaneRight = FXMLLoader.load(getClass().getResource("ViewExam.fxml"));
@@ -69,5 +70,7 @@ public class ClientUI extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		*/
 	}
+	
 }
