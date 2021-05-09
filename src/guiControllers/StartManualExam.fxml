@@ -33,11 +33,7 @@
       </ImageView>
       <Separator layoutX="1.0" layoutY="232.0" prefHeight="5.0" prefWidth="761.0" />
       <Button layoutX="433.0" layoutY="293.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="78.0" text="Submit" underline="true" />
-      <ImageView fitHeight="37.0" fitWidth="60.0" layoutX="394.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../images/cems_img/fileSubmit.png" />
-         </image>
-      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="60.0" layoutX="394.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true" />
       <Text fill="#18a116" layoutX="434.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The file was uploaded successfully." wrappingWidth="294.3999732732773">
          <font>
             <Font name="System Bold" size="16.0" />

@@ -5,7 +5,7 @@ import javafx.scene.text.Text;
 
 public class StartManualExamController {
 
-	@FXML
-	private Text txtSolveExam;
+    @FXML
+    private Text txtSolveExam;
 
 }

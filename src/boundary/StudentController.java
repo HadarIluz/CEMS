@@ -7,32 +7,34 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public class StudentController {
-	@FXML
-	private ImageView person;
 
-	@FXML
-	private Label userName;
+    @FXML
+    private ImageView person;
 
-	@FXML
-	private Label lblContactUs;
+    @FXML
+    private Label userName;
 
-	@FXML
-	private Label lblPhone;
+    @FXML
+    private Label lblContactUs;
 
-	@FXML
-	private ImageView phone;
+    @FXML
+    private Label lblPhone;
 
-	@FXML
-	private Label lblEmail;
+    @FXML
+    private ImageView phone;
 
-	@FXML
-	private ImageView messageContactUs;
+    @FXML
+    private Label lblEmail;
 
-	@FXML
-	private Button btnViewExamInfo;
+    @FXML
+    private ImageView messageContactUs;
 
-	@FXML
-	    void btnViewExamInfo(MouseEvent event) {
+    @FXML
+    private Button btnViewExamInfo;
 
-	    }
+    @FXML
+    void btnViewExamInfo(MouseEvent event) {
+
+    }
+
 }

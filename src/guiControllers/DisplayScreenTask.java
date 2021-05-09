@@ -1,5 +1,7 @@
 package guiControllers;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,25 +10,26 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class DisplayScreenTask extends Application {
+	@SuppressWarnings("unused")
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) throws IOException {
 		try {
 			GridPane root = new GridPane();
-			//Scene scene = new Scene(root, 900, 600); //SignUp
-			Scene scene = new Scene(root, 988, 586); //SCREENS
+			Scene scene = new Scene(root, 900, 600); //SignUp
+			//Scene scene = new Scene(root, 988, 586); //SCREENS
 			
 			//LEFT SCREENS:
-			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("/boundary/StudentMenuLeft.fxml"));
+			//-->//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("/boundary/StudentMenuLeft.fxml"));
 			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
 			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("PrincipalMenuLeft.fxml"));
-			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
-			
-			root.add(newMnueLeft, 0, 0);
-			// root.getChildren().add(newMnueLeft);
+			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
+			primaryStage.setTitle("CEMS-Computerized Exam Management System");
+			//-->//root.add(newMnueLeft, 0, 0);
+			root.getChildren().add(newMnueLeft); //FOR SIGNUP
 			// --
 			
 			//STUDENT:
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/giuControllers/StartManualExam.fxml"));
+			//-->//Pane newPaneRight = FXMLLoader.load(getClass().getResource("/giuControllers/StartManualExam.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("ViewExam.fxml"));
@@ -49,7 +52,7 @@ public class DisplayScreenTask extends Application {
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("PrincipalGetReports.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("ApprovalTimeExtention.fxml"));
 			
-			root.add(newPaneRight, 1, 0);
+			//-->//root.add(newPaneRight, 1, 0);
 			// root.getChildren().add(newPaneRight);
 
 			primaryStage.setScene(scene);
