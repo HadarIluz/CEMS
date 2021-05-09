@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.CreateQuestionController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.CreateQuestionController">
    <children>
       <TextField editable="false" layoutX="236.0" layoutY="134.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Question" />
       <Text layoutX="59.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Qustion:">
@@ -24,7 +24,6 @@
          </font>
       </Text>
       <TextArea layoutX="230.0" layoutY="442.0" prefHeight="72.0" prefWidth="383.0" promptText="Enter description of question (optional)" />
-      <Button fx:id="btnBack" layoutX="64.0" layoutY="536.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="122.0" text="Cancel" />
       <Button fx:id="btnNext" layoutX="590.0" layoutY="536.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="Done" />
       <Text layoutX="59.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profession:">
          <font>

@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class SignUpController {
+public class LoginController {
 
     @FXML
     private ImageView background;

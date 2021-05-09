@@ -51,7 +51,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.SignUpController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.LoginController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -93,7 +93,7 @@
                         <Font name="System Bold Italic" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="375.0" layoutY="49.0" prefHeight="81.0" prefWidth="208.0" text="Sign In" textFill="#e49a05">
+                  <Label layoutX="375.0" layoutY="49.0" prefHeight="81.0" prefWidth="208.0" text="Login" textFill="#e49a05">
                      <font>
                         <Font name="System Bold" size="51.0" />
                      </font>
@@ -125,7 +125,7 @@
                         <Font name="System Italic" size="15.0" />
                      </font>
                   </CheckBox>
-                  <Button fx:id="btnSignUp" layoutX="413.0" layoutY="309.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="130.0" text="Sign Up">
+                  <Button fx:id="btnLogin" layoutX="413.0" layoutY="309.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="130.0" text="Login">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -157,7 +157,7 @@
             <Font size="11.0" fx:id="x3" />
           </font>
           <textFill>
-            <Color blue="0.625" green="0.625" red="0.625" fx:id="x4" />
+            <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
           </textFill>
         </Label>
         <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
