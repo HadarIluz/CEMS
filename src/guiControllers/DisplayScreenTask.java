@@ -32,7 +32,7 @@ public class DisplayScreenTask extends Application {
 			
 			//STUDENT:
 			//-->
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/guiControllers/reporByCourse.fxml"));
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/guiControllers/reportByCourse.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("ViewExam.fxml"));
@@ -58,6 +58,7 @@ public class DisplayScreenTask extends Application {
 			//-->
 			root.add(newPaneRight, 1, 0);
 			// root.getChildren().add(newPaneRight);
+			
 
 			primaryStage.setScene(scene);
 			primaryStage.show();
