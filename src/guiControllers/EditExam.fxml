@@ -27,7 +27,7 @@
          </font>
       </Text>
       <ComboBox fx:id="selectQuestion" layoutX="269.0" layoutY="208.0" prefHeight="37.0" prefWidth="180.0" promptText="Select Question" />
-      <Text fill="#4672ae" layoutX="246.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit Exam" textAlignment="CENTER" wrappingWidth="256.150390625">
+      <Text fill="#4672ae" layoutX="246.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam Details" textAlignment="CENTER" wrappingWidth="256.150390625">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
@@ -37,20 +37,20 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="examID" layoutX="269.0" layoutY="120.0" prefHeight="25.0" prefWidth="122.0" promptText="Enter Exam ID" />
+      <TextField fx:id="examID" disable="true" layoutX="269.0" layoutY="120.0" prefHeight="25.0" prefWidth="122.0" promptText="Enter Exam ID" text="010203" />
       <Button fx:id="btnShow" layoutX="471.0" layoutY="213.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Show">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnRemove" layoutX="563.0" layoutY="213.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Remove" textFill="#da0c0c">
+      <Button fx:id="btnRemove" layoutX="563.0" layoutY="213.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Remove" textFill="#da0c0c" visible="false">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Label layoutX="271.0" layoutY="163.0" prefHeight="21.0" prefWidth="71.0">
+      <Label layoutX="276.0" layoutY="157.0" prefHeight="30.0" prefWidth="135.0" text="120 minutes" textFill="#6a6868">
          <font>
-            <Font name="System Bold" size="14.0" />
+            <Font name="System Bold" size="20.0" />
          </font>
       </Label>
       <Text layoutX="86.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Alloted For Question :">
@@ -63,27 +63,37 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <TextArea layoutX="281.0" layoutY="315.0" prefHeight="91.0" prefWidth="333.0" />
+      <TextArea disable="true" layoutX="281.0" layoutY="315.0" prefHeight="91.0" prefWidth="333.0" />
       <Text layoutX="84.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Comment For Students :">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextArea layoutX="281.0" layoutY="422.0" prefHeight="91.0" prefWidth="333.0" />
-      <Button layoutX="637.0" layoutY="453.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Update">
+      <TextArea disable="true" layoutX="281.0" layoutY="422.0" prefHeight="91.0" prefWidth="333.0" />
+      <Button layoutX="637.0" layoutY="453.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Update" visible="false">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="637.0" layoutY="346.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Update">
+      <Button layoutX="637.0" layoutY="346.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Update" visible="false">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="329.0" layoutY="534.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="122.0" text="Save Changes">
+      <Button layoutX="329.0" layoutY="534.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="122.0" text="Save Changes" visible="false">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
+      <Button layoutX="27.0" layoutY="534.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="122.0" text="&lt;Back">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Text fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Exam Bank &gt; Exam Detailes" underline="true" wrappingWidth="575.5537109375">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
