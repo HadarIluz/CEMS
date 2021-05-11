@@ -16,8 +16,9 @@ public class Student extends User implements Serializable {
 	private float studentAvg;
 	private int professionID;  //In the story: Math==(02)
 
-	public Student(int id, String password, String studentName, String StudentEmail, boolean isLogged, float studentAvg, int professionID) {
-		super(id, password, studentName, StudentEmail, isLogged);
+	public Student(int id, String password, String userName, String email, UserType userType, float studentAvg,
+			int professionID) {
+		super(id, password, userName, email, userType);
 		this.studentAvg = studentAvg;
 		this.professionID = professionID;
 	}

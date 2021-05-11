@@ -3,16 +3,12 @@
 // license found at www.lloseng.com 
 package Server;
 
-import java.io.*;
-import java.util.Vector;
-
-import com.mysql.cj.jdbc.result.UpdatableResultSet;
-
+import entity.User;
 import gui_prototype.ServerFrameController;
 import logic.StatusMsg;
-import logic.TestTableRequest;
 import logic.UpdateDataRequest;
-import ocsf.server.*;
+import ocsf.server.AbstractServer;
+import ocsf.server.ConnectionToClient;
 
 public class CEMSserver extends AbstractServer 
 {
@@ -52,18 +48,39 @@ public class CEMSserver extends AbstractServer
    * @param client The connection from which the message originated.
    * @param 
    */
-  public void handleMessageFromClient(Object msg, ConnectionToClient client)
-  {StatusMsg status = new StatusMsg();
+  
+@SuppressWarnings("null")
+public void handleMessageFromClient(Object msg, ConnectionToClient client){
+	  StatusMsg status = new StatusMsg();
   
 	    serverFrame.printToTextArea("Message received: " + msg + " from " + client);
-	    	    
+	 	    
     	if (msg instanceof String) {
     		String req = (String)msg;
     		if (req.contains("getRow")) {
     			this.sendToAllClients(dbController.getTestRow(req.split(" ")[1]));
     		}
-    	}
-    	else if (msg instanceof UpdateDataRequest) {
+    		/*---------Login----------*/
+    		if(req.contains("getUser")) {
+    			User userInSystem= null;
+    			userInSystem = dbController.verifyLoginUser((User) msg);
+        		if (userInSystem != null) {
+        			userInSystem.setStatus("USER FOUND");
+        			//serverFrame.printToTextArea(??.toString());
+        		}
+        		else {
+        			userInSystem.setStatus("USER NOT FOUND");
+        			//serverFrame.printToTextArea(??.toString());
+        		}
+        		//need to change to sendToClient(status);
+        		this.sendToAllClients(userInSystem);
+        		}
+    			
+    		}
+    		/*---------End_Login----------*/
+    		
+    	
+    	if (msg instanceof UpdateDataRequest) {
     		
     		if (dbController.updateTestTime((UpdateDataRequest) msg)) {
     			status.setStatus("SUCCESS");

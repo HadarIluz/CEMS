@@ -6,9 +6,9 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class Teacher extends User implements Serializable {
 
-	public Teacher(int id, String password, String userName, String email, boolean isLogged) {
-		super(id, password, userName, email, isLogged);
+	public Teacher(int id, String password, String userName, String email, UserType userType) {
+		super(id, password, userName, email, userType);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 }

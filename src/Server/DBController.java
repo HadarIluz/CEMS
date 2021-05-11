@@ -5,23 +5,20 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
+import entity.User;
+import entity.UserType;
 import gui_prototype.ServerFrameController;
-import logic.StatusMsg;
 import logic.TestRow;
-import logic.TestTableRequest;
 import logic.UpdateDataRequest;
 
 public class DBController {
 	public Connection conn;
-public ServerFrameController serverFrame;
+	public ServerFrameController serverFrame;
+
 	public void connectDB(ServerFrameController serverFrame) {
 		try {
-			this.serverFrame= serverFrame;
+			this.serverFrame = serverFrame;
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			serverFrame.printToTextArea("Driver definition succeed");
 		} catch (Exception ex) {
@@ -40,8 +37,6 @@ public ServerFrameController serverFrame;
 		}
 	}
 
-
-
 	public boolean updateTestTime(UpdateDataRequest UpdateExam) {
 		PreparedStatement pstmt;
 		int check = 0;
@@ -51,7 +46,7 @@ public ServerFrameController serverFrame;
 			pstmt.setString(2, UpdateExam.getExamID());
 			check = pstmt.executeUpdate();
 			if (check == 1) {
-			//	System.out.println("Details Of Exam Updated!");
+				// System.out.println("Details Of Exam Updated!");
 				return true;
 			}
 
@@ -70,14 +65,14 @@ public ServerFrameController serverFrame;
 			pstmt.setString(1, examID);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-			newRow.setExamID(rs.getString(1));
-			newRow.setProfession(rs.getString(2));
-			newRow.setCourse(rs.getString(3));
-			newRow.setTimeAllotedForTest(rs.getString(4));
-			newRow.setPointsPerQuestion(rs.getString(5));
-			rs.close();
+				newRow.setExamID(rs.getString(1));
+				newRow.setProfession(rs.getString(2));
+				newRow.setCourse(rs.getString(3));
+				newRow.setTimeAllotedForTest(rs.getString(4));
+				newRow.setPointsPerQuestion(rs.getString(5));
+				rs.close();
 			}
-			if(newRow.getExamID() == null)
+			if (newRow.getExamID() == null)
 				newRow.setExamID("DoesntExist");
 		}
 
@@ -87,5 +82,38 @@ public ServerFrameController serverFrame;
 		}
 		return newRow;
 	}
+
+
+	/*checks if the user that try to login exists in the DB.*/
+	public User verifyLoginUser(Object obj) {
+		User existUser = new User();
+
+		try {
+			PreparedStatement pstmt;
+			//pstmt = conn.prepareStatement("SELECT * FROM users WHERE id=? fullName=? and password=?;");
+			pstmt = conn.prepareStatement("SELECT * FROM users WHERE id=?"); //ASK: only id currect?
+			pstmt.setString(1, (String)obj);  //ASK: why set?
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				existUser.setId(Integer.parseInt((String)obj));
+				existUser.setPassword(rs.getString(2));
+				existUser.setUsername(rs.getString(3));
+				existUser.setEmail(rs.getString(4));
+				existUser.setUserType(UserType.valueOf(rs.getString(5)));
+				rs.close();
+			}
+			if (existUser.getPassword() == null)  //ASK: i want to verify if (existUser.getId() == null) buy it is int and not string, what should i do?
+				existUser.setStatus("DoesntExist");
+		}
+		catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			existUser.setStatus("ERROR");
+		}
+		return existUser;
+		
+		
+	}
+
+
 
 }

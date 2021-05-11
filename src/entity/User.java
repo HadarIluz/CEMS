@@ -6,21 +6,33 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class User implements Serializable {
 
+
 	private int id;
 	private String password;
 	private String userName; //for left side screen.(I don't think we need first name and last name)
 	private String email;
 	private boolean isLogged;
+	private String status; //msg from server :{"USER FOUND" / "USER NOT FOUND"}
+	private UserType userType;
+
 	
-	public User(int id, String password, String userName, String email, boolean isLogged) {
+	public User(int id, String password, String userName, String email, UserType userType) {
+		super();
 		this.id = id;
 		this.password = password;
 		this.userName = userName;
 		this.email = email;
-		this.isLogged = isLogged;
+		this.userType = userType;
 	}
 	
 	
+	//For Login to CEMS system --> it`s allowed? yoav said only one constructor to each class, but the controller Requires me.. 
+	public User() {
+		this.userName = userName;
+		this.password = password;
+	}
+
+
 	public int getId() {
 		return id;
 	}
@@ -73,6 +85,27 @@ public class User implements Serializable {
 				userName==user.userName && 
 				email==user.email &&
 				isLogged==true;
+	}
+	
+	//Returns  status of success / failure in connecting to the system
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	//
+	public UserType getUserType() {
+		return userType;
+	}
+
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
+	public String getString(int i) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

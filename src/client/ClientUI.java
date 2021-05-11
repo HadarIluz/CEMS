@@ -2,7 +2,7 @@ package client;
 
 import java.io.IOException;
 
-import guiControllers.DisplayScreenTask;
+import guiControllers.LoginController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -19,8 +19,8 @@ public class ClientUI extends Application {
 		// TODO Auto-generated method stub
 		
 		//NEED TO CHANGE WHEN START WORKING ON CEMS PROJECT
-		 DisplayScreenTask MainForm = new DisplayScreenTask(); // create the TestFrame
-		 MainForm.start(primaryStage);
+		LoginController LogInHomeScreen = new LoginController(); // create the TestFrame
+		 LogInHomeScreen.start(primaryStage);
 
 	}
 	
