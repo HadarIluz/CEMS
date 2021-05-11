@@ -37,7 +37,7 @@
             <Font size="18.0" />
          </font>
       </RadioButton>
-      <ComboBox editable="true" layoutX="448.0" layoutY="266.0" prefHeight="25.0" prefWidth="244.0" promptText="Select Course from list" visibleRowCount="5" />
+      <ComboBox editable="true" layoutX="448.0" layoutY="266.0" prefHeight="25.0" prefWidth="244.0" promptText="Select Student from list" visibleRowCount="5" />
       <RadioButton layoutX="73.0" layoutY="319.0" mnemonicParsing="false" text="Generate report by course">
          <font>
             <Font size="18.0" />

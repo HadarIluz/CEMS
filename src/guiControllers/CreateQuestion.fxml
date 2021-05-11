@@ -111,7 +111,7 @@
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Question Bank &gt; Exam Detailes&gt;Show Question" underline="true" wrappingWidth="575.5537109375">
+      <Text fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Exam Bank &gt; Exam Detailes&gt;Show Question" underline="true" wrappingWidth="575.5537109375">
          <font>
             <Font name="System Italic" size="14.0" />
          </font>
