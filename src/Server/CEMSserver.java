@@ -3,6 +3,8 @@
 // license found at www.lloseng.com 
 package Server;
 
+import java.io.IOException;
+
 import entity.User;
 import gui_prototype.ServerFrameController;
 import logic.RequestToServer;
@@ -53,6 +55,8 @@ public class CEMSserver extends AbstractServer
 @SuppressWarnings("null")
 public void handleMessageFromClient(Object msg, ConnectionToClient client){
 	  StatusMsg status = new StatusMsg();
+	  
+	  
   
 	    serverFrame.printToTextArea("Message received: " + msg + " from " + client);
 	 	    
@@ -74,7 +78,13 @@ public void handleMessageFromClient(Object msg, ConnectionToClient client){
     			//serverFrame.printToTextArea(??.toString());
     		}
     		//need to change to sendToClient(status);
-    		this.sendToAllClients(userInSystem);
+    		//this.sendToAllClients(userInSystem);
+    		try {
+				client.sendToClient(userInSystem);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     		}
 	    
 	    break;
