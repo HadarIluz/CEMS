@@ -22,8 +22,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class LoginController {
-
-	public User user = new User();
+	public User user;
 
 	@FXML
 	private ImageView background;
@@ -66,25 +65,25 @@ public class LoginController {
 
 	@FXML
     void btnLogin(ActionEvent event) {
-		String userName = txtUserName.getText();
+		String userID = txtUserName.getText();
 		String userPassword = txtPassword.getText();
 		
-		if(userName.trim().isEmpty() ) {	
+		if(userID.trim().isEmpty() ) {	
 			showMsg(reqFieldUserName, "User name is required field.");
 		}
 		if(userPassword.trim().isEmpty() ) {	
 			showMsg(reqFieldPassword, "Password is required field.");
 		}
 		// in case fields not empty checks if exist in DB
-		if (!userName.trim().isEmpty() &&  !userPassword.trim().isEmpty() && userName.length()==9 ) {
-			user.setUsername(userName);
-			user.setPassword(userPassword);
+		if (!userID.trim().isEmpty() &&  !userPassword.trim().isEmpty() && userID.length()==9 ) {
+			int id = Integer.parseInt(txtUserName.getText().trim());
+			user = new User(id, userPassword);
 			//ClientUI.cems.accept(userName);  
 			//Hadar`s Note:
 			//i think the user name need to be id
 			// if there is 2 Hadar Iluz with the same password.. so which on of them can enter into the system??
 			//so i implement in the server for now the id unless it is not true.
-			ClientUI.cems.accept(userName); //here he types int id
+			ClientUI.cems.accept(userID); //here he types int id
 			if (CEMSClient.statusMsg.getStatus().equals("USER NOT FOUND")) {
 				showMsg(reqFieldUserName, "User name not exist.");
 			}

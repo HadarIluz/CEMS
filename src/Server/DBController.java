@@ -83,37 +83,38 @@ public class DBController {
 		return newRow;
 	}
 
-
-	/*checks if the user that try to login exists in the DB.*/
+	/* checks if the user that try to login exists in the DB. */
 	public User verifyLoginUser(Object obj) {
-		User existUser = new User();
 
-		try {
-			PreparedStatement pstmt;
-			//pstmt = conn.prepareStatement("SELECT * FROM users WHERE id=? fullName=? and password=?;");
-			pstmt = conn.prepareStatement("SELECT * FROM users WHERE id=?"); //ASK: only id currect?
-			pstmt.setString(1, (String)obj);  //ASK: why set?
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				existUser.setId(Integer.parseInt((String)obj));
-				existUser.setPassword(rs.getString(2));
-				existUser.setUsername(rs.getString(3));
-				existUser.setEmail(rs.getString(4));
-				existUser.setUserType(UserType.valueOf(rs.getString(5)));
-				rs.close();
+		if (obj instanceof User) { //Still needed here? Because we changed that we would certainly get User ObjecTtype
+			User existUser;
+			existUser = (User) obj;
+			try {
+				PreparedStatement pstmt;
+				pstmt = conn.prepareStatement("SELECT * FROM users WHERE id=?");
+				pstmt.setString(1, (String) obj);
+				ResultSet rs = pstmt.executeQuery();
+				if (rs.next()) {
+					existUser.setId(Integer.parseInt((String) obj));
+					existUser.setPassword(rs.getString(2));
+					existUser.setFirstName(rs.getString(3));
+					existUser.setLastName(rs.getString(4));
+					existUser.setEmail(rs.getString(5));
+					existUser.setUserType(UserType.valueOf(rs.getString(6)));
+					rs.close();
+				}
+				if (existUser.getPassword() == null) // ASK: i want to verify if (existUser.getId() == null) buy it is
+														// int and not string, i used password indent 
+					existUser.setStatus("DoesntExist");
+			} catch (SQLException ex) {
+				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+				existUser.setStatus("ERROR");
 			}
-			if (existUser.getPassword() == null)  //ASK: i want to verify if (existUser.getId() == null) buy it is int and not string, what should i do?
-				existUser.setStatus("DoesntExist");
-		}
-		catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			existUser.setStatus("ERROR");
-		}
-		return existUser;
-		
-		
+			return existUser;
+
+		} else
+			return null;
+
 	}
-
-
 
 }

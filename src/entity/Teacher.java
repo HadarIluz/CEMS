@@ -9,9 +9,9 @@ public class Teacher extends User implements Serializable {
 
 	private ArrayList<Profession> professions;
 	
-	public Teacher(int id, String password, String userName, String email, UserType userType) {
-		super(id, password, userName, email, userType);
-		// TODO Auto-generated constructor stub
+	public Teacher(int id, String password, String fullName, String lastName, String email, UserType userType,
+			ArrayList<Profession> professions) {
+		super(id, password, fullName, lastName, email, userType);
 		professions = new ArrayList<Profession>();
 	}
 

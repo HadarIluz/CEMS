@@ -1,26 +1,20 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 //Entity class - define Student in the CEMS system.
 @SuppressWarnings("serial")
 public class Student extends User implements Serializable {
 
-	/* private int id; 
-	 * private String password; 
-	 * private String StudentName; 
-	 * private
-	 * String StudentEmail; 
-	 * private boolean isLogged;
-	 */
 	private float studentAvg;
-	private int professionID;  //In the story: Math==(02)
-
-	public Student(int id, String password, String userName, String email, UserType userType, float studentAvg,
-			int professionID) {
-		super(id, password, userName, email, userType);
+	private ArrayList<Course> courses;
+	
+	public Student(int id, String password, String fullName, String lastName, String email, UserType userType,
+			float studentAvg) {
+		super(id, password, fullName, lastName, email, userType);
 		this.studentAvg = studentAvg;
-		this.professionID = professionID;
+		courses = new ArrayList<Course>();
 	}
 
 	public float getStudentAvg() {
@@ -31,17 +25,18 @@ public class Student extends User implements Serializable {
 		this.studentAvg = studentAvg;
 	}
 
-	public int getDepartmentID() {
-		return professionID;
-	}
-
-	public void setDepartmentID(int professionID) {
-		this.professionID = professionID;
-	}
 
 	@Override
 	public String toString() {
-		return "Student [studentID=" + this.getId() + ", studentAvg=" + studentAvg + ", departmentID=" + professionID+ "]";
+		return "Student [studentID=" + this.getId() + ", studentAvg=" + studentAvg + "]";
+	}
+	
+	public ArrayList<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(ArrayList<Course> courses) {
+		this.courses = courses;
 	}
 
 }

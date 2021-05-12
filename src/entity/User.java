@@ -9,29 +9,27 @@ public class User implements Serializable {
 
 	private int id;
 	private String password;
-	private String userName; //for left side screen.(I don't think we need first name and last name)
+	private String firstName;
+	private String lastName;
 	private String email;
-	private boolean isLogged;
+	private int isLogged=0;
 	private String status; //msg from server :{"USER FOUND" / "USER NOT FOUND"}
 	private UserType userType;
-
 	
-	public User(int id, String password, String userName, String email, UserType userType) {
+	public User(int id, String password, String firstName, String lastName, String email, UserType userType) {
 		super();
 		this.id = id;
 		this.password = password;
-		this.userName = userName;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
 		this.userType = userType;
 	}
 	
-	
-	//For Login to CEMS system --> it`s allowed? yoav said only one constructor to each class, but the controller Requires me.. 
-	public User() {
-		this.userName = userName;
+	public User(int id, String password) {
+		this.id = id;
 		this.password = password;
 	}
-
 
 	public int getId() {
 		return id;
@@ -45,29 +43,40 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getUsername() {
-		return userName;
+	
+	public String getFirstName() {
+		return firstName;
 	}
-	public void setUsername(String username) {
-		this.userName = username;
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 	public String isEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public boolean isLogged() {
+	public int isLogged() {
 		return isLogged;
 	}
-	public void setLogged(boolean isLogged) {
+	public void setLogged(int isLogged) {
 		this.isLogged = isLogged;
 	}
 	
 	//to string method to serverLog(ASK: server use it from this class??)...or.. console debugging
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", password=" + password + ", userName=" + userName + ", isLogged=" + isLogged + "]";
+		return "User [id=" + id + ", password=" + password + ", isLogged=" + isLogged + "]";
 	}
 	
 	/*equal method in order to checks if users are equal,
@@ -82,9 +91,10 @@ public class User implements Serializable {
 		//return true if all parameters are equals in order to indicate if this user is already logged into CEMS system..
 		return	id== user.id &&
 				password== user.password &&
-				userName==user.userName && 
+				firstName==user.firstName && 
+				lastName==user.lastName && 
 				email==user.email &&
-				isLogged==true;
+				isLogged==1;
 	}
 	
 	//Returns  status of success / failure in connecting to the system
@@ -107,5 +117,5 @@ public class User implements Serializable {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+		
 }
