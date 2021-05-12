@@ -1,9 +1,9 @@
-package giu_teacher;
+package gui_teacher;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
-public class QuestionBankController {
+public class ExamBankController {
 
 	@FXML
 	private Button btnBack;

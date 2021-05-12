@@ -1,4 +1,4 @@
-package giu_teacher;
+package gui_teacher;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

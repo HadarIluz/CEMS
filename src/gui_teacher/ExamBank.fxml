@@ -10,14 +10,14 @@
 
 <AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.ExamBankController">
    <children>
-      <Button fx:id="btnBack" layoutX="224.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="122.0" text="Edit" visible="false" />
-      <Button fx:id="btnNext" layoutX="412.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="Delete" visible="false" />
+      <Button fx:id="btnEditExam" layoutX="224.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnEditExam" prefHeight="25.0" prefWidth="122.0" text="Edit" visible="false" />
+      <Button fx:id="btnDeleteExam" layoutX="412.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnDeleteExam" prefHeight="25.0" prefWidth="124.0" text="Delete" visible="false" />
       <Text fill="#4672ae" layoutX="194.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam Bank" wrappingWidth="162.59490966796875">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
       </Text>
-      <TextField editable="false" layoutX="361.0" layoutY="457.0" prefHeight="25.0" prefWidth="145.0" promptText="Enter ID" />
+      <TextField fx:id="textExamID" editable="false" layoutX="361.0" layoutY="457.0" prefHeight="25.0" prefWidth="145.0" promptText="Enter ID" />
       <Text layoutX="281.0" layoutY="475.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam ID">
          <font>
             <Font name="System Bold" size="16.0" />
@@ -48,12 +48,12 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnNext1" layoutX="579.0" layoutY="432.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="51.0" prefWidth="124.0" text="Open full exam info" />
-      <Text fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Exam Bank " underline="true" wrappingWidth="575.5537109375">
+      <Button fx:id="btnOpenExamInfo" layoutX="579.0" layoutY="432.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnOpenExamInfo" prefHeight="51.0" prefWidth="124.0" text="Open full exam info" />
+      <Text fx:id="textNavigation" fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Exam Bank " underline="true" wrappingWidth="575.5537109375">
          <font>
             <Font name="System Italic" size="14.0" />
          </font>
       </Text>
-      <Button fx:id="btnNext11" layoutX="27.0" layoutY="534.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="&lt;Back" />
+      <Button fx:id="btnBack" layoutX="27.0" layoutY="534.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnBack" prefHeight="25.0" prefWidth="124.0" text="&lt;Back" />
    </children>
 </AnchorPane>
