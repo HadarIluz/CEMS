@@ -1,4 +1,4 @@
-package boundary;
+package gui_principal;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

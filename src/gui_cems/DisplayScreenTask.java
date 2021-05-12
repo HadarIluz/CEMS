@@ -1,4 +1,4 @@
-package guiControllers;
+package gui_cems;
 
 import java.io.IOException;
 
@@ -15,19 +15,19 @@ public class DisplayScreenTask extends Application {
 	public void start(Stage primaryStage) throws IOException {
 		try {
 			GridPane root = new GridPane();
-			//Scene scene = new Scene(root, 900, 600); //Login
-			Scene scene = new Scene(root, 988, 586); //SCREENS
+			Scene scene = new Scene(root, 900, 600); //Login
+			//Scene scene = new Scene(root, 988, 586); //SCREENS
 			
 			//LEFT SCREENS:
 			//-->
-			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("/boundary/PrincipalMenuLeft.fxml"));
+			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("/boundary/PrincipalMenuLeft.fxml"));
 			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
 			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("PrincipalMenuLeft.fxml"));
-			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("Login.fxml"));
+			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("Login.fxml"));
 			primaryStage.setTitle("CEMS-Computerized Exam Management System");
 			//-->
-			root.add(newMnueLeft, 0, 0);
-			//root.getChildren().add(newMnueLeft); //FOR Login
+			//root.add(newMnueLeft, 0, 0);
+			root.getChildren().add(newMnueLeft); //FOR Login
 			// -->
 			
 			//STUDENT:
@@ -47,7 +47,7 @@ public class DisplayScreenTask extends Application {
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("TeacherStatistics.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateQuestion.fxml"));
+			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateQuestion.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("ExamBank.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("QuestionBank.fxml"));
 			
@@ -56,7 +56,7 @@ public class DisplayScreenTask extends Application {
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("ApprovalTimeExtention.fxml"));
 			
 			//-->
-			root.add(newPaneRight, 1, 0);
+			//root.add(newPaneRight, 1, 0);
 			// root.getChildren().add(newPaneRight);
 			
 

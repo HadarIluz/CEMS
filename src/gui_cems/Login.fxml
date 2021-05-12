@@ -44,7 +44,7 @@
                         <Image url="@../../images/LogInBackground.jpg" />
                      </image>
                   </ImageView>
-                  <Label layoutX="231.0" layoutY="127.0" prefHeight="60.0" prefWidth="94.0" text="User Name ">
+                  <Label layoutX="236.0" layoutY="127.0" prefHeight="60.0" prefWidth="94.0" text="User ID">
                      <font>
                         <Font name="System Italic" size="17.0" />
                      </font>

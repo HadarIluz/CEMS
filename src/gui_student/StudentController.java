@@ -1,16 +1,18 @@
-package guiControllers;
+package gui_student;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
-public class TeacherMenuLeft {
+public class StudentController {
 
     @FXML
     private ImageView person;
 
     @FXML
-    private Label userName1;
+    private Label userName;
 
     @FXML
     private Label lblContactUs;
@@ -26,5 +28,13 @@ public class TeacherMenuLeft {
 
     @FXML
     private ImageView messageContactUs;
+
+    @FXML
+    private Button btnViewExamInfo;
+
+    @FXML
+    void btnViewExamInfo(MouseEvent event) {
+
+    }
 
 }

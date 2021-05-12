@@ -1,4 +1,4 @@
-package guiControllers;
+package gui_student;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

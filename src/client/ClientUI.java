@@ -2,7 +2,7 @@ package client;
 
 import java.io.IOException;
 
-import guiControllers.LoginController;
+import gui_cems.LoginController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
