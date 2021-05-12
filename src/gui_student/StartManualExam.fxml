@@ -12,52 +12,52 @@
 
 <AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.StartManualExamController">
    <children>
-      <Text layoutX="72.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="When you completed your exam, click &quot;Submit&quot; and attach the file." wrappingWidth="294.3999732732773">
+      <Text fx:id="txtWhenCompleteExam" layoutX="72.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="When you completed your exam, click &quot;Submit&quot; and attach the file." wrappingWidth="294.3999732732773">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="txtSolveExam" fill="#5e87c0" layoutX="287.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manual Exam" textOrigin="CENTER" wrappingWidth="187.1999633789062">
+      <Text fx:id="txtSManualExam" fill="#5e87c0" layoutX="287.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manual Exam" textOrigin="CENTER" wrappingWidth="187.1999633789062">
          <font>
             <Font name="System Bold" size="28.0" />
          </font>
       </Text>
-      <Text layoutX="72.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click here to download the file exam." wrappingWidth="333.19995050132275">
+      <Text fx:id="txtDownloadFileExam" layoutX="72.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click here to download the file exam." wrappingWidth="333.19995050132275">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Button layoutX="433.0" layoutY="175.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="78.0" text="Download" underline="true" />
-      <ImageView fitHeight="37.0" fitWidth="60.0" layoutX="453.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
+      <Button fx:id="btnDownload" layoutX="433.0" layoutY="175.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="78.0" text="Download" underline="true" />
+      <ImageView fx:id="DownloadIcon" fitHeight="37.0" fitWidth="60.0" layoutX="453.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/download.png" />
          </image>
       </ImageView>
       <Separator layoutX="1.0" layoutY="232.0" prefHeight="5.0" prefWidth="761.0" />
-      <Button layoutX="433.0" layoutY="293.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="78.0" text="Submit" underline="true" />
+      <Button fx:id="btnSubmit" layoutX="433.0" layoutY="293.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="78.0" text="Submit" underline="true" />
       <ImageView fitHeight="37.0" fitWidth="60.0" layoutX="394.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true" />
       <Text disable="true" fill="#18a116" layoutX="434.0" layoutY="348.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The file was uploaded successfully." wrappingWidth="294.3999732732773">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text disable="true" fill="#e04320" layoutX="436.0" layoutY="466.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2. And attach a screenshot of this post." wrappingWidth="294.3999732732773">
+      <Text fx:id="txtError2" disable="true" fill="#e04320" layoutX="436.0" layoutY="466.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2. And attach a screenshot of this post." wrappingWidth="294.3999732732773">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text fill="#e04320" layoutX="434.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1. Please submit the test to the course`s official email address/ teacher. (See the exam form)" wrappingWidth="294.3999732732773">
+      <Text fx:id="txtError1" fill="#e04320" layoutX="434.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1. Please submit the test to the course`s official email address/ teacher. (See the exam form)" wrappingWidth="294.3999732732773">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text fill="#e04320" layoutX="436.0" layoutY="369.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error." wrappingWidth="294.3999732732773">
+      <Text fx:id="txtError" fill="#e04320" layoutX="436.0" layoutY="369.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error." wrappingWidth="294.3999732732773">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
       <Separator layoutX="8.0" layoutY="75.0" prefHeight="9.0" prefWidth="761.0" />
-      <Text fx:id="txtnotification" layoutX="525.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="message from:" wrappingWidth="92.80000000000007">
+      <Text fx:id="txtNotification" layoutX="525.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="message from:" wrappingWidth="92.80000000000007">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
