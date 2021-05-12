@@ -14,41 +14,41 @@
             <Font size="15.0" />
          </font>
       </Button>
-      <Label fx:id="lblExanCode" layoutX="169.0" layoutY="115.0" prefHeight="49.0" prefWidth="98.0" text="Exam Code:">
+      <Label layoutX="169.0" layoutY="115.0" prefHeight="49.0" prefWidth="98.0" text="Exam Code:">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
       </Label>
-      <Label fx:id="lblNecessary2" layoutX="500.0" layoutY="189.0" prefHeight="19.0" prefWidth="27.0" text="*" textFill="#f40808">
+      <Label layoutX="500.0" layoutY="189.0" prefHeight="19.0" prefWidth="27.0" text="*" textFill="#f40808">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="lblNecessary1" layoutX="503.0" layoutY="122.0" prefHeight="19.0" prefWidth="27.0" text="*" textFill="#e40808">
+      <Label layoutX="503.0" layoutY="122.0" prefHeight="19.0" prefWidth="27.0" text="*" textFill="#e40808">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="txtExamCode" layoutX="286.0" layoutY="115.0" prefHeight="45.0" prefWidth="205.0" />
-      <TextField fx:id="txtStudentID" layoutX="287.0" layoutY="179.0" prefHeight="45.0" prefWidth="205.0" />
-      <Label fx:id="lblGoodLuckMsg" layoutX="283.0" layoutY="345.0" prefHeight="60.0" prefWidth="231.0" text="Best of luck in your exam!" textFill="#1f9aff">
+      <TextField layoutX="286.0" layoutY="115.0" prefHeight="45.0" prefWidth="205.0" />
+      <TextField layoutX="287.0" layoutY="179.0" prefHeight="45.0" prefWidth="205.0" />
+      <Label layoutX="283.0" layoutY="345.0" prefHeight="60.0" prefWidth="231.0" text="Best of luck in your exam!" textFill="#1f9aff">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </Label>
       <CheckBox fx:id="ApprovalInsrtuctions" layoutX="279.0" layoutY="261.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="200.0" text="I approv reading all insrtuctions " />
       <CheckBox fx:id="CommitPreformByMyself" layoutX="279.0" layoutY="289.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="216.0" text="I commit preform exam by myslef " />
-      <Label fx:id="lblExanCode1" layoutX="170.0" layoutY="175.0" prefHeight="49.0" prefWidth="98.0" text="Student ID:">
+      <Label fx:id="lblStudentID" layoutX="168.0" layoutY="179.0" prefHeight="49.0" prefWidth="98.0" text="Student ID:">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
       </Label>
-      <Label fx:id="lblNecessary3" layoutX="266.0" layoutY="261.0" prefHeight="19.0" prefWidth="27.0" text="*" textFill="#f40808">
+      <Label layoutX="266.0" layoutY="261.0" prefHeight="19.0" prefWidth="27.0" text="*" textFill="#f40808">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="lblNecessary4" layoutX="266.0" layoutY="288.0" prefHeight="19.0" prefWidth="27.0" text="*" textFill="#f40808">
+      <Label layoutX="266.0" layoutY="288.0" prefHeight="19.0" prefWidth="27.0" text="*" textFill="#f40808">
          <font>
             <Font size="20.0" />
          </font>

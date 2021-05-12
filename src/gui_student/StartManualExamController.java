@@ -1,6 +1,8 @@
 package gui_student;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -16,6 +18,9 @@ public class StartManualExamController {
 
     @FXML
     private ImageView notificationIcon;
+    
+    @FXML
+    private ImageView DownloadIcon;
 
     @FXML
     private Label lblnotificationName;
@@ -28,5 +33,25 @@ public class StartManualExamController {
 
     @FXML
     private Label lblTimeLeft;
+    
+    @FXML
+    private Button btnDownload;
+    
+    @FXML
+    private Button btnSubmit;
+    
+    @FXML
+    private Label txtError;
+    
+    @FXML
+    private Label txtError1;
+
+    @FXML
+    private Label txtError2;
+    
+    @FXML
+    private Label txtGood;
+    
+
 
 }

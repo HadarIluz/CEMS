@@ -1,5 +1,6 @@
 package gui_student;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -23,49 +24,48 @@ public class SolveExamController {
 	private ImageView prevIcon;
 
 	@FXML
-	private Label lblTimeLeft;
+	private Label lblTimeLeft; 
 
 	@FXML
-	private RadioButton btnAnswer1;
+	private RadioButton btnAnswer1; 
 
 	@FXML
-	private RadioButton btnAnswer2;
+	private RadioButton btnAnswer2; 
 
 	@FXML
-	private RadioButton btnAnswer3;
+	private RadioButton btnAnswer3; 
 
 	@FXML
-	private RadioButton btnAnswer4;
+	private RadioButton btnAnswer4; 
 
 	@FXML
-	private Label lblQuestionNumber;
+	private Label lblQuestionNumber; 
 
 	@FXML
-	private Label lblPoints;
+	private Label lblPoints; 
+
 
 	@FXML
-	private Text txtSolveExam;
+	private Text txtQuestionDescription; 
 
 	@FXML
-	private Text txtQuestionDescription;
-
-	@FXML
-	private Label lblQuestion;
-
-	@FXML
-	private Text txtnotification;
-
-	@FXML
-	private ImageView notificationIcon;
-
-	@FXML
-	private Label lblnotificationName;
-
-	@FXML
-	private Text txtQuestion;
-
-	@FXML
-	private Label lblnotificationMsg;
+	private Label lblQuestion; 
 	
+	@FXML
+	private Text txtnotification; 
+
+	@FXML
+	private ImageView notificationIcon; 
+
+	@FXML
+	private Label lblnotificationName; 
+
+	@FXML
+	private Label lblnotificationMsg; 
+	
+	 @FXML
+	    void btnSubmit(ActionEvent event) {
+
+	    }
 
 }

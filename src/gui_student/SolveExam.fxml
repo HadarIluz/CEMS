@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.SolveExamController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.SolveExamController">
    <children>
       <Button fx:id="btnSubmit" layoutX="517.0" layoutY="495.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" text="Submit">
          <font>
@@ -69,7 +69,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="txtSolveExam" fill="#5e87c0" layoutX="301.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Solve Exam" wrappingWidth="155.1999633789062">
+      <Text fill="#5e87c0" layoutX="301.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Solve Exam" wrappingWidth="155.1999633789062">
          <font>
             <Font name="System Bold" size="28.0" />
          </font>
@@ -95,7 +95,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Text>
-      <Text fx:id="txtQuestion" layoutX="73.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question:">
+      <Text layoutX="73.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question:">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

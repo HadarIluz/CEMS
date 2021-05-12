@@ -36,5 +36,5 @@ public class StudentController {
     void btnViewExamInfo(MouseEvent event) {
 
     }
-
+  
 }
