@@ -8,22 +8,22 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.QuestionBankController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.QuestionBankController">
    <children>
-      <Button fx:id="btnBack" layoutX="224.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="122.0" text="Edit" visible="false" />
-      <Button fx:id="btnNext" layoutX="412.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="Delete" visible="false" />
+      <Button fx:id="btnEditQuestion" layoutX="224.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnEditQuestion" prefHeight="25.0" prefWidth="122.0" text="Edit" />
+      <Button fx:id="btnDeleteQuestion" layoutX="412.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnDeleteQuestion" prefHeight="25.0" prefWidth="124.0" text="Delete" />
       <Text fill="#4672ae" layoutX="194.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question Bank" wrappingWidth="213.26156616210938">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
       </Text>
-      <TextField editable="false" layoutX="361.0" layoutY="457.0" prefHeight="25.0" prefWidth="145.0" promptText="Enter ID" />
+      <TextField fx:id="textQuestionID" layoutX="361.0" layoutY="457.0" prefHeight="25.0" prefWidth="145.0" promptText="Enter ID" />
       <Text layoutX="253.0" layoutY="475.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question ID">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TableView layoutX="192.0" layoutY="104.0" prefHeight="298.0" prefWidth="372.0">
+      <TableView fx:id="tableQuestion" layoutX="192.0" layoutY="104.0" prefHeight="298.0" prefWidth="372.0">
         <columns>
           <TableColumn prefWidth="75.0" text="Question ID" />
           <TableColumn prefWidth="75.0" text="Proffesion" />
@@ -33,27 +33,27 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Text fill="#4672ae" layoutX="210.0" layoutY="433.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You can choose edit or delete the question" visible="false" wrappingWidth="542.1505126953125">
+      <Text fx:id="textMsg1" fill="#4672ae" layoutX="210.0" layoutY="433.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You can choose edit or delete the question" wrappingWidth="542.1505126953125">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Text>
-      <Text fill="#6a6a6a" layoutX="180.0" layoutY="556.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you wish to view full details of question, click on edit" visible="false" wrappingWidth="542.1505126953125">
+      <Text fx:id="textMsg2" fill="#6a6a6a" layoutX="180.0" layoutY="556.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you wish to view full details of question, click on edit" wrappingWidth="542.1505126953125">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Button fx:id="btnBack1" layoutX="407.0" layoutY="57.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="160.0" text="Create New Question" textAlignment="CENTER" visible="false" wrapText="true">
+      <Button fx:id="btnCreateNewQuestion" layoutX="407.0" layoutY="57.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnCreateNewQuestion" prefHeight="30.0" prefWidth="160.0" text="Create New Question" textAlignment="CENTER" wrapText="true">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnNext1" layoutX="589.0" layoutY="442.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="51.0" prefWidth="145.0" text="Open full question info" />
-      <Text fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Question Bank " underline="true" wrappingWidth="575.5537109375">
+      <Button fx:id="btnOpenQuestionInfo" layoutX="589.0" layoutY="442.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnOpenQuestionInfo" prefHeight="51.0" prefWidth="145.0" text="Open full question info" visible="false" />
+      <Text fx:id="textNavigation" fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Question Bank " underline="true" visible="false" wrappingWidth="575.5537109375">
          <font>
             <Font name="System Italic" size="14.0" />
          </font>
       </Text>
-      <Button fx:id="btnNext11" layoutX="27.0" layoutY="534.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="&lt;Back" />
+      <Button fx:id="btnBack" layoutX="27.0" layoutY="534.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnBack" prefHeight="25.0" prefWidth="124.0" text="&lt;Back" visible="false" />
    </children>
 </AnchorPane>

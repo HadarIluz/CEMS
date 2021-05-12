@@ -10,19 +10,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.TeacherStatisticsController">
    <children>
       <Label layoutX="67.0" layoutY="101.0" prefHeight="31.0" prefWidth="148.0" text="Enter Exam ID:">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <TextField layoutX="264.0" layoutY="104.0" maxWidth="-Infinity" prefHeight="27.0" prefWidth="191.0" text="010203">
+      <TextField fx:id="textExamID" layoutX="264.0" layoutY="104.0" maxWidth="-Infinity" prefHeight="27.0" prefWidth="191.0">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </TextField>
-      <Label contentDisplay="TOP" layoutX="349.0" layoutY="240.0" prefHeight="37.0" prefWidth="157.0" text="Grades Average: " textAlignment="RIGHT">
+      <Label contentDisplay="TOP" layoutX="372.0" layoutY="240.0" prefHeight="37.0" prefWidth="157.0" text="Grades Average: " textAlignment="RIGHT">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
@@ -32,22 +32,22 @@
             <Font name="System Bold" size="22.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="215.0" layoutY="241.0" prefHeight="35.0" prefWidth="66.0" text="60">
+      <Label fx:id="textMedian" alignment="CENTER" layoutX="215.0" layoutY="241.0" prefHeight="35.0" prefWidth="66.0">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="456.0" layoutY="176.0" prefHeight="35.0" prefWidth="201.0" text="Algerbra 2MH">
+      <Label fx:id="textCourse" alignment="CENTER" layoutX="456.0" layoutY="176.0" prefHeight="35.0" prefWidth="201.0">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <Label layoutX="230.0" layoutY="37.0" text="Exam Statistics" textFill="#070ac3">
+      <Label layoutX="253.0" layoutY="45.0" text="Exam Statistics" textFill="#4867c4">
          <font>
             <Font name="Arial Bold" size="32.0" />
          </font>
       </Label>
-      <BarChart fx:id="StudentsHisto" alternativeColumnFillVisible="true" barGap="25.0" layoutX="23.0" layoutY="317.0" legendSide="TOP" prefHeight="280.0" prefWidth="681.0" title="Grades Distribution:">
+      <BarChart fx:id="StudentsHisto" alternativeColumnFillVisible="true" barGap="25.0" layoutX="39.0" layoutY="317.0" legendSide="TOP" prefHeight="280.0" prefWidth="681.0" title="Grades Distribution:">
          <xAxis>
             <CategoryAxis autoRanging="false" prefHeight="15.0" prefWidth="607.0" side="BOTTOM" tickLabelFill="#171717" tickLabelsVisible="false" />
          </xAxis>
@@ -55,8 +55,8 @@
             <NumberAxis side="LEFT" tickLabelGap="5.0" upperBound="30.0" />
          </yAxis>
       </BarChart>
-      <Button layoutX="494.0" layoutY="105.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" text="Show" />
-      <Label layoutX="272.0" layoutY="132.0" prefHeight="17.0" prefWidth="176.0" text="Missing Parameter/ incorrect ID" textFill="#f21e1e" visible="false">
+      <Button fx:id="btnShowStatistic" layoutX="494.0" layoutY="105.0" mnemonicParsing="false" onMouseClicked="#btnShowStatistic" prefHeight="25.0" prefWidth="65.0" text="Show" />
+      <Label fx:id="textErrorMessage" layoutX="264.0" layoutY="132.0" prefHeight="17.0" prefWidth="184.0" text="Missing Parameter/ incorrect ID" textFill="#f21e1e" visible="false">
          <font>
             <Font name="System Bold" size="11.0" />
          </font>
@@ -71,12 +71,12 @@
             <Font name="System Bold" size="22.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="227.0" layoutY="176.0" prefHeight="35.0" prefWidth="71.0" text="Math">
+      <Label fx:id="textProfession" alignment="CENTER" layoutX="227.0" layoutY="176.0" prefHeight="35.0" prefWidth="71.0" text="Math">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="491.0" layoutY="241.0" prefHeight="35.0" prefWidth="71.0" text="75">
+      <Label fx:id="textAverage" alignment="CENTER" layoutX="524.0" layoutY="241.0" prefHeight="35.0" prefWidth="71.0">
          <font>
             <Font size="24.0" />
          </font>

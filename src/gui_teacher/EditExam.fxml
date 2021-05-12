@@ -11,66 +11,66 @@
 
 <AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="giu_teacher.EditExamController">
    <children>
-      <Text layoutX="87.0" layoutY="249.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question Number : ">
+      <Text layoutX="80.0" layoutY="249.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question Number : ">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text layoutX="86.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Alloted For Exam :">
+      <Text layoutX="79.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Allocated For Exam :">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Comment For Teacher :">
+      <Text layoutX="81.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Comment For Teacher :">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
       <ComboBox fx:id="selectQuestion" layoutX="282.0" layoutY="224.0" onAction="#selectQuestion" onMouseClicked="#selectQuestion" prefHeight="37.0" prefWidth="180.0" promptText="Select Question" />
-      <Text fx:id="texTtitleScreen" fill="#4672ae" layoutX="246.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam Details" textAlignment="CENTER" wrappingWidth="256.150390625">
+      <Text fx:id="texTtitleScreen" fill="#4672ae" layoutX="246.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edite Exam" textAlignment="CENTER" wrappingWidth="256.150390625">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="87.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam ID :">
+      <Text layoutX="80.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam ID :">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="textExamID" disable="true" layoutX="279.0" layoutY="138.0" prefHeight="25.0" prefWidth="122.0" promptText="Enter Exam ID" text="010203" />
+      <TextField fx:id="textExamID" layoutX="279.0" layoutY="138.0" prefHeight="25.0" prefWidth="122.0" />
       <Button fx:id="btnShowQuestion" layoutX="484.0" layoutY="229.0" mnemonicParsing="false" onAction="#btnShowQuestion" prefHeight="30.0" prefWidth="74.0" text="Show">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnRemoveQuestion" layoutX="569.0" layoutY="227.0" mnemonicParsing="false" onAction="#btnRemoveQuestion" onMouseClicked="#btnRemoveQuestion" prefHeight="30.0" prefWidth="74.0" text="Remove" textFill="#da0c0c" visible="false">
+      <Button fx:id="btnRemoveQuestion" layoutX="569.0" layoutY="229.0" mnemonicParsing="false" onAction="#btnRemoveQuestion" onMouseClicked="#btnRemoveQuestion" prefHeight="30.0" prefWidth="74.0" text="Remove" textFill="#da0c0c">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Label fx:id="textTimeForExam" layoutX="281.0" layoutY="175.0" prefHeight="30.0" prefWidth="135.0" text="120 minutes" textFill="#6a6868">
+      <Label fx:id="textTimeForExam" layoutX="281.0" layoutY="175.0" prefHeight="30.0" prefWidth="135.0" text="120 minutes" textFill="#6a6868" visible="false">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <TextArea fx:id="textTeacherComment" disable="true" layoutX="281.0" layoutY="315.0" prefHeight="91.0" prefWidth="333.0" />
-      <Text layoutX="84.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Comment For Students :">
+      <TextArea fx:id="textTeacherComment" layoutX="281.0" layoutY="315.0" prefHeight="91.0" prefWidth="333.0" />
+      <Text layoutX="77.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Comment For Students :">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextArea fx:id="textStudentComment" disable="true" layoutX="281.0" layoutY="422.0" prefHeight="91.0" prefWidth="333.0" />
-      <Button fx:id="btnUpdate_studentComment" layoutX="637.0" layoutY="453.0" mnemonicParsing="false" onAction="#btnUpdate_studentComment" onMouseClicked="#btnUpdate_studentComment" prefHeight="30.0" prefWidth="74.0" text="Update" visible="false">
+      <TextArea fx:id="textStudentComment" layoutX="281.0" layoutY="422.0" prefHeight="91.0" prefWidth="333.0" />
+      <Button fx:id="btnUpdate_studentComment" layoutX="637.0" layoutY="453.0" mnemonicParsing="false" onAction="#btnUpdate_studentComment" onMouseClicked="#btnUpdate_studentComment" prefHeight="30.0" prefWidth="74.0" text="Update">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnUpdate_teacherComment" layoutX="637.0" layoutY="346.0" mnemonicParsing="false" onAction="#btnUpdate_teacherComment" onMouseClicked="#btnUpdate_teacherComment" prefHeight="30.0" prefWidth="74.0" text="Update" visible="false">
+      <Button fx:id="btnUpdate_teacherComment" layoutX="637.0" layoutY="346.0" mnemonicParsing="false" onAction="#btnUpdate_teacherComment" onMouseClicked="#btnUpdate_teacherComment" prefHeight="30.0" prefWidth="74.0" text="Update">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnSaveEditeExam" layoutX="329.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnSaveEditeExam" prefHeight="30.0" prefWidth="122.0" text="Save Changes" visible="false">
+      <Button fx:id="btnSaveEditeExam" layoutX="329.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnSaveEditeExam" prefHeight="30.0" prefWidth="122.0" text="Save Changes">
          <font>
             <Font size="14.0" />
          </font>
@@ -80,10 +80,11 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Text fx:id="textNavigation" fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Exam Bank &gt; Exam Detailes" underline="true" wrappingWidth="575.5537109375">
+      <Text fx:id="textNavigation" fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Exam Bank &gt; Exam Detailes" underline="true" visible="false" wrappingWidth="575.5537109375">
          <font>
             <Font name="System Italic" size="14.0" />
          </font>
       </Text>
+      <TextField fx:id="textTimeAllocateForExam" layoutX="279.0" layoutY="178.0" prefHeight="25.0" prefWidth="122.0" />
    </children>
 </AnchorPane>
