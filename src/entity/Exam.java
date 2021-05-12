@@ -26,7 +26,7 @@ public class Exam implements Serializable{
 
 
 	public Exam(String examID, Profession profession, Course course, int timeOfExam, ArrayList<Question> questions,
-			ArrayList<Integer> questionScores, String commentForTeacher, String commentForStudents, Teacher author) {
+			HashMap<String, Integer> questionScores, String commentForTeacher, String commentForStudents, Teacher author) {
 		super();
 		this.examID = examID;
 		this.profession = profession;
@@ -89,13 +89,13 @@ public class Exam implements Serializable{
 
 
 
-	public ArrayList<Integer> getQuestionScores() {
+	public HashMap<String, Integer> getQuestionScores() {
 		return questionScores;
 	}
 
 
 
-	public void setQuestionScores(ArrayList<Integer> questionScores) {
+	public void setQuestionScores(HashMap<String, Integer> questionScores) {
 		this.questionScores = questionScores;
 	}
 
