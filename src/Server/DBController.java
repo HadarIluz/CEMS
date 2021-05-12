@@ -1,6 +1,7 @@
 package Server;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,7 +9,7 @@ import java.sql.SQLException;
 
 import entity.User;
 import entity.UserType;
-import gui_prototype.ServerFrameController;
+import gui_server.ServerFrameController;
 import logic.TestRow;
 import logic.UpdateDataRequest;
 

@@ -5,8 +5,9 @@ package Server;
 
 import java.io.IOException;
 
+
 import entity.User;
-import gui_prototype.ServerFrameController;
+import gui_server.ServerFrameController;
 import logic.RequestToServer;
 import logic.StatusMsg;
 import logic.UpdateDataRequest;
