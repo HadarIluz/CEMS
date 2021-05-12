@@ -10,33 +10,33 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.CreateQuestionController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="giu_teacher.CreateQuestionController">
    <children>
-      <TextField disable="true" editable="false" layoutX="236.0" layoutY="134.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Question" text="How much is 2+2?" />
-      <Text layoutX="59.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Qustion:">
+      <TextField fx:id="textTheQuestion" disable="true" editable="false" layoutX="236.0" layoutY="134.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Question" text="How much is 2+2?" />
+      <Text layoutX="59.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Question:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text layoutX="60.0" layoutY="458.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:">
+      <Text layoutX="58.0" layoutY="458.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextArea disable="true" layoutX="230.0" layoutY="442.0" prefHeight="72.0" prefWidth="383.0" promptText="Enter description of question (optional)" />
-      <Button fx:id="btnNext" layoutX="590.0" layoutY="536.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="Done" visible="false" />
+      <TextArea fx:id="textDescription" disable="true" layoutX="230.0" layoutY="442.0" prefHeight="72.0" prefWidth="383.0" promptText="Enter description of question (optional)" />
+      <Button fx:id="btnSaveQuestion" layoutX="590.0" layoutY="536.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnSaveQuestion" prefHeight="25.0" prefWidth="124.0" text="Done" visible="false" />
       <Text layoutX="59.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profession:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <ComboBox layoutX="235.0" layoutY="178.0" prefWidth="150.0" promptText="profession list" visible="false" />
-      <Text fill="#e44d4d" layoutX="47.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" wrappingWidth="20.356842041015625">
+      <ComboBox fx:id="selectProfession" layoutX="235.0" layoutY="178.0" onAction="#selectProfession" onMouseClicked="#selectProfession" prefWidth="150.0" promptText="profession list" visible="false" />
+      <Text fill="#e44d4d" layoutX="47.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="46.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" wrappingWidth="20.356842041015625">
+      <Text fill="#e44d4d" layoutX="46.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
@@ -46,57 +46,57 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Text>
-      <TextField disable="true" editable="false" layoutX="235.0" layoutY="219.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" text="2" />
+      <TextField fx:id="textAnswer1" disable="true" editable="false" layoutX="235.0" layoutY="219.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" text="2" />
       <Text layoutX="58.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 1:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField disable="true" editable="false" layoutX="234.0" layoutY="262.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" text="3" />
+      <TextField fx:id="textAnswer2" disable="true" editable="false" layoutX="234.0" layoutY="262.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" text="3" />
       <Text layoutX="57.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 2:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField disable="true" editable="false" layoutX="233.0" layoutY="308.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" text="4" />
+      <TextField fx:id="textAnswer3" disable="true" editable="false" layoutX="233.0" layoutY="308.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" text="4" />
       <Text layoutX="56.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField disable="true" editable="false" layoutX="232.0" layoutY="351.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" text="6" />
+      <TextField fx:id="textAnswer4" disable="true" editable="false" layoutX="232.0" layoutY="351.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" text="6" />
       <Text layoutX="55.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 4:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="46.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" wrappingWidth="20.356842041015625">
+      <Text fill="#e44d4d" layoutX="46.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="46.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" wrappingWidth="20.356842041015625">
+      <Text fill="#e44d4d" layoutX="46.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="45.0" layoutY="331.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" wrappingWidth="20.356842041015625">
+      <Text fill="#e44d4d" layoutX="45.0" layoutY="331.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="45.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" wrappingWidth="20.356842041015625">
+      <Text fill="#e44d4d" layoutX="45.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <ComboBox layoutX="230.0" layoutY="398.0" prefHeight="25.0" prefWidth="193.0" promptText="choose correct answer" visible="false" />
-      <Text fill="#3f3f3f" layoutX="234.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3." wrappingWidth="131.80004842579365">
+      <ComboBox fx:id="selectCorrectAnswer" layoutX="230.0" layoutY="398.0" onAction="#selectCorrectAnswer" onMouseClicked="#selectCorrectAnswer" prefHeight="25.0" prefWidth="193.0" promptText="choose correct answer" visible="false" />
+      <Text fx:id="textCorrectAnswerIndex" fill="#3f3f3f" layoutX="234.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3." wrappingWidth="131.80004842579365">
          <font>
             <Font size="14.0" />
          </font>
       </Text>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="607.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgQuestionHead" fitHeight="150.0" fitWidth="200.0" layoutX="607.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/question.png" />
          </image>
@@ -106,18 +106,18 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="43.0" layoutY="419.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" wrappingWidth="20.356842041015625">
+      <Text fill="#e44d4d" layoutX="43.0" layoutY="419.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Exam Bank &gt; Exam Detailes&gt;Show Question" underline="true" wrappingWidth="575.5537109375">
+      <Text fx:id="textNavigation" fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Exam Bank &gt; Exam Detailes&gt;Show Question" underline="true" wrappingWidth="575.5537109375">
          <font>
             <Font name="System Italic" size="14.0" />
          </font>
       </Text>
-      <Button fx:id="btnNext1" layoutX="80.0" layoutY="536.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="&lt;Back" />
-      <Text fill="#3f3f3f" layoutX="234.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Algebra1" wrappingWidth="119.56250596046448">
+      <Button fx:id="btnBack" layoutX="80.0" layoutY="536.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnBack" prefHeight="25.0" prefWidth="124.0" text="&lt;Back" />
+      <Text fx:id="textProfession" fill="#3f3f3f" layoutX="234.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Algebra1" wrappingWidth="119.56250596046448">
          <font>
             <Font size="14.0" />
          </font>

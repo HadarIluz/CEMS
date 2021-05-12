@@ -10,14 +10,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.CreateExam_addQ_step2Controller">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="giu_teacher.CreateExam_addQ_step2Controller">
    <children>
       <Text layoutX="87.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question Number : ">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Button layoutX="471.0" layoutY="345.0" mnemonicParsing="false" text="Create new question">
+      <Button fx:id="btnCreateNewQuestion" layoutX="471.0" layoutY="347.0" mnemonicParsing="false" onAction="#btnCreateNewQuestion" text="Create new question">
          <font>
             <Font size="14.0" />
          </font>
@@ -27,56 +27,56 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField layoutX="269.0" layoutY="249.0" prefHeight="25.0" prefWidth="122.0" promptText="Enter Score" />
+      <TextField fx:id="textEnterCode" layoutX="269.0" layoutY="249.0" prefHeight="25.0" prefWidth="122.0" promptText="Enter Score" />
       <Text layoutX="86.0" layoutY="446.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Exam Score : ">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Button layoutX="265.0" layoutY="346.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="Add to exam" textFill="#366900">
+      <Button fx:id="btnAddQuestionToExam" layoutX="265.0" layoutY="346.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnAddQuestionToExam" onMouseClicked="#btnAddQuestionToExam" prefHeight="25.0" prefWidth="124.0" text="Add to exam" textFill="#366900">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <ComboBox layoutX="269.0" layoutY="176.0" prefHeight="37.0" prefWidth="354.0" promptText="Question Number" />
+      <ComboBox fx:id="selectQuestionNumber" layoutX="269.0" layoutY="176.0" onAction="#selectQuestionNumber" prefHeight="37.0" prefWidth="354.0" promptText="Question Number" />
       <Text fill="#4672ae" layoutX="246.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create New Exam" wrappingWidth="256.150390625">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
       </Text>
-      <ImageView fitHeight="137.0" fitWidth="135.0" layoutX="568.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgComputer" fitHeight="137.0" fitWidth="135.0" layoutX="568.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/teacher-Principal_img/desktop.png" />
          </image>
       </ImageView>
-      <Label layoutX="315.0" layoutY="431.0" prefHeight="21.0" prefWidth="48.0" text="&lt;100" textFill="#fc7143">
+      <Label fx:id="text100" layoutX="315.0" layoutY="431.0" prefHeight="21.0" prefWidth="48.0" text="&lt;100" textFill="#fc7143">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <ImageView fitHeight="59.0" fitWidth="74.0" layoutX="234.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgStep1" fitHeight="59.0" fitWidth="74.0" layoutX="234.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/cems_img/step1.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="59.0" fitWidth="74.0" layoutX="338.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgStep2" fitHeight="59.0" fitWidth="74.0" layoutX="338.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/cems_img/step2color.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="59.0" fitWidth="74.0" layoutX="442.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgStep3" fitHeight="59.0" fitWidth="74.0" layoutX="442.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/cems_img/step3.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnBack" layoutX="74.0" layoutY="517.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="122.0" text="Back" />
-      <Button fx:id="btnNext" disable="true" layoutX="600.0" layoutY="517.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="NEXT &gt;" />
-      <Text layoutX="268.0" layoutY="447.0" strokeType="OUTSIDE" strokeWidth="0.0" text="60">
+      <Button fx:id="btnBack" layoutX="74.0" layoutY="517.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnBack" prefHeight="25.0" prefWidth="122.0" text="Back" />
+      <Button fx:id="btnNext" disable="true" layoutX="600.0" layoutY="517.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnNext" prefHeight="25.0" prefWidth="124.0" text="NEXT &gt;" />
+      <Text fx:id="textTotalScore" layoutX="268.0" layoutY="447.0" onInputMethodTextChanged="#textTotalScore" strokeType="OUTSIDE" strokeWidth="0.0" text="60">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Label layoutX="359.0" layoutY="433.0" text="Exam score not equal to 100 !" textFill="#f45050">
+      <Label fx:id="textErrorMsg" layoutX="359.0" layoutY="433.0" text="Exam score not equal to 100 !" textFill="#f45050">
          <font>
             <Font size="14.0" />
          </font>

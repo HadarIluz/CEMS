@@ -1,5 +1,6 @@
 package giu_teacher;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,34 +8,27 @@ import javafx.scene.control.TextField;
 
 public class AddTimeToExamController {
 
-	@FXML
-	private Button Submit;
+    @FXML
+    private Button btnSubmitTimeExtentionRequest;
 
-	@FXML
-	private Label lblAddditionalTime;
+    @FXML
+    private Label lblNoteInMinutes;
 
-	@FXML
-	private Label lblNoteInMinutes;
+    @FXML
+    private TextField textAdditionalTime;
 
-	@FXML
-	private TextField TextAdditionalTime;
+    @FXML
+    private TextField textReqReason;
 
-	@FXML
-	private TextField TextReqReason;
+    @FXML
+    private TextField textExamCode;
 
-	@FXML
-	private Label lblAddditionalTime1;
+    @FXML
+    private TextField textExamID;
 
-	@FXML
-	private TextField TextAdditionalTime1;
+    @FXML
+    void btnSubmitTimeExtentionRequest(ActionEvent event) {
 
-	@FXML
-	private Label lblAddditionalTime11;
-
-	@FXML
-	private TextField TextAdditionalTime11;
-
-	@FXML
-	private Label lblAddditionalTime2;
+    }
 
 }

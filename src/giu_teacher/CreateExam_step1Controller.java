@@ -1,21 +1,53 @@
 package giu_teacher;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
 public class CreateExam_step1Controller {
 
-	@FXML
-	private Button btnNext;
+    @FXML
+    private TextArea textLecturers_Instructions;
 
-	@FXML
-	private ComboBox<?> btnProffessionList;
+    @FXML
+    private Button btnNext;
 
-	@FXML
-	void btnProffessionList(MouseEvent event) {
+    @FXML
+    private ComboBox<?> selectProffessionList;
 
-	}
+    @FXML
+    private ComboBox<?> selectCourseList;
+
+    @FXML
+    private TextField textExamDuration;
+
+    @FXML
+    private ImageView imgStep1;
+
+    @FXML
+    private Text textAuthor;
+
+    @FXML
+    private ImageView imgComputer;
+
+    @FXML
+    void btnNext(ActionEvent event) {
+
+    }
+
+    @FXML
+    void selectCourseList(ActionEvent event) {
+
+    }
+
+    @FXML
+    void selectProffessionList(ActionEvent event) {
+
+    }
 
 }

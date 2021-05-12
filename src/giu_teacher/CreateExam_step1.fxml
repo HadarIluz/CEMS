@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.CreateExam_step1Controller">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="giu_teacher.CreateExam_step1Controller">
    <children>
       <Text layoutX="59.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Author : ">
          <font>
@@ -23,26 +23,26 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextArea layoutX="232.0" layoutY="351.0" prefHeight="72.0" prefWidth="383.0" promptText="Please write comment to teacher" />
+      <TextArea fx:id="textLecturers_Instructions" layoutX="232.0" layoutY="351.0" prefHeight="72.0" prefWidth="383.0" promptText="Please write comment to teacher" />
       <Text layoutX="56.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lecturers Instructions: ">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextArea layoutX="233.0" layoutY="437.0" prefHeight="72.0" prefWidth="383.0" promptText="Please write comment to student" />
-      <Button fx:id="btnNext" layoutX="590.0" layoutY="536.0" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="NEXT &gt;" />
+      <TextArea fx:id="textLecturers_Instructions" layoutX="233.0" layoutY="437.0" prefHeight="72.0" prefWidth="383.0" promptText="Please write comment to student" />
+      <Button fx:id="btnNext" layoutX="590.0" layoutY="536.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnNext" prefHeight="25.0" prefWidth="124.0" text="NEXT &gt;" />
       <Text layoutX="59.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profession:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <ComboBox fx:id="btnProffessionList" layoutX="235.0" layoutY="196.0" onAction="#btnProffessionList" onMouseClicked="#btnProffessionList" prefWidth="150.0" promptText="profession list" />
+      <ComboBox fx:id="selectProffessionList" layoutX="235.0" layoutY="196.0" onAction="#selectProffessionList" prefWidth="150.0" promptText="profession list" />
       <Text layoutX="59.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Course:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <ComboBox disable="true" layoutX="235.0" layoutY="240.0" prefWidth="150.0" promptText="courseList" />
+      <ComboBox fx:id="selectCourseList" disable="true" layoutX="235.0" layoutY="240.0" onAction="#selectCourseList" prefWidth="150.0" promptText="courseList" />
       <Text fill="#e44d4d" layoutX="46.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
@@ -63,28 +63,28 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField editable="false" layoutX="236.0" layoutY="287.0" promptText="In minutes" />
+      <TextField fx:id="textExamDuration" editable="false" layoutX="236.0" layoutY="287.0" promptText="In minutes" />
       <Text fill="#4672ae" layoutX="256.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create New Exam" wrappingWidth="256.150390625">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
       </Text>
-      <ImageView fitHeight="59.0" fitWidth="74.0" layoutX="244.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgStep1" fitHeight="59.0" fitWidth="74.0" layoutX="244.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/cems_img/step1color.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="59.0" fitWidth="74.0" layoutX="348.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgStep1" fitHeight="59.0" fitWidth="74.0" layoutX="348.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/cems_img/step2.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="59.0" fitWidth="74.0" layoutX="452.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgStep1" fitHeight="59.0" fitWidth="74.0" layoutX="452.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/cems_img/step3.png" />
          </image>
       </ImageView>
-      <Text fill="#656464" layoutX="238.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&quot;Jennifer Aniston&quot;">
+      <Text fx:id="textAuthor" fill="#656464" layoutX="238.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&quot;Jennifer Aniston&quot;">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -94,7 +94,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <ImageView fitHeight="137.0" fitWidth="135.0" layoutX="578.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgComputer" fitHeight="137.0" fitWidth="135.0" layoutX="578.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/teacher-Principal_img/desktop.png" />
          </image>

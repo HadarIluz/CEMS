@@ -9,14 +9,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.EditExamController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="giu_teacher.EditExamController">
    <children>
-      <Text layoutX="87.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question Number : ">
+      <Text layoutX="87.0" layoutY="249.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question Number : ">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text layoutX="86.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Alloted For Exam :">
+      <Text layoutX="86.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Alloted For Exam :">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -26,71 +26,61 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <ComboBox fx:id="selectQuestion" layoutX="269.0" layoutY="208.0" prefHeight="37.0" prefWidth="180.0" promptText="Select Question" />
-      <Text fill="#4672ae" layoutX="246.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam Details" textAlignment="CENTER" wrappingWidth="256.150390625">
+      <ComboBox fx:id="selectQuestion" layoutX="282.0" layoutY="224.0" onAction="#selectQuestion" onMouseClicked="#selectQuestion" prefHeight="37.0" prefWidth="180.0" promptText="Select Question" />
+      <Text fx:id="texTtitleScreen" fill="#4672ae" layoutX="246.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam Details" textAlignment="CENTER" wrappingWidth="256.150390625">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="87.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam ID :">
+      <Text layoutX="87.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam ID :">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="examID" disable="true" layoutX="269.0" layoutY="120.0" prefHeight="25.0" prefWidth="122.0" promptText="Enter Exam ID" text="010203" />
-      <Button fx:id="btnShow" layoutX="471.0" layoutY="213.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Show">
+      <TextField fx:id="textExamID" disable="true" layoutX="279.0" layoutY="138.0" prefHeight="25.0" prefWidth="122.0" promptText="Enter Exam ID" text="010203" />
+      <Button fx:id="btnShowQuestion" layoutX="484.0" layoutY="229.0" mnemonicParsing="false" onAction="#btnShowQuestion" prefHeight="30.0" prefWidth="74.0" text="Show">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnRemove" layoutX="563.0" layoutY="213.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Remove" textFill="#da0c0c" visible="false">
+      <Button fx:id="btnRemoveQuestion" layoutX="569.0" layoutY="227.0" mnemonicParsing="false" onAction="#btnRemoveQuestion" onMouseClicked="#btnRemoveQuestion" prefHeight="30.0" prefWidth="74.0" text="Remove" textFill="#da0c0c" visible="false">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Label layoutX="276.0" layoutY="157.0" prefHeight="30.0" prefWidth="135.0" text="120 minutes" textFill="#6a6868">
+      <Label fx:id="textTimeForExam" layoutX="281.0" layoutY="175.0" prefHeight="30.0" prefWidth="135.0" text="120 minutes" textFill="#6a6868">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Text layoutX="86.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Alloted For Question :">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </Text>
-      <Label layoutX="295.0" layoutY="270.0" prefHeight="21.0" prefWidth="71.0">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <TextArea disable="true" layoutX="281.0" layoutY="315.0" prefHeight="91.0" prefWidth="333.0" />
+      <TextArea fx:id="textTeacherComment" disable="true" layoutX="281.0" layoutY="315.0" prefHeight="91.0" prefWidth="333.0" />
       <Text layoutX="84.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Comment For Students :">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextArea disable="true" layoutX="281.0" layoutY="422.0" prefHeight="91.0" prefWidth="333.0" />
-      <Button layoutX="637.0" layoutY="453.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Update" visible="false">
+      <TextArea fx:id="textStudentComment" disable="true" layoutX="281.0" layoutY="422.0" prefHeight="91.0" prefWidth="333.0" />
+      <Button fx:id="btnUpdate_studentComment" layoutX="637.0" layoutY="453.0" mnemonicParsing="false" onAction="#btnUpdate_studentComment" onMouseClicked="#btnUpdate_studentComment" prefHeight="30.0" prefWidth="74.0" text="Update" visible="false">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="637.0" layoutY="346.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Update" visible="false">
+      <Button fx:id="btnUpdate_teacherComment" layoutX="637.0" layoutY="346.0" mnemonicParsing="false" onAction="#btnUpdate_teacherComment" onMouseClicked="#btnUpdate_teacherComment" prefHeight="30.0" prefWidth="74.0" text="Update" visible="false">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="329.0" layoutY="534.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="122.0" text="Save Changes" visible="false">
+      <Button fx:id="btnSaveEditeExam" layoutX="329.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnSaveEditeExam" prefHeight="30.0" prefWidth="122.0" text="Save Changes" visible="false">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="27.0" layoutY="534.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="122.0" text="&lt;Back">
+      <Button fx:id="btnBack" layoutX="27.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnBack" prefHeight="30.0" prefWidth="122.0" text="&lt;Back">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Text fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Exam Bank &gt; Exam Detailes" underline="true" wrappingWidth="575.5537109375">
+      <Text fx:id="textNavigation" fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Exam Bank &gt; Exam Detailes" underline="true" wrappingWidth="575.5537109375">
          <font>
             <Font name="System Italic" size="14.0" />
          </font>
