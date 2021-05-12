@@ -2,6 +2,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Exam implements Serializable{
 
@@ -10,7 +11,7 @@ public class Exam implements Serializable{
 	private Course course;
 	private int timeOfExam;
 	private ArrayList<Question> questions;
-	private ArrayList<Integer> questionScores;
+	private HashMap<String,Integer> questionScores; // mapping the questionID(string) to score(integer)
 	private String commentForTeacher;
 	private String commentForStudents;
 	private Teacher author; // is this relevant or to delete?
