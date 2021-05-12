@@ -9,14 +9,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="585.0" prefWidth="227.2" style="-fx-background-color: #E0FFFF;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boundary.PrincipalController">
+<AnchorPane prefHeight="585.0" prefWidth="227.2" style="-fx-background-color: #E0FFFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_principal.PrincipalController">
    <children>
       <ImageView fx:id="person" fitHeight="111.0" fitWidth="112.0" layoutX="58.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/teacher-Principal_img/PrincipalUserImg.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="71.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="logo" fitHeight="71.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/cems_img/NewLogo.png" />
          </image>
@@ -26,17 +26,17 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="userName" alignment="CENTER" layoutX="50.0" layoutY="187.0" prefHeight="27.0" prefWidth="121.0" text="Angelina Jolie" textFill="#420775">
+      <Label fx:id="lblUserName" alignment="CENTER" layoutX="50.0" layoutY="187.0" prefHeight="27.0" prefWidth="121.0" text="Angelina Jolie" textFill="#420775">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lblContactUs" alignment="CENTER" layoutX="9.0" layoutY="473.0" prefHeight="39.0" prefWidth="209.0" text="Contact us" textFill="#dda107">
+      <Label alignment="CENTER" layoutX="9.0" layoutY="473.0" prefHeight="39.0" prefWidth="209.0" text="Contact us" textFill="#dda107">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Label>
-      <Label fx:id="lblPhone" alignment="CENTER_RIGHT" layoutX="38.0" layoutY="508.0" prefHeight="35.0" prefWidth="145.0" text="Phone: 04-9901843">
+      <Label alignment="CENTER_RIGHT" layoutX="38.0" layoutY="508.0" prefHeight="35.0" prefWidth="145.0" text="Phone: 04-9901843">
          <font>
             <Font name="System Italic" size="16.0" />
          </font>
@@ -46,7 +46,7 @@
             <Image url="@../../images/phoneIcon.png" />
          </image>
       </ImageView>
-      <Label fx:id="lblEmail" alignment="CENTER_RIGHT" layoutX="39.0" layoutY="546.0" prefHeight="25.0" prefWidth="181.0" text="E-mail: cems@gmail.com">
+      <Label alignment="CENTER_RIGHT" layoutX="39.0" layoutY="546.0" prefHeight="25.0" prefWidth="181.0" text="E-mail: cems@gmail.com">
          <font>
             <Font name="System Italic" size="16.0" />
          </font>
@@ -59,20 +59,20 @@
             <Image url="@../../images/messageContactUsIcon.png" />
          </image>
       </ImageView>
-      <Button alignment="CENTER" layoutX="4.0" layoutY="227.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="221.0" text="Get Reports">
+      <Button fx:id="btnGetReports" alignment="CENTER" layoutX="4.0" layoutY="227.0" mnemonicParsing="false" onAction="#btnGetReports" prefHeight="49.0" prefWidth="221.0" text="Get Reports">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
       <Separator layoutX="6.0" layoutY="278.0" prefHeight="3.0" prefWidth="221.0" />
       <Separator layoutX="3.0" layoutY="224.0" prefHeight="3.0" prefWidth="221.0" />
-      <Button alignment="CENTER" layoutX="3.0" layoutY="281.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="221.0" text="Approve Time Extention">
+      <Button fx:id="btnApproveTimeExtention" alignment="CENTER" layoutX="3.0" layoutY="281.0" mnemonicParsing="false" onAction="#btnApproveTimeExtention" prefHeight="49.0" prefWidth="221.0" text="Approve Time Extention">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
       <Separator layoutX="3.0" layoutY="387.0" prefHeight="3.0" prefWidth="221.0" />
-      <Button alignment="CENTER" layoutX="3.0" layoutY="335.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="221.0" text="View info">
+      <Button fx:id="btnViewInfo" alignment="CENTER" layoutX="3.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnViewInfo" prefHeight="49.0" prefWidth="221.0" text="View info">
          <font>
             <Font size="15.0" />
          </font>

@@ -6,35 +6,16 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boundary.PrincipalDisplayReporByController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_principal.PrincipalDisplayReporByController">
    <children>
-      <Label layoutX="75.0" layoutY="101.0" prefHeight="31.0" prefWidth="101.0" text="Course:" underline="true">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label contentDisplay="TOP" layoutX="279.0" layoutY="174.0" prefHeight="37.0" prefWidth="157.0" text="Grades Average: " textAlignment="RIGHT" underline="true">
-         <font>
-            <Font name="System Bold" size="19.0" />
-         </font>
-      </Label>
-      <Label layoutX="71.0" layoutY="177.0" text="Median:" underline="true">
+      <Label fx:id="lblMedian" alignment="CENTER" layoutX="174.0" layoutY="178.0" prefHeight="35.0" prefWidth="45.0" text="60" textFill="#255084">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="160.0" layoutY="176.0" prefHeight="35.0" prefWidth="71.0" text="60" textFill="#255084">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <Label layoutX="230.0" layoutY="37.0" text="Report By Course" textFill="#4a6fbd">
-         <font>
-            <Font name="Arial Bold" size="32.0" />
-         </font>
-      </Label>
-      <BarChart fx:id="StudentsHisto" alternativeColumnFillVisible="true" barGap="25.0" layoutX="40.0" layoutY="254.0" legendSide="TOP" prefHeight="317.0" prefWidth="681.0" title="Grades Distribution:">
+      <BarChart fx:id="CourseHisto" alternativeColumnFillVisible="true" barGap="25.0" layoutX="40.0" layoutY="254.0" legendSide="TOP" prefHeight="317.0" prefWidth="681.0" title="Grades Distribution:">
          <xAxis>
             <CategoryAxis prefHeight="15.0" prefWidth="607.0" side="BOTTOM" tickLabelFill="#171717" tickLabelGap="10.0" />
          </xAxis>
@@ -42,15 +23,35 @@
             <NumberAxis side="LEFT" tickLabelGap="5.0" />
          </yAxis>
       </BarChart>
-      <Label alignment="CENTER" layoutX="427.0" layoutY="175.0" prefHeight="35.0" prefWidth="71.0" text="75" textFill="#255084">
+      <Label fx:id="lblGradesAverage" alignment="CENTER" layoutX="444.0" layoutY="178.0" prefHeight="35.0" prefWidth="58.0" text="75" textFill="#255084">
          <font>
-            <Font name="System Bold" size="24.0" />
+            <Font name="System Bold" size="22.0" />
          </font>
       </Label>
-      <Label contentDisplay="TOP" layoutX="184.0" layoutY="98.0" prefHeight="37.0" prefWidth="157.0" text="Algebra1 -(03)" textAlignment="RIGHT" textFill="#255084">
+      <Label fx:id="lblCourse" contentDisplay="TOP" layoutX="184.0" layoutY="98.0" prefHeight="37.0" prefWidth="157.0" text="Algebra1 -(03)" textAlignment="RIGHT" textFill="#255084">
          <font>
-            <Font name="System Bold" size="20.0" />
+            <Font name="System Bold" size="22.0" />
          </font>
       </Label>
+      <Text layoutX="90.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Course:" underline="true">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="90.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Median:" underline="true">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="279.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Grades Average:" underline="true">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Text>
+      <Text fill="#4a6fbd" layoutX="250.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Report By Course">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
