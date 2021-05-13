@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 public class PrincipalController {
 
@@ -44,6 +45,11 @@ public class PrincipalController {
 
     @FXML
     void btnViewInfo(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void pressLogout(MouseEvent event) {
 
     }
 

@@ -21,7 +21,7 @@ public class DisplayScreenTask extends Application {
 			//LEFT SCREENS:
 			//-->
 			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("/boundary/PrincipalMenuLeft.fxml"));
-			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
+			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherController.fxml"));
 			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("PrincipalMenuLeft.fxml"));
 			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("Login.fxml"));
 			primaryStage.setTitle("CEMS-Computerized Exam Management System");
