@@ -1,7 +1,6 @@
 package gui_cems;
 
 import java.io.IOException;
-
 import client.CEMSClient;
 import client.ClientUI;
 import entity.User;
@@ -20,9 +19,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import logic.RequestToServer;
 
 public class LoginController {
 	public User user;
+	public RequestToServer requestToServer;
 
 	@FXML
 	private ImageView background;
@@ -78,17 +79,15 @@ public class LoginController {
 		if (!userID.trim().isEmpty() &&  !userPassword.trim().isEmpty() && userID.length()==9 ) {
 			int id = Integer.parseInt(txtUserName.getText().trim());
 			user = new User(id, userPassword);
-			//ClientUI.cems.accept(userName);  
-			//Hadar`s Note:
-			//i think the user name need to be id
-			// if there is 2 Hadar Iluz with the same password.. so which on of them can enter into the system??
-			//so i implement in the server for now the id unless it is not true.
-			ClientUI.cems.accept(userID); //here he types int id
+			requestToServer= new RequestToServer("getUser"); //set in 'Serializable' class my request from server. 
+			ClientUI.cems.accept(userID);					//sent server pk to DB in order to checks if user exist or not.
 			if (CEMSClient.statusMsg.getStatus().equals("USER NOT FOUND")) {
-				showMsg(reqFieldUserName, "User name not exist.");
+				showMsg(reqFieldUserName, "User ID not exist.");
 			}
 			//checks password, userType, open controllers according to type and more..... tomorrow.
-			//if()
+			//
+			//now server send back all details on this id user.
+			//if( )
 		}
 		
 

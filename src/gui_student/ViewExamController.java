@@ -3,48 +3,63 @@ package gui_student;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
 public class ViewExamController {
 
-	@FXML
-	private Text txtExamID;
+    @FXML
+    private TextField txtExamID;
 
-	@FXML
-	private Button btnCopy;
+    @FXML
+    private Button btnGetCopyOfExam;
 
-	@FXML
-	private Button btnGrade;
+    @FXML
+    private Button btnViewGrade;
 
-	@FXML
-	private Text txtViewExamInfo;
+    @FXML
+    private Text txtReqField;
 
-	@FXML
-	private Text txtReqField;
+    @FXML
+    private Label lblCourse;
 
-	@FXML
-	private Label lblCourse;
+    @FXML
+    private Label lblGrade;
 
-	@FXML
-	private Label lblGrade;
+    @FXML
+    private Label textCourseName;
 
-	@FXML
-	private Label lblCourseName;
+    @FXML
+    private Label textGrade;
 
-	@FXML
-	private Label lblShowGrade;
+    @FXML
+    private Label lblProfession;
 
-	@FXML
-	private Label lblProfession;
+    @FXML
+    private Label textProfessionName;
 
-	@FXML
-	private Label lblProfessionName;
+    @FXML
+    private Label lblDownload;
 
-	@FXML
-	private Label lblDownload;
+    @FXML
+    private ImageView imgDownload;
 
-	@FXML
-	private ImageView DownloadIcon;
+    @FXML
+    private Label lblExamIDNotFound;
+
+    @FXML
+    private ImageView imgRefresh;
+
+    @FXML
+    void btnGetCopyOfExam(MouseEvent event) {
+
+    }
+
+    @FXML
+    void btnViewGrade(MouseEvent event) {
+
+    }
 
 }

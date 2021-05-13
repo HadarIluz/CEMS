@@ -1,6 +1,10 @@
 package logic;
 
-public class RequestToServer {
+import java.io.Serializable;
+
+
+@SuppressWarnings("serial")
+public class RequestToServer implements Serializable{
 	
 	private String requestType; // for example: getUser, createNewExam, etc...
 	private Object requestData = null; // here you'll set an object to pass the server in case you have one.

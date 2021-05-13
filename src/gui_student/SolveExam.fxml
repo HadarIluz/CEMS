@@ -12,24 +12,24 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.SolveExamController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_student.SolveExamController">
    <children>
-      <Button fx:id="btnSubmit" layoutX="517.0" layoutY="495.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" text="Submit">
+      <Button fx:id="btnSubmitExam" layoutX="517.0" layoutY="495.0" mnemonicParsing="false" onAction="#btnSubmitExam" prefHeight="40.0" prefWidth="100.0" text="Submit">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <CheckBox fx:id="checkBoxShowTime" layoutX="517.0" layoutY="435.0" mnemonicParsing="false" selected="true" text="Show Time Left">
+      <CheckBox fx:id="checkBoxShowTime" layoutX="517.0" layoutY="435.0" mnemonicParsing="false" onMouseClicked="#checkBoxShowTime" selected="true" text="Show Time Left">
          <font>
             <Font size="14.0" />
          </font>
       </CheckBox>
-      <ImageView fx:id="nextIcon" fitHeight="50.0" fitWidth="50.0" layoutX="688.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgNext" fitHeight="50.0" fitWidth="50.0" layoutX="688.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/nextIcon.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="prevIcon" fitHeight="50.0" fitWidth="50.0" layoutX="23.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgPrev" fitHeight="50.0" fitWidth="50.0" layoutX="23.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/prevIcon.png" />
          </image>
@@ -39,22 +39,22 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <RadioButton fx:id="btnAnswer1" layoutX="232.0" layoutY="335.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="127.0" text="2">
+      <RadioButton fx:id="btnAnswer1" layoutX="232.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnAnswer1" onMouseClicked="#btnAnswer1" prefHeight="17.0" prefWidth="127.0" text="2">
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="btnAnswer2" layoutX="232.0" layoutY="375.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="127.0" text="3">
+      <RadioButton fx:id="btnAnswer2" layoutX="232.0" layoutY="375.0" mnemonicParsing="false" onAction="#btnAnswer2" onMouseClicked="#btnAnswer2" prefHeight="17.0" prefWidth="127.0" text="3">
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="btnAnswer3" layoutX="232.0" layoutY="415.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="127.0" text="4">
+      <RadioButton fx:id="btnAnswer3" layoutX="232.0" layoutY="415.0" mnemonicParsing="false" onAction="#btnAnswer3" onMouseClicked="#btnAnswer3" prefHeight="17.0" prefWidth="127.0" text="4">
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="btnAnswer4" layoutX="232.0" layoutY="455.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="127.0" text="6">
+      <RadioButton fx:id="btnAnswer4" layoutX="232.0" layoutY="455.0" mnemonicParsing="false" onAction="#btnAnswer4" onMouseClicked="#btnAnswer4" prefHeight="17.0" prefWidth="127.0" text="6">
          <font>
             <Font size="14.0" />
          </font>
@@ -75,7 +75,7 @@
          </font>
       </Text>
       <TextArea fx:id="txtQuestionDescription" editable="false" layoutX="232.0" layoutY="222.0" prefHeight="50.0" prefWidth="406.0" />
-      <Label fx:id="lblQuestion" layoutX="232.0" layoutY="283.0" prefHeight="17.0" prefWidth="184.0" text="How much is 2+2?" textFill="#0704c0">
+      <Label fx:id="textQuestion" layoutX="232.0" layoutY="283.0" prefHeight="17.0" prefWidth="184.0" text="How much is 2+2?" textFill="#0704c0">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -90,7 +90,7 @@
          </image></ImageView>
       <Separator layoutX="-2.0" layoutY="65.0" prefHeight="9.0" prefWidth="761.0" />
       <Label fx:id="lblnotificationName" disable="true" layoutX="600.0" layoutY="69.0" opacity="0.0" prefHeight="18.0" prefWidth="100.0" text=" Jennifer Aniston" />
-      <Text fx:id="txtQuestionDescription" layoutX="74.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question Description:">
+      <Text layoutX="74.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question Description:">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

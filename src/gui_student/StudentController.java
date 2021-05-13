@@ -1,5 +1,6 @@
 package gui_student;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,32 +10,53 @@ import javafx.scene.input.MouseEvent;
 public class StudentController {
 
     @FXML
-    private ImageView person;
+    private Label pressLogout;
 
     @FXML
-    private Label userName;
+    private ImageView imgStudent;
 
     @FXML
-    private Label lblContactUs;
+    private ImageView imgLogo;
 
     @FXML
-    private Label lblPhone;
+    private Label textHelloStudent;
 
     @FXML
-    private ImageView phone;
+    private Label textStudentName;
 
     @FXML
-    private Label lblEmail;
+    private Button btnStartManualExam;
 
     @FXML
-    private ImageView messageContactUs;
+    private ImageView imgPhone;
+
+    @FXML
+    private ImageView imgEmail;
 
     @FXML
     private Button btnViewExamInfo;
 
     @FXML
-    void btnViewExamInfo(MouseEvent event) {
+    private Button btnStartComputerizedExam;
+
+    @FXML
+    void btnStartComputerizedExam(ActionEvent event) {
 
     }
-  
+
+    @FXML
+    void btnStartManualExam(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnViewExamInfo(ActionEvent event) {
+
+    }
+
+    @FXML
+    void pressLogout(MouseEvent event) {
+
+    }
+
 }

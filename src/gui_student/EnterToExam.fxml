@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="guiControllers.EnterToExamController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_student.EnterToExamController">
    <children>
-      <Button fx:id="btnStart" layoutX="299.0" layoutY="397.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="173.0" text="Click here to start">
+      <Button fx:id="btnStart" layoutX="299.0" layoutY="397.0" mnemonicParsing="false" onAction="#btnStart" prefHeight="45.0" prefWidth="173.0" text="Click here to start">
          <font>
             <Font size="15.0" />
          </font>
@@ -29,8 +29,8 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField layoutX="286.0" layoutY="115.0" prefHeight="45.0" prefWidth="205.0" />
-      <TextField layoutX="287.0" layoutY="179.0" prefHeight="45.0" prefWidth="205.0" />
+      <TextField fx:id="textExamCode" layoutX="286.0" layoutY="115.0" onAction="#textExamCode" prefHeight="45.0" prefWidth="205.0" />
+      <TextField fx:id="textStudent" layoutX="287.0" layoutY="179.0" onAction="#textStudent" prefHeight="45.0" prefWidth="205.0" />
       <Label layoutX="283.0" layoutY="345.0" prefHeight="60.0" prefWidth="231.0" text="Best of luck in your exam!" textFill="#1f9aff">
          <font>
             <Font name="System Bold Italic" size="18.0" />
@@ -38,7 +38,7 @@
       </Label>
       <CheckBox fx:id="ApprovalInsrtuctions" layoutX="279.0" layoutY="261.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="200.0" text="I approv reading all insrtuctions " />
       <CheckBox fx:id="CommitPreformByMyself" layoutX="279.0" layoutY="289.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="216.0" text="I commit preform exam by myslef " />
-      <Label fx:id="lblStudentID" layoutX="168.0" layoutY="179.0" prefHeight="49.0" prefWidth="98.0" text="Student ID:">
+      <Label layoutX="168.0" layoutY="179.0" prefHeight="49.0" prefWidth="98.0" text="Student ID:">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>

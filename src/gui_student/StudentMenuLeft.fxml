@@ -9,49 +9,54 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="586.0" prefWidth="227.0" style="-fx-background-color: #E0FFFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boundary.StudentController">
+<AnchorPane prefHeight="586.0" prefWidth="227.0" style="-fx-background-color: #E0FFFF;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_student.StudentController">
    <children>
-      <ImageView fx:id="personIcon" fitHeight="111.0" fitWidth="112.0" layoutX="58.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+      <Label fx:id="pressLogout" layoutX="171.0" layoutY="6.0" onMouseClicked="#pressLogout" text="Logout" textFill="#7a32cc" underline="true">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="imgStudent" fitHeight="111.0" fitWidth="112.0" layoutX="58.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/student_img/signIn_student.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="logoIcon" fitHeight="71.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgLogo" fitHeight="71.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/cems_img/NewLogo.png" />
          </image>
       </ImageView>
-      <Label fx:id="lblHelloStudent" alignment="CENTER" layoutX="40.0" layoutY="167.0" prefHeight="27.0" prefWidth="145.0" text="Hello Student" textFill="#420775">
+      <Label fx:id="textHelloStudent" alignment="CENTER" layoutX="40.0" layoutY="167.0" prefHeight="27.0" prefWidth="145.0" text="Hello Student" textFill="#420775">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="lblUserName" layoutX="58.0" layoutY="186.0" prefHeight="27.0" prefWidth="121.0" text="Leonardo Dicaprio" textFill="#420775">
+      <Label fx:id="textStudentName" layoutX="58.0" layoutY="186.0" prefHeight="27.0" prefWidth="121.0" text="Leonardo Dicaprio" textFill="#420775">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="btnStartManualExam" alignment="CENTER" layoutX="3.0" layoutY="268.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="221.0" text="Start Manual Exam">
+      <Button fx:id="btnStartManualExam" alignment="CENTER" layoutX="3.0" layoutY="268.0" mnemonicParsing="false" onAction="#btnStartManualExam" prefHeight="49.0" prefWidth="221.0" text="Start Manual Exam">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Label fx:id="lblContactUs" alignment="CENTER" layoutX="9.0" layoutY="473.0" prefHeight="39.0" prefWidth="209.0" text="Contact us" textFill="#dda107">
+      <Label alignment="CENTER" layoutX="9.0" layoutY="473.0" prefHeight="39.0" prefWidth="209.0" text="Contact us" textFill="#dda107">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Label>
-      <Label fx:id="lblPhone" alignment="CENTER_RIGHT" layoutX="38.0" layoutY="508.0" prefHeight="35.0" prefWidth="145.0" text="Phone: 04-9901843">
+      <Label alignment="CENTER_RIGHT" layoutX="38.0" layoutY="508.0" prefHeight="35.0" prefWidth="145.0" text="Phone: 04-9901843">
          <font>
             <Font name="System Italic" size="16.0" />
          </font>
       </Label>
-      <ImageView fx:id="phoneIcon" fitHeight="25.0" fitWidth="28.0" layoutX="14.0" layoutY="514.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgPhone" fitHeight="25.0" fitWidth="28.0" layoutX="14.0" layoutY="514.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/phoneIcon.png" />
          </image>
       </ImageView>
-      <Label fx:id="lblEmail" alignment="CENTER_RIGHT" layoutX="39.0" layoutY="546.0" prefHeight="25.0" prefWidth="181.0" text="E-mail: cems@gmail.com">
+      <Label alignment="CENTER_RIGHT" layoutX="39.0" layoutY="546.0" prefHeight="25.0" prefWidth="181.0" text="E-mail: cems@gmail.com">
          <font>
             <Font name="System Italic" size="16.0" />
          </font>
@@ -59,19 +64,19 @@
             <Insets />
          </opaqueInsets>
       </Label>
-      <ImageView fx:id="messageContactUsIcon" fitHeight="62.0" fitWidth="30.0" layoutX="7.0" layoutY="544.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgEmail" fitHeight="62.0" fitWidth="30.0" layoutX="7.0" layoutY="544.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/messageContactUsIcon.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnViewExamInfo" alignment="CENTER" layoutX="4.0" layoutY="216.0" mnemonicParsing="false" onAction="#btnViewExamInfo" onMouseClicked="#btnViewExamInfo" prefHeight="49.0" prefWidth="221.0" text="View Exam Info">
+      <Button fx:id="btnViewExamInfo" alignment="CENTER" layoutX="4.0" layoutY="216.0" mnemonicParsing="false" onAction="#btnViewExamInfo" prefHeight="49.0" prefWidth="221.0" text="View Exam Info">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
       <Separator layoutX="6.0" layoutY="266.0" prefHeight="3.0" prefWidth="221.0" />
       <Separator layoutX="3.0" layoutY="213.0" prefHeight="3.0" prefWidth="221.0" />
-      <Button fx:id="btnStartComputerizedExam" alignment="CENTER" layoutX="3.0" layoutY="320.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="221.0" text="Start Computerized Exam">
+      <Button fx:id="btnStartComputerizedExam" alignment="CENTER" layoutX="3.0" layoutY="320.0" mnemonicParsing="false" onAction="#btnStartComputerizedExam" prefHeight="49.0" prefWidth="221.0" text="Start Computerized Exam">
          <font>
             <Font size="15.0" />
          </font>
