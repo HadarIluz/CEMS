@@ -118,4 +118,23 @@ public class DBController {
 
 	}
 
+	public boolean setLoginUserLogged(String userID) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt;
+		int check = 0;
+		try {
+			pstmt = conn.prepareStatement("UPDATE users SET id=? ;");
+			pstmt.setInt(1, Integer.parseInt(userID));
+			check = pstmt.executeUpdate();
+			if (check == 1) {
+				System.out.println("Details Of user Logged Updated!");
+				return true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 }
