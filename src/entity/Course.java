@@ -7,19 +7,19 @@ import java.io.Serializable;
 public class Course implements Serializable {
 	private String courseID;
 	private String courseName;
-	private String professionID;
+	private Profession profession;
 
-	public Course(String courseID, String professionID) {
+	public Course(String courseID, Profession profession) {
 		super();
 		this.courseID = courseID;
-		this.professionID = professionID;
+		this.profession = profession;
 	}
 
-	public Course(String courseID, String courseName, String professionID) {
+	public Course(String courseID, String courseName, Profession profession) {
 		super();
 		this.courseID = courseID;
 		this.courseName = courseName;
-		this.professionID = professionID;
+		this.profession = profession;
 	}
 
 	public String getCourseID() {
@@ -30,8 +30,8 @@ public class Course implements Serializable {
 		return courseName;
 	}
 
-	public String getProfessionID() {
-		return professionID;
+	public Profession getProfessionID() {
+		return profession;
 	}
 
 	public void setCourseName(String courseName) {
