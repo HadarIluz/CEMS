@@ -80,7 +80,8 @@ public class LoginController {
 			int id = Integer.parseInt(txtUserName.getText().trim());
 			user = new User(id, userPassword);
 			requestToServer= new RequestToServer("getUser"); //set in 'Serializable' class my request from server. 
-			ClientUI.cems.accept(userID);					//sent server pk to DB in order to checks if user exist or not.
+			requestToServer.setRequestData(user);
+			ClientUI.cems.accept(requestToServer);					//sent server pk to DB in order to checks if user exist or not.
 			if (CEMSClient.statusMsg.getStatus().equals("USER NOT FOUND")) {
 				showMsg(reqFieldUserName, "User ID not exist.");
 			}
