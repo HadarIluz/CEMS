@@ -71,9 +71,10 @@ public class LoginController {
 	final String StudentMenu = "StudentController.fxml";
 	final String PrincipalMenu = "PrincipalController.fxml";
 	final String TeacherMenu = "TeacherController.fxml";
-
+	public static User user;
+	
 	@FXML
-	void btnLogin(ActionEvent event) throws IOException {
+	public void btnLogin(ActionEvent event) throws IOException {
 		String userID = txtUserName.getText();
 		String userPassword = txtPassword.getText();
 
@@ -87,7 +88,7 @@ public class LoginController {
 		if (!userID.trim().isEmpty() && !userPassword.trim().isEmpty() && userID.length() == 9
 				&& isIncludeLetter(userID)) {
 			int id = Integer.parseInt(txtUserName.getText().trim());
-			User user = new User(id, userPassword);
+			user = new User(id, userPassword);
 			// set in 'Serializable' class my request from server.
 			RequestToServer req = new RequestToServer("getUser");
 			req.setRequestData(user);
@@ -151,7 +152,7 @@ public class LoginController {
 					
 					// sent to server pk(id) in order to change the login status of this user.
 					RequestToServer reqLoged = new RequestToServer("UpdateUserLoged");
-					req.setRequestData(id);
+					reqLoged.setRequestData(id);
 					ClientUI.cems.accept(reqLoged); 
 				}
 
@@ -213,5 +214,17 @@ public class LoginController {
 		dialog.setScene(dialogScene);
 		dialog.show();
 	}
+	
+	public void performLogput(User user) {
+		
+		// sent to server pk(id) in order to change the login status of this user.
+		RequestToServer reqLoged = new RequestToServer("UpdateUserLoged");
+		
+		reqLoged.setRequestData(user);//need to put here USERRR
+		ClientUI.cems.accept(reqLoged); 
+		
+	}
+	
+	
 
 }

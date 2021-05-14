@@ -81,9 +81,10 @@ public class CEMSserver extends AbstractServer {
 			break;
 		case "UpdateUserLoged": {
 			// logic of login- update logged status after Successfully login action
-			String reqUpdateID = (String) msg;
+			//String reqUpdateID = (String) msg;
+			User user = (User) req.getRequestData();
 			// boolean chnageSucceed = //for print in serverFrame
-			dbController.setLoginUserLogged((String) msg);
+			dbController.setLoginUserLogged(user.getId(), user.isLogged());
 			// serverFrame.printToTextArea(??.toString());
 		}
 			break;
