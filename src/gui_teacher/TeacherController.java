@@ -1,80 +1,186 @@
 package gui_teacher;
 
+import java.io.IOException;
+
+import entity.Teacher;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+//import logic.Student;
 
-public class TeacherController {
+public class TeacherController extends Application {
 
-    @FXML
-    private ImageView imgPrincipal;
+	@FXML
+	private ImageView imgPrincipal;
 
-    @FXML
-    private ImageView imgLogo;
+	@FXML
+	private ImageView imgLogo;
 
-    @FXML
-    private Label textTeacherName;
+	@FXML
+	private Label textTeacherName;
 
-    @FXML
-    private Button brnManageQuestionsBank;
+	@FXML
+	private Button brnManageQuestionsBank;
 
-    @FXML
-    private ImageView imgPhone;
+	@FXML
+	private ImageView imgPhone;
 
-    @FXML
-    private ImageView imgEmail;
+	@FXML
+	private ImageView imgEmail;
 
-    @FXML
-    private Button btnCreateActiveExam;
+	@FXML
+	private Button btnCreateActiveExam;
 
-    @FXML
-    private Button btnManageExamsBank;
+	@FXML
+	private Button btnManageExamsBank;
 
-    @FXML
-    private Button btnGetStatistics;
+	@FXML
+	private Button btnGetStatistics;
 
-    @FXML
-    private Button btnScoreApproval;
+	@FXML
+	private Button btnScoreApproval;
 
-    @FXML
-    private Button btnChangeExamTime;
+	@FXML
+	private Button btnChangeExamTime;
 
-    @FXML
-    void brnManageQuestionsBank(ActionEvent event) {
+	 protected static GridPane root;
+	 Scene scene;
 
-    }
+	 private TeacherController teacherCon;
+	 
+	 
+	 
+	@FXML
+	void brnManageQuestionsBank(ActionEvent event) {
+		try {
 
-    @FXML
-    void btnChangeExamTime(ActionEvent event) {
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("QuestionBank.fxml"));
+			root.add(newPaneRight, 1, 0);
 
-    }
+		} catch (IOException e) {
+			System.out.println("Couldn't load!");
+			e.printStackTrace();
+		}
+		
+	}
 
-    @FXML
-    void btnCreateActiveExam(ActionEvent event) {
+	@FXML
+	void btnChangeExamTime(ActionEvent event) {
+		try {
 
-    }
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("AddTimeToExam.fxml"));
+			root.add(newPaneRight, 1, 0);
 
-    @FXML
-    void btnGetStatistics(ActionEvent event) {
+		} catch (IOException e) {
+			System.out.println("Couldn't load!");
+			e.printStackTrace();
+		}
+		
 
-    }
+	}
 
-    @FXML
-    void btnManageExamsBank(ActionEvent event) {
+	@FXML
+	void btnCreateActiveExam(ActionEvent event) {
+		try {
 
-    }
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
+			root.add(newPaneRight, 1, 0);
 
-    @FXML
-    void btnScoreApproval(ActionEvent event) {
+		} catch (IOException e) {
+			System.out.println("Couldn't load!");
+			e.printStackTrace();
+		}
+		
 
-    }
-    
-    @FXML
-    void pressLogout(MouseEvent event) {
+	}
 
-    }
+	@FXML
+	void btnGetStatistics(ActionEvent event) {
+		try {
+
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("DemoStatistics.fxml"));
+			root.add(newPaneRight, 1, 0);
+
+		} catch (IOException e) {
+			System.out.println("Couldn't load!");
+			e.printStackTrace();
+		}
+		
+		
+
+	}
+
+	@FXML
+	void btnManageExamsBank(ActionEvent event) {
+		try {
+
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ExamBank.fxml"));
+			root.add(newPaneRight, 1, 0);
+
+		} catch (IOException e) {
+			System.out.println("Couldn't load!");
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+
+	}
+
+	@FXML
+	void btnScoreApproval(ActionEvent event) {
+		try {
+
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ScoreApproval.fxml"));
+			root.add(newPaneRight, 1, 0);
+
+		} catch (IOException e) {
+			System.out.println("Couldn't load!");
+			e.printStackTrace();
+		}
+
+	}
+
+	@FXML
+	void pressLogout(MouseEvent event)
+	{
+
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+
+		try {
+
+			 root = new GridPane();
+			 scene = new Scene(root, 900, 600); // Login
+			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
+			root.add(newMnueLeft, 0, 0);
+			primaryStage.setTitle("CEMS-Computerized Exam Management System");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
 
 }
