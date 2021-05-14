@@ -17,10 +17,10 @@
       </Label>
       <BarChart fx:id="CourseHisto" alternativeColumnFillVisible="true" barGap="25.0" layoutX="40.0" layoutY="254.0" legendSide="TOP" prefHeight="317.0" prefWidth="681.0" title="Grades Distribution:">
          <xAxis>
-            <CategoryAxis prefHeight="15.0" prefWidth="607.0" side="BOTTOM" tickLabelFill="#171717" tickLabelGap="10.0" />
+            <CategoryAxis fx:id="ca" prefHeight="15.0" prefWidth="607.0" side="BOTTOM" tickLabelFill="#171717" tickLabelGap="10.0" />
          </xAxis>
          <yAxis>
-            <NumberAxis side="LEFT" tickLabelGap="5.0" />
+            <NumberAxis fx:id="na" side="LEFT" tickLabelGap="5.0" />
          </yAxis>
       </BarChart>
       <Label fx:id="lblGradesAverage" alignment="CENTER" layoutX="444.0" layoutY="178.0" prefHeight="35.0" prefWidth="58.0" text="75" textFill="#255084">

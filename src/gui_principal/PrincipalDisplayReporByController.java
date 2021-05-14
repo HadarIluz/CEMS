@@ -26,10 +26,10 @@ public class PrincipalDisplayReporByController implements Initializable {
 	private BarChart<String, Number> CourseHisto;
 	
 	@FXML
-	private CategoryAxis ca;
+	private CategoryAxis ca; 
 
 	@FXML
-	private NumberAxis na;
+	private NumberAxis na; 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
