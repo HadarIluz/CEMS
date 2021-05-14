@@ -219,8 +219,7 @@ public class LoginController {
 		
 		// sent to server pk(id) in order to change the login status of this user.
 		RequestToServer reqLoged = new RequestToServer("UpdateUserLoged");
-		
-		reqLoged.setRequestData(user);//need to put here USERRR
+		reqLoged.setRequestData(user);
 		ClientUI.cems.accept(reqLoged); 
 		
 	}
