@@ -6,6 +6,7 @@ package client;
 
 import ocsf.client.*;
 import common.CemsIF;
+import gui_teacher.CreateQuestionController;
 import logic.StatusMsg;
 import logic.TestRow;
 import java.io.*;

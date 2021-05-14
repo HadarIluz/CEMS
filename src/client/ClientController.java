@@ -3,6 +3,7 @@
 // license found at www.lloseng.com 
 package client;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 import common.CemsIF;
 
@@ -25,6 +26,7 @@ public class ClientController implements CemsIF
    * The default port to connect on.
    */
    public static int DEFAULT_PORT ;
+   
   
   //Instance variables **********************************************
   
