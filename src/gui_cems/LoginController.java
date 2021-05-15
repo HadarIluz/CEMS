@@ -86,7 +86,7 @@ public class LoginController {
 		}
 		// in case fields not empty checks if exist in DB
 		if (!userID.trim().isEmpty() && !userPassword.trim().isEmpty() && userID.length() == 9
-				&& isIncludeLetter(userID)) {
+				&& isOnlyDigits(userID)) {
 			int id = Integer.parseInt(txtUserName.getText().trim());
 			user = new User(id, userPassword);
 			// set in 'Serializable' class my request from server.
@@ -94,6 +94,7 @@ public class LoginController {
 			req.setRequestData(user);
 			ClientUI.cems.accept(req); // sent server pk(id) to DB in order to checks if user exist or not.
 			if (CEMSClient.statusMsg.getStatus().equals("USER NOT FOUND")) {
+				System.out.println("press on login button and server returns: -->USER NOT FOUND");
 				popUp("This user doesn`t exist in CEMS system.");
 			}
 
@@ -175,15 +176,17 @@ public class LoginController {
 	// this method checks if the given string includes letters.
 	// 'containsLetter' is true only if the String contains something that isn't a
 	// digit.
-	private boolean isIncludeLetter(String str) {
+	private boolean isOnlyDigits(String str) {
 		// TODO Auto-generated method stub
-		boolean containsLetter = false;
+		boolean containsLetter = true;
 		for (char ch : str.toCharArray()) {
 			if (!Character.isDigit(ch)) {
-				containsLetter = true;
+				containsLetter = false;
+				System.out.println("id includ letter");
 				break;
 			}
 		}
+		System.out.println("isOnlyDigits returns:"+containsLetter); //message to console
 		return containsLetter;
 	}
 
