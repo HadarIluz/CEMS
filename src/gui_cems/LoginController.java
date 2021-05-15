@@ -1,8 +1,6 @@
 package gui_cems;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
@@ -10,7 +8,6 @@ import entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -22,7 +19,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -38,7 +34,7 @@ import logic.RequestToServer;
  * @author iluzh
  *
  */
-public class LoginController implements Initializable {
+public class LoginController {
 
 	@FXML
 	private MenuItem pressQuit;
@@ -186,7 +182,7 @@ public class LoginController implements Initializable {
 
 		// handle case that one of the parameters is invalid.
 		else {
-			popUp("One or more of the parameters which insert are incorrect. Please try again.");
+			popUp("One or more of the parameters which insert are incorrect.\n Please try again.");
 		}
 
 	}
@@ -226,7 +222,7 @@ public class LoginController implements Initializable {
 	 */
 	public void start(Stage primaryStage) throws IOException {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/gui_cems/Login.fxml"));
 			Scene scene = new Scene(root);
 			// message to primaryStage
 			primaryStage.setTitle("CEMS-Computerized Exam Management System");
@@ -244,7 +240,7 @@ public class LoginController implements Initializable {
 		final Stage dialog = new Stage();
 		VBox dialogVbox = new VBox(20);
 		Label lbl = new Label(msg);
-		lbl.setPadding(new Insets(5));
+		lbl.setPadding(new Insets(15));
 		lbl.setAlignment(Pos.CENTER);
 		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		dialogVbox.getChildren().add(lbl);
@@ -292,7 +288,8 @@ public class LoginController implements Initializable {
 	void pressQuit(ActionEvent event) {
 		System.exit(0);
 	}
-
+/*
+ *NOT WORKING  with this.
 	//Need to verify with jar file!!
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -305,6 +302,6 @@ public class LoginController implements Initializable {
         //and to the same to the rest of the pic..
 	}
 
-
+*/
 
 }
