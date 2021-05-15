@@ -5,6 +5,7 @@ package Server;
 
 import java.io.IOException;
 
+import entity.Question;
 import entity.User;
 import gui_server.ServerFrameController;
 import logic.RequestToServer;
@@ -88,7 +89,20 @@ public class CEMSserver extends AbstractServer {
 			// serverFrame.printToTextArea(??.toString());
 		}
 			break;
+		case "createNewQuestion": {
+			createNewQuestion((Question)req.getRequestData());
 		}
+		break;
+		}
+	}
+	
+	private void createNewQuestion(Question questionData) {
+		int numOfQuestions = dbController.getNumOfQuestionsInProfession(questionData.getProfession().getProfessionID());
+		String questionID = String.valueOf(numOfQuestions+1);
+		questionID = ("0000"+questionID).substring(questionID.length());
+		questionID = questionData.getProfession().getProfessionID() + questionID;
+		questionData.setQuestionID(questionID);
+		dbController.createNewQuestion(questionData);
 	}
 
 //	    case "getRow":
