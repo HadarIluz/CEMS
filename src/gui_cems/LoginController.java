@@ -1,6 +1,8 @@
 package gui_cems;
 
 import java.io.IOException;
+
+import Server.ServerUI;
 import client.CEMSClient;
 import client.ClientUI;
 import entity.User;
@@ -15,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -24,10 +27,20 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
 public class LoginController {
+	
+    @FXML
+    private MenuItem pressQuit;
+	
+    @FXML
+    private Text textAboutCEMS;
+	
+    @FXML
+    private MenuItem pressAboutCEMS;
 
 	@FXML
 	private ImageView background;
@@ -72,6 +85,7 @@ public class LoginController {
 	final String PrincipalMenu = "PrincipalController.fxml";
 	final String TeacherMenu = "TeacherController.fxml";
 	public static User user;
+	private static boolean press=false; //for AboutCEMS text.
 	
 	@FXML
 	public void btnLogin(ActionEvent event) throws IOException {
@@ -227,6 +241,23 @@ public class LoginController {
 		
 	}
 	
-	
+	//Displays and uploads a message when clicked on "AboutCEMS"
+    @FXML
+    void pressAboutCEMS(ActionEvent event) {
+    	textAboutCEMS.setVisible(messageAppearnce());
+
+    }
+    //Private method for displaying and disappearing the message.
+    private boolean messageAppearnce() {
+    	if(press==false) return press=true;
+    	else return press=false;
+    }
+    
+    //close window and disconnect client
+    @FXML
+    void pressQuit(ActionEvent event) {
+    	System.exit(0);
+    }
+
 
 }

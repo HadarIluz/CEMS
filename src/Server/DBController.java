@@ -87,7 +87,7 @@ public class DBController {
 	/* checks if the user that try to login exists in the DB. */
 	public User verifyLoginUser(Object obj) {
 
-		if (obj instanceof User) { // Still needed here? Because we changed that we would certainly get User
+		//if (obj instanceof User) { // Still needed here? Because we changed that we would certainly get User
 									// ObjecTtype
 			User existUser;
 			existUser = (User) obj;
@@ -114,8 +114,8 @@ public class DBController {
 			}
 			return existUser;
 
-		} else
-			return null;
+		//} else
+			//return null;
 
 	}
 

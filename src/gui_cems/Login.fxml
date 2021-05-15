@@ -18,6 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_cems.LoginController">
   <children>
@@ -25,12 +26,12 @@
       <menus>
         <Menu mnemonicParsing="false" text="CEMS- Home Page">
           <items>
-            <MenuItem mnemonicParsing="false" text="Quit" />
+            <MenuItem fx:id="pressQuit" mnemonicParsing="false" onAction="#pressQuit" text="Quit" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
           <items>
-            <MenuItem mnemonicParsing="false" text="About CEMS" />
+            <MenuItem fx:id="pressAboutCEMS" mnemonicParsing="false" onAction="#pressAboutCEMS" text="About CEMS" />
           </items>
         </Menu>
       </menus>
@@ -108,6 +109,7 @@
                      </image>
                   </ImageView>
                   <Label fx:id="reqFieldUserName" layoutX="340.0" layoutY="178.0" prefHeight="17.0" prefWidth="244.0" textFill="#ef3838" />
+                  <Text fx:id="textAboutCEMS" layoutX="150.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CEMS is a computerized test management system. In this system you can be tested manually / computerized. Build tests and get statistics on the data." visible="false" wrappingWidth="144.99609375" />
         </children>
       </AnchorPane>
     </content>

@@ -60,7 +60,7 @@ public class CEMSserver extends AbstractServer {
 			// logic of login
 			User user = (User) req.getRequestData();
 			User userInSystem = null;
-			userInSystem = dbController.verifyLoginUser((User) msg);
+			userInSystem = dbController.verifyLoginUser((User) msg);  //DEBUG: problem in this line.
 			if (userInSystem != null) {
 				userInSystem.setStatus("USER FOUND");
 				// serverFrame.printToTextArea(??.toString());
