@@ -10,13 +10,17 @@ public class Question implements Serializable{
 	private String[] answers;
 	private int correctAnswerIndex;
 	private Profession profession;
+	private Teacher teacher;
 	
+	public Question() {
+		this.questionID = "";
+	}
 	
 	public Question(String questionID) {
 		this.questionID = questionID;
 	}
 	
-	public Question(String questionID, String question, String description, String[] answers, int correctAnswerIndex, Profession profession) {
+	public Question(String questionID, String question, String description, String[] answers, int correctAnswerIndex, Profession profession, Teacher teacher) {
 		super();
 		this.questionID = questionID;
 		this.question = question;
@@ -24,9 +28,8 @@ public class Question implements Serializable{
 		this.answers = answers;
 		this.correctAnswerIndex = correctAnswerIndex;
 		this.profession = profession;
+		this.teacher = teacher;
 	}
-
-
 
 	public String getQuestionID() {
 		return questionID;
@@ -63,6 +66,21 @@ public class Question implements Serializable{
 	public void setProfession(Profession profession) {
 		this.profession = profession;
 	}
+
+	public void setQuestionID(String questionID) {
+		this.questionID = questionID;
+		
+	}
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+	
+	
 	
 	
 }
