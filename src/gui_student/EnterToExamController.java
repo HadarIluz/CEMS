@@ -23,6 +23,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
+/**
+ * @author iluzh
+ *
+ */
 public class EnterToExamController {
 
 	@FXML
@@ -104,7 +108,11 @@ public class EnterToExamController {
 
 	
 
-	// Checks whether the student has filled in all the required fields
+	/** Checks whether the student has filled all the required fields, if not open popUp message.
+	 * @param examCode
+	 * @param studentID
+	 * @return Returns true if all fields are filled otherwise returns false.
+	 */
 	private boolean checkConditionToStart(String examCode, String studentID) {
 		boolean approve1 = ApprovalInsrtuctions.isSelected();
 		boolean approve2 = CommitPreformByMyself.isSelected();
@@ -119,7 +127,9 @@ public class EnterToExamController {
 		return true;
 	}
 
-	// create a popUp with a message
+	/**create a popUp with a given message.
+	 * @param msg
+	 */
 	private void popUp(String msg) {
 		final Stage dialog = new Stage();
 		VBox dialogVbox = new VBox(20);
@@ -133,8 +143,13 @@ public class EnterToExamController {
 		dialog.show();
 	}
 
+	
 	// Loading this fxml window while loading this controller from another location
 	// Not sure it's need to be like that !!!
+	
+	/**
+	 * @param primaryStage
+	 */
 	public void start(Stage primaryStage) {
 		try {
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_student/EnterToExam.fxml"));
