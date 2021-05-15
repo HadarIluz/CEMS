@@ -43,6 +43,10 @@ public class EnterToExamController {
 
 	@FXML
 	private CheckBox CommitPreformByMyself;
+	
+	
+	private Student student;
+	private Exam exam;
 
 	@FXML
 	void btnStart(ActionEvent event) {
@@ -58,11 +62,16 @@ public class EnterToExamController {
 			date.add(Calendar.DATE, 0);
 			
 			int id = Integer.parseInt(studentID.trim());
+			student.setId(id);
+			//exam.getExamID();
+			
+			
+			
 			
 			//-------I DONT KNOE WHICH OBJECT I NEED TO SEND TO SERVER.
 			//-------ALL THE PK IN THE TABLES MIXED IN THE CODE!! ):
 			
-			
+			ActiveExam activeExam= new ActiveExam(date, exam, examCode);
 			
 			/*
 			//try1:

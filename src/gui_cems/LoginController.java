@@ -1,6 +1,8 @@
 package gui_cems;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
@@ -8,6 +10,7 @@ import entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -34,7 +38,7 @@ import logic.RequestToServer;
  * @author iluzh
  *
  */
-public class LoginController {
+public class LoginController implements Initializable {
 
 	@FXML
 	private MenuItem pressQuit;
@@ -288,5 +292,19 @@ public class LoginController {
 	void pressQuit(ActionEvent event) {
 		System.exit(0);
 	}
+
+	//Need to verify with jar file!!
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		Image image = new Image(getClass().getResourceAsStream("..\\..\\images\\LogInBackground.jpg"));
+		ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(550);
+        imageView.setFitWidth(898);
+        
+        //and to the same to the rest of the pic..
+	}
+
+
 
 }
