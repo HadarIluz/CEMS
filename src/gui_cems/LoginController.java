@@ -2,7 +2,6 @@ package gui_cems;
 
 import java.io.IOException;
 
-import Server.ServerUI;
 import client.CEMSClient;
 import client.ClientUI;
 import entity.User;

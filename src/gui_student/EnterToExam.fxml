@@ -29,8 +29,8 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="textExamCode" layoutX="286.0" layoutY="115.0" onAction="#textExamCode" prefHeight="45.0" prefWidth="205.0" />
-      <TextField fx:id="textStudent" layoutX="287.0" layoutY="179.0" onAction="#textStudent" prefHeight="45.0" prefWidth="205.0" />
+      <TextField fx:id="textExamCode" layoutX="286.0" layoutY="115.0" prefHeight="45.0" prefWidth="205.0" />
+      <TextField fx:id="textStudentID" layoutX="287.0" layoutY="179.0" prefHeight="45.0" prefWidth="205.0" />
       <Label layoutX="283.0" layoutY="345.0" prefHeight="60.0" prefWidth="231.0" text="Best of luck in your exam!" textFill="#1f9aff">
          <font>
             <Font name="System Bold Italic" size="18.0" />
