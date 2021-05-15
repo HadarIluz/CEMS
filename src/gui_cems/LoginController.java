@@ -30,16 +30,20 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
+/**
+ * @author iluzh
+ *
+ */
 public class LoginController {
-	
-    @FXML
-    private MenuItem pressQuit;
-	
-    @FXML
-    private Text textAboutCEMS;
-	
-    @FXML
-    private MenuItem pressAboutCEMS;
+
+	@FXML
+	private MenuItem pressQuit;
+
+	@FXML
+	private Text textAboutCEMS;
+
+	@FXML
+	private MenuItem pressAboutCEMS;
 
 	@FXML
 	private ImageView background;
@@ -84,8 +88,12 @@ public class LoginController {
 	final String PrincipalMenu = "PrincipalController.fxml";
 	final String TeacherMenu = "TeacherController.fxml";
 	public static User user;
-	private static boolean press=false; //for AboutCEMS text.
-	
+	private static boolean press = false; // for AboutCEMS text.
+
+	/**
+	 * @param event that occurs when clicking on 'login' button
+	 * @throws IOException if failed.
+	 */
 	@FXML
 	public void btnLogin(ActionEvent event) throws IOException {
 		String userID = txtUserName.getText();
@@ -125,8 +133,7 @@ public class LoginController {
 					GridPane root = new GridPane();
 					Scene scene = new Scene(root, 988, 586); // define screens size
 					primaryStage.setTitle("CEMS-Computerized Exam Management System");
-					
-					
+
 					switch (user.getUserType().toString()) {
 					case "Student": {
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
@@ -162,12 +169,12 @@ public class LoginController {
 
 					}
 					// print to console
-					System.out.println(user.getId() + " login Successfully as: " + user.getUserType().toString());	
-					
+					System.out.println(user.getId() + " login Successfully as: " + user.getUserType().toString());
+
 					// sent to server pk(id) in order to change the login status of this user.
 					RequestToServer reqLoged = new RequestToServer("UpdateUserLoged");
 					reqLoged.setRequestData(id);
-					ClientUI.cems.accept(reqLoged); 
+					ClientUI.cems.accept(reqLoged);
 				}
 
 			}
@@ -180,15 +187,20 @@ public class LoginController {
 
 	}
 
-	// Display commend to user.
+	/**Display commend to user on the screen.
+	 * @param label
+	 * @param msg
+	 */
 	private void showMsg(Label label, String msg) {
 		label.setTextFill(Paint.valueOf("Red"));
 		label.setText(msg);
 	}
 
-	// this method checks if the given string includes letters.
-	// 'containsLetter' is true only if the String contains something that isn't a
-	// digit.
+
+	/**this method checks if the given string includes letters.
+	 * @param str
+	 * @return true only if the String contains something that isn't a digit.
+	 */
 	private boolean isOnlyDigits(String str) {
 		// TODO Auto-generated method stub
 		boolean containsLetter = true;
@@ -199,11 +211,15 @@ public class LoginController {
 				break;
 			}
 		}
-		System.out.println("isOnlyDigits returns:"+containsLetter); //message to console
+		System.out.println("isOnlyDigits returns:" + containsLetter); // message to console
 		return containsLetter;
 	}
 
-	// Display HomePage after client connection.
+
+	/** Display HomePage after client connection.
+	 * @param primaryStage
+	 * @throws IOException
+	 */
 	public void start(Stage primaryStage) throws IOException {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
@@ -217,7 +233,9 @@ public class LoginController {
 		}
 	}
 
-	// create a popUp with a message
+	/**create a popUp with a given message.
+	 * @param msg 
+	 */
 	private void popUp(String msg) {
 		final Stage dialog = new Stage();
 		VBox dialogVbox = new VBox(20);
@@ -230,33 +248,45 @@ public class LoginController {
 		dialog.setScene(dialogScene);
 		dialog.show();
 	}
-	
+
+	/**
+	 * @param user object given to send as a request to server to update this user isLogged status.
+	 */
 	public void performLogput(User user) {
-		
+
 		// sent to server pk(id) in order to change the login status of this user.
 		RequestToServer reqLoged = new RequestToServer("UpdateUserLoged");
 		reqLoged.setRequestData(user);
-		ClientUI.cems.accept(reqLoged); 
-		
+		ClientUI.cems.accept(reqLoged);
+
 	}
-	
-	//Displays and uploads a message when clicked on "AboutCEMS"
-    @FXML
-    void pressAboutCEMS(ActionEvent event) {
-    	textAboutCEMS.setVisible(messageAppearnce());
 
-    }
-    //Private method for displaying and disappearing the message.
-    private boolean messageAppearnce() {
-    	if(press==false) return press=true;
-    	else return press=false;
-    }
-    
-    //close window and disconnect client
-    @FXML
-    void pressQuit(ActionEvent event) {
-    	System.exit(0);
-    }
+	/**
+	 * @param event that displays and uploads a message when clicked on "AboutCEMS"
+	 */
+	@FXML
+	void pressAboutCEMS(ActionEvent event) {
+		textAboutCEMS.setVisible(messageAppearnce());
 
+	}
+
+	// .
+	/**Private method for displaying and disappearing the message
+	 * @return boolean variable that specifies whether to display or hide the message.
+	 */
+	private boolean messageAppearnce() {
+		if (press == false)
+			return press = true;
+		else
+			return press = false;
+	}
+
+	/**
+	 * @param event that close login window and disconnect client.
+	 */
+	@FXML
+	void pressQuit(ActionEvent event) {
+		System.exit(0);
+	}
 
 }
