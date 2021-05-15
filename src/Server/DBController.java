@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import entity.Question;
 import entity.User;
 import entity.UserType;
 import gui_server.ServerFrameController;
@@ -146,6 +147,44 @@ public class DBController {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public void createNewQuestion(Question question) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("INSERT INTO question VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+			pstmt.setInt(1, question.getTeacher().getId());
+			pstmt.setString(2, question.getQuestionID());
+			pstmt.setString(3, question.getProfession().getProfessionID());
+			pstmt.setString(4, question.getQuestion());
+			pstmt.setString(5, question.getAnswers()[0]);
+			pstmt.setString(6, question.getAnswers()[1]);
+			pstmt.setString(7, question.getAnswers()[2]);
+			pstmt.setString(8, question.getAnswers()[3]);
+			pstmt.setInt(9, question.getCorrectAnswerIndex());
+			pstmt.setString(10, question.getDescription());
+
+
+			int status = pstmt.executeUpdate();
+			// to do something with status
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public int getNumOfQuestionsInProfession(String professionID) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT SUM(profession=?) as sum FROM question;");
+			pstmt.setString(1, professionID);
+			ResultSet rs = pstmt.executeQuery();
+			return rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 }
