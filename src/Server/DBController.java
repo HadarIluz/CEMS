@@ -28,7 +28,7 @@ public class DBController {
 		}
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cems_prototype?serverTimezone=IST", "root",
+			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cems?serverTimezone=IST", "root",
 					"Aa123456");
 			serverFrame.printToTextArea("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
@@ -87,12 +87,13 @@ public class DBController {
 	/* checks if the user that try to login exists in the DB. */
 	public User verifyLoginUser(Object obj) {
 
-		if (obj instanceof User) { //Still needed here? Because we changed that we would certainly get User ObjecTtype
+		//if (obj instanceof User) { // Still needed here? Because we changed that we would certainly get User
+									// ObjecTtype
 			User existUser;
 			existUser = (User) obj;
 			try {
 				PreparedStatement pstmt;
-				pstmt = conn.prepareStatement("SELECT * FROM users WHERE id=?");
+				pstmt = conn.prepareStatement("SELECT * FROM user WHERE id=?");
 				pstmt.setString(1, (String) obj);
 				ResultSet rs = pstmt.executeQuery();
 				if (rs.next()) {
@@ -105,7 +106,7 @@ public class DBController {
 					rs.close();
 				}
 				if (existUser.getPassword() == null) // ASK: i want to verify if (existUser.getId() == null) buy it is
-														// int and not string, i used password indent 
+														// int and not string, i used password indent
 					existUser.setStatus("DoesntExist");
 			} catch (SQLException ex) {
 				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
@@ -113,9 +114,38 @@ public class DBController {
 			}
 			return existUser;
 
-		} else
-			return null;
+		//} else
+			//return null;
 
+	}
+
+	public boolean setLoginUserLogged(int userID, int num) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt;
+		int check = 0;
+		int flag; //The flag checks what is the current status of this user and updates to the reverse mode
+		
+		if (num==1)
+			flag = 0;
+		else
+			flag = 1;
+		
+		try {
+			//UPDATE tblName 
+			//SET column=value 
+			//WHERE condition(s)
+			pstmt = conn.prepareStatement("UPDATE user SET isLogged=? WHERE id=" + userID + ";");
+			pstmt.setInt(5, flag);
+			check = pstmt.executeUpdate();
+			if (check == 1) {
+				System.out.println("Details Of user Logged Updated!");
+				return true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }

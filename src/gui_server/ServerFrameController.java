@@ -113,7 +113,7 @@ public class ServerFrameController {
 	}
 
 	public void start(Stage primaryStage) throws IOException {
-		Pane root = FXMLLoader.load(getClass().getResource("/gui/ServerGUI.fxml"));
+		Pane root = FXMLLoader.load(getClass().getResource("/gui_server/ServerGUI.fxml"));
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("CEMS Server");
 		primaryStage.setScene(scene);
