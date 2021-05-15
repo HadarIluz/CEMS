@@ -14,6 +14,10 @@ import gui_server.ServerFrameController;
 import logic.TestRow;
 import logic.UpdateDataRequest;
 
+/**
+ * @author yuval
+ *
+ */
 public class DBController {
 	public Connection conn;
 	public ServerFrameController serverFrame;
@@ -149,6 +153,10 @@ public class DBController {
 		return false;
 	}
 	
+	/**
+	 * @param question
+	 * inserts new question to DB
+	 */
 	public void createNewQuestion(Question question) {
 		PreparedStatement pstmt;
 		try {
@@ -173,6 +181,11 @@ public class DBController {
 		}
 	}
 	
+	
+	/**
+	 * @param professionID
+	 * @return int, the number of questions in this profession
+	 */
 	public int getNumOfQuestionsInProfession(String professionID) {
 		PreparedStatement pstmt;
 		try {

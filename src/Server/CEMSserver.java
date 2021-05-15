@@ -96,6 +96,10 @@ public class CEMSserver extends AbstractServer {
 		}
 	}
 	
+	/**
+	 * @param questionData
+	 * this method creates the question ID and then inserts the new question into the DB.
+	 */
 	private void createNewQuestion(Question questionData) {
 		int numOfQuestions = dbController.getNumOfQuestionsInProfession(questionData.getProfession().getProfessionID());
 		String questionID = String.valueOf(numOfQuestions+1);
