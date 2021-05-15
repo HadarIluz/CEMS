@@ -98,7 +98,7 @@ public class CreateQuestionController implements Initializable{
     		popUp("Please choose a correct answer");
     	}
     	else {
-    		Question newQuestion = new Question("");
+    		Question newQuestion = new Question();
     		newQuestion.setCorrectAnswerIndex(selectedIndex);
     		newQuestion.setProfession(selectedProfession);
     		String[] answers = new String[4];
@@ -111,7 +111,7 @@ public class CreateQuestionController implements Initializable{
     		if (textDescription.getText().trim().length() > 0) {
     			newQuestion.setDescription(textDescription.getText().trim());
     		}
-    		
+    		//newQuestion.setTeacher(currentTeacher);
     		RequestToServer req = new RequestToServer("createNewQuestion");
     		req.setRequestData(newQuestion);
     		ClientUI.cems.accept(req);
