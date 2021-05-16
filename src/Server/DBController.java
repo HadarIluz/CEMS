@@ -6,7 +6,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
+import entity.Exam;
 import entity.Question;
 import entity.User;
 import entity.UserType;
@@ -14,6 +16,10 @@ import gui_server.ServerFrameController;
 import logic.TestRow;
 import logic.UpdateDataRequest;
 
+/**
+ * @author yuval
+ *
+ */
 /**
  * @author yuval
  *
@@ -156,8 +162,9 @@ public class DBController {
 	/**
 	 * @param question
 	 * inserts new question to DB
+	 * @return 
 	 */
-	public void createNewQuestion(Question question) {
+	public boolean createNewQuestion(Question question) {
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("INSERT INTO question VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
@@ -173,12 +180,16 @@ public class DBController {
 			pstmt.setString(10, question.getDescription());
 
 
-			int status = pstmt.executeUpdate();
+			if(pstmt.executeUpdate() == 1) {
+				return true;
+			}
 			// to do something with status
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
+		return false;
 	}
 	
 	
@@ -198,6 +209,84 @@ public class DBController {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	/**
+	 * @param courseID
+	 * @return the number of exams with this courseID
+	 */
+	public int getNumOfExamsInCourse(String courseID) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT SUM(course=?) as sum FROM exam;");
+			pstmt.setString(1, courseID);
+			ResultSet rs = pstmt.executeQuery();
+			return rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	/**
+	 * @param exam
+	 * @return true/false if creating a new exam in DB succeeded
+	 */
+	/**
+	 * @param exam
+	 * @return
+	 */
+	public boolean createNewExam(Exam exam) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("INSERT INTO exam VALUES(?, ?, ?, ?, ?, ?, ?);");
+			pstmt.setString(1, exam.getExamID());
+			pstmt.setString(2, exam.getProfession().getProfessionID());
+			pstmt.setString(3, exam.getCourse().getCourseID());
+			pstmt.setInt(4, exam.getTimeOfExam());
+			pstmt.setString(5, exam.getCommentForTeacher());
+			pstmt.setString(6, exam.getCommentForStudents());
+			pstmt.setInt(7,  exam.getAuthor().getId());
+
+
+			if(pstmt.executeUpdate() == 1) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+		
+	}
+
+	/**
+	 * @param examID
+	 * @param questionScores
+	 * @return true/false if inserting all questions and scores of exam with examID
+	 * 			into table question_in_exam succeeded
+	 */
+	public boolean addQuestionsInExam(String examID, HashMap<String, Integer> questionScores) {
+		PreparedStatement pstmt;
+		try {
+		for (String questionID: questionScores.keySet()) {
+			pstmt = conn.prepareStatement("INSERT INTO question_in_exam VALUES(?, ?, ?);");
+			pstmt.setString(1, questionID);
+			pstmt.setInt(2, questionScores.get(questionID));
+			pstmt.setString(3, examID);
+			if(pstmt.executeUpdate() != 1) {
+				return false;
+			}
+		}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;		
 	}
 
 }
