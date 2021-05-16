@@ -5,6 +5,7 @@ import java.io.IOException;
 import client.CEMSClient;
 import client.ClientUI;
 import entity.User;
+import gui_principal.PrincipalController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -89,6 +90,8 @@ public class LoginController {
 	final String TeacherMenu = "TeacherController.fxml";
 	public static User user;
 	private static boolean press = false; // for AboutCEMS text.
+	
+	private PrincipalController principalController;
 
 	/**
 	 * @param event that occurs when clicking on 'login' button
@@ -139,18 +142,15 @@ public class LoginController {
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 						Pane mnueLeft = FXMLLoader.load(getClass().getResource(StudentMenu));
 						root.add(mnueLeft, 0, 0);
-						// mnueRight= //put here grey screen.
-						// root.add(mnueRight, 1, 0);
 						primaryStage.setScene(scene);
 						primaryStage.show();
 					}
 						break;
 					case "Teacher": {
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
+						//Other option: call start function in principalController for initialization.
 						Pane mnueLeft = FXMLLoader.load(getClass().getResource(TeacherMenu));
 						root.add(mnueLeft, 0, 0);
-						// mnueRight= //put here grey screen.
-						// root.add(mnueRight, 1, 0);
 						primaryStage.setScene(scene);
 						primaryStage.show();
 
@@ -158,12 +158,19 @@ public class LoginController {
 						break;
 					case "Principal": {
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
+						//call start function in principalController for initialization.
+						try {
+							principalController.start(new Stage() ); 
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						/*
 						Pane mnueLeft = FXMLLoader.load(getClass().getResource(PrincipalMenu));
 						root.add(mnueLeft, 0, 0);
-						// mnueRight= //put here grey screen.
-						// root.add(mnueRight, 1, 0);
 						primaryStage.setScene(scene);
 						primaryStage.show();
+						*/
 					}
 						break;
 
