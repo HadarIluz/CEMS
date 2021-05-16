@@ -4,13 +4,14 @@
 package Server;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-
+import entity.Teacher;
 import entity.User;
 import gui_server.ServerFrameController;
 import logic.RequestToServer;
 import logic.StatusMsg;
-import logic.UpdateDataRequest;
+import logic.TestRow;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -89,6 +90,18 @@ public void handleMessageFromClient(Object msg, ConnectionToClient client){
     		}
 	    
 	    break;
+	    
+	    case "GetTeacherExams" :
+	    {
+	    	Teacher user = (Teacher) req.getRequestData();
+	    	
+	    ArrayList<TestRow> exams= dbController.GetTeacherExams((Teacher) msg);
+	      	
+	    	
+	    	
+	    	
+	    }
+	    
 //	    case "getRow":
 //	    {
 //			this.sendToAllClients(dbController.getTestRow(req.split(" ")[1]));

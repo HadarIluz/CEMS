@@ -1,12 +1,14 @@
 package Server;
 
 import java.sql.Connection;
-
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import entity.Profession;
+import entity.Teacher;
 import entity.User;
 import entity.UserType;
 import gui_server.ServerFrameController;
@@ -28,13 +30,15 @@ public class DBController {
 		}
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cems_prototype?serverTimezone=IST", "root",
+			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cems?serverTimezone=IST", "root",
 					"Aa123456");
 			serverFrame.printToTextArea("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			serverFrame.printToTextArea("SQLState: " + ex.getSQLState());
-			serverFrame.printToTextArea("VendorError: " + ex.getErrorCode());
+			
+			 serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			 serverFrame.printToTextArea("SQLState: " + ex.getSQLState());
+			  serverFrame.printToTextArea("VendorError: " + ex.getErrorCode());
+			
 		}
 	}
 
@@ -47,7 +51,7 @@ public class DBController {
 			pstmt.setString(2, UpdateExam.getExamID());
 			check = pstmt.executeUpdate();
 			if (check == 1) {
-				// System.out.println("Details Of Exam Updated!");
+				 System.out.println("Details Of Exam Updated!");
 				return true;
 			}
 
@@ -87,7 +91,8 @@ public class DBController {
 	/* checks if the user that try to login exists in the DB. */
 	public User verifyLoginUser(Object obj) {
 
-		if (obj instanceof User) { //Still needed here? Because we changed that we would certainly get User ObjecTtype
+		if (obj instanceof User) { // Still needed here? Because we changed that we would certainly get User
+									// ObjecTtype
 			User existUser;
 			existUser = (User) obj;
 			try {
@@ -105,7 +110,7 @@ public class DBController {
 					rs.close();
 				}
 				if (existUser.getPassword() == null) // ASK: i want to verify if (existUser.getId() == null) buy it is
-														// int and not string, i used password indent 
+														// int and not string, i used password indent
 					existUser.setStatus("DoesntExist");
 			} catch (SQLException ex) {
 				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
@@ -116,6 +121,59 @@ public class DBController {
 		} else
 			return null;
 
+	}
+
+	public ArrayList<TestRow> GetTeacherExams(Object obj) {
+
+		
+			Teacher teacher;
+			
+			ArrayList<TestRow> examsOfTeacher =new ArrayList<TestRow>();
+		
+			
+			teacher = (Teacher) obj;
+			
+			try {
+				PreparedStatement pstmt;
+				pstmt = conn.prepareStatement("SELECT * FROM exam WHERE author=?");
+				
+				pstmt.setString(1,""+teacher.getId());
+				
+				ResultSet rs = pstmt.executeQuery();
+				while (rs.next()) {
+					TestRow newRow = new TestRow();
+					newRow.setExamID(rs.getString(1));
+					newRow.setProfession(rs.getString(2));
+					newRow.setTimeAllotedForTest(rs.getString(4));
+					examsOfTeacher.add(newRow);
+						
+				
+				}
+				rs.close();
+				
+			} catch (SQLException ex) {
+				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+				teacher.setStatus("ERROR");
+			}
+			return examsOfTeacher;//return null if no exsiting tests
+
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		
+		DBController db = new DBController();
+	db.connectDB(new ServerFrameController());
+	
+	Teacher t= new Teacher(222222222, "PASS123", "avi", "Cohen", "asdsadsadsa", UserType.Teacher,new ArrayList<Profession>());
+	
+	ArrayList<TestRow> tst=db.GetTeacherExams(t);
+	
+		System.out.println(tst);
+		
+		
+		
 	}
 
 }
