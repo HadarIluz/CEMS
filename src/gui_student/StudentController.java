@@ -1,16 +1,26 @@
 package gui_student;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import entity.User;
 import gui_cems.LoginController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 public class StudentController {
 
@@ -47,19 +57,81 @@ public class StudentController {
 	//
 	public static LoginController loginController;
 	public User user;
+	//
+	protected static GridPane root;
+	protected static Pane newPane;
+	
+	public void start(Stage primaryStage) throws Exception {
+		this.root = new GridPane();
+		Scene scene = new Scene(root, 988, 586); // SCREENS size
+		primaryStage.setTitle("CEMS-Computerized Exam Management System");
+		this.newPane = FXMLLoader.load(getClass().getResource("/gui_student/StudentMenuLeft.fxml"));
+		root.add(newPane, 0, 0);
+		// a grey screen need to display at the right side, handle this here if it is
+		// not working..(after test)
+		// Pane newPaneRight=
+		// root.add(newPaneRight, 1, 0);
 
+		/*
+		 * listen for close events on a JavaFX Stage, notified when the user clicks the
+		 * button with the X on, in the upper right corner of the Stage
+		 */
+		primaryStage.setOnCloseRequest((event) -> {
+			System.out.println("Closing Stage");
+			//need to notified server about this?
+		});
+		
+		
+		//-----pic-----//
+		
+		
+	      //creating the image object
+	      InputStream stream = new FileInputStream("@../../images/student_img/signIn_student.png");
+	      Image image = new Image(stream);
+	      //Setting image to the image view
+	      imgStudent.setImage(image);
+	      //Setting the image view parameters
+	      imgStudent.setX(58);
+	      imgStudent.setY(56);
+	      imgStudent.setPreserveRatio(true);
+		
+	}
+	
+	
 	@FXML
 	void btnStartComputerizedExam(ActionEvent event) {
-
+		try {
+			Pane newPaneRight= FXMLLoader.load(getClass().getResource("/gui_student/EnterToExam.fxml"));
+			root.add(newPaneRight, 1, 0);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
 	void btnStartManualExam(ActionEvent event) {
-
+		try {
+			Pane newPaneRight= FXMLLoader.load(getClass().getResource("/gui_student/EnterToExam.fxml"));
+			root.add(newPaneRight, 1, 0);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
 	void btnViewExamInfo(ActionEvent event) {
+		try {
+			Pane newPaneRight= FXMLLoader.load(getClass().getResource("/gui_student/ViewExam.fxml"));
+			root.add(newPaneRight, 1, 0);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

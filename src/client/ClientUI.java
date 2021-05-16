@@ -16,11 +16,9 @@ public class ClientUI extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		cems = new ClientController("localhost", 5555);
-		// TODO Auto-generated method stub
-		
-		//NEED TO CHANGE WHEN START WORKING ON CEMS PROJECT
-		LoginController LogInHomeScreen = new LoginController(); // create the TestFrame
-		 LogInHomeScreen.start(primaryStage);
+
+		LoginController LogInHomeScreen = new LoginController(); 
+		LogInHomeScreen.start(primaryStage);
 
 	}
 	
