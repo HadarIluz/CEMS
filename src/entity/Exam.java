@@ -15,7 +15,7 @@ public class Exam implements Serializable{
 	private String commentForTeacher;
 	private String commentForStudents;
 	private Teacher author; // is this relevant or to delete?
-	
+	private String ProfessionName;
 	
 	
 	public Exam(String examID) {
@@ -39,6 +39,22 @@ public class Exam implements Serializable{
 		this.author = author;
 	}
 
+	
+	public Exam(String examID, String profession,int timeOfExam)
+	{
+		super();
+		this.examID = examID;
+		this.ProfessionName = profession;
+		this.timeOfExam = timeOfExam;
+		
+		
+	}
+	public String getProfessionName() {
+		return ProfessionName;
+	}
+
+	
+	
 
 
 	public Profession getProfession() {

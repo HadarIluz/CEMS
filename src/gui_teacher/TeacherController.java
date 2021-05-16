@@ -60,7 +60,7 @@ public class TeacherController extends Application {
 	 protected static GridPane root;
 	 Scene scene;
 
-	private User teacher;
+	protected User teacher;
 	
 	LoginController login;
 	
@@ -134,6 +134,7 @@ public class TeacherController extends Application {
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ExamBank.fxml"));
 			root.add(newPaneRight, 1, 0);
+			
 
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");
@@ -170,6 +171,15 @@ public class TeacherController extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
+		
+		root = new GridPane();
+		 scene = new Scene(root, 900, 600); // Login
+		Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
+		root.add(newMnueLeft, 0, 0);
+		primaryStage.setTitle("CEMS-Computerized Exam Management System");
+		primaryStage.setScene(scene);
+		primaryStage.show();
+
 teacher= new Teacher(222222222, "PASS123", "avi", "Cohen", "asdsadsadsa", UserType.Teacher,new ArrayList<Profession>());
 		
 		
