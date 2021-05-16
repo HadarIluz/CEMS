@@ -11,7 +11,6 @@ import entity.User;
 import gui_server.ServerFrameController;
 import logic.RequestToServer;
 import logic.StatusMsg;
-import logic.UpdateDataRequest;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -128,18 +127,7 @@ public class CEMSserver extends AbstractServer {
 		dbController.addQuestionsInExam(examID, examData.getQuestionScores());
 	}
 
-	//	    case "getRow":
-	//	    {
-	//			this.sendToAllClients(dbController.getTestRow(req.split(" ")[1]));
-	//	    }
-
-	// }
-
-	//    	if (msg instanceof String) {
-	//    		String req = (String)msg;
-	//    		if (req.contains("getRow")) {
-	//    			this.sendToAllClients(dbController.getTestRow(req.split(" ")[1]));
-	//    		}
+	
 	//    		/*---------Login----------*/
 	//    		if(req.contains("getUser")) {
 	//    			User userInSystem= null;
@@ -160,31 +148,7 @@ public class CEMSserver extends AbstractServer {
 	//    		/*---------End_Login----------*/
 	//    		
 	//    	
-	//    	if (msg instanceof UpdateDataRequest) {
-	//    		
-	//    		if (dbController.updateTestTime((UpdateDataRequest) msg)) {
-	//    			status.setStatus("SUCCESS");
-	//    			status.setDescription(" Table Updated");
-	//    			serverFrame.printToTextArea(status.toString());
-	//    			
-	//    		}
-	//    		else {
-	//    			status.setStatus("ERROR");
-	//    			status.setDescription(" Incorrect value");
-	//    			serverFrame.printToTextArea(status.toString());
-	//    		}
-	//    		this.sendToAllClients(status);
-	//
-	//    	}
-	//	    else {
-	//	     	status.setStatus("ERROR");
-	//			status.setDescription("Error in request");
-	//			serverFrame.printToTextArea(status.toString());
-	//	    	
-	//	    }
-
-	// }
-
+	
 	/**
 	 * This method overrides the one in the superclass. Called when the server
 	 * starts listening for connections.

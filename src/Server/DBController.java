@@ -13,8 +13,6 @@ import entity.Question;
 import entity.User;
 import entity.UserType;
 import gui_server.ServerFrameController;
-import logic.TestRow;
-import logic.UpdateDataRequest;
 
 /**
  * @author yuval
@@ -43,52 +41,6 @@ public class DBController {
 			serverFrame.printToTextArea("SQLState: " + ex.getSQLState());
 			serverFrame.printToTextArea("VendorError: " + ex.getErrorCode());
 		}
-	}
-
-	public boolean updateTestTime(UpdateDataRequest UpdateExam) {
-		PreparedStatement pstmt;
-		int check = 0;
-		try {
-			pstmt = conn.prepareStatement("UPDATE test SET timeAllotedForTest=? WHERE examID=? ;");
-			pstmt.setString(1, UpdateExam.getTimeAllotedForTest());
-			pstmt.setString(2, UpdateExam.getExamID());
-			check = pstmt.executeUpdate();
-			if (check == 1) {
-				// System.out.println("Details Of Exam Updated!");
-				return true;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	public TestRow getTestRow(String examID) {
-		TestRow newRow = new TestRow();
-
-		try {
-			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM test WHERE examID=?;");
-			pstmt.setString(1, examID);
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				newRow.setExamID(rs.getString(1));
-				newRow.setProfession(rs.getString(2));
-				newRow.setCourse(rs.getString(3));
-				newRow.setTimeAllotedForTest(rs.getString(4));
-				newRow.setPointsPerQuestion(rs.getString(5));
-				rs.close();
-			}
-			if (newRow.getExamID() == null)
-				newRow.setExamID("DoesntExist");
-		}
-
-		catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			newRow.setExamID("ERROR");
-		}
-		return newRow;
 	}
 
 	/* checks if the user that try to login exists in the DB. */
@@ -120,9 +72,6 @@ public class DBController {
 				existUser.setStatus("ERROR");
 			}
 			return existUser;
-
-		//} else
-			//return null;
 
 	}
 

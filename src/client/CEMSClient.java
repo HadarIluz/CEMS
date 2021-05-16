@@ -4,11 +4,11 @@
 
 package client;
 
-import ocsf.client.*;
+import ocsf.client.*
+;
 import common.CemsIF;
 import gui_teacher.CreateQuestionController;
 import logic.StatusMsg;
-import logic.TestRow;
 import java.io.*;
 
 /**
@@ -31,7 +31,6 @@ public class CEMSClient extends AbstractClient {
 
 	// new:
 	public static StatusMsg statusMsg = new StatusMsg();
-	public static TestRow testRow = new TestRow();
 	public static boolean awaitResponse = false;
 
 	// Constructors ****************************************************
@@ -61,12 +60,6 @@ public class CEMSClient extends AbstractClient {
 	public void handleMessageFromServer(Object msg) {
 		System.out.println("--> handleMessageFromServer");
 	
-		if (msg instanceof TestRow) {
-			testRow = (TestRow) msg; // new updated table
-			clientUI.display(testRow.toString());
-			System.out.println("Table Updated Arrived");
-			awaitResponse = false;
-		}
 		if (msg instanceof StatusMsg) {
 			statusMsg = (StatusMsg) msg;
 			clientUI.display(statusMsg.toString());

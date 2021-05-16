@@ -1,6 +1,7 @@
 package Server;
 
 import java.io.IOException;
+
 import java.util.Vector;
 
 import gui_server.ServerFrameController;
@@ -10,11 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import logic.TestRow;
 
 public class ServerUI extends Application {
 	final public static int DEFAULT_PORT = 5555;
-	public static Vector<TestRow> students = new Vector<TestRow>();
 	public static ServerFrameController serverFrame;
 	public static CEMSserver sv;
 	public static void main(String args[]) throws Exception {
