@@ -1,8 +1,12 @@
 package gui_teacher;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import entity.Profession;
+import entity.Teacher;
 import entity.User;
+import entity.UserType;
 import gui_cems.LoginController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -165,8 +169,9 @@ public class TeacherController extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-teacher= login.GetUser();
-
+		
+teacher= new Teacher(222222222, "PASS123", "avi", "Cohen", "asdsadsadsa", UserType.Teacher,new ArrayList<Profession>());
+		
 		
 
 	}
