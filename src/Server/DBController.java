@@ -20,10 +20,6 @@ import logic.UpdateDataRequest;
  * @author yuval
  *
  */
-/**
- * @author yuval
- *
- */
 public class DBController {
 	public Connection conn;
 	public ServerFrameController serverFrame;
