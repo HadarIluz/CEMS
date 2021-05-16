@@ -5,6 +5,7 @@ package Server;
 
 import java.io.IOException;
 
+import entity.Exam;
 import entity.Question;
 import entity.User;
 import gui_server.ServerFrameController;
@@ -79,7 +80,7 @@ public class CEMSserver extends AbstractServer {
 			}
 		}
 
-			break;
+		break;
 		case "UpdateUserLoged": {
 			// logic of login- update logged status after Successfully login action
 			//String reqUpdateID = (String) msg;
@@ -88,14 +89,20 @@ public class CEMSserver extends AbstractServer {
 			dbController.setLoginUserLogged(user.getId(), user.isLogged());
 			// serverFrame.printToTextArea(??.toString());
 		}
-			break;
+		break;
 		case "createNewQuestion": {
 			createNewQuestion((Question)req.getRequestData());
 		}
 		break;
+
+		case "createNewExam": {
+			createNewExam((Exam)req.getRequestData());
+		}
+		break;
+
 		}
 	}
-	
+
 	/**
 	 * @param questionData
 	 * this method creates the question ID and then inserts the new question into the DB.
@@ -108,61 +115,65 @@ public class CEMSserver extends AbstractServer {
 		questionData.setQuestionID(questionID);
 		dbController.createNewQuestion(questionData);
 	}
+	
+	private void createNewExam(Exam examData) {
+		
+	}
 
-//	    case "getRow":
-//	    {
-//			this.sendToAllClients(dbController.getTestRow(req.split(" ")[1]));
-//	    }
+	//	    case "getRow":
+	//	    {
+	//			this.sendToAllClients(dbController.getTestRow(req.split(" ")[1]));
+	//	    }
 
 	// }
 
-//    	if (msg instanceof String) {
-//    		String req = (String)msg;
-//    		if (req.contains("getRow")) {
-//    			this.sendToAllClients(dbController.getTestRow(req.split(" ")[1]));
-//    		}
-//    		/*---------Login----------*/
-//    		if(req.contains("getUser")) {
-//    			User userInSystem= null;
-//    			userInSystem = dbController.verifyLoginUser((User) msg);
-//        		if (userInSystem != null) {
-//        			userInSystem.setStatus("USER FOUND");
-//        			//serverFrame.printToTextArea(??.toString());
-//        		}
-//        		else {
-//        			userInSystem.setStatus("USER NOT FOUND");
-//        			//serverFrame.printToTextArea(??.toString());
-//        		}
-//        		//need to change to sendToClient(status);
-//        		this.sendToAllClients(userInSystem);
-//        		}
-//    			
-//    		}
-//    		/*---------End_Login----------*/
-//    		
-//    	
-//    	if (msg instanceof UpdateDataRequest) {
-//    		
-//    		if (dbController.updateTestTime((UpdateDataRequest) msg)) {
-//    			status.setStatus("SUCCESS");
-//    			status.setDescription(" Table Updated");
-//    			serverFrame.printToTextArea(status.toString());
-//    			
-//    		}
-//    		else {
-//    			status.setStatus("ERROR");
-//    			status.setDescription(" Incorrect value");
-//    			serverFrame.printToTextArea(status.toString());
-//    		}
-//    		this.sendToAllClients(status);
-//
-//    	}
-//	    else {
-//	     	status.setStatus("ERROR");
-//			status.setDescription("Error in request");
-//			serverFrame.printToTextArea(status.toString());
-//	    	
-//	    }
+	//    	if (msg instanceof String) {
+	//    		String req = (String)msg;
+	//    		if (req.contains("getRow")) {
+	//    			this.sendToAllClients(dbController.getTestRow(req.split(" ")[1]));
+	//    		}
+	//    		/*---------Login----------*/
+	//    		if(req.contains("getUser")) {
+	//    			User userInSystem= null;
+	//    			userInSystem = dbController.verifyLoginUser((User) msg);
+	//        		if (userInSystem != null) {
+	//        			userInSystem.setStatus("USER FOUND");
+	//        			//serverFrame.printToTextArea(??.toString());
+	//        		}
+	//        		else {
+	//        			userInSystem.setStatus("USER NOT FOUND");
+	//        			//serverFrame.printToTextArea(??.toString());
+	//        		}
+	//        		//need to change to sendToClient(status);
+	//        		this.sendToAllClients(userInSystem);
+	//        		}
+	//    			
+	//    		}
+	//    		/*---------End_Login----------*/
+	//    		
+	//    	
+	//    	if (msg instanceof UpdateDataRequest) {
+	//    		
+	//    		if (dbController.updateTestTime((UpdateDataRequest) msg)) {
+	//    			status.setStatus("SUCCESS");
+	//    			status.setDescription(" Table Updated");
+	//    			serverFrame.printToTextArea(status.toString());
+	//    			
+	//    		}
+	//    		else {
+	//    			status.setStatus("ERROR");
+	//    			status.setDescription(" Incorrect value");
+	//    			serverFrame.printToTextArea(status.toString());
+	//    		}
+	//    		this.sendToAllClients(status);
+	//
+	//    	}
+	//	    else {
+	//	     	status.setStatus("ERROR");
+	//			status.setDescription("Error in request");
+	//			serverFrame.printToTextArea(status.toString());
+	//	    	
+	//	    }
 
 	// }
 
