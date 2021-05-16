@@ -140,6 +140,12 @@ public class Exam implements Serializable{
 	public String getExamID() {
 		return examID;
 	}
+
+
+
+	public void setExamID(String examID) {
+		this.examID = examID;
+	}
 	
 	
 	
