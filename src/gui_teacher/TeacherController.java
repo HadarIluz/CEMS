@@ -2,18 +2,17 @@ package gui_teacher;
 
 import java.io.IOException;
 
-import entity.Teacher;
+import entity.User;
+import gui_cems.LoginController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -57,7 +56,11 @@ public class TeacherController extends Application {
 	 protected static GridPane root;
 	 Scene scene;
 
-	 private TeacherController teacherCon;
+	private User teacher;
+	
+	LoginController login;
+	
+	
 	 
 	 
 	 
@@ -162,20 +165,9 @@ public class TeacherController extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+teacher= login.GetUser();
 
-		try {
-
-			 root = new GridPane();
-			 scene = new Scene(root, 900, 600); // Login
-			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
-			root.add(newMnueLeft, 0, 0);
-			primaryStage.setTitle("CEMS-Computerized Exam Management System");
-			primaryStage.setScene(scene);
-			primaryStage.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
 
 	}
 
