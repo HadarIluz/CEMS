@@ -117,7 +117,15 @@ public class CEMSserver extends AbstractServer {
 	}
 	
 	private void createNewExam(Exam examData) {
-		
+		// create the exam ID by number of exams in this profession and course
+		int numOfExams = dbController.getNumOfExamsInCourse(examData.getCourse().getCourseID()) + 1;
+		String examID = numOfExams < 10 ? "0" + String.valueOf(numOfExams) : String.valueOf(numOfExams);
+		examID = examData.getProfession().getProfessionID() + examData.getCourse().getCourseID() + examID;
+		examData.setExamID(examID);
+		// create the new exam in DB
+		dbController.createNewExam(examData);
+		// add questions and scores to DB
+		dbController.addQuestionsInExam(examID, examData.getQuestionScores());
 	}
 
 	//	    case "getRow":
