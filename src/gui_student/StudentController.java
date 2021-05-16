@@ -22,6 +22,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * @author iluzh
+ *
+ */
 public class StudentController {
 
 	@FXML
@@ -61,6 +65,10 @@ public class StudentController {
 	protected static GridPane root;
 	protected static Pane newPane;
 	
+	/**
+	 * @param primaryStage
+	 * @throws Exception
+	 */
 	public void start(Stage primaryStage) throws Exception {
 		this.root = new GridPane();
 		Scene scene = new Scene(root, 988, 586); // SCREENS size
@@ -98,6 +106,9 @@ public class StudentController {
 	}
 	
 	
+	/**
+	 * @param event that loading the student's right screen after pressing a button.
+	 */
 	@FXML
 	void btnStartComputerizedExam(ActionEvent event) {
 		try {
@@ -110,6 +121,9 @@ public class StudentController {
 		}
 	}
 
+	/**
+	 * @param event that loading the student's right screen after pressing a button.
+	 */
 	@FXML
 	void btnStartManualExam(ActionEvent event) {
 		try {
@@ -122,6 +136,9 @@ public class StudentController {
 		}
 	}
 
+	/**
+	 * @param event that loading the student's right screen after pressing a button.
+	 */
 	@FXML
 	void btnViewExamInfo(ActionEvent event) {
 		try {
@@ -135,7 +152,10 @@ public class StudentController {
 
 	}
 
-	// Event Logout that occur when clicking on logout at the left menu
+
+	/**Event Logout that occur when clicking on logout at the left menu
+	 * @param event that display pop up message and ask if he want to logout.
+	 */
 	@FXML
 	void pressLogout(MouseEvent event) {
 		Alert alert = new Alert(Alert.AlertType.WARNING);

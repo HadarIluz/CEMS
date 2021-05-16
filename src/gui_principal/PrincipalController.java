@@ -22,6 +22,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * @author iluzh
+ *
+ */
 public class PrincipalController {
 
 	@FXML
@@ -55,6 +59,10 @@ public class PrincipalController {
 	protected static GridPane root;
 	protected static Pane newPane;
 
+	/**
+	 * @param primaryStage
+	 * @throws Exception
+	 */
 	public void start(Stage primaryStage) throws Exception {
 		this.root = new GridPane();
 		Scene scene = new Scene(root, 988, 586); // SCREENS size
@@ -93,6 +101,9 @@ public class PrincipalController {
 		
 	}
 
+	/**
+	 * @param event that loading the teacher's right screen after pressing a button.
+	 */
 	@FXML
 	void btnApproveTimeExtention(ActionEvent event) {
 		try {
@@ -106,6 +117,9 @@ public class PrincipalController {
 
 	}
 
+	/**
+	 * @param event that loading the teacher's right screen after pressing a button
+	 */
 	@FXML
 	void btnGetReports(ActionEvent event) {
 		try {
@@ -133,7 +147,10 @@ public class PrincipalController {
 		 */
 	}
 
-	// Event Logout that occur when clicking on logout at the left menu
+	 
+	/**Event Logout that occur when clicking on logout at the left menu
+	 * @param event that display pop up message and ask if he want to logout.
+	 */
 	@FXML
 	void pressLogout(MouseEvent event) {
 		Alert alert = new Alert(Alert.AlertType.WARNING);
