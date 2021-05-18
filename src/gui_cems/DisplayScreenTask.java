@@ -16,7 +16,7 @@ public class DisplayScreenTask extends Application {
 		try {
 			GridPane root = new GridPane();
 			Scene scene = new Scene(root, 900, 600); //Login
-			//Scene scene = new Scene(root, 988, 586); //SCREENS
+			//Scene scene = new Scene(root, 988, 586); //SCREENS  
 			
 			//LEFT SCREENS:
 			//-->

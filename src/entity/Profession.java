@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Profession implements Serializable {
 	private String professionID;
 	private String professionName;
-	
+	 
 	public Profession(String professionID) {
 		super();
 		this.professionID = professionID;

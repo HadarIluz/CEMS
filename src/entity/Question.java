@@ -10,6 +10,7 @@ public class Question implements Serializable{
 	private String[] answers;
 	private int correctAnswerIndex;
 	private Profession profession;
+	private String ProfessionName;
 	
 	
 	public Question(String questionID) {
@@ -24,6 +25,8 @@ public class Question implements Serializable{
 		this.answers = answers;
 		this.correctAnswerIndex = correctAnswerIndex;
 		this.profession = profession;
+		
+		this.ProfessionName=profession.getProfessionName();
 	}
 
 
@@ -48,7 +51,7 @@ public class Question implements Serializable{
 		return answers;
 	}
 	public void setAnswers(String[] answers) {
-		this.answers = answers;
+		this.answers = answers; 
 	}
 	public int getCorrectAnswerIndex() {
 		return correctAnswerIndex;
@@ -59,6 +62,12 @@ public class Question implements Serializable{
 	public Profession getProfession() {
 		return profession;
 	}
+	
+	public String getProfession1() {
+		return ProfessionName;
+	}
+	
+	
 
 	public void setProfession(Profession profession) {
 		this.profession = profession;

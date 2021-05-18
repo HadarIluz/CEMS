@@ -98,6 +98,7 @@ public class ExamBankController extends TeacherController implements Initializab
 		try {
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_step1.fxml"));
+			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
@@ -109,17 +110,17 @@ public class ExamBankController extends TeacherController implements Initializab
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+ 
 		tableExam.setEditable(true);
 		/*
 		 * step 1 - ask for all teacher's test step 2- covert all for the type:
 		 * string,string,integer step 3- show on the screnn
 		 * 
 		 */
-
-		RequestToServer req = new RequestToServer("GetTeacherExams");
-		req.setRequestData(teacher);
-		ClientUI.cems.accept(req);
+		/*
+		 * RequestToServer req = new RequestToServer("GetTeacherExams");
+		 * req.setRequestData(teacher); ClientUI.cems.accept(req);
+		 */
 		
 
 		ObservableList<Exam> data = FXCollections.observableArrayList(new Exam("010203", "Algebra", 10)
@@ -137,7 +138,7 @@ public class ExamBankController extends TeacherController implements Initializab
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
 
 		tableExam.setItems(data);
-
+ 
 		tableExam.getColumns().addAll(ExamID, Proffesion, Time);
 
 	}

@@ -22,7 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 //import logic.Student;
 
-public class TeacherController extends Application  {
+public class TeacherController extends Application  { 
 
 	@FXML
 	private ImageView imgPrincipal;

@@ -28,7 +28,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class CreateQuestionController implements Initializable{
+public class CreateQuestionController  implements Initializable{
 
     @FXML
     private TextField textTheQuestion;

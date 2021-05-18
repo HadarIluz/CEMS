@@ -29,7 +29,7 @@ public class Exam implements Serializable{
 			HashMap<String, Integer> questionScores, String commentForTeacher, String commentForStudents, Teacher author) {
 		super();
 		this.examID = examID;
-		this.profession = profession;
+		this.profession = profession; 
 		this.course = course;
 		this.timeOfExam = timeOfExam;
 		this.questions = questions;

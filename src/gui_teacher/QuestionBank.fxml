@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.QuestionBankController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.QuestionBankController">
    <children>
       <Button fx:id="btnEditQuestion" layoutX="224.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnEditQuestion" prefHeight="25.0" prefWidth="122.0" text="Edit" />
       <Button fx:id="btnDeleteQuestion" layoutX="412.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnDeleteQuestion" prefHeight="25.0" prefWidth="124.0" text="Delete" />
@@ -25,9 +25,9 @@
       </Text>
       <TableView fx:id="tableQuestion" layoutX="192.0" layoutY="104.0" prefHeight="298.0" prefWidth="372.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Question ID" />
-          <TableColumn prefWidth="75.0" text="Proffesion" />
-            <TableColumn prefWidth="75.0" text="Question" />
+          <TableColumn fx:id="QuestionID" prefWidth="75.0" text="Question ID" />
+          <TableColumn fx:id="Proffesion" prefWidth="75.0" text="Proffesion" />
+            <TableColumn fx:id="Question" prefWidth="75.0" text="Question" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
