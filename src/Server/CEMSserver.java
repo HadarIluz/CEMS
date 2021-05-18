@@ -5,7 +5,9 @@ package Server;
 
 import java.io.IOException;
 
+import entity.ActiveExam;
 import entity.Exam;
+import entity.ExtensionRequest;
 import entity.Question;
 import entity.User;
 import gui_server.ServerFrameController;
@@ -61,7 +63,7 @@ public class CEMSserver extends AbstractServer {
 			// logic of login
 			User user = (User) req.getRequestData();
 			User userInSystem = null;
-			userInSystem = dbController.verifyLoginUser((User) msg);  //DEBUG: problem in this line.
+			userInSystem = dbController.verifyLoginUser((User) msg); // DEBUG: problem in this line.
 			if (userInSystem != null) {
 				userInSystem.setStatus("USER FOUND");
 				// serverFrame.printToTextArea(??.toString());
@@ -79,42 +81,63 @@ public class CEMSserver extends AbstractServer {
 			}
 		}
 
-		break;
+			break;
 		case "UpdateUserLoged": {
 			// logic of login- update logged status after Successfully login action
-			//String reqUpdateID = (String) msg;
+			// String reqUpdateID = (String) msg;
 			User user = (User) req.getRequestData();
 			// boolean chnageSucceed = //for print in serverFrame
 			dbController.setLoginUserLogged(user.getId(), user.isLogged());
 			// serverFrame.printToTextArea(??.toString());
 		}
-		break;
+			break;
 		case "createNewQuestion": {
-			createNewQuestion((Question)req.getRequestData());
+			createNewQuestion((Question) req.getRequestData());
 		}
-		break;
+			break;
 
 		case "createNewExam": {
-			createNewExam((Exam)req.getRequestData());
+			createNewExam((Exam) req.getRequestData());
 		}
-		break;
+			break;
+
+		case "addTimeToExam": {
+			ActiveExam activeExamInSystem = dbController.verifyActiveExam((ActiveExam) msg);
+			if (activeExamInSystem != null) {
+				status.setStatus("SUCCESS");
+				serverFrame.printToTextArea(status.toString());
+			} else {
+				status.setStatus("ERROR");
+				serverFrame.printToTextArea(status.toString());
+			}
+			try {
+				client.sendToClient(activeExamInSystem);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+			break;
+		case "createNewExtensionRequest": {
+			dbController.createNewExtensionRequest((ExtensionRequest) req.getRequestData());
+		}
+			break;
 
 		}
 	}
 
 	/**
-	 * @param questionData
-	 * this method creates the question ID and then inserts the new question into the DB.
+	 * @param questionData this method creates the question ID and then inserts the
+	 *                     new question into the DB.
 	 */
 	private void createNewQuestion(Question questionData) {
 		int numOfQuestions = dbController.getNumOfQuestionsInProfession(questionData.getProfession().getProfessionID());
-		String questionID = String.valueOf(numOfQuestions+1);
-		questionID = ("0000"+questionID).substring(questionID.length());
+		String questionID = String.valueOf(numOfQuestions + 1);
+		questionID = ("0000" + questionID).substring(questionID.length());
 		questionID = questionData.getProfession().getProfessionID() + questionID;
 		questionData.setQuestionID(questionID);
 		dbController.createNewQuestion(questionData);
 	}
-	
+
 	private void createNewExam(Exam examData) {
 		// create the exam ID by number of exams in this profession and course
 		int numOfExams = dbController.getNumOfExamsInCourse(examData.getCourse().getCourseID()) + 1;
@@ -127,28 +150,27 @@ public class CEMSserver extends AbstractServer {
 		dbController.addQuestionsInExam(examID, examData.getQuestionScores());
 	}
 
-	
-	//    		/*---------Login----------*/
-	//    		if(req.contains("getUser")) {
-	//    			User userInSystem= null;
-	//    			userInSystem = dbController.verifyLoginUser((User) msg);
-	//        		if (userInSystem != null) {
-	//        			userInSystem.setStatus("USER FOUND");
-	//        			//serverFrame.printToTextArea(??.toString());
-	//        		}
-	//        		else {
-	//        			userInSystem.setStatus("USER NOT FOUND");
-	//        			//serverFrame.printToTextArea(??.toString());
-	//        		}
-	//        		//need to change to sendToClient(status);
-	//        		this.sendToAllClients(userInSystem);
-	//        		}
-	//    			
-	//    		}
-	//    		/*---------End_Login----------*/
-	//    		
-	//    	
-	
+	// /*---------Login----------*/
+	// if(req.contains("getUser")) {
+	// User userInSystem= null;
+	// userInSystem = dbController.verifyLoginUser((User) msg);
+	// if (userInSystem != null) {
+	// userInSystem.setStatus("USER FOUND");
+	// //serverFrame.printToTextArea(??.toString());
+	// }
+	// else {
+	// userInSystem.setStatus("USER NOT FOUND");
+	// //serverFrame.printToTextArea(??.toString());
+	// }
+	// //need to change to sendToClient(status);
+	// this.sendToAllClients(userInSystem);
+	// }
+	//
+	// }
+	// /*---------End_Login----------*/
+	//
+	//
+
 	/**
 	 * This method overrides the one in the superclass. Called when the server
 	 * starts listening for connections.

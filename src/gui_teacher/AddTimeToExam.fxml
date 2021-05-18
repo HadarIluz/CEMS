@@ -7,14 +7,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.AddTimeToExamController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.AddTimeToExamController">
    <children>
       <Button fx:id="btnSubmitTimeExtentionRequest" layoutX="556.0" layoutY="487.0" mnemonicParsing="false" onAction="#btnSubmitTimeExtentionRequest" prefHeight="44.0" prefWidth="150.0" text="Submit">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Label layoutX="83.0" layoutY="236.0" prefHeight="31.0" prefWidth="140.0" text="Additional time">
+      <Label layoutX="83.0" layoutY="236.0" prefHeight="31.0" prefWidth="140.0" text="Additional time:">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
@@ -61,6 +61,11 @@
       <Text fill="#4672ae" layoutX="209.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Extension Request" wrappingWidth="392.1504211425781">
          <font>
             <Font name="System Bold" size="30.0" />
+         </font>
+      </Text>
+      <Text fill="#e44d4d" layoutX="72.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+         <font>
+            <Font size="21.0" />
          </font>
       </Text>
    </children>

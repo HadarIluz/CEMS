@@ -6,9 +6,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
+import entity.ActiveExam;
 import entity.Exam;
+import entity.ExtensionRequest;
 import entity.Question;
 import entity.User;
 import entity.UserType;
@@ -46,32 +51,33 @@ public class DBController {
 	/* checks if the user that try to login exists in the DB. */
 	public User verifyLoginUser(Object obj) {
 
-		//if (obj instanceof User) { // Still needed here? Because we changed that we would certainly get User
-									// ObjecTtype
-			User existUser;
-			existUser = (User) obj;
-			try {
-				PreparedStatement pstmt;
-				pstmt = conn.prepareStatement("SELECT * FROM user WHERE id=?");
-				pstmt.setString(1, (String) obj);
-				ResultSet rs = pstmt.executeQuery();
-				if (rs.next()) {
-					existUser.setId(Integer.parseInt((String) obj));
-					existUser.setPassword(rs.getString(2));
-					existUser.setFirstName(rs.getString(3));
-					existUser.setLastName(rs.getString(4));
-					existUser.setEmail(rs.getString(5));
-					existUser.setUserType(UserType.valueOf(rs.getString(6)));
-					rs.close();
-				}
-				if (existUser.getPassword() == null) // ASK: i want to verify if (existUser.getId() == null) buy it is
-														// int and not string, i used password indent
-					existUser.setStatus("DoesntExist");
-			} catch (SQLException ex) {
-				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-				existUser.setStatus("ERROR");
+		// if (obj instanceof User) { // Still needed here? Because we changed that we
+		// would certainly get User
+		// ObjecTtype
+		User existUser;
+		existUser = (User) obj;
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM user WHERE id=?");
+			pstmt.setString(1, (String) obj);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				existUser.setId(Integer.parseInt((String) obj));
+				existUser.setPassword(rs.getString(2));
+				existUser.setFirstName(rs.getString(3));
+				existUser.setLastName(rs.getString(4));
+				existUser.setEmail(rs.getString(5));
+				existUser.setUserType(UserType.valueOf(rs.getString(6)));
+				rs.close();
 			}
-			return existUser;
+			if (existUser.getPassword() == null) // ASK: i want to verify if (existUser.getId() == null) buy it is
+													// int and not string, i used password indent
+				existUser.setStatus("DoesntExist");
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			existUser.setStatus("ERROR");
+		}
+		return existUser;
 
 	}
 
@@ -79,17 +85,18 @@ public class DBController {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt;
 		int check = 0;
-		int flag; //The flag checks what is the current status of this user and updates to the reverse mode
-		
-		if (num==1)
+		int flag; // The flag checks what is the current status of this user and updates to the
+					// reverse mode
+
+		if (num == 1)
 			flag = 0;
 		else
 			flag = 1;
-		
+
 		try {
-			//UPDATE tblName 
-			//SET column=value 
-			//WHERE condition(s)
+			// UPDATE tblName
+			// SET column=value
+			// WHERE condition(s)
 			pstmt = conn.prepareStatement("UPDATE user SET isLogged=? WHERE id=" + userID + ";");
 			pstmt.setInt(5, flag);
 			check = pstmt.executeUpdate();
@@ -103,11 +110,10 @@ public class DBController {
 		}
 		return false;
 	}
-	
+
 	/**
-	 * @param question
-	 * inserts new question to DB
-	 * @return 
+	 * @param question inserts new question to DB
+	 * @return
 	 */
 	public boolean createNewQuestion(Question question) {
 		PreparedStatement pstmt;
@@ -124,8 +130,7 @@ public class DBController {
 			pstmt.setInt(9, question.getCorrectAnswerIndex());
 			pstmt.setString(10, question.getDescription());
 
-
-			if(pstmt.executeUpdate() == 1) {
+			if (pstmt.executeUpdate() == 1) {
 				return true;
 			}
 			// to do something with status
@@ -136,8 +141,7 @@ public class DBController {
 		}
 		return false;
 	}
-	
-	
+
 	/**
 	 * @param professionID
 	 * @return int, the number of questions in this profession
@@ -192,10 +196,9 @@ public class DBController {
 			pstmt.setInt(4, exam.getTimeOfExam());
 			pstmt.setString(5, exam.getCommentForTeacher());
 			pstmt.setString(6, exam.getCommentForStudents());
-			pstmt.setInt(7,  exam.getAuthor().getId());
+			pstmt.setInt(7, exam.getAuthor().getId());
 
-
-			if(pstmt.executeUpdate() == 1) {
+			if (pstmt.executeUpdate() == 1) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -204,34 +207,90 @@ public class DBController {
 			return false;
 		}
 		return false;
-		
+
 	}
 
 	/**
 	 * @param examID
 	 * @param questionScores
 	 * @return true/false if inserting all questions and scores of exam with examID
-	 * 			into table question_in_exam succeeded
+	 *         into table question_in_exam succeeded
 	 */
 	public boolean addQuestionsInExam(String examID, HashMap<String, Integer> questionScores) {
 		PreparedStatement pstmt;
 		try {
-		for (String questionID: questionScores.keySet()) {
-			pstmt = conn.prepareStatement("INSERT INTO question_in_exam VALUES(?, ?, ?);");
-			pstmt.setString(1, questionID);
-			pstmt.setInt(2, questionScores.get(questionID));
-			pstmt.setString(3, examID);
-			if(pstmt.executeUpdate() != 1) {
-				return false;
+			for (String questionID : questionScores.keySet()) {
+				pstmt = conn.prepareStatement("INSERT INTO question_in_exam VALUES(?, ?, ?);");
+				pstmt.setString(1, questionID);
+				pstmt.setInt(2, questionScores.get(questionID));
+				pstmt.setString(3, examID);
+				if (pstmt.executeUpdate() != 1) {
+					return false;
+				}
 			}
-		}
-		
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
-		return true;		
+		return true;
 	}
 
+	/**
+	 * if the activeExam exist in the DB and update existActiveExam.status
+	 * accordingly
+	 * 
+	 * @param activeExam
+	 * @return return existActiveExam.
+	 */
+	public ActiveExam verifyActiveExam(ActiveExam activeExam) {
+		ActiveExam existActiveExam = activeExam;
+
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=? ;");
+			pstmt.setString(1, existActiveExam.getExam().getExamID());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				existActiveExam.setExam(activeExam.getExam());
+				existActiveExam.setDate(activeExam.getDate());
+				existActiveExam.setExamCode(rs.getString(3));
+				rs.close();
+			}
+			if (existActiveExam.getExam() == null) {
+				existActiveExam.setStatus("ACTIVE EXAM FOUND"); // status
+			} else
+				existActiveExam.setStatus("ACTIVE EXAM NOT FOUND"); // status
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			existActiveExam.setStatus("ERROR");
+		}
+		return existActiveExam;
+	}
+
+	/**
+	 * 
+	 * @param extensionRequest
+	 * @return true if creating a new extension request in DB succeeded, else return
+	 *         false
+	 */
+	public boolean createNewExtensionRequest(ExtensionRequest extensionRequest) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("INSERT INTO extension_request VALUES(?, ?, ?);");
+			pstmt.setString(1, extensionRequest.getExam().getExam().getExamID());
+			pstmt.setString(2, extensionRequest.getAdditionalTime());
+			pstmt.setString(3, extensionRequest.getsetReason());
+
+			if (pstmt.executeUpdate() == 1) {
+				return true;
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		return false;
+
+	}
 }
