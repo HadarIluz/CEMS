@@ -89,6 +89,25 @@ public class EditExamController implements Initializable{
     @FXML
     void btnSaveEditeExam(ActionEvent event) {
 
+    	commentForTeacher=textTeacherComment.getText();
+        commentForStudent=textStudentComment.getText();;
+        examID=textExamID.getText();
+        TimeAllocatedToExam=textTimeForExam.getText();
+        
+     // Check that all fields that must be filled are filled.
+     		if (textExamID.getText().trim().isEmpty()) {
+     			popUp("Please fill the ExamID Field");
+     		} else if (textTimeForExam.getText().trim().isEmpty()) {
+     			popUp("Please fill the Time Allocated For Exam Field");
+     			} else {
+     				if (examID.length() == 6 && isOnlyDigits(examID)&& isOnlyDigits(TimeAllocatedToExam))
+     					editedExam=new Exam(examID);
+     				//editedExam.setTeacher(currentTeacher);
+     	    		RequestToServer req = new RequestToServer("EditExam");
+     	    		req.setRequestData(editedExam);
+     	    		ClientUI.cems.accept(req);
+     				
+     			}
     }
 
     @FXML
@@ -145,6 +164,25 @@ public class EditExamController implements Initializable{
  			Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
  			dialog.setScene(dialogScene);
  			dialog.show();
+ 		}
+ 		
+ 		/**
+ 		 * this method checks if the given string includes letters.
+ 		 * 
+ 		 * @param str
+ 		 * @return true if the String contains only digits.
+ 		 */
+ 		private boolean isOnlyDigits(String str) {
+ 			boolean onlyDigits = true;
+ 			for (char ch : str.toCharArray()) {
+ 				if (!Character.isDigit(ch)) {
+ 					onlyDigits = false;
+ 					System.out.println("The string contains a character that he does not digit");
+ 					break;
+ 				}
+ 			}
+ 			System.out.println("isOnlyDigits returns:" + onlyDigits); // message to console
+ 			return onlyDigits;
  		}
 
 }
