@@ -55,18 +55,14 @@ public class DBController {
 	/* checks if the user that try to login exists in the DB. */
 	public User verifyLoginUser(Object obj) {
 
-		// if (obj instanceof User) { // Still needed here? Because we changed that we
-		// would certainly get User
-		// ObjecTtype
-		User existUser;
-		existUser = (User) obj;
+		 User existUser = (User) obj;
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM user WHERE id=?");
-			pstmt.setString(1, (String) obj);
+			pstmt.setInt(1, existUser.getId());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				existUser.setId(Integer.parseInt((String) obj));
+				existUser.setId(Integer.parseInt((String) rs.getString(1)));
 				existUser.setPassword(rs.getString(2));
 				existUser.setFirstName(rs.getString(3));
 				existUser.setLastName(rs.getString(4));

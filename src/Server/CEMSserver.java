@@ -59,11 +59,12 @@ public class CEMSserver extends AbstractServer {
 		RequestToServer req = (RequestToServer) msg;
 
 		switch (req.getRequestType()) {
+		
 		case "getUser": {
 			// logic of login
 			User user = (User) req.getRequestData();
 			User userInSystem = null;
-			userInSystem = dbController.verifyLoginUser((User) msg); // DEBUG: problem in this line.
+			userInSystem = dbController.verifyLoginUser((User) user); // DEBUG: problem in this line.
 			if (userInSystem != null) {
 				userInSystem.setStatus("USER FOUND");
 				// serverFrame.printToTextArea(??.toString());
@@ -71,8 +72,6 @@ public class CEMSserver extends AbstractServer {
 				userInSystem.setStatus("USER NOT FOUND");
 				// serverFrame.printToTextArea(??.toString());
 			}
-			// need to change to sendToClient(status);
-			// this.sendToAllClients(userInSystem);
 			try {
 				client.sendToClient(userInSystem);
 			} catch (IOException e) {
@@ -150,26 +149,6 @@ public class CEMSserver extends AbstractServer {
 		dbController.addQuestionsInExam(examID, examData.getQuestionScores());
 	}
 
-	// /*---------Login----------*/
-	// if(req.contains("getUser")) {
-	// User userInSystem= null;
-	// userInSystem = dbController.verifyLoginUser((User) msg);
-	// if (userInSystem != null) {
-	// userInSystem.setStatus("USER FOUND");
-	// //serverFrame.printToTextArea(??.toString());
-	// }
-	// else {
-	// userInSystem.setStatus("USER NOT FOUND");
-	// //serverFrame.printToTextArea(??.toString());
-	// }
-	// //need to change to sendToClient(status);
-	// this.sendToAllClients(userInSystem);
-	// }
-	//
-	// }
-	// /*---------End_Login----------*/
-	//
-	//
 
 	/**
 	 * This method overrides the one in the superclass. Called when the server

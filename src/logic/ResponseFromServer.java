@@ -33,5 +33,8 @@ public class ResponseFromServer implements Serializable{
 		return responseType;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "ResponseFromServer [responseType=" + responseType + "]";
+	}
 }
