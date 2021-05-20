@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +16,8 @@ import entity.ActiveExam;
 import entity.Exam;
 import entity.ExtensionRequest;
 import entity.Question;
+import entity.Teacher;
+import entity.TestRow;
 import entity.User;
 import entity.UserType;
 import gui_server.ServerFrameController;
@@ -293,4 +296,57 @@ public class DBController {
 		return false;
 
 	}
+	
+	public ArrayList<TestRow> GetTeacherExams(Object obj) {
+
+
+		Teacher teacher;
+
+		ArrayList<TestRow> examsOfTeacher =new ArrayList<TestRow>();
+
+
+		teacher = (Teacher) obj;
+
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE author=?");
+
+			pstmt.setString(1,""+teacher.getId());
+
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				TestRow newRow = new TestRow();
+				newRow.setExamID(rs.getString(1));
+				newRow.setProfession(rs.getString(2));
+				newRow.setTimeAllotedForTest(rs.getString(4));
+				examsOfTeacher.add(newRow);
+
+
+			}
+			rs.close();
+
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			teacher.setStatus("ERROR");
+		}
+		return examsOfTeacher;//return null if no exsiting tests
+
+}
+
+
+
+//public static void main(String[] args) {
+//
+//	DBController db = new DBController();
+//db.connectDB(new ServerFrameController());
+//
+//Teacher t= new Teacher(222222222, "PASS123", "avi", "Cohen", "asdsadsadsa", UserType.Teacher,new ArrayList<Profession>());
+//
+//ArrayList<TestRow> tst=db.GetTeacherExams(t);
+//
+//	System.out.println(tst);
+//
+//
+//
+//}
 }

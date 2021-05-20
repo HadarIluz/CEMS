@@ -34,8 +34,6 @@ public class Exam implements Serializable{
 	}
 
 
-
-
 	public String getProfessionName() {
 		return ProfessionName;
 	}
