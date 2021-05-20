@@ -16,6 +16,7 @@ import entity.ActiveExam;
 import entity.Exam;
 import entity.ExtensionRequest;
 import entity.Question;
+import entity.QuestionRow;
 import entity.Teacher;
 import entity.TestRow;
 import entity.User;
@@ -322,6 +323,39 @@ public class DBController {
 				examsOfTeacher.add(newRow);
 
 
+			}
+			rs.close();
+
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			teacher.setStatus("ERROR");
+		}
+		return examsOfTeacher;//return null if no exsiting tests
+
+}
+	
+	
+	public ArrayList<QuestionRow> GetTeacherQuestions(Object obj) {
+
+		Teacher teacher;
+
+		ArrayList<QuestionRow> examsOfTeacher =new ArrayList<QuestionRow>();
+
+		teacher = (Teacher) obj;
+
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM question WHERE teacher=?");
+
+			pstmt.setString(1,""+teacher.getId());
+
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				QuestionRow newQuestion = new QuestionRow();
+				newQuestion.setQuestionID(rs.getString(2));
+				newQuestion.setProfession(rs.getString(3));
+				newQuestion.setQuestion(rs.getString(4));
+				examsOfTeacher.add(newQuestion);
 			}
 			rs.close();
 
