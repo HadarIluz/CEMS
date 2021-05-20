@@ -106,6 +106,7 @@ public class ExamBankController extends TeacherController implements Initializab
 		}
 
 	}
+	//
 
 	@FXML
 	void btnOpenExamInfo(ActionEvent event) {
