@@ -9,8 +9,11 @@ public class ActiveExam implements Serializable {
 	private Calendar date; // including start time
 	private Exam exam;
 	private String examCode;
+	
+	//ASK: why not from logic class? this is entity
 	private String status; // msg from server :{"ACTIVE EXAM FOUND" / "ACTIVE EXAM NOT FOUND"}
-
+	private String activeExamType=null; //{manual / computerized}
+	
 	public ActiveExam(Exam exam) {
 		this.exam = exam;
 	}
@@ -18,6 +21,11 @@ public class ActiveExam implements Serializable {
 	public ActiveExam(Calendar date, Exam exam, String examCode) {
 		this.date = date;
 		this.exam = exam;
+		this.examCode = examCode;
+	}
+	
+	public ActiveExam(Calendar date, String examCode) {
+		this.date = date;
 		this.examCode = examCode;
 	}
 
@@ -66,5 +74,13 @@ public class ActiveExam implements Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	public String getActiveExamType() {
+		return activeExamType;
+	}
 
+	public void setActiveExamType(String activeExamType) {
+		this.activeExamType = activeExamType;
+	}
+	
 }
