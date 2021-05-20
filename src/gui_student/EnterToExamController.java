@@ -1,6 +1,8 @@
 package gui_student;
 
-import java.util.Calendar;import client.CEMSClient;
+import java.io.IOException;
+import java.util.Calendar;
+import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
 import entity.Exam;
@@ -12,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -43,10 +46,9 @@ public class EnterToExamController {
 
 	@FXML
 	private CheckBox CommitPreformByMyself;
-	
-	
+
 	private Student student;
-	private Exam exam;
+	private Pane newPaneRight;
 
 	@FXML
 	void btnStart(ActionEvent event) {
@@ -54,70 +56,77 @@ public class EnterToExamController {
 		String studentID = textStudentID.getText().trim();
 
 		boolean condition = checkConditionToStart(examCode, studentID);
-		
-		if(condition) {
-			
+
+		if (condition) {
 			Calendar date = Calendar.getInstance();
 			System.out.println("The current date is : " + date.getTime());
 			date.add(Calendar.DATE, 0);
-			
+
+			// Prepared student id
 			int id = Integer.parseInt(studentID.trim());
 			student.setId(id);
-			//exam.getExamID();
-			
-			
-			
-			
-			//-------I DONT KNOE WHICH OBJECT I NEED TO SEND TO SERVER.
-			//-------ALL THE PK IN THE TABLES MIXED IN THE CODE!! ):
-			
-			ActiveExam activeExam= new ActiveExam(date, exam, examCode);
-			
-			/*
-			//try1:
-			Exam exam=new Exam(date);
-			
-			ActiveExam activeExam= new ActiveExam(date, exam, examCode);
-			*/
-			//---------------------------
-			
-			
-			/*			
-			//Exam exam= new Exam(exam);
-			
-			ActiveExam startActiveExam = new ActiveExam(date, examCode);
-			
-			Student student= new Student(id); //new constructor added to student.
-			*/
-			//ExamOfStudent examOfStudent= new ExamOfStudent(startActiveExam, student); //new constructor added to ExamOfStudent.
-			
 
-			RequestToServer req = new RequestToServer("getExamID_perStudentID");
-			//req.setRequestData();
+			ActiveExam activeExam = new ActiveExam(date, examCode);
+			// create request to server to checks if examID for this examCode and date are exist.
+			// if yes so return it examID. else return null.
+			RequestToServer req = new RequestToServer("isActiveExamExist");
+			req.setRequestData(activeExam);
 			ClientUI.cems.accept(req);
-			
-			
-			
-			//ActiveExam ectiveExam=new ActiveExam();
-//----------------------------------------------------------------
-			
-			RequestToServer req2 = new RequestToServer("startActiveExam");
-			//req.setRequestData();
-			ClientUI.cems.accept(req2); 
-			
-			
-			
-			if (CEMSClient.statusMsg.getStatus().equals("SUCCESS")) {
-				// The student has entered all the given details and transferred to exam screen
+
+			// verify if examID return or not.
+			if (CEMSClient.responseFromServer.getResponseData() != null) {
+
+				Exam exam = (Exam) CEMSClient.responseFromServer.getResponseData();
+				String existExamID = exam.getExamID();
+
+				// Request from server to return ActiveExamType of this exist active exam we found.
+				ActiveExam reqActiveExamType = new ActiveExam(date, new Exam(existExamID), examCode);
+				req = new RequestToServer("getActiveExamType");
+				req.setRequestData(reqActiveExamType);
+				ClientUI.cems.accept(req);
+
+				// server returns examType
+				String examType = (String) CEMSClient.responseFromServer.getResponseData();
+				System.out.println(examType); // message to console for DEBUG.
+
+				// The student has entered all the given details and transfer to exam screen
 				// - computerized or manual
+				((Pane) event.getSource()).getScene().getWindow().hide(); // hiding right pane window
+				switch (examType) {
+				case "manual": {
+					// load manual start exam fxml
+					try {
+						this.newPaneRight = FXMLLoader
+								.load(getClass().getResource("/gui_student/StartManualExam.fxml"));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+					break;
+				case "computerized": {
+					// load computerized start exam fxml
+					try {
+						this.newPaneRight = FXMLLoader.load(getClass().getResource("/gui_student/SolveExam.fxml"));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+					break;
+				}//END switch
+
+			} else {
+
+				popUp("There is no active exam for exam code number: " + examCode);
+
 			}
-		
+
 		}
 	}
 
-	
-
-	/** Checks whether the student has filled all the required fields, if not open popUp message.
+	/**
+	 * Checks whether the student has filled all the required fields, if not open
+	 * popUp message.
+	 * 
 	 * @param examCode
 	 * @param studentID
 	 * @return Returns true if all fields are filled otherwise returns false.
@@ -136,7 +145,9 @@ public class EnterToExamController {
 		return true;
 	}
 
-	/**create a popUp with a given message.
+	/**
+	 * create a popUp with a given message.
+	 * 
 	 * @param msg
 	 */
 	private void popUp(String msg) {
@@ -161,7 +172,7 @@ public class EnterToExamController {
 	 */
 	public void start(Stage primaryStage) {
 		try {
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_student/EnterToExam.fxml"));
+			newPaneRight = FXMLLoader.load(getClass().getResource("/gui_student/EnterToExam.fxml"));
 			GridPane root = null;
 			root.add(newPaneRight, 1, 0);
 			Scene scene = new Scene(root);
