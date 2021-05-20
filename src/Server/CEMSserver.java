@@ -120,8 +120,21 @@ public class CEMSserver extends AbstractServer {
 			dbController.createNewExtensionRequest((ExtensionRequest) req.getRequestData());
 		}
 			break;
+		
+			//TODO: return exam id if exist
+		case "isActiveExamExist": {
+			createNewExam((Exam) req.getRequestData());
+		}
+			break;
+			//TODO: return exam type of the exist active exam.
+		case "getActiveExamType": {
+			createNewExam((Exam) req.getRequestData());
+		}
+			break;
+
 
 		}
+		
 	}
 
 	/**
