@@ -43,16 +43,11 @@ public class ExamBankController extends TeacherController implements Initializab
 	private TableView<Exam> tableExam;
 
 	@FXML
-	private Button btnBack1;
+	private Button btnCreateNewExam;
 
-	@FXML
-	private Button btnOpenExamInfo;
-
-	@FXML
+		@FXML
 	private Text textNavigation;
 
-	@FXML
-	private Button btnBack;
 
 	@FXML
 	private TableColumn<Exam, String> ExamID;
@@ -65,10 +60,7 @@ public class ExamBankController extends TeacherController implements Initializab
 	
 	private ObservableList<Exam> data;
 
-	@FXML
-	void btnBack(ActionEvent event) {
-
-	}
+	
 	
 	@FXML
     void MouseC(MouseEvent event) {
@@ -104,12 +96,6 @@ public class ExamBankController extends TeacherController implements Initializab
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-
-	}
-	//
-
-	@FXML
-	void btnOpenExamInfo(ActionEvent event) {
 
 	}
 

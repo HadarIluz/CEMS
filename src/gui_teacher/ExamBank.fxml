@@ -43,17 +43,15 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Button fx:id="btnBack1" layoutX="373.0" layoutY="51.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#CreateNewExam" prefHeight="36.0" prefWidth="194.0" text="Create New Exam" textAlignment="CENTER" wrapText="true">
+      <Button fx:id="btnCreateNewExam" layoutX="373.0" layoutY="51.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#CreateNewExam" prefHeight="36.0" prefWidth="194.0" text="Create New Exam" textAlignment="CENTER" wrapText="true">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnOpenExamInfo" layoutX="579.0" layoutY="432.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnOpenExamInfo" prefHeight="51.0" prefWidth="124.0" text="Open full exam info" visible="false" />
       <Text fx:id="textNavigation" fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Exam Bank " underline="true" visible="false" wrappingWidth="575.5537109375">
          <font>
             <Font name="System Italic" size="14.0" />
          </font>
       </Text>
-      <Button fx:id="btnBack" layoutX="27.0" layoutY="534.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnBack" prefHeight="25.0" prefWidth="124.0" text="&lt;Back" visible="false" />
    </children>
 </AnchorPane>

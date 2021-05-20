@@ -48,12 +48,10 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnOpenQuestionInfo" layoutX="589.0" layoutY="442.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnOpenQuestionInfo" prefHeight="51.0" prefWidth="145.0" text="Open full question info" visible="false" />
       <Text fx:id="textNavigation" fill="#5e057e" layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Question Bank " underline="true" visible="false" wrappingWidth="575.5537109375">
          <font>
             <Font name="System Italic" size="14.0" />
          </font>
       </Text>
-      <Button fx:id="btnBack" layoutX="27.0" layoutY="534.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnBack" prefHeight="25.0" prefWidth="124.0" text="&lt;Back" visible="false" />
    </children>
 </AnchorPane>

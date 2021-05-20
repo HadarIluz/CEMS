@@ -20,6 +20,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
@@ -52,8 +53,6 @@ public class QuestionBankController extends TeacherController implements Initial
     @FXML
     private Text textNavigation;
 
-    @FXML
-    private Button btnBack;
     
     @FXML
     private TableColumn<QuestionRow, String> QuestionID;
@@ -66,10 +65,6 @@ public class QuestionBankController extends TeacherController implements Initial
     
     private ObservableList<QuestionRow> data;
 
-    @FXML
-    void btnBack(ActionEvent event) {
-
-    }
     
     @FXML
     void MouseC(MouseEvent event) {
@@ -86,7 +81,7 @@ public class QuestionBankController extends TeacherController implements Initial
 
 		try {
 
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateQuestion.fxml"));
+			Pane newPaneRight = FXMLLoader.load(getClass().getClass().getResource("CreateQuestion.fxml"));
 			root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
@@ -108,13 +103,18 @@ public class QuestionBankController extends TeacherController implements Initial
 
     @FXML
     void btnEditQuestion(ActionEvent event) {
+    	try {
 
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditQuestion.fxml"));
+			root.add(newPaneRight, 1, 0);
+
+		} catch (IOException e) {
+			System.out.println("Couldn't load!");
+			e.printStackTrace();
+		}
     }
 
-    @FXML
-    void btnOpenQuestionInfo(ActionEvent event) {
-
-    }
+    
 
 	
 
