@@ -23,6 +23,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
@@ -61,14 +62,33 @@ public class ExamBankController extends TeacherController implements Initializab
 
 	@FXML
 	private TableColumn<Exam, Integer> Time;
+	
+	private ObservableList<Exam> data;
 
 	@FXML
 	void btnBack(ActionEvent event) {
 
 	}
+	
+	@FXML
+    void MouseC(MouseEvent event) {
+    	
+    	
+     	ObservableList<Exam> Qlist;
+    	Qlist= tableExam.getSelectionModel().getSelectedItems();
+    	textExamID.setText(Qlist.get(0).getExamID());
+
+    }
+
 
 	@FXML
 	void btnDeleteExam(ActionEvent event) {
+		ObservableList<Exam> Qlist;
+		
+    	Qlist= tableExam.getSelectionModel().getSelectedItems();
+    	
+    	data.removeAll(Qlist);
+
 
 	}
 
@@ -123,7 +143,7 @@ public class ExamBankController extends TeacherController implements Initializab
 		 */
 		
 
-		ObservableList<Exam> data = FXCollections.observableArrayList(new Exam("010203", "Algebra", 10)
+		 data = FXCollections.observableArrayList(new Exam("010203", "Algebra", 10)
 
 				, new Exam("111111", "Masadim", 2)
 

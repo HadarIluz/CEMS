@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.ExamBankController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.ExamBankController">
    <children>
       <Button fx:id="btnEditExam" layoutX="224.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnEditExam" prefHeight="25.0" prefWidth="122.0" text="Edit" />
       <Button fx:id="btnDeleteExam" layoutX="412.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnDeleteExam" prefHeight="25.0" prefWidth="124.0" text="Delete" />
@@ -23,7 +23,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TableView fx:id="tableExam" layoutX="192.0" layoutY="104.0" prefHeight="298.0" prefWidth="372.0">
+      <TableView fx:id="tableExam" layoutX="192.0" layoutY="104.0" onMouseClicked="#MouseC" prefHeight="298.0" prefWidth="372.0">
         <columns>
           <TableColumn fx:id="ExamID" prefWidth="75.0" text="Exam ID" />
           <TableColumn fx:id="Proffesion" prefWidth="75.0" text="Proffesion" />
