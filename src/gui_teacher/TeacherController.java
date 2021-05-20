@@ -173,7 +173,7 @@ public class TeacherController extends Application  {
 		
 		
 		root = new GridPane();
-		 scene = new Scene(root, 900, 600); // Login
+		 scene = new Scene(root, 900, 700); // Login
 		Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
 		root.add(newMnueLeft, 0, 0);
 		primaryStage.setTitle("CEMS-Computerized Exam Management System");

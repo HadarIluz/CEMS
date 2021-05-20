@@ -28,7 +28,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class CreateQuestionController implements Initializable{
+public class CreateQuestionController extends QuestionBankController implements Initializable{
 
     @FXML
     private TextField textTheQuestion;
@@ -132,7 +132,7 @@ public class CreateQuestionController implements Initializable{
     }
     
     public void loadProfessionsToCombobox() {
-    	selectProfession.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
+   // 	selectProfession.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
     }
 
 	@Override

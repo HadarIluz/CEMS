@@ -81,7 +81,7 @@ public class QuestionBankController extends TeacherController implements Initial
 
 		try {
 
-			Pane newPaneRight = FXMLLoader.load(getClass().getClass().getResource("CreateQuestion.fxml"));
+			AnchorPane newPaneRight = FXMLLoader.load(getClass().getResource("CreateQuestion.fxml"));
 			root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
