@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import entity.Exam;
 import entity.Profession;
 import entity.Question;
 import entity.QuestionRow;
@@ -18,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
@@ -61,9 +63,21 @@ public class QuestionBankController extends TeacherController implements Initial
 
     @FXML
     private TableColumn<QuestionRow, String> Question;
+    
+    private ObservableList<QuestionRow> data;
 
     @FXML
     void btnBack(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void MouseC(MouseEvent event) {
+    	
+    	
+     	ObservableList<QuestionRow> Qlist;
+    	Qlist= tableQuestion.getSelectionModel().getSelectedItems();
+    	textQuestionID.setText(Qlist.get(0).getQuestionID());
 
     }
 
@@ -84,6 +98,11 @@ public class QuestionBankController extends TeacherController implements Initial
 
     @FXML
     void btnDeleteQuestion(ActionEvent event) {
+    	ObservableList<QuestionRow> Qlist;
+		
+    	Qlist= tableQuestion.getSelectionModel().getSelectedItems();
+    	
+    	data.removeAll(Qlist);
 
     }
 
@@ -121,7 +140,7 @@ public class QuestionBankController extends TeacherController implements Initial
 		qr2.setProfession(q2.getProfession().getProfessionName());
 		
 		
-		ObservableList<QuestionRow> data = FXCollections.observableArrayList(qr,qr2);
+		 data = FXCollections.observableArrayList(qr,qr2);
 		
 		tableQuestion.getColumns().clear();
 		QuestionID.setCellValueFactory(new PropertyValueFactory<>("QuestionID"));
