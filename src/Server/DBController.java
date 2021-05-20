@@ -333,7 +333,34 @@ public class DBController {
 		return examsOfTeacher;//return null if no exsiting tests
 
 }
+	public Boolean DeleteQuestion(String QuestionID) {
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("DELETE FROM question WHERE questionID=?");
+			pstmt.setString(1,QuestionID);
+		}
+		catch(SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			return false;
+		}	
+		return true;
+		
+	}
 	
+	
+	public Boolean ExamQuestion(String ExamID) {
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("DELETE FROM exam WHERE examID=?");
+			pstmt.setString(1,ExamID);
+		}
+		catch(SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			return false;
+		}	
+		return true;
+		
+	}
 	
 	public ArrayList<QuestionRow> GetTeacherQuestions(Object obj) {
 
