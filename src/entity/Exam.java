@@ -31,12 +31,18 @@ public class Exam implements Serializable{
 		this.examID = examID;
 		this.ProfessionName = profession;
 		this.timeOfExam = timeOfExam;
-		
-		
 	}
 
 
 
+
+	public String getProfessionName() {
+		return ProfessionName;
+	}
+
+	public void setProfessionName(String professionName) {
+		ProfessionName = professionName;
+	}
 
 	public Exam(String examID, Profession profession, Course course, int timeOfExam, ArrayList<Question> questions,
 			HashMap<String, Integer> questionScores, String commentForTeacher, String commentForStudents, Teacher author) {
