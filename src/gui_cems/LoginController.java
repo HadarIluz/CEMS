@@ -117,11 +117,12 @@ public class LoginController {
 				&& isOnlyDigits(userID)) {
 			int id = Integer.parseInt(txtUserName.getText().trim());
 			user = new User(id, userPassword);
-			// set in 'Serializable' class my request from server.
+			// create in 'Serializable' class my request from server.
 			RequestToServer req = new RequestToServer("getUser");
 			req.setRequestData(user);
-			ClientUI.cems.accept(req); // sent server pk(id) to DB in order to checks if user exist or not.
-			if (CEMSClient.statusMsg.getStatus().equals("USER NOT FOUND")) {
+			ClientUI.cems.accept(req); // send server pk(id) to DB in order to checks if user exist or not.
+
+			if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("USER NOT FOUND")) {
 				System.out.println("press on login button and server returns: -->USER NOT FOUND");
 				popUp("This user doesn`t exist in CEMS system.");
 			}
@@ -133,6 +134,7 @@ public class LoginController {
 					popUp("The password insert is incorrect. Please try again.");
 				} else if (user.isLogged() == 1) {
 					popUp("This user already login to CEMS system!.");
+					
 				} else {
 
 					user.setLogged(1);
@@ -162,10 +164,9 @@ public class LoginController {
 						break;
 					case "Teacher": {
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
-						//Other option: call start function in teacherController for initialization.
 						//call start function in studentController for initialization.
 						try {
-							//teacherController.start(new Stage() ); //------->remove commend
+							teacherController.start(new Stage() ); 
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

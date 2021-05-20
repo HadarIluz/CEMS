@@ -8,6 +8,7 @@ import ocsf.client.*
 ;
 import common.CemsIF;
 import gui_teacher.CreateQuestionController;
+import logic.ResponseFromServer;
 import logic.StatusMsg;
 import java.io.*;
 
@@ -29,7 +30,8 @@ public class CEMSClient extends AbstractClient {
 	 */
 	CemsIF clientUI;
 
-	// new:
+	// define transfer of data of client-server.
+	public static ResponseFromServer responseFromServer = new ResponseFromServer(null);
 	public static StatusMsg statusMsg = new StatusMsg();
 	public static boolean awaitResponse = false;
 
@@ -63,6 +65,12 @@ public class CEMSClient extends AbstractClient {
 		if (msg instanceof StatusMsg) {
 			statusMsg = (StatusMsg) msg;
 			clientUI.display(statusMsg.toString());
+			awaitResponse = false;
+		}
+		
+		if(msg instanceof ResponseFromServer) {
+			responseFromServer = (ResponseFromServer) msg;
+			clientUI.display(responseFromServer.toString());
 			awaitResponse = false;
 		}
 	}
