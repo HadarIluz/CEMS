@@ -121,6 +121,17 @@ public class CEMSserver extends AbstractServer {
 			dbController.createNewExtensionRequest((ExtensionRequest) req.getRequestData());
 		}
 			break;
+		case "approvalTimeExtention": {
+			//update logged status after Successfully login action
+			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
+			//dbController.setLoginUserLogged(user.getId(), user.isLogged());
+
+			
+		
+					
+		}
+			break;
+
 
 		}
 	}

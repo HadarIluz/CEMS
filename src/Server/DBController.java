@@ -253,7 +253,7 @@ public class DBController {
 
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=? ;");
+			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=? ");
 			pstmt.setString(1, existActiveExam.getExam().getExamID());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -297,14 +297,12 @@ public class DBController {
 		return false;
 
 	}
-	
-	public ArrayList<TestRow> GetTeacherExams(Object obj) {
 
+	public ArrayList<TestRow> GetTeacherExams(Object obj) {
 
 		Teacher teacher;
 
-		ArrayList<TestRow> examsOfTeacher =new ArrayList<TestRow>();
-
+		ArrayList<TestRow> examsOfTeacher = new ArrayList<TestRow>();
 
 		teacher = (Teacher) obj;
 
@@ -312,7 +310,7 @@ public class DBController {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE author=?");
 
-			pstmt.setString(1,""+teacher.getId());
+			pstmt.setString(1, "" + teacher.getId());
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -322,7 +320,6 @@ public class DBController {
 				newRow.setTimeAllotedForTest(rs.getString(4));
 				examsOfTeacher.add(newRow);
 
-
 			}
 			rs.close();
 
@@ -330,43 +327,41 @@ public class DBController {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			teacher.setStatus("ERROR");
 		}
-		return examsOfTeacher;//return null if no exsiting tests
+		return examsOfTeacher;// return null if no exsiting tests
 
-}
+	}
+
 	public Boolean DeleteQuestion(String QuestionID) {
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("DELETE FROM question WHERE questionID=?");
-			pstmt.setString(1,QuestionID);
-		}
-		catch(SQLException ex) {
+			pstmt.setString(1, QuestionID);
+		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			return false;
-		}	
+		}
 		return true;
-		
+
 	}
-	
-	
+
 	public Boolean ExamQuestion(String ExamID) {
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("DELETE FROM exam WHERE examID=?");
-			pstmt.setString(1,ExamID);
-		}
-		catch(SQLException ex) {
+			pstmt.setString(1, ExamID);
+		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			return false;
-		}	
+		}
 		return true;
-		
+
 	}
-	
+
 	public ArrayList<QuestionRow> GetTeacherQuestions(Object obj) {
 
 		Teacher teacher;
 
-		ArrayList<QuestionRow> examsOfTeacher =new ArrayList<QuestionRow>();
+		ArrayList<QuestionRow> examsOfTeacher = new ArrayList<QuestionRow>();
 
 		teacher = (Teacher) obj;
 
@@ -374,7 +369,7 @@ public class DBController {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM question WHERE teacher=?");
 
-			pstmt.setString(1,""+teacher.getId());
+			pstmt.setString(1, "" + teacher.getId());
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -390,11 +385,28 @@ public class DBController {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			teacher.setStatus("ERROR");
 		}
-		return examsOfTeacher;//return null if no exsiting tests
+		return examsOfTeacher;// return null if no exsiting tests
 
-}
+	}
 
+	//public ExtensionRequest getExtensionRequest(Object obj) {
 
+//		ExtensionRequest extensionRequest;
+	//	PreparedStatement pstmt;
+
+		//extensionRequest = (ExtensionRequest) obj;
+
+	//	try {
+			//pstmt = conn.prepareStatement("SELECT * FROM extension_request WHERE exam=?");
+
+			//pstmt.setString(1, extensionRequest.getExam().getExam().getExamID());
+			//pstmt.setString(2, extensionRequest.getAdditionalTime());
+			//pstmt.setString(3, extensionRequest.getsetReason());
+			//ResultSet rs = pstmt.executeQuery();
+		//////////////////////////////////////
+
+	//}
+	//}
 
 //public static void main(String[] args) {
 //
