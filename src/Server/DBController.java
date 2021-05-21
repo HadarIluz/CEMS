@@ -277,35 +277,37 @@ public class DBController {
 	}
 
 	/**
-	 * if the activeExam exist in the DB and update existActiveExam.status
-	 * accordingly
-	 * 
-	 * @param activeExam
-	 * @return return existActiveExam.
+	 * check if the activeExam exist in the DB
+	 * @param obj of ActiveExam which include exam to verify if exists.
 	 */
-	public ActiveExam verifyActiveExam_byExamID(ActiveExam activeExam) {
-		ActiveExam existActiveExam = activeExam;
-
+	public void verifyActiveExam(Object obj) {
+		ActiveExam existActiveExam = (ActiveExam) obj;
+		ResponseFromServer respond = null;
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=? ;");
+			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=? ");
 			pstmt.setString(1, existActiveExam.getExam().getExamID());
+
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				existActiveExam.setExam(activeExam.getExam());
-				existActiveExam.setDate(activeExam.getDate());
-				existActiveExam.setExamCode(rs.getString(3));
+				existActiveExam.setExam((Exam) rs.getObject(1));
+				existActiveExam.setDate((Calendar) rs.getObject(2));
+				existActiveExam.setTimeOfExam(rs.getString(3));
+				existActiveExam.setExamCode(rs.getString(4));
 				rs.close();
 			}
-			if (existActiveExam.getExam() == null) {
-				existActiveExam.setStatus("ACTIVE EXAM FOUND"); // status
-			} else
-				existActiveExam.setStatus("ACTIVE EXAM NOT FOUND"); // status
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			existActiveExam.setStatus("ERROR");
 		}
-		return existActiveExam;
+		// in case not found any active exam match.
+		if (existActiveExam.getExamCode() == null) {
+			respond = new ResponseFromServer("ACTIVE EXAM NOT FOUND");
+		} else
+			respond = new ResponseFromServer("ACTIVE EXAM FOUND");
+		// ResponseFromServer class ready to client with StatusMsg and
+		// 'Object responseData', in case active exam found existActiveExam include all
+		// data, other null.
+		respond.setResponseData(existActiveExam);
 	}
 
 	/**
@@ -318,9 +320,9 @@ public class DBController {
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("INSERT INTO extension_request VALUES(?, ?, ?);");
-			pstmt.setString(1, extensionRequest.getExam().getExam().getExamID());
+			pstmt.setString(1, extensionRequest.getActiveExam().getExam().getExamID());
 			pstmt.setString(2, extensionRequest.getAdditionalTime());
-			pstmt.setString(3, extensionRequest.getsetReason());
+			pstmt.setString(3, extensionRequest.getReason());
 
 			if (pstmt.executeUpdate() == 1) {
 				return true;
@@ -427,6 +429,49 @@ public class DBController {
 
 	}
 
+	/**
+	 * @param activeExam
+	 * @param additionalTime
+	 * @return true if the additional Time for activeExam has been updated at
+	 * 		   table active_exam in DB.
+	 *         else, return false
+	 */
+	public boolean setTimeForActiveTest(ActiveExam activeExam, String additionalTime) {
+		PreparedStatement pstmt;
+		int check = 0;
+
+		try {
+			pstmt = conn.prepareStatement(
+					"UPDATE active_exam SET timeAllotedForTest=? WHERE exam=" + activeExam.getExam().getExamID() + ";");
+			pstmt.setString(3, additionalTime);
+			check = pstmt.executeUpdate();
+			if (check == 1) {
+				System.out.println("Time for active exam Updated!");
+				return true;
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param activeExam
+	 * @return true if deleting request for activeExam from table active_exam in DB
+	 *         succeeded, else return false
+	 */
+	public Boolean DeleteExtenxtionRequest(ActiveExam activeExam) {
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("DELETE FROM extension_request WHERE exam=?");
+			pstmt.setString(1, activeExam.getExam().getExamID());
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			return false;
+		}
+		return true;
+	}
 
 	/**
 	 * @param activeExam object which include 2 parameters of date and examcode for Query.
@@ -462,8 +507,10 @@ public class DBController {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 	}
-	
 
+	
+	
+	
 
 //public static void main(String[] args) {
 //

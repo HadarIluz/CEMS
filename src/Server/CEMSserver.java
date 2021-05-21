@@ -115,26 +115,21 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "addTimeToExam": {
-			ActiveExam activeExamInSystem = dbController.verifyActiveExam_byExamID((ActiveExam) msg);
-			if (activeExamInSystem != null) {
-				status.setStatus("SUCCESS");
-				serverFrame.printToTextArea(status.toString());
-			} else {
-				status.setStatus("ERROR");
-				serverFrame.printToTextArea(status.toString());
-			}
+			ActiveExam activeExam = (ActiveExam) req.getRequestData();
+			ActiveExam activeExamInSystem = null;
+			dbController.verifyActiveExam((ActiveExam) activeExam);			
 			try {
 				client.sendToClient(activeExamInSystem);
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException ex) {
+				ex.printStackTrace();
 			}
 		}
 			break;
 		case "createNewExtensionRequest": {
 			dbController.createNewExtensionRequest((ExtensionRequest) req.getRequestData());
 		}
-			break;
-		
+			break;		
+			
 			//TODO: return exam id if exist
 		case "isActiveExamExist": {
 			//logic for 'EnterToExam'
@@ -142,6 +137,20 @@ public class CEMSserver extends AbstractServer {
 			ActiveExam activeExam = (ActiveExam) req.getRequestData();
 			ActiveExam activeExamInSystem = null;
 			dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam); //DEBUG 	
+		}
+			break;		
+			
+		case "approvTimeExtention": {
+			// update time alloted for test in active exam after the principal approves the
+			// request.	
+			ExtensionRequest extensionRequest =  (ExtensionRequest) req.getRequestData();
+			dbController.setTimeForActiveTest(extensionRequest.getActiveExam(), extensionRequest.getAdditionalTime());
+			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
+		}
+			break;
+		case "declineTimeExtention": {
+			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
+			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
 		}
 			break;
 

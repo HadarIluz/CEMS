@@ -87,10 +87,16 @@ public class AddTimeToExamController {
 					}
 					// the exam code entered correctly.
 					else {
-						ExtensionRequest newExtensionReq = new ExtensionRequest(activeExam, additionalTime, reqReason);
-						RequestToServer extReq = new RequestToServer("createNewExtensionRequest");
-						req.setRequestData(newExtensionReq);
-						ClientUI.cems.accept(extReq);
+						//When additional time is not a positive number.
+						if(Integer.parseInt(additionalTime) <= 0) {
+							popUp("The additional time must be positive.");
+						}
+						else {
+							ExtensionRequest newExtensionReq = new ExtensionRequest(activeExam, additionalTime, reqReason);
+							RequestToServer extReq = new RequestToServer("createNewExtensionRequest");
+							req.setRequestData(newExtensionReq);
+							ClientUI.cems.accept(extReq);
+						}
 					}
 				}
 			}
