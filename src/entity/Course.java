@@ -21,6 +21,11 @@ public class Course implements Serializable {
 		this.courseName = courseName;
 		this.profession = profession;
 	}
+	
+	public Course(String courseName) {
+		super();
+		this.courseName = courseName;
+	}
 
 	public String getCourseID() {
 		return courseID;
