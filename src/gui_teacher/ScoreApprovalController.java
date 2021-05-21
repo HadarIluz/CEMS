@@ -16,7 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import logic.RequestToServer;
-
+//
 public class ScoreApprovalController {
 
 	@FXML
