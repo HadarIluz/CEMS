@@ -64,7 +64,7 @@ public class ApprovalTimeExtentionController implements Initializable {
 			timeOfExam = selectedExtensionRequest.getExam().getExam().getTimeOfExam();
 			timeOfExam += Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
 			selectedExtensionRequest.getExam().getExam().setTimeOfExam(timeOfExam);
-			RequestToServer req = new RequestToServer("approvalTimeExtention");
+			RequestToServer req = new RequestToServer("approvTimeExtention");
 			req.setRequestData(selectedExtensionRequest);
 			ClientUI.cems.accept(req);
 		}

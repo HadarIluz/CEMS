@@ -389,24 +389,41 @@ public class DBController {
 
 	}
 
-	//public ExtensionRequest getExtensionRequest(Object obj) {
+	public boolean setTimeForActiveTest(ActiveExam activeExam, String additionalTime) {
+		PreparedStatement pstmt;
+		int check = 0;
 
-//		ExtensionRequest extensionRequest;
-	//	PreparedStatement pstmt;
+		try {
+			// UPDATE tblName
+			// SET column=value
+			// WHERE condition(s)
+			pstmt = conn.prepareStatement(
+					"UPDATE active_exam SET timeAllotedForTest=? WHERE exam=" + activeExam.getExam().getExamID() + ";");
+			pstmt.setString(3, additionalTime);
+			check = pstmt.executeUpdate();
+			if (check == 1) {
+				System.out.println("Time for active exam Updated!");
+				return true;
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
 
-		//extensionRequest = (ExtensionRequest) obj;
+	public Boolean DeleteExtenxtionRequest(ActiveExam activeExam) {
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("DELETE FROM active_exam WHERE exam=?");
+			pstmt.setString(1, activeExam.getExam().getExamID());
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			return false;
+		}
+		return true;
+	}
 
-	//	try {
-			//pstmt = conn.prepareStatement("SELECT * FROM extension_request WHERE exam=?");
-
-			//pstmt.setString(1, extensionRequest.getExam().getExam().getExamID());
-			//pstmt.setString(2, extensionRequest.getAdditionalTime());
-			//pstmt.setString(3, extensionRequest.getsetReason());
-			//ResultSet rs = pstmt.executeQuery();
-		//////////////////////////////////////
-
-	//}
-	//}
+}
 
 //public static void main(String[] args) {
 //
@@ -422,4 +439,4 @@ public class DBController {
 //
 //
 //}
-}
+//}
