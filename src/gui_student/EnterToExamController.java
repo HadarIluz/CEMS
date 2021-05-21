@@ -50,6 +50,14 @@ public class EnterToExamController {
 	private Student student;
 	private Pane newPaneRight;
 
+	/**
+	 * The method checks that all the conditions for starting the exam have been
+	 * approved and verifies the details entered by the student. Verifies that there
+	 * is an existing exam right now and moves the student to the test solution screen
+	 * according to the exam`s type.
+	 * 
+	 * @param event event that occurs when clicking on 'start exam' button.
+	 */
 	@FXML
 	void btnStart(ActionEvent event) {
 		String examCode = textExamCode.getText().trim();
@@ -82,10 +90,10 @@ public class EnterToExamController {
 				ActiveExam exam = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
 				String existExamID = exam.getExam().getExamID();
 				String ActiveExamType = exam.getActiveExamType();
-				
-				//message in console
+
+				// message in console
 				System.out.println("Respont: there is active examID:" + existExamID + "type: " + ActiveExamType);
-				
+
 				// The student has entered all the given details and transfer to exam screen
 				// - computerized or manual
 				((Pane) event.getSource()).getScene().getWindow().hide(); // hiding right pane window
@@ -165,6 +173,7 @@ public class EnterToExamController {
 	// Not sure it's need to be like that !!!
 
 	/**
+	 *load this controller, performs initialization.
 	 * @param primaryStage
 	 */
 	public void start(Stage primaryStage) {

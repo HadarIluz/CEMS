@@ -53,7 +53,9 @@ public class DBController {
 		}
 	}
 
-	/* checks if the user that try to login exists in the DB. */
+	/*checks if the user that try to login exists in the DB.
+	 * @param obj of user which include student id to verify if exists.
+	 */
 	public void verifyLoginUser(Object obj) {
 		User existUser = (User) obj;
 		ResponseFromServer respond = null;
@@ -87,8 +89,12 @@ public class DBController {
 		respond.setResponseData(existUser);
 	}
 
+	/**
+	 * @param userID :PK to DB table in order to change the login status of this user.
+	 * @param num indicates what the user's last login status is and updates it.
+	 * @return
+	 */
 	public boolean setLoginUserLogged(int userID, int num) {
-		// TODO Auto-generated method stub
 		PreparedStatement pstmt;
 		int check = 0;
 		int flag; // The flag checks what is the current status of this user and updates to the
@@ -187,10 +193,6 @@ public class DBController {
 	/**
 	 * @param exam
 	 * @return true/false if creating a new exam in DB succeeded
-	 */
-	/**
-	 * @param exam
-	 * @return
 	 */
 	public boolean createNewExam(Exam exam) {
 		PreparedStatement pstmt;
