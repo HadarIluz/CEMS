@@ -9,6 +9,7 @@ import client.ClientUI;
 import entity.Course;
 import entity.Profession;
 import entity.Student;
+import entity.Teacher;
 import entity.User;
 import gui_principal.PrincipalController;
 import gui_student.StudentController;
@@ -181,31 +182,39 @@ public class LoginController {
 						try {
 							studentController.start(new Stage() ); 
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						
 					}
 						break;
 					case "Teacher": {
-						//TODO: Teacher teacher = להביא מהשרת
-						//ClientUI.loggedInUser = LoggedInUser.getInstance(teacher);
+						Teacher teacher= (Teacher) user;
+												
+						//1: Get all student Course from server
+						RequestToServer reqTeacherProfessions = new RequestToServer("getUserList_Login");
+						reqTeacherProfessions.setRequestData(teacher);
+						ClientUI.cems.accept(reqTeacherProfessions);
+						
+						//2: Get responseFromServer about student CoursesList.
+						ArrayList<Profession> teacherProfessionList = (ArrayList<Profession>) CEMSClient.responseFromServer.getResponseData(); //response: ""TEACHER Profession List""
+						teacher.setProfessions(teacherProfessionList);
+						
+						//3: Create new Student
+						Teacher newTeacher= new Teacher(user, null);
+						ClientUI.loggedInUser= LoggedInUser.getInstance(newTeacher);
+						
+						
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 						//call start function in studentController for initialization.
 						try {
 							teacherController.start(new Stage() ); 
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						/*
-						Pane mnueLeft = FXMLLoader.load(getClass().getResource(TeacherMenu));
-						root.add(mnueLeft, 0, 0);
-						primaryStage.setScene(scene);
-						primaryStage.show();
-						*/
+						
 					}
 						break;
+						
 					case "Principal": {
 						ClientUI.loggedInUser = LoggedInUser.getInstance(user);
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
@@ -259,7 +268,6 @@ public class LoginController {
 	 * @return true only if the String contains something that isn't a digit.
 	 */
 	private boolean isOnlyDigits(String str) {
-		// TODO Auto-generated method stub
 		boolean containsLetter = true;
 		for (char ch : str.toCharArray()) {
 			if (!Character.isDigit(ch)) {

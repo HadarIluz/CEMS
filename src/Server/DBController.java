@@ -16,6 +16,7 @@ import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
 import entity.ExtensionRequest;
+import entity.Profession;
 import entity.Question;
 import entity.QuestionRow;
 import entity.Student;
@@ -158,7 +159,7 @@ public class DBController {
 		respond.setResponseData(student);
 		
 	}
-	//TODO:
+
 	/**
 	 * @param stud include all data of this logged student.
 	 */
@@ -174,7 +175,7 @@ public class DBController {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Course newCourse = new Course("");
-				newCourse.setCourseName(rs.getString(1));
+				newCourse.setCourseName(rs.getString(2));
 				coursesOfStudent.add(newCourse); //add to list
 			}
 			rs.close();
@@ -189,14 +190,32 @@ public class DBController {
 	}
 	
 
-	
-	//TODO:
+
 	/**
 	 * @param teacherObj include all data of this logged teacher.
 	 */
 	public void getTeacherProfession_Logged(Teacher teacherObj) {
-		// TODO Auto-generated method stub
-		
+		Teacher teacher = teacherObj;
+		ArrayList<Profession> coursesOfStudent = new ArrayList<Profession>();
+		ResponseFromServer respond = null;
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT profession FROM teacher_in_profession WHERE id=" + teacherObj.getId() + ";");
+			pstmt.setInt(1, teacherObj.getId());
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Profession newProfession = new Profession("");
+				newProfession.setProfessionName(rs.getString(2));
+				coursesOfStudent.add(newProfession); //add to list
+			}
+			rs.close();
+
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		//create ResponseFromServer to client with student data.
+		respond = new ResponseFromServer("TEACHER Profession List");
+		respond.setResponseData(coursesOfStudent);
 	}
 
 
@@ -217,7 +236,6 @@ public class DBController {
 			rs.close();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -279,7 +297,6 @@ public class DBController {
 			}
 			// to do something with status
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -298,7 +315,6 @@ public class DBController {
 			ResultSet rs = pstmt.executeQuery();
 			return rs.getInt(1);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 0;
@@ -316,7 +332,6 @@ public class DBController {
 			ResultSet rs = pstmt.executeQuery();
 			return rs.getInt(1);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 0;
@@ -342,7 +357,6 @@ public class DBController {
 				return true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -370,7 +384,6 @@ public class DBController {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}

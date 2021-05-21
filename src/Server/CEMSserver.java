@@ -130,6 +130,7 @@ public class CEMSserver extends AbstractServer {
 			// logic of login- gets student`s Courses/ teacher`s Profession after
 			// Successfully login action
 
+			//[v]
 			//TODO: [Hadar]: why we need return from DB the arrayList, in transfer this by Response class,
 			//do i need to do: 'sendToClient'  ???
 			// TODO(Yuval): ArrayList<Course> studentCourses = dbController.getStudentCourses(int userID);
@@ -147,11 +148,6 @@ public class CEMSserver extends AbstractServer {
 
 		}
 
-		// think with Yuval if split this..
-//		case "getUserCourses_Login": {
-//			//TODO: ArrayList<Course> studentCourses = dbController.getStudentCourses(int userID);
-//			// send to client(studentCourses)
-//		}
 		case "createNewQuestion": {
 			createNewQuestion((Question) req.getRequestData());
 		}
@@ -178,19 +174,16 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		// TODO: return exam id if exist
 		case "isActiveExamExist": {
 			// logic for 'EnterToExam'
-			// logic of verify if activeExam exist at this date, set ActiveExam object if
-			// found.
+			// logic of verify if activeExam exist at this date, set ActiveExam object if found.
 			ActiveExam activeExam = (ActiveExam) req.getRequestData();
 			dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam);
 		}
 			break;
 
 		case "approvTimeExtention": {
-			// update time alloted for test in active exam after the principal approves the
-			// request.
+			// update time alloted for test in active exam after the principal approves the request.
 			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
 			dbController.setTimeForActiveTest(extensionRequest.getActiveExam(), extensionRequest.getAdditionalTime());
 			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
