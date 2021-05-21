@@ -13,7 +13,6 @@ public class User implements Serializable {
 	private String lastName;
 	private String email;
 	private int isLogged=0;
-	private String status; //msg from server :{"USER FOUND" / "USER NOT FOUND"}
 	private UserType userType;
 	
 	public User(int id, String password, String firstName, String lastName, String email, UserType userType) {
@@ -97,14 +96,7 @@ public class User implements Serializable {
 				isLogged==1;
 	}
 	
-	//Returns  status of success / failure in connecting to the system
-	public String getStatus() {
-		return status;
-	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
 	//
 	public UserType getUserType() {
 		return userType;
