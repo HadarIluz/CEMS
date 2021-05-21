@@ -12,6 +12,7 @@ import entity.Question;
 import entity.User;
 import gui_server.ServerFrameController;
 import logic.RequestToServer;
+import logic.ResponseFromServer;
 import logic.StatusMsg;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -57,6 +58,7 @@ public class CEMSserver extends AbstractServer {
 		serverFrame.printToTextArea("Message received: " + msg + " from " + client);
 
 		RequestToServer req = (RequestToServer) msg;
+		ResponseFromServer respon=null;
 
 		switch (req.getRequestType()) {
 		
@@ -64,14 +66,8 @@ public class CEMSserver extends AbstractServer {
 			// logic of login
 			User user = (User) req.getRequestData();
 			User userInSystem = null;
-			userInSystem = dbController.verifyLoginUser((User) user); // DEBUG: problem in this line.
-			if (userInSystem != null) {
-				userInSystem.setStatus("USER FOUND");
-				// serverFrame.printToTextArea(??.toString());
-			} else {
-				userInSystem.setStatus("USER NOT FOUND");
-				// serverFrame.printToTextArea(??.toString());
-			}
+			dbController.verifyLoginUser((User) user); // DEBUG
+			
 			try {
 				client.sendToClient(userInSystem);
 			} catch (IOException e) {
@@ -101,7 +97,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "addTimeToExam": {
-			ActiveExam activeExamInSystem = dbController.verifyActiveExam((ActiveExam) msg);
+			ActiveExam activeExamInSystem = dbController.verifyActiveExam_byExamID((ActiveExam) msg);
 			if (activeExamInSystem != null) {
 				status.setStatus("SUCCESS");
 				serverFrame.printToTextArea(status.toString());
@@ -123,12 +119,28 @@ public class CEMSserver extends AbstractServer {
 		
 			//TODO: return exam id if exist
 		case "isActiveExamExist": {
-			createNewExam((Exam) req.getRequestData());
+			//logic for 'EnterToExam'
+			// logic of verify if activeExam exist at this date.
+			ActiveExam activeExam = (ActiveExam) req.getRequestData();
+			ActiveExam activeExamInSystem = null;
+			activeExamInSystem = dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam); //DEBUG 
+			
+			if (activeExamInSystem != null) {
+				//...
+			}
+			
+			
+			
+			
 		}
 			break;
 			//TODO: return exam type of the exist active exam.
 		case "getActiveExamType": {
-			createNewExam((Exam) req.getRequestData());
+			//logic for 'EnterToExam'
+			ActiveExam activeExam = (ActiveExam) req.getRequestData();
+			ActiveExam activeExamInSystem = null;
+			//activeExamInSystem = dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam); // DEBUG
+			
 		}
 			break;
 

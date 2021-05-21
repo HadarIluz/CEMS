@@ -22,6 +22,7 @@ import entity.TestRow;
 import entity.User;
 import entity.UserType;
 import gui_server.ServerFrameController;
+import logic.ResponseFromServer;
 
 /**
  * @author yuval
@@ -53,9 +54,9 @@ public class DBController {
 	}
 
 	/* checks if the user that try to login exists in the DB. */
-	public User verifyLoginUser(Object obj) {
-
-		 User existUser = (User) obj;
+	public void verifyLoginUser(Object obj) {
+		User existUser = (User) obj;
+		ResponseFromServer respond = null;
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM user WHERE id=?");
@@ -70,15 +71,20 @@ public class DBController {
 				existUser.setUserType(UserType.valueOf(rs.getString(6)));
 				rs.close();
 			}
-			if (existUser.getPassword() == null) // ASK: i want to verify if (existUser.getId() == null) buy it is
-													// int and not string, i used password indent
-				existUser.setStatus("DoesntExist");
+
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			existUser.setStatus("ERROR");
 		}
-		return existUser;
-
+		//in case not found any user match..
+		if (existUser.getPassword() == null) {
+			respond = new ResponseFromServer("USER NOT FOUND");
+		}
+		else{
+			respond = new ResponseFromServer("USER FOUND");	
+		}
+		// ResponseFromServer class ready to client with StatusMsg and  
+		//'Object responseData', in case user found existUser include all data, other null.
+		respond.setResponseData(existUser);
 	}
 
 	public boolean setLoginUserLogged(int userID, int num) {
@@ -244,7 +250,7 @@ public class DBController {
 	 * @param activeExam
 	 * @return return existActiveExam.
 	 */
-	public ActiveExam verifyActiveExam(ActiveExam activeExam) {
+	public ActiveExam verifyActiveExam_byExamID(ActiveExam activeExam) {
 		ActiveExam existActiveExam = activeExam;
 
 		try {
@@ -293,14 +299,12 @@ public class DBController {
 		return false;
 
 	}
-	
-	public ArrayList<TestRow> GetTeacherExams(Object obj) {
 
+	public ArrayList<TestRow> GetTeacherExams(Object obj) {
 
 		Teacher teacher;
 
-		ArrayList<TestRow> examsOfTeacher =new ArrayList<TestRow>();
-
+		ArrayList<TestRow> examsOfTeacher = new ArrayList<TestRow>();
 
 		teacher = (Teacher) obj;
 
@@ -308,7 +312,7 @@ public class DBController {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE author=?");
 
-			pstmt.setString(1,""+teacher.getId());
+			pstmt.setString(1, "" + teacher.getId());
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -318,51 +322,49 @@ public class DBController {
 				newRow.setTimeAllotedForTest(rs.getString(4));
 				examsOfTeacher.add(newRow);
 
-
 			}
 			rs.close();
 
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			teacher.setStatus("ERROR");
+			//teacher.setStatus("ERROR"); //message from Hadar: need to use ResponseFromServer class not?
+			//i put this as a note because it marks an error now. 
 		}
-		return examsOfTeacher;//return null if no exsiting tests
+		return examsOfTeacher;// return null if no exsiting tests
 
-}
+	}
+
 	public Boolean DeleteQuestion(String QuestionID) {
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("DELETE FROM question WHERE questionID=?");
-			pstmt.setString(1,QuestionID);
-		}
-		catch(SQLException ex) {
+			pstmt.setString(1, QuestionID);
+		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			return false;
-		}	
+		}
 		return true;
-		
+
 	}
-	
-	
+
 	public Boolean ExamQuestion(String ExamID) {
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("DELETE FROM exam WHERE examID=?");
-			pstmt.setString(1,ExamID);
-		}
-		catch(SQLException ex) {
+			pstmt.setString(1, ExamID);
+		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			return false;
-		}	
+		}
 		return true;
-		
+
 	}
-	
+
 	public ArrayList<QuestionRow> GetTeacherQuestions(Object obj) {
 
 		Teacher teacher;
 
-		ArrayList<QuestionRow> examsOfTeacher =new ArrayList<QuestionRow>();
+		ArrayList<QuestionRow> examsOfTeacher = new ArrayList<QuestionRow>();
 
 		teacher = (Teacher) obj;
 
@@ -370,7 +372,7 @@ public class DBController {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM question WHERE teacher=?");
 
-			pstmt.setString(1,""+teacher.getId());
+			pstmt.setString(1, "" + teacher.getId());
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -384,13 +386,43 @@ public class DBController {
 
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			teacher.setStatus("ERROR");
+			//teacher.setStatus("ERROR");
+			//message from Hadar: need to use ResponseFromServer class not?
+			//i put this as a note because it marks an error now. 
 		}
-		return examsOfTeacher;//return null if no exsiting tests
+		return examsOfTeacher;// return null if no exsiting tests
 
-}
+	}
 
+	public ActiveExam verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
+		ActiveExam existActiveExam = activeExam;
+		Exam exam = null;
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE date=? examcode=?;");
+			pstmt.setString(2, existActiveExam.getActiveExamStartTime());
+			pstmt.setString(3, existActiveExam.getExamCode());
 
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				exam.setExamID(rs.getString(1));
+				existActiveExam.setExam(exam);
+
+				existActiveExam.setDate(activeExam.getDate());
+				existActiveExam.setExamCode(activeExam.getExamCode());
+				existActiveExam.setActiveExamType(rs.getString(4));
+				rs.close();
+			}
+			if (existActiveExam.getExam().getExamID() == null) {
+				existActiveExam.setStatus("ACTIVE EXAM FOUND"); // status
+			} else
+				existActiveExam.setStatus("ACTIVE EXAM NOT FOUND"); // status
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			existActiveExam.setStatus("ERROR");
+		}
+		return existActiveExam;
+	}
 
 //public static void main(String[] args) {
 //
