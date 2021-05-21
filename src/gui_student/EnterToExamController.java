@@ -61,38 +61,36 @@ public class EnterToExamController {
 			Calendar time = Calendar.getInstance();
 			System.out.println("The current date is : " + time.getTime());
 			time.add(Calendar.HOUR, 0);
-
 			// Prepared student id
 			int id = Integer.parseInt(studentID.trim());
 			student.setId(id);
+//TODO: Should this activeExam be "assigned" to a student somehow? (new table or something else?)..
 
 			ActiveExam activeExam = new ActiveExam(time, examCode);
-			// create request to server to checks if examID for this examCode and date are exist.
+			// create request to server to checks if examID for this examCode and date are
+			// exist.
 			// if yes so return it examID. else return null.
 			RequestToServer req = new RequestToServer("isActiveExamExist");
 			req.setRequestData(activeExam);
 			ClientUI.cems.accept(req);
 
 			// verify if examID return or not.
-			if (CEMSClient.responseFromServer.getResponseData() != null) {
+			if ((CEMSClient.responseFromServer.getStatusMsg().getStatus()).equals("ACTIVE EXAM EXIST")) {
 
-				Exam exam = (Exam) CEMSClient.responseFromServer.getResponseData();
-				String existExamID = exam.getExamID();
-
-				// Request from server to return ActiveExamType of this exist active exam we found.
-				ActiveExam reqActiveExamType = new ActiveExam(time, new Exam(existExamID), examCode);
-				req = new RequestToServer("getActiveExamType");
-				req.setRequestData(reqActiveExamType);
-				ClientUI.cems.accept(req);
-
-				// server returns examType
-				String examType = (String) CEMSClient.responseFromServer.getResponseData();
-				System.out.println(examType); // message to console for DEBUG.
-
+				// at this point we found exam so we can be sure an object has arrived in this
+				// response.
+				ActiveExam exam = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
+				String existExamID = exam.getExam().getExamID();
+				String ActiveExamType = exam.getActiveExamType();
+				
+				//message in console
+				System.out.println("Respont: there is active examID:" + existExamID + "type: " + ActiveExamType);
+				
 				// The student has entered all the given details and transfer to exam screen
 				// - computerized or manual
 				((Pane) event.getSource()).getScene().getWindow().hide(); // hiding right pane window
-				switch (examType) {
+
+				switch (ActiveExamType) {
 				case "manual": {
 					// load manual start exam fxml
 					try {
@@ -112,7 +110,7 @@ public class EnterToExamController {
 					}
 				}
 					break;
-				}//END switch
+				}// END switch
 
 			} else {
 
@@ -163,10 +161,9 @@ public class EnterToExamController {
 		dialog.show();
 	}
 
-	
 	// Loading this fxml window while loading this controller from another location
 	// Not sure it's need to be like that !!!
-	
+
 	/**
 	 * @param primaryStage
 	 */
@@ -188,3 +185,13 @@ public class EnterToExamController {
 	}
 
 }
+
+//TODO: After DEBUG: check if my implementation with 1 'RequestToServer' works, and delete the following:
+//// Request from server to return ActiveExamType of this exist active exam we found.
+//ActiveExam reqActiveExamType = new ActiveExam(time, new Exam(existExamID), examCode);
+//req = new RequestToServer("getActiveExamType");
+//req.setRequestData(reqActiveExamType);
+//ClientUI.cems.accept(req);
+//// server returns examType
+//String examType = (String) CEMSClient.responseFromServer.getResponseData();
+//System.out.println(examType); // message to console for DEBUG.

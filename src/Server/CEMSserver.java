@@ -120,31 +120,12 @@ public class CEMSserver extends AbstractServer {
 			//TODO: return exam id if exist
 		case "isActiveExamExist": {
 			//logic for 'EnterToExam'
-			// logic of verify if activeExam exist at this date.
+			// logic of verify if activeExam exist at this date, set ActiveExam object if found.
 			ActiveExam activeExam = (ActiveExam) req.getRequestData();
 			ActiveExam activeExamInSystem = null;
-			activeExamInSystem = dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam); //DEBUG 
-			
-			if (activeExamInSystem != null) {
-				//...
-			}
-			
-			
-			
-			
+			dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam); //DEBUG 	
 		}
 			break;
-			//TODO: return exam type of the exist active exam.
-		case "getActiveExamType": {
-			//logic for 'EnterToExam'
-			ActiveExam activeExam = (ActiveExam) req.getRequestData();
-			ActiveExam activeExamInSystem = null;
-			//activeExamInSystem = dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam); // DEBUG
-			
-		}
-			break;
-
-
 		}
 		
 	}

@@ -25,7 +25,7 @@ import gui_server.ServerFrameController;
 import logic.ResponseFromServer;
 
 /**
- * @author yuval
+ * @author CEMS_Team
  *
  */
 public class DBController {
@@ -394,9 +394,14 @@ public class DBController {
 
 	}
 
-	public ActiveExam verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
+	/**
+	 * @param activeExam object which include 2 parameters of date and examcode for Query.
+	 */
+	public void verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
 		ActiveExam existActiveExam = activeExam;
 		Exam exam = null;
+		ResponseFromServer respond = null;
+		/***EnterToExam***/
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE date=? examcode=?;");
@@ -414,15 +419,16 @@ public class DBController {
 				rs.close();
 			}
 			if (existActiveExam.getExam().getExamID() == null) {
-				existActiveExam.setStatus("ACTIVE EXAM FOUND"); // status
-			} else
-				existActiveExam.setStatus("ACTIVE EXAM NOT FOUND"); // status
+				respond = new ResponseFromServer("ACTIVE EXAM EXIST");		// StatusMsg.statusMsg
+				respond.setResponseData(existActiveExam);
+			} else {
+				respond = new ResponseFromServer("ACTIVE EXAM_NOT_EXIST");	// StatusMsg.statusMsg
+			}
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			existActiveExam.setStatus("ERROR");
 		}
-		return existActiveExam;
 	}
+	
 
 //public static void main(String[] args) {
 //
