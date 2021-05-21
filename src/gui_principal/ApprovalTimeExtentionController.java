@@ -47,7 +47,7 @@ public class ApprovalTimeExtentionController implements Initializable {
 
 	private static HashMap<String, ExtensionRequest> extensionRequestMap = null;
 	private ExtensionRequest selectedExtensionRequest;
-	private Integer timeOfExam;
+	private int timeOfExam;
 	/**
 	 * @param event that occurs when clicking on 'Approve' button
 	 * @throws IOException if failed.
