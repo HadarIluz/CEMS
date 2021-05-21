@@ -126,9 +126,9 @@ public class CEMSserver extends AbstractServer {
 			dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam); //DEBUG 	
 		}
 			break;
-<<<<<<< Upstream, based on branch 'main' of https://github.com/yuval96/CEMS.git
+/*<<<<<<< Upstream, based on branch 'main' of https://github.com/yuval96/CEMS.git
 =======
-			//TODO: return exam type of the exist active exam.
+*/			//TODO: return exam type of the exist active exam.
 		case "getActiveExamType": {
 			createNewExam((Exam) req.getRequestData());
 		}
@@ -149,7 +149,7 @@ ResponseFromServer Res=new  ResponseFromServer(null);
 				e.printStackTrace();
 			}
 			
->>>>>>> 9e30097 updated ScoreApproval
+
 		}
 		
 		}

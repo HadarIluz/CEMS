@@ -53,19 +53,22 @@ public class DBController {
 		}
 	}
 
-<<<<<<< Upstream, based on branch 'main' of https://github.com/yuval96/CEMS.git
+//github.com/yuval96/CEMS.git
 	/*checks if the user that try to login exists in the DB.
 	 * @param obj of user which include student id to verify if exists.
 	 */
+	/*
+	 * public void verifyLoginUser(Object obj) { User existUser = (User) obj;
+	 * ResponseFromServer respond = null;
+	 * 
+	 * }
+	 */
+
 	public void verifyLoginUser(Object obj) {
-		User existUser = (User) obj;
-		ResponseFromServer respond = null;
-=======
-	/* checks if the user that try to login exists in the DB. */
-	public User verifyLoginUser(Object obj) {
 
 		User existUser = (User) obj;
->>>>>>> 9e30097 updated ScoreApproval
+		ResponseFromServer respond = null;
+
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM user WHERE id=?");
@@ -96,13 +99,7 @@ public class DBController {
 		respond.setResponseData(existUser);
 	}
 
-<<<<<<< Upstream, based on branch 'main' of https://github.com/yuval96/CEMS.git
-	/**
-	 * @param userID :PK to DB table in order to change the login status of this user.
-	 * @param num indicates what the user's last login status is and updates it.
-	 * @return
-	 */
-=======
+
 	public HashMap<String, Integer> SetDetailsForScoreApprovel(String examID) {
 		HashMap<String, Integer> stdScore = new HashMap<>();
 
@@ -127,7 +124,7 @@ public class DBController {
 
 	}
 
->>>>>>> 9e30097 updated ScoreApproval
+// updated ScoreApproval
 	public boolean setLoginUserLogged(int userID, int num) {
 		PreparedStatement pstmt;
 		int check = 0;
@@ -429,7 +426,7 @@ public class DBController {
 		return examsOfTeacher;// return null if no exsiting tests
 
 	}
-<<<<<<< Upstream, based on branch 'main' of https://github.com/yuval96/CEMS.git
+
 
 	/**
 	 * @param activeExam object which include 2 parameters of date and examcode for Query.
@@ -466,8 +463,7 @@ public class DBController {
 		}
 	}
 	
-=======
->>>>>>> 9e30097 updated ScoreApproval
+
 
 //public static void main(String[] args) {
 //
