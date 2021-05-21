@@ -12,6 +12,8 @@ import entity.Course;
 import entity.Exam;
 import entity.ExtensionRequest;
 import entity.Question;
+import entity.Student;
+import entity.Teacher;
 import entity.User;
 import gui_server.ServerFrameController;
 import logic.LoggedInUser;
@@ -71,13 +73,19 @@ public class CEMSserver extends AbstractServer {
 			// logic of login
 			User user = (User) req.getRequestData();
 			User userInSystem = null;
-			dbController.verifyLoginUser((User) user); // DEBUG
-			// TODO: אם היוזר נמצא בטבלת גיבוב של משתמשים מחוברים יש להגדיר:
-			//isLogged = 1
+			respon=dbController.verifyLoginUser((User) user);
+			
+			userInSystem= (User)respon.getResponseData();
+			boolean exist= loggedInUsers.containsValue(userInSystem.getId()); //check if hashMap contains this user id
+			//in case this user exist in 'loggedInUsers' update isLogged to 1.
+			if(exist) {
+				user.setLogged(1); //set isLogged to 1.
+			}
+
+			// TODO:[V] אם היוזר נמצא בטבלת גיבוב של משתמשים מחוברים יש להגדיר:isLogged = 1
 			try {
 				client.sendToClient(userInSystem);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -86,20 +94,39 @@ public class CEMSserver extends AbstractServer {
 		case "UpdateUserLoggedIn": {
 			// logic of login- update logged status after Successfully login action
 			
-			// String reqUpdateID = (String) msg;
 			User user = (User) req.getRequestData();
-			user.setLogged(1);
-			//TODO: loggedInUsers.add(userID, user)
-			// boolean chnageSucceed = //for print in serverFrame
+			user.setLogged(1); //set isLogged to 1.			
+			loggedInUsers.put(user.getId(), user); //add new user to hashMap of all the logged users.
+			//TODO:[V] loggedInUsers.add(userID, user)
 			//dbController.setLoginUserLogged(user.getId(), user.isLogged());
+			//לוודא: החלטנו לא לעדכן את הנתן הזה בDB נכוון??
+			// כלומר שורה 100 למחוק?
+				
+			
 			// serverFrame.printToTextArea(??.toString());
 		}
 			break;
 		case "UpdateUserLoggedOut": {
 			User user = (User) req.getRequestData();
-			//TODO: loggedInUsers.remove(userID, user)
+			//TODO:[V] loggedInUsers.remove(userID, user)
+			user.setLogged(0); //set isLogged to 0. (disconnected)			
+			loggedInUsers.put(user.getId(), user); //remove this user from hashMap of all the logged users.
 		}
 		break;
+		
+		case "getUserData_Login":{
+			
+			if( req.getRequestData() instanceof Student) {
+				Student student = (Student) req.getRequestData();
+				dbController.getStudentData_Logged(student);
+			}
+			
+			if( req.getRequestData() instanceof Teacher) {		
+			Teacher teacher = (Teacher) req.getRequestData();
+			dbController.getTeacherData_Logged(teacher);
+			}
+		}
+		
 		case "getStudentCourses": {
 			//TODO: ArrayList<Course> studentCourses = dbController.getStudentCourses(int userID);
 			// send to client(studentCourses)
@@ -135,8 +162,7 @@ public class CEMSserver extends AbstractServer {
 			//logic for 'EnterToExam'
 			// logic of verify if activeExam exist at this date, set ActiveExam object if found.
 			ActiveExam activeExam = (ActiveExam) req.getRequestData();
-			ActiveExam activeExamInSystem = null;
-			dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam); //DEBUG 	
+			dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam);	
 		}
 			break;		
 			

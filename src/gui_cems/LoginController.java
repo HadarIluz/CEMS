@@ -1,9 +1,14 @@
 package gui_cems;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import client.CEMSClient;
 import client.ClientUI;
+import entity.Course;
+import entity.Profession;
+import entity.Student;
 import entity.User;
 import gui_principal.PrincipalController;
 import gui_student.StudentController;
@@ -147,6 +152,23 @@ public class LoginController {
 
 					switch (user.getUserType().toString()) {
 					case "Student": {
+						
+						Student student= (Student) user;
+						
+						//3: Student student= new Student(user, ,);//create new cons`
+						//new Student(User userData, float studentAvg, ArrayList<Course> courses)
+						
+						//2.1: Request data of student by pk(id)
+						RequestToServer reqStudentData = new RequestToServer("getUserData_Login");
+						reqStudentData.setRequestData(student);
+						ClientUI.cems.accept(reqStudentData);
+						
+						
+						//2.2: Get responseFromServer about student data.
+						student = (Student) CEMSClient.responseFromServer.getResponseData();
+						
+						
+						
 						//TODO: Student student;
 						//את הפרטים של הקורסים והממוצע להביא מהשרת
 						// student.setCourse(מהשרת)
@@ -194,7 +216,6 @@ public class LoginController {
 						try {
 							principalController.start(new Stage() ); 
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						/*
@@ -211,9 +232,9 @@ public class LoginController {
 					System.out.println(user.getId() + " login Successfully as: " + user.getUserType().toString());
 
 					// sent to server pk(id) in order to change the login status of this user.
-					RequestToServer reqLoged = new RequestToServer("UpdateUserLoggedIn");
-					reqLoged.setRequestData(id);
-					ClientUI.cems.accept(reqLoged);
+					RequestToServer reqLogged = new RequestToServer("UpdateUserLoggedIn");
+					reqLogged.setRequestData(id);
+					ClientUI.cems.accept(reqLogged);
 				}
 
 			}
