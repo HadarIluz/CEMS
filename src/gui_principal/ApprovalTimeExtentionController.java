@@ -61,9 +61,9 @@ public class ApprovalTimeExtentionController implements Initializable {
 		//When a test is selected
 		else {
 			//Adding the time required for the test time
-			timeOfExam = selectedExtensionRequest.getExam().getExam().getTimeOfExam();
+			timeOfExam = selectedExtensionRequest.getActiveExam().getExam().getTimeOfExam();
 			timeOfExam += Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
-			selectedExtensionRequest.getExam().getExam().setTimeOfExam(timeOfExam);
+			selectedExtensionRequest.getActiveExam().getExam().setTimeOfExam(timeOfExam);
 			RequestToServer req = new RequestToServer("approvTimeExtention");
 			req.setRequestData(selectedExtensionRequest);
 			ClientUI.cems.accept(req);
@@ -97,7 +97,7 @@ public class ApprovalTimeExtentionController implements Initializable {
 		if (extensionRequestMap.containsKey(selectExamExtension.getValue())) {
 			selectedExtensionRequest = extensionRequestMap.get(selectExamExtension.getValue());
 			lblAdditionalTime.setText(selectedExtensionRequest.getAdditionalTime());
-			textReasonField.setText(selectedExtensionRequest.getsetReason());
+			textReasonField.setText(selectedExtensionRequest.getReason());
 		}
 	}
 
@@ -116,7 +116,7 @@ public class ApprovalTimeExtentionController implements Initializable {
 	public static void setExtensionRequestMap(ArrayList<ExtensionRequest> extensionRequestList) {
 		extensionRequestMap = new HashMap<>();
 		for (ExtensionRequest er : extensionRequestList) {
-			extensionRequestMap.put(er.getExam().getExam().getExamID(), er);
+			extensionRequestMap.put(er.getActiveExam().getExam().getExamID(), er);
 		}
 	}
 

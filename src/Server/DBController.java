@@ -244,7 +244,6 @@ public class DBController {
 
 	/**
 	 * check if the activeExam exist in the DB
-	 * 
 	 * @param obj of ActiveExam which include exam to verify if exists.
 	 */
 	public void verifyActiveExam(Object obj) {
@@ -287,9 +286,9 @@ public class DBController {
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("INSERT INTO extension_request VALUES(?, ?, ?);");
-			pstmt.setString(1, extensionRequest.getExam().getExam().getExamID());
+			pstmt.setString(1, extensionRequest.getActiveExam().getExam().getExamID());
 			pstmt.setString(2, extensionRequest.getAdditionalTime());
-			pstmt.setString(3, extensionRequest.getsetReason());
+			pstmt.setString(3, extensionRequest.getReason());
 
 			if (pstmt.executeUpdate() == 1) {
 				return true;
@@ -393,14 +392,18 @@ public class DBController {
 
 	}
 
+	/**
+	 * @param activeExam
+	 * @param additionalTime
+	 * @return true if the additional Time for activeExam has been updated at
+	 * 		   table active_exam in DB.
+	 *         else, return false
+	 */
 	public boolean setTimeForActiveTest(ActiveExam activeExam, String additionalTime) {
 		PreparedStatement pstmt;
 		int check = 0;
 
 		try {
-			// UPDATE tblName
-			// SET column=value
-			// WHERE condition(s)
 			pstmt = conn.prepareStatement(
 					"UPDATE active_exam SET timeAllotedForTest=? WHERE exam=" + activeExam.getExam().getExamID() + ";");
 			pstmt.setString(3, additionalTime);

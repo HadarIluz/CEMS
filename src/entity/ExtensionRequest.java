@@ -14,11 +14,11 @@ public class ExtensionRequest implements Serializable {
 		this.reqReason = reqReason;
 	}
 
-	public ActiveExam getExam() {
+	public ActiveExam getActiveExam() {
 		return activeExam;
 	}
 
-	public void setExam(ActiveExam activeExam) {
+	public void setActiveExam(ActiveExam activeExam) {
 		this.activeExam = activeExam;
 	}
 
@@ -30,7 +30,7 @@ public class ExtensionRequest implements Serializable {
 		this.additionalTime = additionalTime;
 	}
 
-	public String getsetReason() {
+	public String getReason() {
 		return reqReason;
 	}
 

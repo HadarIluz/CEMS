@@ -119,16 +119,15 @@ public class CEMSserver extends AbstractServer {
 			break;
 		case "approvTimeExtention": {
 			// update time alloted for test in active exam after the principal approves the
-			// request
+			// request.	
 			ExtensionRequest extensionRequest =  (ExtensionRequest) req.getRequestData();
-			dbController.setTimeForActiveTest(extensionRequest.getExam(), extensionRequest.getAdditionalTime());
-			dbController.DeleteExtenxtionRequest(extensionRequest.getExam());
+			dbController.setTimeForActiveTest(extensionRequest.getActiveExam(), extensionRequest.getAdditionalTime());
+			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
 		}
 			break;
 		case "declineTimeExtention": {
 			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
-			dbController.DeleteExtenxtionRequest(extensionRequest.getExam());
-			System.out.println("The request to add time for active exam declined!");
+			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
 		}
 
 		}
