@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.ScoreApprovalController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.ScoreApprovalController">
    <children>
       <Text fill="#5e87c0" layoutX="278.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score Approval" textAlignment="CENTER" wrappingWidth="204.74680742621422">
          <font>
@@ -27,7 +27,7 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <ComboBox fx:id="selectStudent" disable="true" layoutX="333.0" layoutY="197.0" onMouseClicked="#selectStudent" prefWidth="150.0" promptText="student ID " />
+      <ComboBox fx:id="selectStudent" disable="true" layoutX="333.0" layoutY="197.0" onAction="#selectStudent" prefWidth="150.0" promptText="student ID " />
       <TextField fx:id="textCurrentGrade" layoutX="333.0" layoutY="238.0" style="-fx-background-color: #e4faa0; -fx-border-color: BLACK;" />
       <Text layoutX="91.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current exam grade:">
          <font>
@@ -39,7 +39,7 @@
             <Font size="27.0" />
          </font>
       </Text>
-      <TextArea fx:id="textGradeChangeReason" layoutX="94.0" layoutY="319.0" prefHeight="120.0" prefWidth="489.0" text="Required field- in case grade has been updated." />
+      <TextArea fx:id="textGradeChangeReason" layoutX="94.0" layoutY="319.0" prefHeight="120.0" prefWidth="489.0" promptText="Required field- in case grade has been updated." />
       <ScrollBar layoutX="568.0" layoutY="323.0" orientation="VERTICAL" prefHeight="114.0" prefWidth="14.0" />
       <Text layoutX="92.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reasons for grade change:" wrappingWidth="297.1312255859375">
          <font>
@@ -52,9 +52,11 @@
          </font>
       </Text>
       <TextField fx:id="textnewGradeField" layoutX="329.0" layoutY="454.0" promptText="new grade" />
-      <Button fx:id="btnUpdate" layoutX="464.0" layoutY="491.0" mnemonicParsing="false" onAction="#btnUpdate" onMouseClicked="#btnUpdate" prefHeight="38.0" prefWidth="117.0" text="Update" />
+      <Button fx:id="btnUpdate" layoutX="464.0" layoutY="491.0" mnemonicParsing="false" onAction="#btnUpdate" prefHeight="38.0" prefWidth="117.0" text="Update" />
       <TextField fx:id="textExamID" layoutX="333.0" layoutY="158.0" promptText="exam ID" />
       <Button fx:id="btnViewStudentExam" layoutX="279.0" layoutY="491.0" mnemonicParsing="false" onAction="#btnViewStudentExam" prefHeight="38.0" prefWidth="117.0" text="View student exam" />
-      <Label fx:id="textNewGradeReqField" layoutX="483.0" layoutY="458.0" prefHeight="17.0" prefWidth="263.0" text="Must add a reason in case of an update" textFill="#db2424" />
+      <Label fx:id="textNewGradeReqField" layoutX="483.0" layoutY="458.0" prefHeight="17.0" prefWidth="263.0" text="Must add a reason and grade for update" textFill="#db2424" visible="false" />
+      <Button fx:id="btnShow" layoutX="516.0" layoutY="158.0" mnemonicParsing="false" onAction="#ShowStudentByExamID" text="Show" />
+      <Label fx:id="txtExamIdError" layoutX="568.0" layoutY="162.0" prefHeight="17.0" prefWidth="256.0" text="MIssing Parameters/Wrong input for Exam ID" textFill="#db2424" visible="false" />
    </children>
 </AnchorPane>

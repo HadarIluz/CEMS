@@ -132,7 +132,7 @@ public class CreateQuestionController extends QuestionBankController implements 
     }
     
     public void loadProfessionsToCombobox() {
-    	selectProfession.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
+   // 	selectProfession.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
     }
 
 	@Override

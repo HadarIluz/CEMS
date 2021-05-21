@@ -72,6 +72,7 @@ public class CEMSClient extends AbstractClient {
 			responseFromServer = (ResponseFromServer) msg;
 			clientUI.display(responseFromServer.toString());
 			awaitResponse = false;
+			
 		}
 	}
 
