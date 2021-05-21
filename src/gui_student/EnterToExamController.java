@@ -58,15 +58,15 @@ public class EnterToExamController {
 		boolean condition = checkConditionToStart(examCode, studentID);
 
 		if (condition) {
-			Calendar date = Calendar.getInstance();
-			System.out.println("The current date is : " + date.getTime());
-			date.add(Calendar.DATE, 0);
+			Calendar time = Calendar.getInstance();
+			System.out.println("The current date is : " + time.getTime());
+			time.add(Calendar.HOUR, 0);
 
 			// Prepared student id
 			int id = Integer.parseInt(studentID.trim());
 			student.setId(id);
 
-			ActiveExam activeExam = new ActiveExam(date, examCode);
+			ActiveExam activeExam = new ActiveExam(time, examCode);
 			// create request to server to checks if examID for this examCode and date are exist.
 			// if yes so return it examID. else return null.
 			RequestToServer req = new RequestToServer("isActiveExamExist");
@@ -80,7 +80,7 @@ public class EnterToExamController {
 				String existExamID = exam.getExamID();
 
 				// Request from server to return ActiveExamType of this exist active exam we found.
-				ActiveExam reqActiveExamType = new ActiveExam(date, new Exam(existExamID), examCode);
+				ActiveExam reqActiveExamType = new ActiveExam(time, new Exam(existExamID), examCode);
 				req = new RequestToServer("getActiveExamType");
 				req.setRequestData(reqActiveExamType);
 				ClientUI.cems.accept(req);
