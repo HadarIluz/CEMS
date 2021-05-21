@@ -102,18 +102,14 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "addTimeToExam": {
-			ActiveExam activeExamInSystem = dbController.getActiveExam((ActiveExam) msg);
-			if (activeExamInSystem != null) {
-				status.setStatus("SUCCESS");
-				serverFrame.printToTextArea(status.toString());
-			} else {
-				status.setStatus("ERROR");
-				serverFrame.printToTextArea(status.toString());
-			}
+			ActiveExam activeExam = (ActiveExam) req.getRequestData();
+			ActiveExam activeExamInSystem = null;
+			dbController.verifyActiveExam((ActiveExam) activeExam);
+			
 			try {
 				client.sendToClient(activeExamInSystem);
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException ex) {
+				ex.printStackTrace();
 			}
 		}
 			break;
@@ -124,7 +120,7 @@ public class CEMSserver extends AbstractServer {
 		case "approvTimeExtention": {
 			// update time alloted for test in active exam after the principal approves the
 			// request
-			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
+			ExtensionRequest extensionRequest =  (ExtensionRequest) req.getRequestData();
 			dbController.setTimeForActiveTest(extensionRequest.getExam(), extensionRequest.getAdditionalTime());
 			dbController.DeleteExtenxtionRequest(extensionRequest.getExam());
 		}

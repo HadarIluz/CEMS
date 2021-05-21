@@ -22,6 +22,7 @@ import entity.TestRow;
 import entity.User;
 import entity.UserType;
 import gui_server.ServerFrameController;
+import logic.ResponseFromServer;
 
 /**
  * @author yuval
@@ -242,35 +243,40 @@ public class DBController {
 	}
 
 	/**
-	 * if the activeExam exist in the DB and update existActiveExam.status
-	 * accordingly
+	 * check if the activeExam exist in the DB
 	 * 
-	 * @param activeExam
-	 * @return return existActiveExam.
+	 * @param obj of ActiveExam which include exam to verify if exists.
 	 */
-	public ActiveExam getActiveExam(Object obj) {
+	public void verifyActiveExam(Object obj) {
 		ActiveExam existActiveExam = (ActiveExam) obj;
+		ResponseFromServer respond = null;
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=? ");
 			pstmt.setString(1, existActiveExam.getExam().getExamID());
+			pstmt.setString(2, existActiveExam.getActiveExamStartTime());
+
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				ActiveExam activeExam = new ActiveExam(existActiveExam.getExam());
-				activeExam.setDate(existActiveExam.getDate());
-				activeExam.setTimeOfExam(rs.getString(3));
-				activeExam.setExamCode(rs.getString(4));
+				existActiveExam.setExam((Exam) rs.getObject(1));
+				existActiveExam.setDate((Calendar) rs.getObject(2));
+				existActiveExam.setTimeOfExam(rs.getString(3));
+				existActiveExam.setExamCode(rs.getString(4));
 				rs.close();
 			}
-			if (existActiveExam.getExam() == null) {
-				existActiveExam.setStatus("ACTIVE EXAM FOUND"); // status
-			} else
-				existActiveExam.setStatus("ACTIVE EXAM NOT FOUND"); // status
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			existActiveExam.setStatus("ERROR");
 		}
-		return existActiveExam;
+		// in case not found any active exam match.
+		if (existActiveExam.getExam() == null || existActiveExam.getExamCode() == null) {
+			respond = new ResponseFromServer("ACTIVE EXAM NOT FOUND");
+		} else
+			respond = new ResponseFromServer("ACTIVE EXAM FOUND");
+		// ResponseFromServer class ready to client with StatusMsg and
+		// 'Object responseData', in case active exam found existActiveExam include all
+		// data, other
+		// null.
+		respond.setResponseData(existActiveExam);
 	}
 
 	/**
@@ -411,10 +417,16 @@ public class DBController {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param activeExam
+	 * @return true if deleting request for activeExam from table active_exam in DB
+	 *         succeeded, else return false
+	 */
 	public Boolean DeleteExtenxtionRequest(ActiveExam activeExam) {
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("DELETE FROM active_exam WHERE exam=?");
+			pstmt = conn.prepareStatement("DELETE FROM extension_request WHERE exam=?");
 			pstmt.setString(1, activeExam.getExam().getExamID());
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
