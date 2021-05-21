@@ -248,18 +248,18 @@ public class DBController {
 	 * @param activeExam
 	 * @return return existActiveExam.
 	 */
-	public ActiveExam verifyActiveExam(ActiveExam activeExam) {
-		ActiveExam existActiveExam = activeExam;
-
+	public ActiveExam getActiveExam(Object obj) {
+		ActiveExam existActiveExam = (ActiveExam) obj;
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=? ");
 			pstmt.setString(1, existActiveExam.getExam().getExamID());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				existActiveExam.setExam(activeExam.getExam());
-				existActiveExam.setDate(activeExam.getDate());
-				existActiveExam.setExamCode(rs.getString(3));
+				ActiveExam activeExam = new ActiveExam(existActiveExam.getExam());
+				activeExam.setDate(existActiveExam.getDate());
+				activeExam.setTimeOfExam(rs.getString(3));
+				activeExam.setExamCode(rs.getString(4));
 				rs.close();
 			}
 			if (existActiveExam.getExam() == null) {

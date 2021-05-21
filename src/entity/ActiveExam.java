@@ -10,7 +10,8 @@ public class ActiveExam implements Serializable {
 	private Exam exam;
 	private String examCode;
 	private String status; // msg from server :{"ACTIVE EXAM FOUND" / "ACTIVE EXAM NOT FOUND"}
-
+	private int timeOfExam;
+	
 	public ActiveExam(Exam exam) {
 		this.exam = exam;
 	}
@@ -19,6 +20,15 @@ public class ActiveExam implements Serializable {
 		this.date = date;
 		this.exam = exam;
 		this.examCode = examCode;
+		timeOfExam = exam.getTimeOfExam();
+	}
+	
+	public int getTimeOfExam() {
+		return timeOfExam;
+	}
+
+	public void setTimeOfExam(String timeOfExam) {
+		this.timeOfExam = Integer.parseInt(timeOfExam);
 	}
 
 	public Calendar getDate() {

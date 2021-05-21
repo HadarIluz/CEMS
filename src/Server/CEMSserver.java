@@ -102,7 +102,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "addTimeToExam": {
-			ActiveExam activeExamInSystem = dbController.verifyActiveExam((ActiveExam) msg);
+			ActiveExam activeExamInSystem = dbController.getActiveExam((ActiveExam) msg);
 			if (activeExamInSystem != null) {
 				status.setStatus("SUCCESS");
 				serverFrame.printToTextArea(status.toString());
