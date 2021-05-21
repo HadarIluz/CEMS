@@ -59,7 +59,7 @@ public class User implements Serializable {
 		this.lastName = lastName;
 	}
 
-	public String isEmail() {
+	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {

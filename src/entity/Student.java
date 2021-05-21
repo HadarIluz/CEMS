@@ -10,14 +10,19 @@ public class Student extends User implements Serializable {
 	private float studentAvg;
 	private ArrayList<Course> courses;
 	
-	public Student(int id, String password, String fullName, String lastName, String email, UserType userType,
+	public Student(int id, String password, String firstName, String lastName, String email, UserType userType,
 			float studentAvg) {
-		super(id, password, fullName, lastName, email, userType);
+		super(id, password, firstName, lastName, email, userType);
 		this.studentAvg = studentAvg;
 		courses = new ArrayList<Course>();
 	}
 	
 	//TODO: add constructor that gets User info
+	public Student(User userData, float studentAvg, ArrayList<Course> courses) {
+		super(userData.getId(), userData.getPassword(), userData.getFirstName(), userData.getLastName(), userData.getEmail(), userData.getUserType());
+		this.studentAvg = studentAvg;
+		this.courses = courses;
+	}
 	
 	public float getStudentAvg() {
 		return studentAvg;
