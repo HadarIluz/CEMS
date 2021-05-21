@@ -1,7 +1,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 //Entity class - define Active Exam in the CEMS system.
 public class ActiveExam implements Serializable {
@@ -81,6 +83,18 @@ public class ActiveExam implements Serializable {
 
 	public void setActiveExamType(String activeExamType) {
 		this.activeExamType = activeExamType;
+	}
+	
+	public String getActiveExamStartTime() {
+		Calendar startTime = date.getInstance();
+		int startH= this.date.HOUR;
+		int startM= this.date.MINUTE;
+		startTime.add(startH, 0);
+		startTime.add(startM, 0);
+		SimpleDateFormat sdf = new SimpleDateFormat("h:mm"); //For example 12:08 
+		String formattedTime = sdf.format(startTime);
+		System.out.println(formattedTime);
+		return formattedTime;
 	}
 	
 }
