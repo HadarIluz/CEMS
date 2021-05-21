@@ -31,6 +31,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import logic.LoggedInUser;
 import logic.RequestToServer;
 
 /**
@@ -138,6 +139,8 @@ public class LoginController {
 				} else {
 
 					user.setLogged(1);
+					ClientUI.loggedInUser = LoggedInUser.getInstance(user);
+
 					Stage primaryStage = new Stage(); // CHECK
 					GridPane root = new GridPane();
 					Scene scene = new Scene(root, 988, 586); // define screens size

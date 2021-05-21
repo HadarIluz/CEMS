@@ -16,7 +16,7 @@ public class Student extends User implements Serializable {
 		this.studentAvg = studentAvg;
 		courses = new ArrayList<Course>();
 	}
-
+	
 	public float getStudentAvg() {
 		return studentAvg;
 	}
