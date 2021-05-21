@@ -101,7 +101,7 @@ public class CEMSserver extends AbstractServer {
 		}
 		break;
 		case "getStudentCourses": {
-			ArrayList<Course> studentCourses = dbController.getStudentCourses(int userID);
+			//TODO: ArrayList<Course> studentCourses = dbController.getStudentCourses(int userID);
 			// send to client(studentCourses)
 		}
 		case "createNewQuestion": {
@@ -144,24 +144,12 @@ public class CEMSserver extends AbstractServer {
 			dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam); //DEBUG 	
 		}
 			break;
-/*<<<<<<< Upstream, based on branch 'main' of https://github.com/yuval96/CEMS.git
-=======
-*/			//TODO: return exam type of the exist active exam.
-		case "getActiveExamType": {
-			createNewExam((Exam) req.getRequestData());
-		}
-			break;
 
 		case "getStudentsByExamID":{
-			
-			
-			
 			try {
 				
-ResponseFromServer Res=new  ResponseFromServer(null);
-				
-				
-				
+				ResponseFromServer Res=new  ResponseFromServer(null);
+
 				client.sendToClient(dbController.SetDetailsForScoreApprovel((String)req.getRequestData()));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -199,7 +187,6 @@ ResponseFromServer Res=new  ResponseFromServer(null);
 		// add questions and scores to DB
 		dbController.addQuestionsInExam(examID, examData.getQuestionScores());
 	}
-
 
 	/**
 	 * This method overrides the one in the superclass. Called when the server
