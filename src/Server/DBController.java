@@ -254,7 +254,6 @@ public class DBController {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=? ");
 			pstmt.setString(1, existActiveExam.getExam().getExamID());
-			pstmt.setString(2, existActiveExam.getActiveExamStartTime());
 
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -268,14 +267,13 @@ public class DBController {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 		// in case not found any active exam match.
-		if (existActiveExam.getExam() == null || existActiveExam.getExamCode() == null) {
+		if (existActiveExam.getExamCode() == null) {
 			respond = new ResponseFromServer("ACTIVE EXAM NOT FOUND");
 		} else
 			respond = new ResponseFromServer("ACTIVE EXAM FOUND");
 		// ResponseFromServer class ready to client with StatusMsg and
 		// 'Object responseData', in case active exam found existActiveExam include all
-		// data, other
-		// null.
+		// data, other null.
 		respond.setResponseData(existActiveExam);
 	}
 
