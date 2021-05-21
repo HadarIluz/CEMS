@@ -17,6 +17,8 @@ public class Student extends User implements Serializable {
 		courses = new ArrayList<Course>();
 	}
 	
+	//TODO: add constructor that gets User info
+	
 	public float getStudentAvg() {
 		return studentAvg;
 	}

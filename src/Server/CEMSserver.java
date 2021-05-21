@@ -4,13 +4,17 @@
 package Server;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import entity.ActiveExam;
+import entity.Course;
 import entity.Exam;
 import entity.ExtensionRequest;
 import entity.Question;
 import entity.User;
 import gui_server.ServerFrameController;
+import logic.LoggedInUser;
 import logic.RequestToServer;
 import logic.ResponseFromServer;
 import logic.StatusMsg;
@@ -35,6 +39,7 @@ public class CEMSserver extends AbstractServer {
 	 */
 	private static DBController dbController = new DBController();
 	private ServerFrameController serverFrame;
+	private HashMap<Integer, User> loggedInUsers;
 
 	public CEMSserver(int port, ServerFrameController serverUI) {
 		super(port);
@@ -67,7 +72,8 @@ public class CEMSserver extends AbstractServer {
 			User user = (User) req.getRequestData();
 			User userInSystem = null;
 			dbController.verifyLoginUser((User) user); // DEBUG
-			
+			// TODO: אם היוזר נמצא בטבלת גיבוב של משתמשים מחוברים יש להגדיר:
+			//isLogged = 1
 			try {
 				client.sendToClient(userInSystem);
 			} catch (IOException e) {
@@ -77,15 +83,27 @@ public class CEMSserver extends AbstractServer {
 		}
 
 			break;
-		case "UpdateUserLoged": {
+		case "UpdateUserLoggedIn": {
 			// logic of login- update logged status after Successfully login action
+			
 			// String reqUpdateID = (String) msg;
 			User user = (User) req.getRequestData();
+			user.setLogged(1);
+			//TODO: loggedInUsers.add(userID, user)
 			// boolean chnageSucceed = //for print in serverFrame
-			dbController.setLoginUserLogged(user.getId(), user.isLogged());
+			//dbController.setLoginUserLogged(user.getId(), user.isLogged());
 			// serverFrame.printToTextArea(??.toString());
 		}
 			break;
+		case "UpdateUserLoggedOut": {
+			User user = (User) req.getRequestData();
+			//TODO: loggedInUsers.remove(userID, user)
+		}
+		break;
+		case "getStudentCourses": {
+			ArrayList<Course> studentCourses = dbController.getStudentCourses(int userID);
+			// send to client(studentCourses)
+		}
 		case "createNewQuestion": {
 			createNewQuestion((Question) req.getRequestData());
 		}

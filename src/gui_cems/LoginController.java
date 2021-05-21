@@ -139,7 +139,6 @@ public class LoginController {
 				} else {
 
 					user.setLogged(1);
-					ClientUI.loggedInUser = LoggedInUser.getInstance(user);
 
 					Stage primaryStage = new Stage(); // CHECK
 					GridPane root = new GridPane();
@@ -148,6 +147,10 @@ public class LoginController {
 
 					switch (user.getUserType().toString()) {
 					case "Student": {
+						//TODO: Student student;
+						//את הפרטים של הקורסים והממוצע להביא מהשרת
+						// student.setCourse(מהשרת)
+						//ClientUI.loggedInUser = LoggedInUser.getInstance(student);
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 						
 						//call start function in studentController for initialization.
@@ -166,6 +169,8 @@ public class LoginController {
 					}
 						break;
 					case "Teacher": {
+						//TODO: Teacher teacher = להביא מהשרת
+						//ClientUI.loggedInUser = LoggedInUser.getInstance(teacher);
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 						//call start function in studentController for initialization.
 						try {
@@ -183,6 +188,7 @@ public class LoginController {
 					}
 						break;
 					case "Principal": {
+						ClientUI.loggedInUser = LoggedInUser.getInstance(user);
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 						//call start function in principalController for initialization.
 						try {
@@ -205,7 +211,7 @@ public class LoginController {
 					System.out.println(user.getId() + " login Successfully as: " + user.getUserType().toString());
 
 					// sent to server pk(id) in order to change the login status of this user.
-					RequestToServer reqLoged = new RequestToServer("UpdateUserLoged");
+					RequestToServer reqLoged = new RequestToServer("UpdateUserLoggedIn");
 					reqLoged.setRequestData(id);
 					ClientUI.cems.accept(reqLoged);
 				}
@@ -285,10 +291,10 @@ public class LoginController {
 	/**
 	 * @param user object given to send as a request to server to update this user isLogged status.
 	 */
-	public void performLogput(User user) {
+	public void performLogout(User user) {
 
 		// sent to server pk(id) in order to change the login status of this user.
-		RequestToServer reqLoged = new RequestToServer("UpdateUserLoged");
+		RequestToServer reqLoged = new RequestToServer("UpdateUserLoggedOut");
 		reqLoged.setRequestData(user);
 		ClientUI.cems.accept(reqLoged);
 

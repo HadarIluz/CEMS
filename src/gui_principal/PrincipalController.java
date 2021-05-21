@@ -164,7 +164,7 @@ public class PrincipalController {
 			if (type == okButton) {
 				// ASK -Sure not like that, I currently do not know what it
 				// will look like after learning about the singleton.
-				loginController.performLogput(this.user);
+				loginController.performLogout(this.user);
 
 			}
 		});
