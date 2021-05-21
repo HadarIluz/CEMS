@@ -3,7 +3,6 @@ package entity;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 //Entity class - define Active Exam in the CEMS system.
 public class ActiveExam implements Serializable {
@@ -11,16 +10,8 @@ public class ActiveExam implements Serializable {
 	private Calendar date; // including start time
 	private Exam exam;
 	private String examCode;
-<<<<<<< HEAD
-	
-	//ASK: why not from logic class? this is entity
-	private String status; // msg from server :{"ACTIVE EXAM FOUND" / "ACTIVE EXAM NOT FOUND"}
-	private String activeExamType=null; //{manual / computerized}
-=======
 	private int timeOfExam;
 	private String activeExamType = null; //{manual / computerized}
-
->>>>>>> refs/heads/Approval_Time_Extention_Matar
 	
 	public ActiveExam(Exam exam) {
 		this.exam = exam;
@@ -45,11 +36,6 @@ public class ActiveExam implements Serializable {
 
 	public void setTimeOfExam(String timeOfExam) {
 		this.timeOfExam = Integer.parseInt(timeOfExam);
-	}
-	
-	public ActiveExam(Calendar date, String examCode) {
-		this.date = date;
-		this.examCode = examCode;
 	}
 
 	public Calendar getDate() {
@@ -106,32 +92,4 @@ public class ActiveExam implements Serializable {
 		System.out.println(formattedTime);
 		return formattedTime;
 	}
-
-<<<<<<< HEAD
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	
-	public String getActiveExamType() {
-		return activeExamType;
-	}
-=======
->>>>>>> refs/heads/Approval_Time_Extention_Matar
-
-	public void setActiveExamType(String activeExamType) {
-		this.activeExamType = activeExamType;
-	}
-	
-	public String getActiveExamStartTime() {
-		Calendar startTime = date.getInstance();
-		int startH= this.date.HOUR;
-		int startM= this.date.MINUTE;
-		startTime.add(startH, 0);
-		startTime.add(startM, 0);
-		SimpleDateFormat sdf = new SimpleDateFormat("h:mm"); //For example 12:08 
-		String formattedTime = sdf.format(startTime);
-		System.out.println(formattedTime);
-		return formattedTime;
-	}
-	
 }
