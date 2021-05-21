@@ -152,27 +152,29 @@ public class LoginController {
 
 					switch (user.getUserType().toString()) {
 					case "Student": {
-						
 						Student student= (Student) user;
-						
-						//3: Student student= new Student(user, ,);//create new cons`
-						//new Student(User userData, float studentAvg, ArrayList<Course> courses)
-						
-						//2.1: Request data of student by pk(id)
-						RequestToServer reqStudentData = new RequestToServer("getUserData_Login");
+																		
+						//1.1: Request data of student by pk(id)
+						RequestToServer reqStudentData = new RequestToServer("getStudentrData_Login");
 						reqStudentData.setRequestData(student);
 						ClientUI.cems.accept(reqStudentData);
+												
+						//1.2: Get responseFromServer about student data.
+						student = (Student) CEMSClient.responseFromServer.getResponseData(); //response: "STUDENT DATA"
 						
+						//2.1: Get all student Course from server
+						RequestToServer reqStudentCourses = new RequestToServer("getUserList_Login");
+						reqStudentCourses.setRequestData(student);
+						ClientUI.cems.accept(reqStudentCourses);
 						
-						//2.2: Get responseFromServer about student data.
-						student = (Student) CEMSClient.responseFromServer.getResponseData();
+						//2.2: Get responseFromServer about student CoursesList.
+						ArrayList<Course> studCourseList = (ArrayList<Course>) CEMSClient.responseFromServer.getResponseData(); //response: "STUDENT Courses List"
+						student.setCourses(studCourseList);
 						
-						
-						
-						//TODO: Student student;
-						//את הפרטים של הקורסים והממוצע להביא מהשרת
-						// student.setCourse(מהשרת)
-						//ClientUI.loggedInUser = LoggedInUser.getInstance(student);
+						//3: Create new Student
+						Student newStudent= new Student(user, student.getStudentAvg() ,studCourseList);
+						ClientUI.loggedInUser= LoggedInUser.getInstance(newStudent);
+
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 						
 						//call start function in studentController for initialization.
@@ -182,12 +184,7 @@ public class LoginController {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						/*
-						Pane mnueLeft = FXMLLoader.load(getClass().getResource(StudentMenu));
-						root.add(mnueLeft, 0, 0);
-						primaryStage.setScene(scene);
-						primaryStage.show();
-						*/
+						
 					}
 						break;
 					case "Teacher": {

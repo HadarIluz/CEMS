@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import entity.ActiveExam;
+import entity.Course;
 import entity.Exam;
 import entity.ExtensionRequest;
 import entity.Question;
@@ -132,15 +133,15 @@ public class DBController {
 		respond.setResponseData(stud);
 	}
 	//new:
-	/**We know that this student exists and we bring the additional data he has in addition to the userõ
-	 * @param stud
+	/**We know that this student exists and we bring the additional data he has in addition to the user.
+	 * @param stud include all data of student that hold by User object.
 	 */
 	public void getStudentData_Logged(Student stud) {
-		Student student = (Student) stud;
+		Student student = stud;
 		ResponseFromServer respond = null;
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT AVG FROM student WHERE id=" + student.getId() + ";");
+			pstmt = conn.prepareStatement("SELECT AVG FROM student WHERE id=" + stud.getId() + ";");
 			pstmt.setInt(1, stud.getId());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -157,12 +158,47 @@ public class DBController {
 		respond.setResponseData(student);
 		
 	}
+	//TODO:
+	/**
+	 * @param stud include all data of this logged student.
+	 */
+	public void getStudentCourses_Logged(Student stud) {
+		
+		Student student = stud;
+		ArrayList<Course> coursesOfStudent = new ArrayList<Course>();
+		ResponseFromServer respond = null;
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT course FROM student_in_course WHERE id=" + stud.getId() + ";");
+			pstmt.setInt(1, stud.getId());
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Course newCourse = new Course("");
+				newCourse.setCourseName(rs.getString(1));
+				coursesOfStudent.add(newCourse); //add to list
+			}
+			rs.close();
+
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		//create ResponseFromServer to client with student data.
+		respond = new ResponseFromServer("STUDENT Courses List");
+		respond.setResponseData(coursesOfStudent);
+				
+	}
 	
+
 	
-	public void getTeacherData_Logged(Teacher teacher) {
+	//TODO:
+	/**
+	 * @param teacherObj include all data of this logged teacher.
+	 */
+	public void getTeacherProfession_Logged(Teacher teacherObj) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 
 	public HashMap<String, Integer> SetDetailsForScoreApprovel(String examID) {
@@ -572,6 +608,12 @@ public class DBController {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 	}
+
+
+
+
+
+
 
 
 
