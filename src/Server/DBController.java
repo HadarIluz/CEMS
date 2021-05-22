@@ -103,51 +103,20 @@ public class DBController {
 		return respond;
 				//existUser.getId(); //return userID (int)
 	}
-	//old:
-	public void getStudentData_Logged(String studentID) {
-		Student stud=null;
-		int id= Integer.parseInt(studentID);
-		ResponseFromServer respond = null;
-		
-		try {
-			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT AVG FROM student WHERE id=" + studentID + ";");
-			pstmt.setInt(1, stud.getId());
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				stud.setId(Integer.parseInt((String) rs.getString(1)));
-				stud.setStudentAvg(rs.getFloat(2));
-				rs.close();
-			}
-
-		} catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-		}
-		if (stud!= null) {
-			respond = new ResponseFromServer("STUDENT NOT FOUND");
-		}
-		else{
-			respond = new ResponseFromServer("STUDENT FOUND");	
-		}
-		// ResponseFromServer class ready to client with StatusMsg and  
-		//'Object responseData', in case user found existUser include all data, other null.
-		respond.setResponseData(stud);
-	}
-	//new:
+	
+	
 	/**We know that this student exists and we bring the additional data he has in addition to the user.
 	 * @param stud include all data of student that hold by User object.
 	 */
-	public void getStudentData_Logged(Student stud) {
-		Student student = stud;
+	public void getStudentData_Logged(Student student) {
 		ResponseFromServer respond = null;
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT AVG FROM student WHERE id=" + stud.getId() + ";");
-			pstmt.setInt(1, stud.getId());
+			pstmt = conn.prepareStatement("SELECT AVG FROM student WHERE id=?;");
+			pstmt.setInt(1, student.getId());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				student.setId(Integer.parseInt((String) rs.getString(1)));
-				student.setStudentAvg(rs.getFloat(2));
+				student.setStudentAvg(rs.getFloat(1));
 				rs.close();
 			}
 
