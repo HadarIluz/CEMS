@@ -124,8 +124,8 @@ public class DBController {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 		//create ResponseFromServer to client with student data.
-		respond = new ResponseFromServer("STUDENT DATA");
-		respond.setResponseData(student);
+//		respond = new ResponseFromServer("STUDENT DATA");
+//		respond.setResponseData(student);
 		
 	}
 
@@ -153,9 +153,9 @@ public class DBController {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 		//create ResponseFromServer to client with student data.
-		respond = new ResponseFromServer("STUDENT Courses List");
-		respond.setResponseData(coursesOfStudent);
-				
+//		respond = new ResponseFromServer("STUDENT Courses List");
+//		respond.setResponseData(coursesOfStudent);
+//				
 	}
 	
 

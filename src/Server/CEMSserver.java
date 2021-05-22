@@ -118,6 +118,9 @@ public class CEMSserver extends AbstractServer {
 			// if( req.getRequestData() instanceof Student) {
 			Student student = (Student) req.getRequestData();
 			dbController.getStudentData_Logged(student);
+			dbController.getStudentCourses_Logged(student);
+			// TODO: create respond object with new student data :)
+			//client.sendToClient(respond object^^);
 			// }
 //DELETE- teacher has no extra data.
 //			if( req.getRequestData() instanceof Teacher) {		
