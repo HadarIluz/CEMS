@@ -154,30 +154,17 @@ public class LoginController {
 					switch (user.getUserType().toString()) {
 					case "Student": {
 						Student student= (Student) user;
-																		
-						//1.1: Request data of student by pk(id)
+																
 						RequestToServer reqStudentData = new RequestToServer("getStudentrData_Login");
 						reqStudentData.setRequestData(student);
 						ClientUI.cems.accept(reqStudentData);
-												
-						//1.2: Get responseFromServer about student data.
+						//Receive response from server
 						student = (Student) CEMSClient.responseFromServer.getResponseData(); //response: "STUDENT DATA"
-						
-						//2.1: Get all student Course from server
-						RequestToServer reqStudentCourses = new RequestToServer("getUserList_Login");
-						reqStudentCourses.setRequestData(student);
-						ClientUI.cems.accept(reqStudentCourses);
-						
-						//2.2: Get responseFromServer about student CoursesList.
-						ArrayList<Course> studCourseList = (ArrayList<Course>) CEMSClient.responseFromServer.getResponseData(); //response: "STUDENT Courses List"
-						student.setCourses(studCourseList);
-						
-						//3: Create new Student
-						Student newStudent= new Student(user, student.getStudentAvg() ,studCourseList);
+						//Create new Student
+						Student newStudent= new Student(user, student.getStudentAvg() ,student.getCourses());
 						ClientUI.loggedInUser= LoggedInUser.getInstance(newStudent);
 
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
-						
 						//call start function in studentController for initialization.
 						try {
 							studentController.start(new Stage() ); 
@@ -190,22 +177,17 @@ public class LoginController {
 					case "Teacher": {
 						Teacher teacher= (Teacher) user;
 												
-						//1: Get all student Course from server
-						RequestToServer reqTeacherProfessions = new RequestToServer("getUserList_Login");
-						reqTeacherProfessions.setRequestData(teacher);
-						ClientUI.cems.accept(reqTeacherProfessions);
-						
-						//2: Get responseFromServer about student CoursesList.
-						ArrayList<Profession> teacherProfessionList = (ArrayList<Profession>) CEMSClient.responseFromServer.getResponseData(); //response: ""TEACHER Profession List""
-						teacher.setProfessions(teacherProfessionList);
-						
-						//3: Create new Student
-						Teacher newTeacher= new Teacher(user, null);
+						RequestToServer reqTeacherData = new RequestToServer("getTeacherData_Login");
+						reqTeacherData.setRequestData(teacher);
+						ClientUI.cems.accept(reqTeacherData);
+						//Receive response from server
+						teacher = (Teacher) CEMSClient.responseFromServer.getResponseData(); //response: "TEACHER DATA"
+						//Create new teacher
+						Teacher newTeacher= new Teacher(user, teacher.getProfessions());
 						ClientUI.loggedInUser= LoggedInUser.getInstance(newTeacher);
-						
-						
+												
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
-						//call start function in studentController for initialization.
+						//call start function in teacherController for initialization.
 						try {
 							teacherController.start(new Stage() ); 
 						} catch (Exception e) {
@@ -216,6 +198,7 @@ public class LoginController {
 						break;
 						
 					case "Principal": {
+						//Create new principal
 						ClientUI.loggedInUser = LoggedInUser.getInstance(user);
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 						//call start function in principalController for initialization.
@@ -318,12 +301,10 @@ public class LoginController {
 	 * @param user object given to send as a request to server to update this user isLogged status.
 	 */
 	public void performLogout(User user) {
-
 		// sent to server pk(id) in order to change the login status of this user.
 		RequestToServer reqLoged = new RequestToServer("UpdateUserLoggedOut");
 		reqLoged.setRequestData(user);
 		ClientUI.cems.accept(reqLoged);
-
 	}
 
 	/**
@@ -332,10 +313,8 @@ public class LoginController {
 	@FXML
 	void pressAboutCEMS(ActionEvent event) {
 		textAboutCEMS.setVisible(messageAppearnce());
-
 	}
 
-	// .
 	/**Private method for displaying and disappearing the message
 	 * @return boolean variable that specifies whether to display or hide the message.
 	 */
