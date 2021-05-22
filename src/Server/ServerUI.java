@@ -12,6 +12,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/*
+   _____  ______  __  __   _____                                            
+  / ____||  ____||  \/  | / ____|                                           
+ | |     | |__   | \  / || (___  ______   ___   ___  _ __ __   __ ___  _ __ 
+ | |     |  __|  | |\/| | \___ \|______| / __| / _ \| '__|\ \ / // _ \| '__|
+ | |____ | |____ | |  | | ____) |        \__ \|  __/| |    \ V /|  __/| |   
+  \_____||______||_|  |_||_____/         |___/ \___||_|     \_/  \___||_|                                                                             
+*/
+
 public class ServerUI extends Application {
 	final public static int DEFAULT_PORT = 5555;
 	public static ServerFrameController serverFrame;
