@@ -146,7 +146,7 @@ public class LoginController {
 
 					user.setLogged(1);
 
-					Stage primaryStage = new Stage(); // CHECK
+					Stage primaryStage = new Stage(); 
 					GridPane root = new GridPane();
 					Scene scene = new Scene(root, 988, 586); // define screens size
 					primaryStage.setTitle("CEMS-Computerized Exam Management System");

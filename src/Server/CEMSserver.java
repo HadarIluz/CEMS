@@ -81,75 +81,69 @@ public class CEMSserver extends AbstractServer {
 			if (exist) {
 				user.setLogged(1); // set isLogged to 1.
 			}
-
-			// TODO:[V] אם היוזר נמצא בטבלת גיבוב של משתמשים מחוברים יש להגדיר:isLogged = 1
 			try {
 				client.sendToClient(userInSystem);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
+			// serverFrame.printToTextArea(??.toString());
 		}
 
 			break;
 		case "UpdateUserLoggedIn": {
-			// logic of login- update logged status after Successfully login action
-
+			// logic of login- update logged status after successfully LOGIN action.
 			User user = (User) req.getRequestData();
 			user.setLogged(1); // set isLogged to 1.
 			loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.
-			// TODO:[V] loggedInUsers.add(userID, user)
-			// dbController.setLoginUserLogged(user.getId(), user.isLogged());
-			// לוודא: החלטנו לא לעדכן את הנתן הזה בDB נכוון??
-			// כלומר שורה 100 למחוק?
 
-			// serverFrame.printToTextArea(??.toString());
 		}
 			break;
+
 		case "UpdateUserLoggedOut": {
+			// logic of login- update logged status after LOGOUT action.
 			User user = (User) req.getRequestData();
-			// TODO:[V] loggedInUsers.remove(userID, user)
 			user.setLogged(0); // set isLogged to 0. (disconnected)
 			loggedInUsers.put(user.getId(), user); // remove this user from hashMap of all the logged users.
 		}
 			break;
 
 		case "getStudentrData_Login": {
-
-			// if( req.getRequestData() instanceof Student) {
+			// logic of login- gets student`s courses after successfully LOGIN action.
 			Student student = (Student) req.getRequestData();
-			dbController.getStudentData_Logged(student);
-			dbController.getStudentCourses_Logged(student);
-			// TODO: create respond object with new student data :)
-			//client.sendToClient(respond object^^);
-			// }
-//DELETE- teacher has no extra data.
-//			if( req.getRequestData() instanceof Teacher) {		
-//			Teacher teacher = (Teacher) req.getRequestData();
-//			dbController.getTeacherData_Logged(teacher);
-//			}
-		}
-
-		case "getUserList_Login": {
-			// logic of login- gets student`s Courses/ teacher`s Profession after
-			// Successfully login action
-
-			//[v]
-			//TODO: [Hadar]: why we need return from DB the arrayList, in transfer this by Response class,
-			//do i need to do: 'sendToClient'  ???
-			// TODO(Yuval): ArrayList<Course> studentCourses = dbController.getStudentCourses(int userID);
-			// send to client(studentCourses)
-
-			if (req.getRequestData() instanceof Student) {
-				Student student = (Student) req.getRequestData();
-				dbController.getStudentCourses_Logged(student);
+			student = dbController.getStudentData_Logged(student);
+			student = dbController.getStudentCourses_Logged(student);
+			//create ResponseFromServer (to client) with all student data.
+			ResponseFromServer respond = new ResponseFromServer("STUDENT DATA");
+			respond.setResponseData(student);
+			//sent to client.
+			try {
+				client.sendToClient(student);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-
-			if (req.getRequestData() instanceof Teacher) {
-				Teacher teacher = (Teacher) req.getRequestData();
-				dbController.getTeacherProfession_Logged(teacher);
-			}
-
+			
+			// serverFrame.printToTextArea(??.toString());		
 		}
+			break;
+
+		case "getTeacherData_Login": {
+			// logic of login- gets teacher`s profession after successfully login action.
+			Teacher teacher = (Teacher) req.getRequestData();
+			teacher=dbController.getTeacherProfession_Logged(teacher);
+			//create ResponseFromServer (to client) with all student data.
+			ResponseFromServer respond = new ResponseFromServer("TEACHER DATA");
+			respond.setResponseData(teacher);
+			//sent to client.
+			try {
+				client.sendToClient(teacher);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			// serverFrame.printToTextArea(??.toString());
+		}
+			break;
 
 		case "createNewQuestion": {
 			createNewQuestion((Question) req.getRequestData());
@@ -179,14 +173,16 @@ public class CEMSserver extends AbstractServer {
 
 		case "isActiveExamExist": {
 			// logic for 'EnterToExam'
-			// logic of verify if activeExam exist at this date, set ActiveExam object if found.
+			// logic of verify if activeExam exist at this date, set ActiveExam object if
+			// found.
 			ActiveExam activeExam = (ActiveExam) req.getRequestData();
 			dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam);
 		}
 			break;
 
 		case "approvTimeExtention": {
-			// update time alloted for test in active exam after the principal approves the request.
+			// update time alloted for test in active exam after the principal approves the
+			// request.
 			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
 			dbController.setTimeForActiveTest(extensionRequest.getActiveExam(), extensionRequest.getAdditionalTime());
 			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());

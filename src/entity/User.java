@@ -82,8 +82,6 @@ public class User implements Serializable {
 	and checks if a user already connected to system or not.*/
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		//return super.equals(obj);
 		if (this == obj) return true;
 		if (obj == null || getClass() != obj.getClass()) return false;
 		User user=(User) obj;
@@ -105,9 +103,6 @@ public class User implements Serializable {
 	public void setUserType(UserType userType) {
 		this.userType = userType;
 	}
-	public String getString(int i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 		
 }

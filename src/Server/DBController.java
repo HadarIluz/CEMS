@@ -56,17 +56,9 @@ public class DBController {
 		}
 	}
 
-//github.com/yuval96/CEMS.git
 	/*checks if the user that try to login exists in the DB.
 	 * @param obj of user which include student id to verify if exists.
 	 */
-	/*
-	 * public void verifyLoginUser(Object obj) { User existUser = (User) obj;
-	 * ResponseFromServer respond = null;
-	 * 
-	 * }
-	 */
-
 	public ResponseFromServer verifyLoginUser(Object obj) {
 
 		User existUser = (User) obj;
@@ -78,12 +70,11 @@ public class DBController {
 			pstmt.setInt(1, existUser.getId());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				existUser.setId(Integer.parseInt((String) rs.getString(1)));
-				existUser.setPassword(rs.getString(2));
-				existUser.setFirstName(rs.getString(3));
-				existUser.setLastName(rs.getString(4));
-				existUser.setEmail(rs.getString(5));
-				existUser.setUserType(UserType.valueOf(rs.getString(6)));
+				existUser.setPassword(rs.getString(1));
+				existUser.setFirstName(rs.getString(2));
+				existUser.setLastName(rs.getString(3));
+				existUser.setEmail(rs.getString(4));
+				existUser.setUserType(UserType.valueOf(rs.getString(5)));
 				rs.close();
 			}
 
@@ -98,17 +89,16 @@ public class DBController {
 			respond = new ResponseFromServer("USER FOUND");	
 		}
 		// ResponseFromServer class ready to client with StatusMsg and  
-		//'Object responseData', in case user found existUser include all data, other null.
+		//'Object responseData', in case user found existUser include all data, otherwise null.
 		respond.setResponseData(existUser);
 		return respond;
-				//existUser.getId(); //return userID (int)
 	}
 	
 	
 	/**We know that this student exists and we bring the additional data he has in addition to the user.
-	 * @param stud include all data of student that hold by User object.
+	 * @param student include all data of student that hold by User object.
 	 */
-	public void getStudentData_Logged(Student student) {
+	public Student getStudentData_Logged(Student student) {
 		ResponseFromServer respond = null;
 		try {
 			PreparedStatement pstmt;
@@ -123,68 +113,61 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		//create ResponseFromServer to client with student data.
-//		respond = new ResponseFromServer("STUDENT DATA");
-//		respond.setResponseData(student);
+		return student;
 		
 	}
 
 	/**
-	 * @param stud include all data of this logged student.
+	 * @param student include all data of this logged student.
 	 */
-	public void getStudentCourses_Logged(Student stud) {
+	public Student getStudentCourses_Logged(Student student) {
 		
-		Student student = stud;
 		ArrayList<Course> coursesOfStudent = new ArrayList<Course>();
-		ResponseFromServer respond = null;
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT course FROM student_in_course WHERE id=" + stud.getId() + ";");
-			pstmt.setInt(1, stud.getId());
+			pstmt = conn.prepareStatement("SELECT course FROM student_in_course WHERE id=?;");
+			pstmt.setInt(1, student.getId());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Course newCourse = new Course("");
-				newCourse.setCourseName(rs.getString(2));
-				coursesOfStudent.add(newCourse); //add to list
+				newCourse.setCourseName(rs.getString(1));
+				coursesOfStudent.add(newCourse); //add to list.
 			}
 			rs.close();
 
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		//create ResponseFromServer to client with student data.
-//		respond = new ResponseFromServer("STUDENT Courses List");
-//		respond.setResponseData(coursesOfStudent);
-//				
+		student.setCourses(coursesOfStudent);
+		return student;		
 	}
-	
+		
 
 
 	/**
 	 * @param teacherObj include all data of this logged teacher.
 	 */
-	public void getTeacherProfession_Logged(Teacher teacherObj) {
-		Teacher teacher = teacherObj;
-		ArrayList<Profession> coursesOfStudent = new ArrayList<Profession>();
-		ResponseFromServer respond = null;
+	public Teacher getTeacherProfession_Logged(Teacher teacher) {
+		
+		ArrayList<Profession> ProfessionOfTeacher = new ArrayList<Profession>();
+
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT profession FROM teacher_in_profession WHERE id=" + teacherObj.getId() + ";");
-			pstmt.setInt(1, teacherObj.getId());
+			pstmt = conn.prepareStatement("SELECT profession FROM teacher_in_profession WHERE id=?;");
+			pstmt.setInt(1, teacher.getId());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Profession newProfession = new Profession("");
-				newProfession.setProfessionName(rs.getString(2));
-				coursesOfStudent.add(newProfession); //add to list
+				newProfession.setProfessionName(rs.getString(1));
+				ProfessionOfTeacher.add(newProfession); //add to list
 			}
 			rs.close();
 
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		//create ResponseFromServer to client with student data.
-		respond = new ResponseFromServer("TEACHER Profession List");
-		respond.setResponseData(coursesOfStudent);
+		teacher.setProfessions(ProfessionOfTeacher);
+		return teacher;
 	}
 
 
@@ -590,6 +573,8 @@ public class DBController {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 	}
+
+
 
 
 
