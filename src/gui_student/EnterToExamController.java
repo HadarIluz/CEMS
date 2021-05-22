@@ -53,8 +53,8 @@ public class EnterToExamController {
 	/**
 	 * The method checks that all the conditions for starting the exam have been
 	 * approved and verifies the details entered by the student. Verifies that there
-	 * is an existing exam right now and moves the student to the test solution screen
-	 * according to the exam`s type.
+	 * is an existing exam right now and moves the student to the test solution
+	 * screen according to the exam`s type.
 	 * 
 	 * @param event event that occurs when clicking on 'start exam' button.
 	 */
@@ -75,8 +75,7 @@ public class EnterToExamController {
 //TODO: Should this activeExam be "assigned" to a student somehow? (new table or something else?)..
 
 			ActiveExam activeExam = new ActiveExam(time, examCode);
-			// create request to server to checks if examID for this examCode and date are
-			// exist.
+			// Request to server to checks if examID for this examCode and date are exist.
 			// if yes so return it examID. else return null.
 			RequestToServer req = new RequestToServer("isActiveExamExist");
 			req.setRequestData(activeExam);
@@ -85,14 +84,14 @@ public class EnterToExamController {
 			// verify if examID return or not.
 			if ((CEMSClient.responseFromServer.getStatusMsg().getStatus()).equals("ACTIVE EXAM EXIST")) {
 
-				// at this point we found exam so we can be sure an object has arrived in this
+				// At this point we found exam so we can be sure an object has arrived in this
 				// response.
 				ActiveExam exam = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
 				String existExamID = exam.getExam().getExamID();
 				String ActiveExamType = exam.getActiveExamType();
 
 				// message in console
-				System.out.println("Respont: there is active examID:" + existExamID + "type: " + ActiveExamType);
+				System.out.println("Respont: there is active examID:" + existExamID + "type: " + ActiveExamType); //PRINT
 
 				// The student has entered all the given details and transfer to exam screen
 				// - computerized or manual
@@ -173,7 +172,8 @@ public class EnterToExamController {
 	// Not sure it's need to be like that !!!
 
 	/**
-	 *load this controller, performs initialization.
+	 * load this controller, performs initialization.
+	 * 
 	 * @param primaryStage
 	 */
 	public void start(Stage primaryStage) {

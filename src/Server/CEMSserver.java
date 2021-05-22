@@ -86,7 +86,7 @@ public class CEMSserver extends AbstractServer {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 			// serverFrame.printToTextArea(??.toString());
 		}
 
@@ -113,34 +113,34 @@ public class CEMSserver extends AbstractServer {
 			Student student = (Student) req.getRequestData();
 			student = dbController.getStudentData_Logged(student);
 			student = dbController.getStudentCourses_Logged(student);
-			//create ResponseFromServer (to client) with all student data.
+			// create ResponseFromServer (to client) with all student data.
 			ResponseFromServer respond = new ResponseFromServer("STUDENT DATA");
 			respond.setResponseData(student);
-			//sent to client.
+			// sent to client.
 			try {
 				client.sendToClient(student);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-			// serverFrame.printToTextArea(??.toString());		
+
+			// serverFrame.printToTextArea(??.toString());
 		}
 			break;
 
 		case "getTeacherData_Login": {
 			// logic of login- gets teacher`s profession after successfully login action.
 			Teacher teacher = (Teacher) req.getRequestData();
-			teacher=dbController.getTeacherProfession_Logged(teacher);
-			//create ResponseFromServer (to client) with all student data.
+			teacher = dbController.getTeacherProfession_Logged(teacher);
+			// create ResponseFromServer (to client) with all student data.
 			ResponseFromServer respond = new ResponseFromServer("TEACHER DATA");
 			respond.setResponseData(teacher);
-			//sent to client.
+			// sent to client.
 			try {
 				client.sendToClient(teacher);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 			// serverFrame.printToTextArea(??.toString());
 		}
 			break;
@@ -173,10 +173,16 @@ public class CEMSserver extends AbstractServer {
 
 		case "isActiveExamExist": {
 			// logic for 'EnterToExam'
-			// logic of verify if activeExam exist at this date, set ActiveExam object if
-			// found.
+			// verify if activeExam exist at this date, set ActiveExam object if found.
 			ActiveExam activeExam = (ActiveExam) req.getRequestData();
-			dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam);
+			activeExam = dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam);
+			// sent to client.
+			try {
+				client.sendToClient(activeExam);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			// serverFrame.printToTextArea(??.toString());
 		}
 			break;
 
@@ -196,7 +202,6 @@ public class CEMSserver extends AbstractServer {
 
 		case "getStudentsByExamID": {
 			try {
-
 				ResponseFromServer Res = new ResponseFromServer(null);
 
 				client.sendToClient(dbController.SetDetailsForScoreApprovel((String) req.getRequestData()));
@@ -209,6 +214,8 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
+
+	/*------------------------------------Private Methods-------------------------------------------------*/
 
 	/**
 	 * @param questionData this method creates the question ID and then inserts the
@@ -223,6 +230,11 @@ public class CEMSserver extends AbstractServer {
 		dbController.createNewQuestion(questionData);
 	}
 
+	/**
+	 * TODO: add comment
+	 * 
+	 * @param examData
+	 */
 	private void createNewExam(Exam examData) {
 		// create the exam ID by number of exams in this profession and course
 		int numOfExams = dbController.getNumOfExamsInCourse(examData.getCourse().getCourseID()) + 1;

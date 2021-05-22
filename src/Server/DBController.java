@@ -542,36 +542,36 @@ public class DBController {
 	/**
 	 * @param activeExam object which include 2 parameters of date and examcode for Query.
 	 */
-	public void verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
-		ActiveExam existActiveExam = activeExam;
-		Exam exam = null;
+	public ActiveExam verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
+		Exam exam = new Exam(null);
 		ResponseFromServer respond = null;
 		/***EnterToExam***/
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE date=? examcode=?;");
-			pstmt.setString(2, existActiveExam.getActiveExamStartTime());
-			pstmt.setString(3, existActiveExam.getExamCode());
+			pstmt.setString(1, activeExam.getActiveExamStartTime());
+			pstmt.setString(2, activeExam.getExamCode());
 
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				exam.setExamID(rs.getString(1));
-				existActiveExam.setExam(exam);
-
-				existActiveExam.setDate(activeExam.getDate());
-				existActiveExam.setExamCode(activeExam.getExamCode());
-				existActiveExam.setActiveExamType(rs.getString(4));
+				activeExam.setExam(exam);
+				activeExam.setActiveExamType(rs.getString(2));
 				rs.close();
 			}
-			if (existActiveExam.getExam().getExamID() == null) {
-				respond = new ResponseFromServer("ACTIVE EXAM EXIST");		// StatusMsg.statusMsg
-				respond.setResponseData(existActiveExam);
-			} else {
-				respond = new ResponseFromServer("ACTIVE EXAM_NOT_EXIST");	// StatusMsg.statusMsg
-			}
+			
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
+		
+		if (activeExam.getExam()== null) {
+			respond = new ResponseFromServer("ACTIVE EXAM EXIST");		// StatusMsg.statusMsg
+			respond.setResponseData(activeExam);
+		} else {
+			respond = new ResponseFromServer("ACTIVE EXAM_NOT_EXIST");	// StatusMsg.statusMsg
+		}
+		return activeExam;
+		
 	}
 
 
