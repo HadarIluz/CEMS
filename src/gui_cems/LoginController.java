@@ -358,7 +358,7 @@ public class LoginController {
 	//Need to verify with jar file!!
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		
 		Image image = new Image(getClass().getResourceAsStream("..\\..\\images\\LogInBackground.jpg"));
 		ImageView imageView = new ImageView(image);
         imageView.setFitHeight(550);

@@ -111,7 +111,6 @@ public class PrincipalController {
 			root.add(newPaneRight, 1, 0);
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -127,7 +126,6 @@ public class PrincipalController {
 			root.add(newPaneRight, 1, 0);
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -141,7 +139,6 @@ public class PrincipalController {
 			//root.add(newPaneRight, 1, 0);
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		 */

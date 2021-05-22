@@ -186,7 +186,6 @@ public class EnterToExamController {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println(e);
 			e.printStackTrace();
 		}

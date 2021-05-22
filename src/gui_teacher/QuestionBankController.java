@@ -121,7 +121,7 @@ public class QuestionBankController extends TeacherController implements Initial
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+
 		Profession pro=new Profession("03","Math");
 	
 		
