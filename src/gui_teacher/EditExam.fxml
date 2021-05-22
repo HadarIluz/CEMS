@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.EditExamController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.EditExamController">
    <children>
       <Text layoutX="80.0" layoutY="249.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question Number : ">
          <font>
@@ -75,7 +75,7 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnBack" layoutX="27.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnBack" prefHeight="30.0" prefWidth="122.0" text="&lt;Back">
+      <Button fx:id="btnBack" layoutX="27.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnBack" prefHeight="30.0" prefWidth="122.0" text="&lt;Back" visible="false">
          <font>
             <Font size="14.0" />
          </font>

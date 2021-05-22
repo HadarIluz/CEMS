@@ -76,6 +76,7 @@ public class EditExamController implements Initializable{
     private static HashMap<String, Question> questionsMap = null;
     private Question selectedQuestion;
    
+    //TODO: principal
     @FXML
     void btnBack(ActionEvent event) {
 
@@ -101,9 +102,9 @@ public class EditExamController implements Initializable{
      			popUp("Please fill the Time Allocated For Exam Field");
      			} else {
      				if (examID.length() == 6 && isOnlyDigits(examID)&& isOnlyDigits(TimeAllocatedToExam))
-     					editedExam=new Exam(examID);
+     					editedExam=new Exam(examID); //TODO:need more pk(?)
      				//editedExam.setTeacher(currentTeacher);
-     	    		RequestToServer req = new RequestToServer("EditExam");
+     	    		RequestToServer req = new RequestToServer("SaveEditExam");
      	    		req.setRequestData(editedExam);
      	    		ClientUI.cems.accept(req);
      				
@@ -112,12 +113,14 @@ public class EditExamController implements Initializable{
 
     @FXML
     void btnShowQuestion(ActionEvent event) {
+    	//TODO: load screen of edit question
     	popUp(selectedQuestion.getQuestion());
     }
 
     @FXML
     void btnUpdate_studentComment(MouseEvent event) {
     	commentForStudent=textStudentComment.getText();
+    	
     }
 
     @FXML
@@ -141,7 +144,12 @@ public class EditExamController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedQuestion = null;
+		//TODO:1. req from server data of the specific exam according to examID.
+		//2. response(  return Exam)  RequestToServer req = new RequestToServer("getEditExamData");
+		//3. insert data to test filed by setText from object.
 		loadQuestionsToCombobox();
+		
+		//ClientUI.loggedInUser..... המורה מחזירה את רשימתה קורסים שלה ואת השם.
 	}
     
 	//set hashMap of questions 
@@ -184,5 +192,10 @@ public class EditExamController implements Initializable{
  			System.out.println("isOnlyDigits returns:" + onlyDigits); // message to console
  			return onlyDigits;
  		}
+ 		
+ 		//TODO: לחשוב על מקרה שבו המורה מוחקת שאלה , לשאלה הזאת יש ניקוד והציון של המבחן ישתנה. אנחנו רוצים לשמור ציון אפס
+ 		// לחשוב אם מספיק להקפיץ למורה הודעה 
+ 		//או
+ 		//להכריח אותה לבצע פעולה מסויימת לאיזון הציון.
 
 }

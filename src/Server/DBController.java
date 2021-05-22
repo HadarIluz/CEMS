@@ -580,11 +580,12 @@ public class DBController {
 	 * @return return true if succeed to edit exist exam, in any other case false.
 	 */
 	public boolean editExam(Exam editedExam) {
-		Exam existExam = editedExam;
-
+		Exam existExam = editedExam; //remove, it is the same.
+		
+		
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM exam ;");
+			pstmt = conn.prepareStatement("SELECT * FROM exam ;"); //TODO: add WHERE with exam id "WHERE id=?;"
 			pstmt.setString(1, existExam.getExamID());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -595,6 +596,7 @@ public class DBController {
 				rs.close();
 			}
 			
+			//TODO: remove boolean return Exam object.
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			return false;
