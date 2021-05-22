@@ -293,4 +293,31 @@ public class DBController {
 		return false;
 
 	}
+	
+	/**
+	 * @param EditExam
+	 * @return return true if succeed to edit exist exam, in any other case false.
+	 */
+	public boolean editExam(Exam editedExam) {
+		Exam existExam = editedExam;
+
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM exam ;");
+			pstmt.setString(1, existExam.getExamID());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				existExam.setCommentForTeacher(editedExam.getCommentForTeacher());
+				existExam.setCommentForStudents(editedExam.getCommentForStudents());
+				existExam.setTimeOfExam(editedExam.getTimeOfExam());
+				existExam.setQuestions(editedExam.getQuestions());
+				rs.close();
+			}
+			
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 }

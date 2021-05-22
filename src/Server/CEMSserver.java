@@ -121,7 +121,12 @@ public class CEMSserver extends AbstractServer {
 			dbController.createNewExtensionRequest((ExtensionRequest) req.getRequestData());
 		}
 			break;
-
+		case "EditExam":{ 
+			
+			dbController.editExam((Exam) req.getRequestData());
+		}
+		    break;
+		
 		}
 	}
 
