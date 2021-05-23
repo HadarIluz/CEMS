@@ -70,11 +70,11 @@ public class DBController {
 			pstmt.setInt(1, existUser.getId());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				existUser.setPassword(rs.getString(1));
-				existUser.setFirstName(rs.getString(2));
+				existUser.setPassword(rs.getString(2));
+				existUser.setFirstName(rs.getString(3));
 				existUser.setLastName(rs.getString(3));
 				existUser.setEmail(rs.getString(4));
-				existUser.setUserType(UserType.valueOf(rs.getString(5)));
+				existUser.setUserType(UserType.valueOf(rs.getString(6)));
 				rs.close();
 			}
 
@@ -153,12 +153,12 @@ public class DBController {
 
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT profession FROM teacher_in_profession WHERE id=?;");
+			pstmt = conn.prepareStatement("SELECT profession FROM teacher_in_profession WHERE teacher=?;");
 			pstmt.setInt(1, teacher.getId());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Profession newProfession = new Profession("");
-				newProfession.setProfessionName(rs.getString(1));
+				Profession newProfession = new Profession(rs.getString(1));
+			//	newProfession.setProfessionName(rs.getString(1));
 				ProfessionOfTeacher.add(newProfession); //add to list
 			}
 			rs.close();

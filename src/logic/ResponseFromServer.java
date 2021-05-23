@@ -7,7 +7,7 @@ public class ResponseFromServer implements Serializable{
 	private String responseType; // for example: userData, examID, etc...
 	private Object responseData = null; // here you'll set an object to pass the client in case you have one.
 										// for example: passing Exam object if the client needs it.
-	private StatusMsg statusMsg = null;
+	private StatusMsg statusMsg = new StatusMsg();
 	
 	public ResponseFromServer(String responseType) {
 		this.responseType = responseType;

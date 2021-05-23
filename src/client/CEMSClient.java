@@ -70,6 +70,7 @@ public class CEMSClient extends AbstractClient {
 		
 		if(msg instanceof ResponseFromServer) {
 			responseFromServer = (ResponseFromServer) msg;
+			responseFromServer.getStatusMsg().setStatus(responseFromServer.getResponseType());
 			clientUI.display(responseFromServer.toString());
 			awaitResponse = false;
 			

@@ -3,6 +3,7 @@ package gui_teacher;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import client.ClientUI;
 import entity.Profession;
 import entity.Teacher;
 import entity.User;
@@ -134,8 +135,6 @@ public class TeacherController extends Application  {
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ExamBank.fxml"));
 			root.add(newPaneRight, 1, 0);
-			
-
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
@@ -177,17 +176,20 @@ public class TeacherController extends Application  {
 		Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
 		root.add(newMnueLeft, 0, 0);
 		primaryStage.setTitle("CEMS-Computerized Exam Management System");
+		
+		//That the way to get the user details-(ClientUI.loggedInUser.getUser().getFirstName());
+//		textTeacherName.setText(ClientUI.loggedInUser.getUser().getFirstName());
+		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
-teacher= new Teacher(222222222, "PASS123", "avi", "Cohen", "asdsadsadsa", UserType.Teacher,new ArrayList<Profession>());
 		
 		
 
 	}
 
-	public static void main(String[] args) {
-		launch(args);
-	}
+	/*
+	 * public static void main(String[] args) { launch(args); }
+	 */
 
 }

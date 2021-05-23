@@ -23,6 +23,7 @@ import logic.StatusMsg;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
+
 public class CEMSserver extends AbstractServer {
 	// Class variables *************************************************
 
@@ -46,6 +47,7 @@ public class CEMSserver extends AbstractServer {
 	public CEMSserver(int port, ServerFrameController serverUI) {
 		super(port);
 		this.serverFrame = serverUI;
+		loggedInUsers=new HashMap<Integer,User>();
 	}
 
 	// Instance methods ************************************************
@@ -82,7 +84,7 @@ public class CEMSserver extends AbstractServer {
 				user.setLogged(1); // set isLogged to 1.
 			}
 			try {
-				client.sendToClient(userInSystem);
+				client.sendToClient(respon);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -136,7 +138,7 @@ public class CEMSserver extends AbstractServer {
 			respond.setResponseData(teacher);
 			// sent to client.
 			try {
-				client.sendToClient(teacher);
+				client.sendToClient(respond);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

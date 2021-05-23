@@ -48,6 +48,7 @@ import logic.RequestToServer;
 //      __\///\\\___________\/\\\______________\/\\\_____________\/\\\___/\\\______\//\\\__  
 //       ____\////\\\\\\\\\__\/\\\\\\\\\\\\\\\__\/\\\_____________\/\\\__\///\\\\\\\\\\\/___ 
 //        _______\/////////___\///////////////___\///______________\///_____\///////////_____
+import logic.ResponseFromServer;
 
 /**
  * @author Hadar_Iluz
@@ -108,7 +109,7 @@ public class LoginController {
 	final String TeacherMenu = "TeacherController.fxml";
 	public static User user;
 	private static boolean press = false; // for AboutCEMS text.
-	
+
 	private StudentController studentController;
 	private PrincipalController principalController;
 	private TeacherController teacherController;
@@ -150,78 +151,81 @@ public class LoginController {
 					popUp("The password insert is incorrect. Please try again.");
 				} else if (user.isLogged() == 1) {
 					popUp("This user already login to CEMS system!.");
-					
+
 				} else {
 
 					user.setLogged(1);
 
-					Stage primaryStage = new Stage(); 
+					Stage primaryStage = new Stage();
 					GridPane root = new GridPane();
 					Scene scene = new Scene(root, 988, 586); // define screens size
 					primaryStage.setTitle("CEMS-Computerized Exam Management System");
-
+					user = (User) CEMSClient.responseFromServer.getResponseData();
 					switch (user.getUserType().toString()) {
 					case "Student": {
-						Student student= (Student) user;
-																
+						Student student = (Student) user;
+
 						RequestToServer reqStudentData = new RequestToServer("getStudentrData_Login");
 						reqStudentData.setRequestData(student);
 						ClientUI.cems.accept(reqStudentData);
-						//Receive response from server
-						student = (Student) CEMSClient.responseFromServer.getResponseData(); //response: "STUDENT DATA"
-						//Create new Student
-						Student newStudent= new Student(user, student.getStudentAvg() ,student.getCourses());
-						ClientUI.loggedInUser= LoggedInUser.getInstance(newStudent);
+						// Receive response from server
+						student = (Student) CEMSClient.responseFromServer.getResponseData(); // response: "STUDENT DATA"
+						// Create new Student
+						Student newStudent = new Student(user, student.getStudentAvg(), student.getCourses());
+						ClientUI.loggedInUser = LoggedInUser.getInstance(newStudent);
 
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
-						//call start function in studentController for initialization.
+						// call start function in studentController for initialization.
 						try {
-							studentController.start(new Stage() ); 
+							studentController.start(new Stage());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						
+
 					}
 						break;
 					case "Teacher": {
-						Teacher teacher= (Teacher) user;
-												
-						RequestToServer reqTeacherData = new RequestToServer("getTeacherData_Login");
-						reqTeacherData.setRequestData(teacher);
-						ClientUI.cems.accept(reqTeacherData);
-						//Receive response from server
-						teacher = (Teacher) CEMSClient.responseFromServer.getResponseData(); //response: "TEACHER DATA"
-						//Create new teacher
-						Teacher newTeacher= new Teacher(user, teacher.getProfessions());
-						ClientUI.loggedInUser= LoggedInUser.getInstance(newTeacher);
-												
+						
+						  Teacher teacher= new Teacher(user,null);
+						  
+						  RequestToServer reqTeacherData = new RequestToServer("getTeacherData_Login");
+						 reqTeacherData.setRequestData(teacher); 
+						 
+						 ClientUI.cems.accept(reqTeacherData); 
+						             // response from server teacher = (Teacher);
+						teacher=  (Teacher) CEMSClient.responseFromServer.getResponseData(); // response: "TEACHER DATA"
+						 // Create new teacher
+					//teacher.setProfessions(null);
+						// Teacher newTeacher = new Teacher(user, teacher.getProfessions());
+						teacherController = new TeacherController();
+						//Teacher newTeacher = new Teacher(user, null);
+						ClientUI.loggedInUser = LoggedInUser.getInstance(teacher);
+
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
-						//call start function in teacherController for initialization.
+						// call start function in teacherController for initialization.
 						try {
-							teacherController.start(new Stage() ); 
+							teacherController.start(new Stage());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						
+
 					}
 						break;
-						
+
 					case "Principal": {
-						//Create new principal
+						// Create new principal
 						ClientUI.loggedInUser = LoggedInUser.getInstance(user);
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
-						//call start function in principalController for initialization.
+						// call start function in principalController for initialization.
 						try {
-							principalController.start(new Stage() ); 
+							principalController.start(new Stage());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 						/*
-						Pane mnueLeft = FXMLLoader.load(getClass().getResource(PrincipalMenu));
-						root.add(mnueLeft, 0, 0);
-						primaryStage.setScene(scene);
-						primaryStage.show();
-						*/
+						 * Pane mnueLeft = FXMLLoader.load(getClass().getResource(PrincipalMenu));
+						 * root.add(mnueLeft, 0, 0); primaryStage.setScene(scene); primaryStage.show();
+						 */
 					}
 						break;
 
@@ -230,9 +234,10 @@ public class LoginController {
 					System.out.println(user.getId() + " login Successfully as: " + user.getUserType().toString());
 
 					// sent to server pk(id) in order to change the login status of this user.
-					RequestToServer reqLogged = new RequestToServer("UpdateUserLoggedIn");
-					reqLogged.setRequestData(id);
-					ClientUI.cems.accept(reqLogged);
+					// RequestToServer reqLogged = new RequestToServer("UpdateUserLoggedIn");
+					// reqLogged.setRequestData(id);
+					// ClientUI.cems.accept(reqLogged);
+
 				}
 
 			}
@@ -245,7 +250,9 @@ public class LoginController {
 
 	}
 
-	/**Display commend to user on the screen.
+	/**
+	 * Display commend to user on the screen.
+	 * 
 	 * @param label
 	 * @param msg
 	 */
@@ -254,8 +261,9 @@ public class LoginController {
 		label.setText(msg);
 	}
 
-
-	/**this method checks if the given string includes letters.
+	/**
+	 * this method checks if the given string includes letters.
+	 * 
 	 * @param str
 	 * @return true only if the String contains something that isn't a digit.
 	 */
@@ -272,8 +280,9 @@ public class LoginController {
 		return containsLetter;
 	}
 
-
-	/** Display HomePage after client connection.
+	/**
+	 * Display HomePage after client connection.
+	 * 
 	 * @param primaryStage
 	 * @throws IOException
 	 */
@@ -290,8 +299,10 @@ public class LoginController {
 		}
 	}
 
-	/**create a popUp with a given message.
-	 * @param msg 
+	/**
+	 * create a popUp with a given message.
+	 * 
+	 * @param msg
 	 */
 	private void popUp(String msg) {
 		final Stage dialog = new Stage();
@@ -307,7 +318,8 @@ public class LoginController {
 	}
 
 	/**
-	 * @param user object given to send as a request to server to update this user isLogged status.
+	 * @param user object given to send as a request to server to update this user
+	 *             isLogged status.
 	 */
 	public void performLogout(User user) {
 		// sent to server pk(id) in order to change the login status of this user.
@@ -324,8 +336,11 @@ public class LoginController {
 		textAboutCEMS.setVisible(messageAppearnce());
 	}
 
-	/**Private method for displaying and disappearing the message
-	 * @return boolean variable that specifies whether to display or hide the message.
+	/**
+	 * Private method for displaying and disappearing the message
+	 * 
+	 * @return boolean variable that specifies whether to display or hide the
+	 *         message.
 	 */
 	private boolean messageAppearnce() {
 		if (press == false)
@@ -341,20 +356,18 @@ public class LoginController {
 	void pressQuit(ActionEvent event) {
 		System.exit(0);
 	}
-/*
- *NOT WORKING  with this.
-	//Need to verify with jar file!!
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		
-		Image image = new Image(getClass().getResourceAsStream("..\\..\\images\\LogInBackground.jpg"));
-		ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(550);
-        imageView.setFitWidth(898);
-        
-        //and to the same to the rest of the pic..
-	}
-
-*/
+	/*
+	 * NOT WORKING with this. //Need to verify with jar file!!
+	 * 
+	 * @Override public void initialize(URL location, ResourceBundle resources) {
+	 * 
+	 * Image image = new
+	 * Image(getClass().getResourceAsStream("..\\..\\images\\LogInBackground.jpg"));
+	 * ImageView imageView = new ImageView(image); imageView.setFitHeight(550);
+	 * imageView.setFitWidth(898);
+	 * 
+	 * //and to the same to the rest of the pic.. }
+	 * 
+	 */
 
 }
