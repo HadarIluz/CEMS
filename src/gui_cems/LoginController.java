@@ -204,6 +204,7 @@ public class LoginController {
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 						// call start function in teacherController for initialization.
 						try {
+
 							teacherController.start(new Stage());
 						} catch (Exception e) {
 							e.printStackTrace();

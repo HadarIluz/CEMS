@@ -1,7 +1,9 @@
 package gui_teacher;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import client.ClientUI;
 import entity.Profession;
@@ -13,6 +15,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,7 +26,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 //import logic.Student;
 
-public class TeacherController extends Application  { 
+public class TeacherController extends Application implements Initializable { 
 
 	@FXML
 	private ImageView imgPrincipal;
@@ -32,7 +35,7 @@ public class TeacherController extends Application  {
 	private ImageView imgLogo;
 
 	@FXML
-	private Label textTeacherName;
+	public Label textTeacherName;
 
 	@FXML
 	private Button brnManageQuestionsBank;
@@ -170,26 +173,29 @@ public class TeacherController extends Application  {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		
+				
 		root = new GridPane();
 		 scene = new Scene(root, 980, 580); // Login
 		Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
+		
+		
+		
 		root.add(newMnueLeft, 0, 0);
 		primaryStage.setTitle("CEMS-Computerized Exam Management System");
 		
 		//That the way to get the user details-(ClientUI.loggedInUser.getUser().getFirstName());
-//		textTeacherName.setText(ClientUI.loggedInUser.getUser().getFirstName());
+		
 		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
-		
-		
-
 	}
 
-	/*
-	 * public static void main(String[] args) { launch(args); }
-	 */
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		textTeacherName.setText(ClientUI.loggedInUser.getUser().getFirstName());
+		
+	}
 
+	
 }
