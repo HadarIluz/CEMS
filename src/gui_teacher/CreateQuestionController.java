@@ -72,7 +72,7 @@ public class CreateQuestionController extends QuestionBankController implements 
     @FXML
     private Text textProfession;
     
-    private static HashMap<String, Profession> professionsMap = null;
+    private HashMap<String, Profession> professionsMap = null;
     private Integer[] answerNumbers = {1, 2, 3, 4};
     private Integer selectedIndex;
     private Profession selectedProfession;
@@ -131,25 +131,20 @@ public class CreateQuestionController extends QuestionBankController implements 
     	}
     }
     
-    public void loadProfessionsToCombobox() {
-   // 	selectProfession.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
+    private void loadProfessionsToCombobox() {
+    	selectProfession.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
     }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedIndex = null;
 		selectedProfession = null;
+		professionsMap = TeacherController.getProfessionsMap();
 		loadProfessionsToCombobox();
 		selectCorrectAnswer.setItems(FXCollections.observableArrayList(answerNumbers));
 		
 	}
-	
-	public static void setProfessionMap(ArrayList<Profession> professionsList) {
-		professionsMap = new HashMap<>();
-		for (Profession p: professionsList) {
-			professionsMap.put(p.getProfessionName(), p);
-		}
-	}
+
     
 	// create a popup with a message
 		public void popUp(String txt) {

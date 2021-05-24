@@ -1,5 +1,7 @@
 package gui_teacher;
 
+import entity.Exam;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -51,6 +53,8 @@ public class CreateExam_addQ_step2Controller {
 
     @FXML
     private Label textErrorMsg;
+    
+    private static Exam newExam;
 
     @FXML
     void btnAddQuestionToExam(MouseEvent event) {
@@ -59,7 +63,6 @@ public class CreateExam_addQ_step2Controller {
 
     @FXML
     void btnBack(ActionEvent event) {
-
     }
 
     @FXML
@@ -81,5 +84,9 @@ public class CreateExam_addQ_step2Controller {
     void textTotalScore(InputMethodEvent event) {
 
     }
+
+	public static void setExamState(Exam newExamInProgress) {
+		newExam = newExamInProgress;
+	}
 
 }

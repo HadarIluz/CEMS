@@ -1,6 +1,7 @@
 package gui_teacher;
 
 import java.io.IOException;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -129,9 +130,9 @@ public class ExamBankController extends TeacherController implements Initializab
 		 * req.setRequestData(teacher); ClientUI.cems.accept(req);
 		 */
 		
-
-		 data = FXCollections.observableArrayList(new Exam("010203", "Algebra", 10), 
-				 								  new Exam("111111", "Masadim", 2));
+		// tests:
+		 //data = FXCollections.observableArrayList(new Exam("010203", "Algebra", 10), 
+				 								  //new Exam("111111", "Masadim", 2));
 
 		tableExam.getColumns().clear();
 

@@ -16,31 +16,28 @@ public class Exam implements Serializable{
 	private String commentForStudents;
 	private Teacher author; // is this relevant or to delete?
 	
-	private String ProfessionName;
-
-	
 	
 	public Exam(String examID) {
 		super();
 		this.examID = examID;
 	}
 	
-	public Exam(String examID, String profession,int timeOfExam)
+	public Exam(String examID, Profession profession,int timeOfExam)
 	{
 		super();
 		this.examID = examID;
-		this.ProfessionName = profession;
+		this.profession = profession;
+		this.timeOfExam = timeOfExam;
+	}
+	
+	public Exam(Profession profession, Course course, int timeOfExam)
+	{
+		super();
+		this.examID = "";
+		this.profession = profession;
 		this.timeOfExam = timeOfExam;
 	}
 
-
-	public String getProfessionName() {
-		return ProfessionName;
-	}
-
-	public void setProfessionName(String professionName) {
-		ProfessionName = professionName;
-	}
 
 	public Exam(String examID, Profession profession, Course course, int timeOfExam, ArrayList<Question> questions,
 			HashMap<String, Integer> questionScores, String commentForTeacher, String commentForStudents, Teacher author) {
