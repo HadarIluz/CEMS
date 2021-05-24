@@ -3,12 +3,16 @@ package gui_principal;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.ResourceBundle;
 
+import client.ClientUI;
 import entity.User;
 import gui_cems.LoginController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -23,34 +27,46 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
- * @author iluzh
+ * @author Hadar_Iluz
  *
  */
-public class PrincipalController {
+public class PrincipalController implements Initializable{
 
-	@FXML
-	private ImageView person;
+    @FXML
+    private ImageView imgPrincipal;
 
-	@FXML
-	private ImageView logo;
+    @FXML
+    private ImageView imgLogo;
 
-	@FXML
-	private Label lblUserName;
+    @FXML
+    private Label textTeacherName;
 
-	@FXML
-	private ImageView phone;
+    @FXML
+    private Button brnManageQuestionsBank;
 
-	@FXML
-	private ImageView messageContactUs;
+    @FXML
+    private ImageView imgPhone;
 
-	@FXML
-	private Button btnGetReports;
+    @FXML
+    private ImageView imgEmail;
 
-	@FXML
-	private Button btnApproveTimeExtention;
+    @FXML
+    private Button btnCreateActiveExam;
 
-	@FXML
-	private Button btnViewInfo;
+    @FXML
+    private Button btnManageExamsBank;
+
+    @FXML
+    private Button btnGetStatistics;
+
+    @FXML
+    private Button btnScoreApproval;
+
+    @FXML
+    private Button btnChangeExamTime;
+
+    @FXML
+    private Label pressLogout;
 
 	//
 	public static LoginController loginController;
@@ -59,6 +75,15 @@ public class PrincipalController {
 	protected static GridPane root;
 	protected static Pane newPane;
 
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		user=ClientUI.loggedInUser.getUser();
+		textTeacherName.setText(user.getFirstName()+" " +user.getLastName());
+		//TODO: continue ..		
+	}
+	
+	
 	/**
 	 * @param primaryStage
 	 * @throws Exception
@@ -91,11 +116,11 @@ public class PrincipalController {
 	      InputStream stream = new FileInputStream("@../../images/teacher-Principal_img/PrincipalUserImg.png");
 	      Image image = new Image(stream);
 	      //Setting image to the image view
-	      person.setImage(image);
+	      imgPrincipal.setImage(image);
 	      //Setting the image view parameters
-	      person.setX(58);
-	      person.setY(56);
-	      person.setPreserveRatio(true);
+	      imgPrincipal.setX(58);
+	      imgPrincipal.setY(56);
+	      imgPrincipal.setPreserveRatio(true);
 		
 
 		
@@ -133,6 +158,7 @@ public class PrincipalController {
 	//need to create here screen with buttons according to our screen assignment
 	@FXML
 	void btnViewInfo(ActionEvent event) {
+		//TODO: task Lior (TERELLO).
 		/*
 		try {
 			//Pane newPaneRight= FXMLLoader.load(getClass().getResource("/gui_principal/?????.fxml"));
@@ -167,5 +193,7 @@ public class PrincipalController {
 		});
 
 	}
+
+
 
 }

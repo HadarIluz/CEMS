@@ -3,12 +3,16 @@ package gui_student;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.ResourceBundle;
 
+import client.ClientUI;
 import entity.User;
 import gui_cems.LoginController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -26,7 +30,7 @@ import javafx.stage.Stage;
  * @author iluzh
  *
  */
-public class StudentController {
+public class StudentController implements Initializable{
 
 	@FXML
 	private Label pressLogout;
@@ -65,6 +69,14 @@ public class StudentController {
 	protected static GridPane root;
 	protected static Pane newPane;
 	
+	
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		user=ClientUI.loggedInUser.getUser();
+		textStudentName.setText(user.getFirstName()+" " +user.getLastName());
+		//TODO: continue ..
+	}
 	/**
 	 * @param primaryStage
 	 * @throws Exception
@@ -79,7 +91,7 @@ public class StudentController {
 		// not working..(after test)
 		// Pane newPaneRight=
 		// root.add(newPaneRight, 1, 0);
-
+		
 		/*
 		 * listen for close events on a JavaFX Stage, notified when the user clicks the
 		 * button with the X on, in the upper right corner of the Stage
@@ -92,7 +104,7 @@ public class StudentController {
 		
 		//-----pic-----//
 		
-		
+		//CHECK:
 	      //creating the image object
 	      InputStream stream = new FileInputStream("@../../images/student_img/signIn_student.png");
 	      Image image = new Image(stream);
@@ -172,8 +184,11 @@ public class StudentController {
 		});
 
 	}
+
+
+
 	
-	
+	//TODO:
 	/*
 	 * שאילתה שמוצאת מבחן שתואם בתאריך ולבדוק האם האם הסטודנט רשום לקורס הזה
 	 * ואם וכן אז להוציא את הexamID

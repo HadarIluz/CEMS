@@ -39,17 +39,20 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.LoggedInUser;
 import logic.RequestToServer;
-//________/\\\\\\\\\___/\\\\\\\\\\\\\\\___/\\\\____________/\\\\______/\\\\\\\\\\\___        
-// _____/\\\////////___\/\\\///////////___\/\\\\\\________/\\\\\\____/\\\/////////\\\_       
-//  ___/\\\/____________\/\\\______________\/\\\//\\\____/\\\//\\\___\//\\\______\///__      
-//   __/\\\______________\/\\\\\\\\\\\______\/\\\\///\\\/\\\/_\/\\\____\////\\\_________     
-//    _\/\\\______________\/\\\///////_______\/\\\__\///\\\/___\/\\\_______\////\\\______    
-//     _\//\\\_____________\/\\\______________\/\\\____\///_____\/\\\__________\////\\\___   
-//      __\///\\\___________\/\\\______________\/\\\_____________\/\\\___/\\\______\//\\\__  
-//       ____\////\\\\\\\\\__\/\\\\\\\\\\\\\\\__\/\\\_____________\/\\\__\///\\\\\\\\\\\/___ 
-//        _______\/////////___\///////////////___\///______________\///_____\///////////_____
 import logic.ResponseFromServer;
 
+
+/*
+________/\\\\\\\\\___/\\\\\\\\\\\\\\\___/\\\\____________/\\\\______/\\\\\\\\\\\___        
+_____/\\\////////___\/\\\///////////___\/\\\\\\________/\\\\\\____/\\\/////////\\\_       
+___/\\\/____________\/\\\______________\/\\\//\\\____/\\\//\\\___\//\\\______\///__      
+__/\\\______________\/\\\\\\\\\\\______\/\\\\///\\\/\\\/_\/\\\____\////\\\_________     
+ _\/\\\______________\/\\\///////_______\/\\\__\///\\\/___\/\\\_______\////\\\______    
+  _\//\\\_____________\/\\\______________\/\\\____\///_____\/\\\__________\////\\\___   
+   __\///\\\___________\/\\\______________\/\\\_____________\/\\\___/\\\______\//\\\__  
+    ____\////\\\\\\\\\__\/\\\\\\\\\\\\\\\__\/\\\_____________\/\\\__\///\\\\\\\\\\\/___ 
+     _______\/////////___\///////////////___\///______________\///_____\///////////_____
+     */
 /**
  * @author Hadar_Iluz
  *
@@ -185,20 +188,20 @@ public class LoginController {
 					}
 						break;
 					case "Teacher": {
-						
-						  Teacher teacher= new Teacher(user,null);
-						  
-						  RequestToServer reqTeacherData = new RequestToServer("getTeacherData_Login");
-						 reqTeacherData.setRequestData(teacher); 
-						 
-						 ClientUI.cems.accept(reqTeacherData); 
-						             // response from server teacher = (Teacher);
-						teacher=  (Teacher) CEMSClient.responseFromServer.getResponseData(); // response: "TEACHER DATA"
-						 // Create new teacher
-					//teacher.setProfessions(null);
+
+						Teacher teacher = new Teacher(user, null);
+
+						RequestToServer reqTeacherData = new RequestToServer("getTeacherData_Login");
+						reqTeacherData.setRequestData(teacher);
+
+						ClientUI.cems.accept(reqTeacherData);
+						// response from server teacher = (Teacher);
+						teacher = (Teacher) CEMSClient.responseFromServer.getResponseData(); // response: "TEACHER DATA"
+						// Create new teacher
+						// teacher.setProfessions(null);
 						// Teacher newTeacher = new Teacher(user, teacher.getProfessions());
 						teacherController = new TeacherController();
-						//Teacher newTeacher = new Teacher(user, null);
+						// Teacher newTeacher = new Teacher(user, null);
 						ClientUI.loggedInUser = LoggedInUser.getInstance(teacher);
 
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
