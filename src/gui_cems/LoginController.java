@@ -1,14 +1,9 @@
 package gui_cems;
 
 import java.io.IOException;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import client.CEMSClient;
 import client.ClientUI;
-import entity.Course;
-import entity.Profession;
 import entity.Student;
 import entity.Teacher;
 import entity.User;
@@ -31,7 +26,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -40,7 +34,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.LoggedInUser;
 import logic.RequestToServer;
-import logic.ResponseFromServer;
 
 
 //________/\\\\\\\\\___/\\\\\\\\\\\\\\\___/\\\\____________/\\\\______/\\\\\\\\\\\___        

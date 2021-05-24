@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-
 import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
@@ -99,7 +98,7 @@ public class DBController {
 	 * @param student include all data of student that hold by User object.
 	 */
 	public Student getStudentData_Logged(Student student) {
-		ResponseFromServer respond = null;
+		
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT AVG FROM student WHERE id=?;");

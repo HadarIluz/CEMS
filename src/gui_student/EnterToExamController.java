@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
- * @author iluzh
+ * @author Hadar Iluz
  *
  */
 public class EnterToExamController {
