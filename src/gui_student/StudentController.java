@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import client.ClientUI;
+import entity.Student;
 import entity.User;
 import gui_cems.LoginController;
 import javafx.event.ActionEvent;
@@ -64,7 +65,7 @@ public class StudentController implements Initializable{
 
 	//
 	public static LoginController loginController;
-	public User user;
+	public Student student;
 	//
 	protected static GridPane root;
 	protected static Pane newPane;
@@ -73,8 +74,8 @@ public class StudentController implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		user=ClientUI.loggedInUser.getUser();
-		textStudentName.setText(user.getFirstName()+" " +user.getLastName());
+		student=(Student) ClientUI.loggedInUser.getUser();
+		textStudentName.setText(student.getFirstName()+" " +student.getLastName());
 		//TODO: continue ..
 	}
 	/**
@@ -178,7 +179,7 @@ public class StudentController implements Initializable{
 			if (type == okButton) {
 				// ASK -Sure not like that, I currently do not know what it
 				// will look like after learning about the singleton.
-				loginController.performLogout(this.user);
+				loginController.performLogout(this.student);
 
 			}
 		});
