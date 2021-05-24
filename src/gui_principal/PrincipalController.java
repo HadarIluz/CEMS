@@ -56,7 +56,7 @@ public class PrincipalController extends Application implements Initializable{
     @FXML
     private Label pressLogout;
 
-	public static LoginController loginController;
+	LoginController loginController;
 	protected User principal;
 	protected static GridPane root;
 	public Scene scene;
@@ -117,7 +117,7 @@ public class PrincipalController extends Application implements Initializable{
 	@FXML
 	void btnApproveTimeExtention(ActionEvent event) {
 		try {
-			Pane newPaneRight= FXMLLoader.load(getClass().getResource("/gui_principal/ApprovalTimeExtention.fxml"));
+			Pane newPaneRight= FXMLLoader.load(getClass().getResource("ApprovalTimeExtention.fxml"));
 			root.add(newPaneRight, 1, 0);
 			
 		} catch (IOException e) {
@@ -133,7 +133,7 @@ public class PrincipalController extends Application implements Initializable{
 	@FXML
 	void btnGetReports(ActionEvent event) {
 		try {
-			Pane newPaneRight= FXMLLoader.load(getClass().getResource("/gui_principal/PrincipalGetReports.fxml"));
+			Pane newPaneRight= FXMLLoader.load(getClass().getResource("PrincipalGetReports.fxml"));
 			root.add(newPaneRight, 1, 0);
 			
 		} catch (IOException e) {
