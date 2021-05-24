@@ -113,6 +113,7 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
+
 		return student;
 		
 	}
@@ -125,12 +126,11 @@ public class DBController {
 		ArrayList<Course> coursesOfStudent = new ArrayList<Course>();
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT course FROM student_in_course WHERE id=?;");
+			pstmt = conn.prepareStatement("SELECT course FROM student_in_course WHERE student=?;");
 			pstmt.setInt(1, student.getId());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Course newCourse = new Course("");
-				newCourse.setCourseName(rs.getString(1));
+				Course newCourse = new Course(rs.getString(1));
 				coursesOfStudent.add(newCourse); //add to list.
 			}
 			rs.close();
@@ -158,7 +158,6 @@ public class DBController {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Profession newProfession = new Profession(rs.getString(1));
-			//	newProfession.setProfessionName(rs.getString(1));
 				ProfessionOfTeacher.add(newProfession); //add to list
 			}
 			rs.close();

@@ -3,7 +3,6 @@ package gui_teacher;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import client.ClientUI;
 import entity.User;
 import gui_cems.LoginController;
@@ -21,9 +20,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-//import logic.Student;
 
-public class TeacherController extends Application implements Initializable { 
+
+/**
+ * @author Yadin and Nadav
+ *
+ */
+public class TeacherController extends Application implements Initializable {
 
 	@FXML
 	private ImageView imgPrincipal;
@@ -58,17 +61,11 @@ public class TeacherController extends Application implements Initializable {
 	@FXML
 	private Button btnChangeExamTime;
 
-	 protected static GridPane root;
-	 Scene scene;
-
+	protected static GridPane root;
+	public Scene scene;
 	protected User teacher;
-	
 	LoginController login;
-	
-	
-	 
-	 
-	 
+
 	@FXML
 	void brnManageQuestionsBank(ActionEvent event) {
 		try {
@@ -80,7 +77,7 @@ public class TeacherController extends Application implements Initializable {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@FXML
@@ -94,7 +91,6 @@ public class TeacherController extends Application implements Initializable {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-		
 
 	}
 
@@ -109,7 +105,6 @@ public class TeacherController extends Application implements Initializable {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-		
 
 	}
 
@@ -124,8 +119,6 @@ public class TeacherController extends Application implements Initializable {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-		
-		
 
 	}
 
@@ -139,11 +132,6 @@ public class TeacherController extends Application implements Initializable {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
 
 	}
 
@@ -162,27 +150,18 @@ public class TeacherController extends Application implements Initializable {
 	}
 
 	@FXML
-	void pressLogout(MouseEvent event)
-	{
+	void pressLogout(MouseEvent event) {
 
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
-				
+
 		root = new GridPane();
-		 scene = new Scene(root, 980, 580); // Login
+		scene = new Scene(root, 980, 580); // Login
 		Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
-		
-		
-		
 		root.add(newMnueLeft, 0, 0);
 		primaryStage.setTitle("CEMS-Computerized Exam Management System");
-		
-		//That the way to get the user details-(ClientUI.loggedInUser.getUser().getFirstName());
-		
-		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
@@ -190,15 +169,14 @@ public class TeacherController extends Application implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		textTeacherName.setText(ClientUI.loggedInUser.getUser().getFirstName());
-		
-		 Image flag = new Image("file:src/images/teacher_userImg.png");
-		 
+
+		Image flag = new Image("file:src/images/teacher_userImg.png");
+
 		// private Image flag = new Image("file:src/resources/flag.png");
 
-		 imgPrincipal= new ImageView(flag);
+		imgPrincipal = new ImageView(flag);
 	}
 
-	
 }
