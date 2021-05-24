@@ -2,14 +2,10 @@ package gui_teacher;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import client.ClientUI;
-import entity.Profession;
-import entity.Teacher;
 import entity.User;
-import entity.UserType;
 import gui_cems.LoginController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -19,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -193,8 +190,14 @@ public class TeacherController extends Application implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
 		textTeacherName.setText(ClientUI.loggedInUser.getUser().getFirstName());
 		
+		 Image flag = new Image("file:src/images/teacher_userImg.png");
+		 
+		// private Image flag = new Image("file:src/resources/flag.png");
+
+		 imgPrincipal= new ImageView(flag);
 	}
 
 	
