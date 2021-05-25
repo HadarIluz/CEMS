@@ -2,8 +2,11 @@ package gui_teacher;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import client.CEMSClient;
+import client.ClientUI;
 import entity.Exam;
 import entity.Profession;
 import entity.Question;
@@ -23,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import logic.RequestToServer;
 
 public class QuestionBankController extends TeacherController implements Initializable  {
 
@@ -122,25 +126,35 @@ public class QuestionBankController extends TeacherController implements Initial
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		Profession pro=new Profession("03","Math");
-	
+		/*
+		 * Profession pro=new Profession("03","Math");
+		 * 
+		 * 
+		 * Question q1=new Question("1000", "what is the sqrt(9)?", null, null, 0,
+		 * pro,null); Question q2=new Question("1001", "what is the sqrt(25)?", null,
+		 * null, 0, pro,null);
+		 * 
+		 * 
+		 * QuestionRow qr= new QuestionRow(); qr.setQuestionID(q1.getQuestionID());
+		 * qr.setQuestion(q1.getQuestion());
+		 * qr.setProfession(q1.getProfession().getProfessionName());
+		 * 
+		 * QuestionRow qr2= new QuestionRow(); qr2.setQuestionID(q2.getQuestionID());
+		 * qr2.setQuestion(q2.getQuestion());
+		 * qr2.setProfession(q2.getProfession().getProfessionName());
+		 */
+		RequestToServer req=new RequestToServer("getQuestions");
 		
-		Question q1=new Question("1000", "what is the sqrt(9)?", null, null, 0, pro,null);
-		Question q2=new Question("1001", "what is the sqrt(25)?", null, null, 0, pro,null);
+		req.setRequestData(ClientUI.loggedInUser.getUser().getId());
+		
+		ArrayList<QuestionRow> examsOfTeacher=new ArrayList<QuestionRow>();
+		
+		ClientUI.cems.accept(req);
 		
 		
-		QuestionRow qr= new QuestionRow();
-		qr.setQuestionID(q1.getQuestionID());
-		qr.setQuestion(q1.getQuestion());
-		qr.setProfession(q1.getProfession().getProfessionName());
+		examsOfTeacher=(ArrayList<QuestionRow>)CEMSClient.responseFromServer.getResponseData();
 		
-		QuestionRow qr2= new QuestionRow();
-		qr2.setQuestionID(q2.getQuestionID());
-		qr2.setQuestion(q2.getQuestion());
-		qr2.setProfession(q2.getProfession().getProfessionName());
-		
-		
-		 data = FXCollections.observableArrayList(qr,qr2);
+		 data = FXCollections.observableArrayList(examsOfTeacher);
 		
 		tableQuestion.getColumns().clear();
 		QuestionID.setCellValueFactory(new PropertyValueFactory<>("QuestionID"));

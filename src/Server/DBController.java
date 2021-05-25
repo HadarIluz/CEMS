@@ -462,16 +462,17 @@ public class DBController {
 	public ArrayList<QuestionRow> GetTeacherQuestions(Object obj) {
 
 		Teacher teacher;
+		int id;
 
 		ArrayList<QuestionRow> examsOfTeacher = new ArrayList<QuestionRow>();
 
-		teacher = (Teacher) obj;
+		id = (Integer) obj;
 
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM question WHERE teacher=?");
 
-			pstmt.setString(1, "" + teacher.getId());
+			pstmt.setInt(1, id);
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {

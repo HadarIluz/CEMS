@@ -212,6 +212,25 @@ public class CEMSserver extends AbstractServer {
 			}
 
 		}
+		
+		
+		case "getQuestions":{
+			
+		try {
+			
+			ResponseFromServer respond = new ResponseFromServer("TEACHER QUESTIONS");
+			respond.setResponseData(dbController.GetTeacherQuestions((Integer)req.getRequestData()));
+			
+			
+			client.sendToClient(respond);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+			
+			
+			
+		}
 
 		case "getEditExamData": {
 			// TODO: new Exam object Exam exam=null;
