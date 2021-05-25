@@ -164,7 +164,7 @@ public class LoginController {
 					case "Student": {
 						
 						Student student = new Student(user, 0, null);
-						RequestToServer reqStudentData = new RequestToServer("getStudentrData_Login");
+						RequestToServer reqStudentData = new RequestToServer("getStudentData_Login");
 						reqStudentData.setRequestData(student);
 						ClientUI.cems.accept(reqStudentData);
 						

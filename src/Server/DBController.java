@@ -125,11 +125,11 @@ public class DBController {
 		ArrayList<Course> coursesOfStudent = new ArrayList<Course>();
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT course FROM student_in_course WHERE student=?;");
+			pstmt = conn.prepareStatement("SELECT * FROM student_in_course WHERE student=?;");
 			pstmt.setInt(1, student.getId());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Course newCourse = new Course(rs.getString(1));
+				Course newCourse = new Course(rs.getString(2));
 				coursesOfStudent.add(newCourse); //add to list.
 			}
 			rs.close();

@@ -110,7 +110,7 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "getStudentrData_Login": {
+		case "getStudentData_Login": {
 			// logic of login- gets student`s courses after successfully LOGIN action.
 			Student student = (Student) req.getRequestData();
 			student = dbController.getStudentData_Logged(student);
@@ -120,7 +120,7 @@ public class CEMSserver extends AbstractServer {
 			respond.setResponseData(student);
 			// sent to client.
 			try {
-				client.sendToClient(student);
+				client.sendToClient(respond);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
