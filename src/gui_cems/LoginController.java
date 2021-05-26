@@ -35,7 +35,6 @@ import javafx.stage.Stage;
 import logic.LoggedInUser;
 import logic.RequestToServer;
 
-
 //________/\\\\\\\\\___/\\\\\\\\\\\\\\\___/\\\\____________/\\\\______/\\\\\\\\\\\___        
 //_____/\\\////////___\/\\\///////////___\/\\\\\\________/\\\\\\____/\\\/////////\\\_       
 //___/\\\/____________\/\\\______________\/\\\//\\\____/\\\//\\\___\//\\\______\///__      
@@ -45,7 +44,6 @@ import logic.RequestToServer;
 //   __\///\\\___________\/\\\______________\/\\\_____________\/\\\___/\\\______\//\\\__  
 //    ____\////\\\\\\\\\__\/\\\\\\\\\\\\\\\__\/\\\_____________\/\\\__\///\\\\\\\\\\\/___ 
 //     _______\/////////___\///////////////___\///______________\///_____\///////////_____
-
 
 /**
  * @author Hadar_Iluz
@@ -158,20 +156,20 @@ public class LoginController {
 					Scene scene = new Scene(root, 988, 586); // define screens size
 					primaryStage.setTitle("CEMS-Computerized Exam Management System");
 					user = (User) CEMSClient.responseFromServer.getResponseData();
-					
+
 					switch (user.getUserType().toString()) {
-					
+
 					case "Student": {
-						
+
 						Student student = new Student(user, 0, null);
 						RequestToServer reqStudentData = new RequestToServer("getStudentData_Login");
 						reqStudentData.setRequestData(student);
 						ClientUI.cems.accept(reqStudentData);
-						
+
 						// Response from server = (Student)
 						student = (Student) CEMSClient.responseFromServer.getResponseData(); // response: "STUDENT DATA"
 						// Create new Student
-						Student newStudent = new Student(user, student.getStudentAvg(), student.getCourses());					
+						Student newStudent = new Student(user, student.getStudentAvg(), student.getCourses());
 						ClientUI.loggedInUser = LoggedInUser.getInstance(newStudent);
 						studentController = new StudentController();
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
@@ -190,7 +188,7 @@ public class LoginController {
 						RequestToServer reqTeacherData = new RequestToServer("getTeacherData_Login");
 						reqTeacherData.setRequestData(teacher);
 						ClientUI.cems.accept(reqTeacherData);
-						
+
 						// response from server teacher = (Teacher);
 						teacher = (Teacher) CEMSClient.responseFromServer.getResponseData(); // response: "TEACHER DATA"
 						// Create new teacher
@@ -220,7 +218,7 @@ public class LoginController {
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						
+
 					}
 						break;
 
@@ -229,9 +227,9 @@ public class LoginController {
 					System.out.println(user.getId() + " login Successfully as: " + user.getUserType().toString());
 
 					// sent to server pk(id) in order to change the login status of this user.
-					// RequestToServer reqLogged = new RequestToServer("UpdateUserLoggedIn");
-					// reqLogged.setRequestData(id);
-					// ClientUI.cems.accept(reqLogged);
+					RequestToServer reqLogged = new RequestToServer("UpdateUserLoggedIn");
+					reqLogged.setRequestData(user);
+					ClientUI.cems.accept(reqLogged);
 
 				}
 

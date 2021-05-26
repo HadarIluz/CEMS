@@ -64,9 +64,10 @@ public class PrincipalController extends Application implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-//		user=ClientUI.loggedInUser.getUser();
-//		lblUserName.setText(user.getFirstName()+" " +user.getLastName());
-		lblUserName.setText(ClientUI.loggedInUser.getUser().getFirstName());
+		principal=ClientUI.loggedInUser.getUser();
+		lblUserName.setText(principal.getFirstName()+" " +principal.getLastName());
+		lblUserName.setTextAlignment(null);
+		//lblUserName.setText(ClientUI.loggedInUser.getUser().getFirstName());
 		//TODO: continue ..	img for jar file
 	}
 	

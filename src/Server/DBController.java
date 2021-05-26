@@ -71,8 +71,8 @@ public class DBController {
 			if (rs.next()) {
 				existUser.setPassword(rs.getString(2));
 				existUser.setFirstName(rs.getString(3));
-				existUser.setLastName(rs.getString(3));
-				existUser.setEmail(rs.getString(4));
+				existUser.setLastName(rs.getString(4));
+				existUser.setEmail(rs.getString(5));
 				existUser.setUserType(UserType.valueOf(rs.getString(6)));
 				rs.close();
 			}
