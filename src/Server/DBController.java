@@ -146,9 +146,9 @@ public class DBController {
 	/**
 	 * @param teacherObj include all data of this logged teacher.
 	 */
-	public Teacher getTeacherProfession_Logged(Teacher teacher) {
+	public ArrayList<String> getTeacherProfessionIDs(Teacher teacher) {
 		
-		ArrayList<Profession> ProfessionOfTeacher = new ArrayList<Profession>();
+		ArrayList<String> professionIDs = new ArrayList<String>();
 
 		try {
 			PreparedStatement pstmt;
@@ -156,16 +156,14 @@ public class DBController {
 			pstmt.setInt(1, teacher.getId());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Profession newProfession = new Profession(rs.getString(1));
-				ProfessionOfTeacher.add(newProfession); //add to list
+				professionIDs.add(rs.getString(1)); //add to list
 			}
 			rs.close();
 
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		teacher.setProfessions(ProfessionOfTeacher);
-		return teacher;
+		return professionIDs;
 	}
 
 
@@ -601,6 +599,27 @@ public class DBController {
 			return false;
 		}
 		return true;
+	}
+
+	public Profession getProfessionByID(String id) {
+		Profession p = new Profession(id);
+
+		
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT professionName FROM profession WHERE professionID=?;"); //TODO: add WHERE with exam id "WHERE id=?;"
+			pstmt.setString(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				p.setProfessionName(rs.getString(1));
+				rs.close();
+			}
+			
+			//TODO: remove boolean return Exam object.
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return p;
 	}
 
 

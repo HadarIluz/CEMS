@@ -11,6 +11,7 @@ import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
 import entity.ExtensionRequest;
+import entity.Profession;
 import entity.Question;
 import entity.Student;
 import entity.Teacher;
@@ -97,13 +98,9 @@ public class CEMSserver extends AbstractServer {
 			// logic of login- update logged status after successfully LOGIN action.
 			User user = (User) req.getRequestData();
 			user.setLogged(1); // set isLogged to 1.
-			loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.
-			printLoggedInUsersLisk();	//for DEBUG
-
-			//Response:
-			ResponseFromServer respond = new ResponseFromServer("USER LOGGEDIN");
-			respond.setResponseData(respond);
-			// sent to client.
+			loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.			//Response:
+			ResponseFromServer respond = new ResponseFromServer("USER LOGIN !");
+			printLoggedInUsersList();	//for DEBUG
 			try {
 				client.sendToClient(respond);
 			} catch (IOException e) {
@@ -114,15 +111,11 @@ public class CEMSserver extends AbstractServer {
 
 		case "UpdateUserLoggedOut": {
 			// logic of login- update logged status after LOGOUT action.
-			//TODO: will call from each menu left
 			User user = (User) req.getRequestData();
-			user.setLogged(0); // set isLogged to 0. (disconnected)
-			loggedInUsers.put(user.getId(), user); // remove this user from hashMap of all the logged users.
-			printLoggedInUsersLisk();	//for DEBUG
-			
-			//Response:
-			ResponseFromServer respond = new ResponseFromServer("USER LOGGEDOUT");
-			respond.setResponseData(respond);
+			ResponseFromServer respond = new ResponseFromServer("USER LOGOUT");
+			loggedInUsers.remove(user.getId()); //remove this user from list.
+			printLoggedInUsersList();	//for DEBUG- print current list.		
+
 			// sent to client.
 			try {
 				client.sendToClient(respond);
@@ -154,7 +147,12 @@ public class CEMSserver extends AbstractServer {
 		case "getTeacherData_Login": {
 			// logic of login- gets teacher`s profession after successfully login action.
 			Teacher teacher = (Teacher) req.getRequestData();
-			teacher = dbController.getTeacherProfession_Logged(teacher);
+			ArrayList<String> professionIds = dbController.getTeacherProfessionIDs(teacher);
+			ArrayList<Profession> teacherProfessions = new ArrayList<>();
+			for (String id: professionIds) {
+				teacherProfessions.add(dbController.getProfessionByID(id));
+			}
+			teacher.setProfessions(teacherProfessions);
 			// create ResponseFromServer (to client) with all student data.
 			ResponseFromServer respond = new ResponseFromServer("TEACHER DATA");
 			respond.setResponseData(teacher);
@@ -290,7 +288,7 @@ public class CEMSserver extends AbstractServer {
 	/**
 	 * print all loggedIn users in hashMap list.
 	 */
-	private void printLoggedInUsersLisk() {
+	private void printLoggedInUsersList() {
 		//for(loggedInUsers log : )
 		for (Integer user: loggedInUsers.keySet()) {
 		    String key = loggedInUsers.toString();

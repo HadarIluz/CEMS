@@ -2,13 +2,8 @@ package gui_teacher;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.ResourceBundle;
-
 import client.ClientUI;
-import entity.Profession;
-import entity.Teacher;
 import entity.User;
 import gui_cems.LoginController;
 import javafx.application.Application;
@@ -16,18 +11,26 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-//import logic.Student;
 
-public class TeacherController extends Application implements Initializable { 
+
+/**
+ * @author Yadin and Nadav
+ *
+ */
+public class TeacherController extends Application implements Initializable {
 
 	@FXML
 	private ImageView imgPrincipal;
@@ -61,19 +64,13 @@ public class TeacherController extends Application implements Initializable {
 
 	@FXML
 	private Button btnChangeExamTime;
-
-	 protected static GridPane root;
-	 Scene scene;
-
-	//protected Teacher teacher;
 	
+	public LoginController loginController;
+	protected static GridPane root;
+	public Scene scene;
+	protected User teacher;
 	LoginController login;
-    private static HashMap<String, Profession> professionsMap = null;
 
-	
-	 
-	 
-	 
 	@FXML
 	void brnManageQuestionsBank(ActionEvent event) {
 		try {
@@ -85,7 +82,7 @@ public class TeacherController extends Application implements Initializable {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@FXML
@@ -99,7 +96,6 @@ public class TeacherController extends Application implements Initializable {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-		
 
 	}
 
@@ -114,7 +110,6 @@ public class TeacherController extends Application implements Initializable {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-		
 
 	}
 
@@ -129,8 +124,6 @@ public class TeacherController extends Application implements Initializable {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-		
-		
 
 	}
 
@@ -144,11 +137,6 @@ public class TeacherController extends Application implements Initializable {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
 
 	}
 
@@ -165,29 +153,43 @@ public class TeacherController extends Application implements Initializable {
 		}
 
 	}
-
+	
+	
+	/**Event Logout that occur when clicking on logout at the left menu
+	 * @param event that display pop up message and ask if he want to logout.
+	 */
 	@FXML
-	void pressLogout(MouseEvent event)
-	{
+	void pressLogout(MouseEvent event) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Logout");
+		alert.setContentText("Are you sure you want to logout ?");
+		ButtonType okButton = new ButtonType("Yes", ButtonData.YES);
+		ButtonType noButton = new ButtonType("No", ButtonData.NO);
 
+		alert.getButtonTypes().setAll(okButton, noButton);
+		alert.showAndWait().ifPresent(type -> {
+			if (type == okButton) {				
+				loginController = new LoginController();
+				((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
+				try {
+					loginController.start(new Stage());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				loginController.performLogout(ClientUI.loggedInUser.getUser());
+
+			}
+		});
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
-				
+
 		root = new GridPane();
-		 scene = new Scene(root, 980, 580); // Login
+		scene = new Scene(root, 980, 580); // Login
 		Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
-		
-		
-		
 		root.add(newMnueLeft, 0, 0);
 		primaryStage.setTitle("CEMS-Computerized Exam Management System");
-		
-		//That the way to get the user details-(ClientUI.loggedInUser.getUser().getFirstName());
-		
-		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
@@ -195,26 +197,17 @@ public class TeacherController extends Application implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		teacher=ClientUI.loggedInUser.getUser();
+		textTeacherName.setText(teacher.getFirstName()+" " +teacher.getLastName());
 		
-		textTeacherName.setText(ClientUI.loggedInUser.getUser().getFirstName());
-		setProfessionMap(((Teacher)ClientUI.loggedInUser.getUser()).getProfessions());
-		 Image flag = new Image("file:src/images/teacher_userImg.png");
-		 
+		Image flag = new Image("file:src/images/teacher_userImg.png");
+
 		// private Image flag = new Image("file:src/resources/flag.png");
 
-		 imgPrincipal= new ImageView(flag);
+		imgPrincipal = new ImageView(flag);
 	}
 	
-	public static void setProfessionMap(ArrayList<Profession> professionsList) {
-		professionsMap = new HashMap<>();
-		for (Profession p: professionsList) {
-			professionsMap.put(p.getProfessionName(), p);
-		}
-	}
 	
-	public static HashMap<String, Profession> getProfessionsMap() {
-		return professionsMap;
-	}
 
-	
+
 }
