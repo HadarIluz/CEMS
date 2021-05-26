@@ -3,7 +3,10 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-//Entity class - define Student in the CEMS system.
+/**Entity class - define Student in the CEMS system.
+ * @author Hadar Iluz
+ *
+ */
 @SuppressWarnings("serial")
 public class Student extends User implements Serializable {
 
