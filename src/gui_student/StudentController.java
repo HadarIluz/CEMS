@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import client.CEMSClient;
 import client.ClientUI;
 import entity.Student;
 import entity.User;
@@ -26,6 +27,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import logic.LoggedInUser;
+import logic.RequestToServer;
 
 /**
  * @author Hadar Iluz
@@ -87,27 +89,7 @@ public class StudentController extends Application implements Initializable {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
-//		/*
-//		 * listen for close events on a JavaFX Stage, notified when the user clicks the
-//		 * button with the X on, in the upper right corner of the Stage
-//		 */
-//		primaryStage.setOnCloseRequest((event) -> {
-//			System.out.println("Closing Stage");
-//			// need to notified server about this?
-//		});
-
-		// -----pic-----//
-
-		// CHECK:
-//		// creating the image object
-//		InputStream stream = new FileInputStream("@../../images/student_img/signIn_student.png");
-//		Image image = new Image(stream);
-//		// Setting image to the image view
-//		imgStudent.setImage(image);
-//		// Setting the image view parameters
-//		imgStudent.setX(58);
-//		imgStudent.setY(56);
-//		imgStudent.setPreserveRatio(true);
+		listenToCloseWindow(primaryStage);
 
 	}
 
@@ -183,6 +165,30 @@ public class StudentController extends Application implements Initializable {
 		});
 
 	}
+	
+	/**
+	 * listen for close events on a JavaFX Stage, notified when the user clicks the
+	 * button with the X on, in the upper right corner of the Stage
+	 * 
+	 * @param primaryStage
+	 */
+	private void listenToCloseWindow(Stage primaryStage) {
+
+		primaryStage.setOnCloseRequest((event) -> {
+			System.out.println("Closing Stage");
+			RequestToServer reqLogged = new RequestToServer("ClientDisconected");
+			reqLogged.setRequestData(ClientUI.loggedInUser.getUser());
+			ClientUI.cems.accept(reqLogged);
+			// "USER LOGOUT"
+			if (CEMSClient.responseFromServer.getResponseType().equals("USER LOGOUT")) {
+				System.exit(0);
+			}
+
+		});
+
+	}
+	
+	
 
 	// TODO:
 	/*

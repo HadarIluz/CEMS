@@ -206,7 +206,7 @@ public class CEMSserver extends AbstractServer {
 		case "ClientDisconected": {
 			User user= (User) req.getRequestData();
 			serverFrame.printToTextArea("Client disconnected --->" + user.getUserType()+ " logout.");
-			UpdateUserLoggedOut((User) req.getRequestData(), client);
+			UpdateUserLoggedOut(user, client);
 	
 		}
 			break;
