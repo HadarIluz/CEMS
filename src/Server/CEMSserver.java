@@ -153,7 +153,12 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "createNewExam": {
-			createNewExam((Exam) req.getRequestData());
+			try {
+				client.sendToClient(createNewExam((Exam) req.getRequestData()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 			break;
 
@@ -258,17 +263,35 @@ public class CEMSserver extends AbstractServer {
 	 * TODO: add comment
 	 * 
 	 * @param examData
+	 * @return 
 	 */
-	private void createNewExam(Exam examData) {
+	private ResponseFromServer createNewExam(Exam examData) {
 		// create the exam ID by number of exams in this profession and course
 		int numOfExams = dbController.getNumOfExamsInCourse(examData.getCourse().getCourseID()) + 1;
 		String examID = numOfExams < 10 ? "0" + String.valueOf(numOfExams) : String.valueOf(numOfExams);
 		examID = examData.getProfession().getProfessionID() + examData.getCourse().getCourseID() + examID;
 		examData.setExamID(examID);
 		// create the new exam in DB
-		dbController.createNewExam(examData);
+		if (!dbController.createNewExam(examData)) {
+			ResponseFromServer res = new ResponseFromServer("Error creating new Exam");
+			StatusMsg stat = new StatusMsg();
+			stat.setStatus("ERROR");
+			stat.setDescription("There was a problem with saving the new exam in DB!");
+			res.setStatusMsg(stat);
+		}
 		// add questions and scores to DB
-		dbController.addQuestionsInExam(examID, examData.getQuestionScores());
+		if (!dbController.addQuestionsInExam(examID, examData.getQuestionScores())) {
+			// return error
+			ResponseFromServer res = new ResponseFromServer("Error creating new Exam");
+			StatusMsg stat = new StatusMsg();
+			stat.setStatus("ERROR");
+			stat.setDescription("There was a problem with saving the questions for new exam in DB!");
+			res.setStatusMsg(stat);
+
+		}
+		ResponseFromServer res = new ResponseFromServer("Success Create New Exam");
+		res.setResponseData(examData.getExamID());
+		return res;
 	}
 
 	/**
