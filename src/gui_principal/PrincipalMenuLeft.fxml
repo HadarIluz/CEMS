@@ -26,7 +26,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="lblUserName" alignment="CENTER" layoutX="50.0" layoutY="187.0" prefHeight="27.0" prefWidth="121.0" text="Angelina Jolie" textFill="#420775">
+      <Label fx:id="lblUserName" alignment="CENTER" layoutX="50.0" layoutY="187.0" prefHeight="27.0" prefWidth="121.0" textFill="#420775">
          <font>
             <Font size="14.0" />
          </font>

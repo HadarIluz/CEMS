@@ -98,19 +98,41 @@ public class CEMSserver extends AbstractServer {
 			User user = (User) req.getRequestData();
 			user.setLogged(1); // set isLogged to 1.
 			loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.
+			printLoggedInUsersLisk();	//for DEBUG
 
+			//Response:
+			ResponseFromServer respond = new ResponseFromServer("USER LOGGEDIN");
+			respond.setResponseData(respond);
+			// sent to client.
+			try {
+				client.sendToClient(respond);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 			break;
 
 		case "UpdateUserLoggedOut": {
 			// logic of login- update logged status after LOGOUT action.
+			//TODO: will call from each menu left
 			User user = (User) req.getRequestData();
 			user.setLogged(0); // set isLogged to 0. (disconnected)
 			loggedInUsers.put(user.getId(), user); // remove this user from hashMap of all the logged users.
+			printLoggedInUsersLisk();	//for DEBUG
+			
+			//Response:
+			ResponseFromServer respond = new ResponseFromServer("USER LOGGEDOUT");
+			respond.setResponseData(respond);
+			// sent to client.
+			try {
+				client.sendToClient(respond);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 			break;
 
-		case "getStudentrData_Login": {
+		case "getStudentData_Login": {
 			// logic of login- gets student`s courses after successfully LOGIN action.
 			Student student = (Student) req.getRequestData();
 			student = dbController.getStudentData_Logged(student);
@@ -120,7 +142,7 @@ public class CEMSserver extends AbstractServer {
 			respond.setResponseData(student);
 			// sent to client.
 			try {
-				client.sendToClient(student);
+				client.sendToClient(respond);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -217,6 +239,25 @@ public class CEMSserver extends AbstractServer {
 			}
 
 		}
+		
+		
+		case "getQuestions":{
+			
+		try {
+			
+			ResponseFromServer respond = new ResponseFromServer("TEACHER QUESTIONS");
+			respond.setResponseData(dbController.GetTeacherQuestions((Integer)req.getRequestData()));
+			
+			
+			client.sendToClient(respond);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+			
+			
+			
+		}
 
 		case "getEditExamData": {
 			// TODO: new Exam object Exam exam=null;
@@ -245,6 +286,17 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
+	/**
+	 * print all loggedIn users in hashMap list.
+	 */
+	private void printLoggedInUsersLisk() {
+		//for(loggedInUsers log : )
+		for (Integer user: loggedInUsers.keySet()) {
+		    String key = loggedInUsers.toString();
+		    System.out.println(key);
+		}
+	}
 
 	/**
 	 * @param questionData this method creates the question ID and then inserts the

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_principal.PrincipalGetReportsController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_principal.PrincipalGetReportsController">
    <children>
       <Button fx:id="btnGenarateReport" layoutX="565.0" layoutY="434.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnGenarateReport" prefHeight="37.0" prefWidth="130.0" text="Generate Report" />
       <Label layoutX="73.0" layoutY="150.0" prefHeight="47.0" prefWidth="465.0" text="Please select report type and choose from list :">

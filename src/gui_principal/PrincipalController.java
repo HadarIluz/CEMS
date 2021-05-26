@@ -1,14 +1,12 @@
 package gui_principal;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import client.ClientUI;
 import entity.User;
 import gui_cems.LoginController;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,10 +14,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -30,57 +27,48 @@ import javafx.stage.Stage;
  * @author Hadar_Iluz
  *
  */
-public class PrincipalController implements Initializable{
+public class PrincipalController extends Application implements Initializable{
 
     @FXML
-    private ImageView imgPrincipal;
+    private ImageView person;
 
     @FXML
-    private ImageView imgLogo;
+    private ImageView logo;
 
     @FXML
-    private Label textTeacherName;
+    private Label lblUserName;
 
     @FXML
-    private Button brnManageQuestionsBank;
+    private ImageView phone;
 
     @FXML
-    private ImageView imgPhone;
+    private ImageView messageContactUs;
 
     @FXML
-    private ImageView imgEmail;
+    private Button btnGetReports;
 
     @FXML
-    private Button btnCreateActiveExam;
+    private Button btnApproveTimeExtention;
 
     @FXML
-    private Button btnManageExamsBank;
-
-    @FXML
-    private Button btnGetStatistics;
-
-    @FXML
-    private Button btnScoreApproval;
-
-    @FXML
-    private Button btnChangeExamTime;
+    private Button btnViewInfo;
 
     @FXML
     private Label pressLogout;
 
-	//
-	public static LoginController loginController;
-	public User user;
-	//
+	LoginController loginController;
+	protected User principal;
 	protected static GridPane root;
-	protected static Pane newPane;
+	public Scene scene;
 
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		user=ClientUI.loggedInUser.getUser();
-		textTeacherName.setText(user.getFirstName()+" " +user.getLastName());
-		//TODO: continue ..		
+		principal=ClientUI.loggedInUser.getUser();
+		lblUserName.setText(principal.getFirstName()+" " +principal.getLastName());
+		lblUserName.setTextAlignment(null);
+		//lblUserName.setText(ClientUI.loggedInUser.getUser().getFirstName());
+		//TODO: continue ..	img for jar file
 	}
 	
 	
@@ -89,38 +77,36 @@ public class PrincipalController implements Initializable{
 	 * @throws Exception
 	 */
 	public void start(Stage primaryStage) throws Exception {
-		this.root = new GridPane();
-		Scene scene = new Scene(root, 988, 586); // SCREENS size
+		root = new GridPane();
+		scene = new Scene(root, 980, 580);// SCREENS size
+		Pane newMnueLeft = FXMLLoader.load(getClass().getResource("PrincipalMenuLeft.fxml"));
+		root.add(newMnueLeft, 0, 0);
 		primaryStage.setTitle("CEMS-Computerized Exam Management System");
-		this.newPane = FXMLLoader.load(getClass().getResource("/gui_principal/PrincipalMenuLeft.fxml"));
-		root.add(newPane, 0, 0);
-		// a grey screen need to display at the right side, handle this here if it is
-		// not working..(after test)
-		// Pane newPaneRight=
-		// root.add(newPaneRight, 1, 0);
+		primaryStage.setScene(scene);
+		primaryStage.show();
 
-		/*
-		 * listen for close events on a JavaFX Stage, notified when the user clicks the
-		 * button with the X on, in the upper right corner of the Stage
-		 */
-		primaryStage.setOnCloseRequest((event) -> {
-			System.out.println("Closing Stage");
-			//need to notified server about this?
-		});
+//		/*
+//		 * listen for close events on a JavaFX Stage, notified when the user clicks the
+//		 * button with the X on, in the upper right corner of the Stage
+//		 */
+//		primaryStage.setOnCloseRequest((event) -> {
+//			System.out.println("Closing Stage");
+//			//need to notified server about this?
+//		});
 		
 		
 		//-----pic-----//
 		
-		// <ImageView fx:id="person" fitHeight="111.0" fitWidth="112.0" layoutX="58.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
-	      //creating the image object
-	      InputStream stream = new FileInputStream("@../../images/teacher-Principal_img/PrincipalUserImg.png");
-	      Image image = new Image(stream);
-	      //Setting image to the image view
-	      imgPrincipal.setImage(image);
-	      //Setting the image view parameters
-	      imgPrincipal.setX(58);
-	      imgPrincipal.setY(56);
-	      imgPrincipal.setPreserveRatio(true);
+//		// <ImageView fx:id="person" fitHeight="111.0" fitWidth="112.0" layoutX="58.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+//	      //creating the image object
+//	      InputStream stream = new FileInputStream("@../../images/teacher-Principal_img/PrincipalUserImg.png");
+//	      Image image = new Image(stream);
+//	      //Setting image to the image view
+//	      imgPrincipal.setImage(image);
+//	      //Setting the image view parameters
+//	      imgPrincipal.setX(58);
+//	      imgPrincipal.setY(56);
+//	      imgPrincipal.setPreserveRatio(true);
 		
 
 		
@@ -132,10 +118,11 @@ public class PrincipalController implements Initializable{
 	@FXML
 	void btnApproveTimeExtention(ActionEvent event) {
 		try {
-			Pane newPaneRight= FXMLLoader.load(getClass().getResource("/gui_principal/ApprovalTimeExtention.fxml"));
+			Pane newPaneRight= FXMLLoader.load(getClass().getResource("ApprovalTimeExtention.fxml"));
 			root.add(newPaneRight, 1, 0);
 			
 		} catch (IOException e) {
+			System.out.println("Couldn't load- ApprovalTimeExtention.fxml");
 			e.printStackTrace();
 		}
 
@@ -147,10 +134,11 @@ public class PrincipalController implements Initializable{
 	@FXML
 	void btnGetReports(ActionEvent event) {
 		try {
-			Pane newPaneRight= FXMLLoader.load(getClass().getResource("/gui_principal/PrincipalGetReports.fxml"));
+			Pane newPaneRight= FXMLLoader.load(getClass().getResource("PrincipalGetReports.fxml"));
 			root.add(newPaneRight, 1, 0);
 			
 		} catch (IOException e) {
+			System.out.println("Couldn't load- PrincipalGetReports.fxml");
 			e.printStackTrace();
 		}
 	}
@@ -165,6 +153,7 @@ public class PrincipalController implements Initializable{
 			//root.add(newPaneRight, 1, 0);
 			
 		} catch (IOException e) {
+			System.out.println("Couldn't load fxml");
 			e.printStackTrace();
 		}
 		 */
@@ -187,7 +176,7 @@ public class PrincipalController implements Initializable{
 			if (type == okButton) {
 				// ASK -Sure not like that, I currently do not know what it
 				// will look like after learning about the singleton.
-				loginController.performLogout(this.user);
+				loginController.performLogout(principal);
 
 			}
 		});

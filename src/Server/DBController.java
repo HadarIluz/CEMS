@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-
 import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
@@ -72,8 +71,8 @@ public class DBController {
 			if (rs.next()) {
 				existUser.setPassword(rs.getString(2));
 				existUser.setFirstName(rs.getString(3));
-				existUser.setLastName(rs.getString(3));
-				existUser.setEmail(rs.getString(4));
+				existUser.setLastName(rs.getString(4));
+				existUser.setEmail(rs.getString(5));
 				existUser.setUserType(UserType.valueOf(rs.getString(6)));
 				rs.close();
 			}
@@ -99,7 +98,7 @@ public class DBController {
 	 * @param student include all data of student that hold by User object.
 	 */
 	public Student getStudentData_Logged(Student student) {
-		ResponseFromServer respond = null;
+		
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT AVG FROM student WHERE id=?;");
@@ -113,6 +112,7 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
+
 		return student;
 		
 	}
@@ -125,12 +125,11 @@ public class DBController {
 		ArrayList<Course> coursesOfStudent = new ArrayList<Course>();
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT course FROM student_in_course WHERE id=?;");
+			pstmt = conn.prepareStatement("SELECT * FROM student_in_course WHERE student=?;");
 			pstmt.setInt(1, student.getId());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Course newCourse = new Course("");
-				newCourse.setCourseName(rs.getString(1));
+				Course newCourse = new Course(rs.getString(2));
 				coursesOfStudent.add(newCourse); //add to list.
 			}
 			rs.close();
@@ -158,7 +157,6 @@ public class DBController {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Profession newProfession = new Profession(rs.getString(1));
-			//	newProfession.setProfessionName(rs.getString(1));
 				ProfessionOfTeacher.add(newProfession); //add to list
 			}
 			rs.close();
@@ -464,16 +462,17 @@ public class DBController {
 	public ArrayList<QuestionRow> GetTeacherQuestions(Object obj) {
 
 		Teacher teacher;
+		int id;
 
 		ArrayList<QuestionRow> examsOfTeacher = new ArrayList<QuestionRow>();
 
-		teacher = (Teacher) obj;
+		id = (Integer) obj;
 
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM question WHERE teacher=?");
 
-			pstmt.setString(1, "" + teacher.getId());
+			pstmt.setInt(1, id);
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
