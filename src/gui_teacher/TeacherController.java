@@ -11,9 +11,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -60,7 +64,8 @@ public class TeacherController extends Application implements Initializable {
 
 	@FXML
 	private Button btnChangeExamTime;
-
+	
+	public LoginController loginController;
 	protected static GridPane root;
 	public Scene scene;
 	protected User teacher;
@@ -148,10 +153,33 @@ public class TeacherController extends Application implements Initializable {
 		}
 
 	}
-
+	
+	
+	/**Event Logout that occur when clicking on logout at the left menu
+	 * @param event that display pop up message and ask if he want to logout.
+	 */
 	@FXML
 	void pressLogout(MouseEvent event) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Logout");
+		alert.setContentText("Are you sure you want to logout ?");
+		ButtonType okButton = new ButtonType("Yes", ButtonData.YES);
+		ButtonType noButton = new ButtonType("No", ButtonData.NO);
 
+		alert.getButtonTypes().setAll(okButton, noButton);
+		alert.showAndWait().ifPresent(type -> {
+			if (type == okButton) {				
+				loginController = new LoginController();
+				((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
+				try {
+					loginController.start(new Stage());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				loginController.performLogout(ClientUI.loggedInUser.getUser());
+
+			}
+		});
 	}
 
 	@Override
@@ -169,14 +197,17 @@ public class TeacherController extends Application implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		textTeacherName.setText(ClientUI.loggedInUser.getUser().getFirstName());
-
+		teacher=ClientUI.loggedInUser.getUser();
+		textTeacherName.setText(teacher.getFirstName()+" " +teacher.getLastName());
+		
 		Image flag = new Image("file:src/images/teacher_userImg.png");
 
 		// private Image flag = new Image("file:src/resources/flag.png");
 
 		imgPrincipal = new ImageView(flag);
 	}
+	
+	
+
 
 }

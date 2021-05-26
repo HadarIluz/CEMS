@@ -316,11 +316,21 @@ public class LoginController {
 	 */
 	public void performLogout(User user) {
 		// sent to server pk(id) in order to change the login status of this user.
-		user.setLogged(0);
 		RequestToServer reqLoged = new RequestToServer("UpdateUserLoggedOut");
-		reqLoged.setRequestData(user);
+		if(user instanceof User) {
+			reqLoged.setRequestData(user);
+		}
+		if(user instanceof Student) {
+			User student = new User(user.getId(), user.getUserType());
+			reqLoged.setRequestData(student);
+		}
+		if(user instanceof Teacher) {
+			User teacher = new User(user.getId(), user.getUserType());
+			reqLoged.setRequestData(teacher);
+		}
 		ClientUI.cems.accept(reqLoged);
 	}
+	
 
 	/**
 	 * @param event that displays and uploads a message when clicked on "AboutCEMS"

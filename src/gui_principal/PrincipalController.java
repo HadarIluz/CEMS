@@ -58,7 +58,7 @@ public class PrincipalController extends Application implements Initializable{
     @FXML
     private Label pressLogout;
 
-	LoginController loginController;
+	public LoginController loginController;
 	protected User principal;
 	protected static GridPane root;
 	public Scene scene;
@@ -67,9 +67,6 @@ public class PrincipalController extends Application implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		principal=ClientUI.loggedInUser.getUser();
 		lblUserName.setText(principal.getFirstName()+" " +principal.getLastName());
-		lblUserName.setTextAlignment(null);
-		//lblUserName.setText(ClientUI.loggedInUser.getUser().getFirstName());
-		//TODO: continue ..	img for jar file
 	}
 	
 	
@@ -175,9 +172,6 @@ public class PrincipalController extends Application implements Initializable{
 		alert.getButtonTypes().setAll(okButton, noButton);
 		alert.showAndWait().ifPresent(type -> {
 			if (type == okButton) {
-				// ASK -Sure not like that, I currently do not know what it
-				// will look like after learning about the singleton.
-				
 				loginController = new LoginController();
 				((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 				try {

@@ -97,13 +97,9 @@ public class CEMSserver extends AbstractServer {
 			// logic of login- update logged status after successfully LOGIN action.
 			User user = (User) req.getRequestData();
 			user.setLogged(1); // set isLogged to 1.
-			loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.
+			loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.			//Response:
+			ResponseFromServer respond = new ResponseFromServer("USER LOGIN !");
 			printLoggedInUsersList();	//for DEBUG
-
-			//Response:
-			ResponseFromServer respond = new ResponseFromServer("USER LOGGEDIN");
-			respond.setResponseData(user);
-			// sent to client.
 			try {
 				client.sendToClient(respond);
 			} catch (IOException e) {
@@ -115,12 +111,10 @@ public class CEMSserver extends AbstractServer {
 		case "UpdateUserLoggedOut": {
 			// logic of login- update logged status after LOGOUT action.
 			User user = (User) req.getRequestData();
+			ResponseFromServer respond = new ResponseFromServer("USER LOGOUT");
 			loggedInUsers.remove(user.getId()); //remove this user from list.
-			printLoggedInUsersList();	//for DEBUG- print current list.
-						
-			//Response:
-			ResponseFromServer respond = new ResponseFromServer("USER LOGGEDOUT");
-			respond.setResponseData(user);
+			printLoggedInUsersList();	//for DEBUG- print current list.		
+
 			// sent to client.
 			try {
 				client.sendToClient(respond);

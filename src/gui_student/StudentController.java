@@ -6,12 +6,14 @@ import java.util.ResourceBundle;
 
 import client.ClientUI;
 import entity.Student;
+import entity.User;
 import gui_cems.LoginController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -23,6 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import logic.LoggedInUser;
 
 /**
  * @author Hadar Iluz
@@ -67,10 +70,8 @@ public class StudentController extends Application implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-//		student = (Student) ClientUI.loggedInUser.getUser();
-//		textStudentName.setText(student.getFirstName() + " " + student.getLastName());
-//		// TODO: continue ..
-		textStudentName.setText(ClientUI.loggedInUser.getUser().getFirstName());
+		student = (Student) ClientUI.loggedInUser.getUser();
+		textStudentName.setText(student.getFirstName() + " " + student.getLastName());
 	}
 
 	/**
@@ -160,18 +161,23 @@ public class StudentController extends Application implements Initializable {
 	 */
 	@FXML
 	void pressLogout(MouseEvent event) {
-		Alert alert = new Alert(Alert.AlertType.WARNING);
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		alert.setTitle("Logout");
-		alert.setContentText("Are you Sure?");
+		alert.setContentText("Are you sure you want to logout ?");
 		ButtonType okButton = new ButtonType("Yes", ButtonData.YES);
 		ButtonType noButton = new ButtonType("No", ButtonData.NO);
 
 		alert.getButtonTypes().setAll(okButton, noButton);
 		alert.showAndWait().ifPresent(type -> {
-			if (type == okButton) {
-				// ASK -Sure not like that, I currently do not know what it
-				// will look like after learning about the singleton.
-				loginController.performLogout(this.student);
+			if (type == okButton) {				
+				loginController = new LoginController();
+				((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
+				try {
+					loginController.start(new Stage());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				loginController.performLogout(student);
 
 			}
 		});
