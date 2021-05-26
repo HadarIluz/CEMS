@@ -234,11 +234,19 @@ public class CEMSserver extends AbstractServer {
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
+	/**
+	 * @param str is a message which displayed in server`s log.
+	 * @param response contains the information that the server transmits to the Client.
+	 */
 	private void printMessageInLogFramServer(String str, ResponseFromServer response) {
 		serverFrame.printToTextArea("--->" + str + " " + response.toString());
 	}
 
 	//
+	/**
+	 * @param user is who server needs to identify the details.
+	 * @param client
+	 */
 	private void getUser(User user, ConnectionToClient client) {
 		// logic of login
 		User userInSystem = null;
@@ -259,8 +267,11 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	/** logic of login: update logged status after successfully LOGIN action.
+	 * @param user who server needs to identify and update his details.
+	 * @param client
+	 */
 	private void UpdateUserLoggedIn(User user, ConnectionToClient client) {
-		// logic of login- update logged status after successfully LOGIN action.
 		user.setLogged(1); // set isLogged to 1.
 		loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.
 		// Response:
@@ -275,8 +286,11 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	/**logic of login: update logged status after LOGOUT action.
+	 * @param user who server needs to identify and update his details.
+	 * @param client
+	 */
 	private void UpdateUserLoggedOut(User user, ConnectionToClient client) {
-		// logic of login- update logged status after LOGOUT action.
 		ResponseFromServer response = new ResponseFromServer("USER LOGOUT");
 		loggedInUsers.remove(user.getId()); // remove this user from list.
 		printLoggedInUsersList(); // for DEBUG- print current list.
@@ -291,8 +305,11 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	/**logic of login- gets student`s courses after successfully LOGIN action.
+	 * @param student who server needs to identify and get his all data.
+	 * @param client
+	 */
 	private void getStudentData_Login(Student student, ConnectionToClient client) {
-		// logic of login- gets student`s courses after successfully LOGIN action.
 		student = dbController.getStudentData_Logged(student);
 		student = dbController.getStudentCourses_Logged(student);
 		// create ResponseFromServer (to client) with all student data.
@@ -308,6 +325,10 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	/**
+	 * @param teacher who server needs to identify and get his all data.
+	 * @param client
+	 */
 	private void getTeacherData_Login(Teacher teacher, ConnectionToClient client) {
 		// logic of login- gets teacher`s profession after successfully login action.
 		ArrayList<String> professionIds = dbController.getTeacherProfessionIDs(teacher);
