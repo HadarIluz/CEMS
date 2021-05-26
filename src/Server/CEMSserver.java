@@ -73,97 +73,31 @@ public class CEMSserver extends AbstractServer {
 		switch (req.getRequestType()) {
 
 		case "getUser": {
-			// logic of login
-			User user = (User) req.getRequestData();
-			User userInSystem = null;
-			respon = dbController.verifyLoginUser((User) user);
+			getUser((User) req.getRequestData(), client);
 
-			userInSystem = (User) respon.getResponseData();
-			boolean exist = loggedInUsers.containsValue(userInSystem.getId()); // check if hashMap contains this user id
-			// in case this user exist in 'loggedInUsers' update isLogged to 1.
-			if (exist) {
-				user.setLogged(1); // set isLogged to 1.
-			}
-			try {
-				client.sendToClient(respon);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			// serverFrame.printToTextArea(??.toString());
 		}
 
 			break;
 		case "UpdateUserLoggedIn": {
-			// logic of login- update logged status after successfully LOGIN action.
-			User user = (User) req.getRequestData();
-			user.setLogged(1); // set isLogged to 1.
-			loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.			//Response:
-			ResponseFromServer respond = new ResponseFromServer("USER LOGIN !");
-			printLoggedInUsersList();	//for DEBUG
-			try {
-				client.sendToClient(respond);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			UpdateUserLoggedIn((User) req.getRequestData(), client);
+
 		}
 			break;
 
 		case "UpdateUserLoggedOut": {
-			// logic of login- update logged status after LOGOUT action.
-			User user = (User) req.getRequestData();
-			ResponseFromServer respond = new ResponseFromServer("USER LOGOUT");
-			loggedInUsers.remove(user.getId()); //remove this user from list.
-			printLoggedInUsersList();	//for DEBUG- print current list.		
-
-			// sent to client.
-			try {
-				client.sendToClient(respond);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			UpdateUserLoggedOut((User) req.getRequestData(), client);
+			
 		}
 			break;
 
-		case "getStudentData_Login": {
-			// logic of login- gets student`s courses after successfully LOGIN action.
-			Student student = (Student) req.getRequestData();
-			student = dbController.getStudentData_Logged(student);
-			student = dbController.getStudentCourses_Logged(student);
-			// create ResponseFromServer (to client) with all student data.
-			ResponseFromServer respond = new ResponseFromServer("STUDENT DATA");
-			respond.setResponseData(student);
-			// sent to client.
-			try {
-				client.sendToClient(respond);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		case "getStudentData_Login": {		
+			getStudentData_Login((Student) req.getRequestData(), client);
 
-			// serverFrame.printToTextArea(??.toString());
 		}
 			break;
 
-		case "getTeacherData_Login": {
-			// logic of login- gets teacher`s profession after successfully login action.
-			Teacher teacher = (Teacher) req.getRequestData();
-			ArrayList<String> professionIds = dbController.getTeacherProfessionIDs(teacher);
-			ArrayList<Profession> teacherProfessions = new ArrayList<>();
-			for (String id: professionIds) {
-				teacherProfessions.add(dbController.getProfessionByID(id));
-			}
-			teacher.setProfessions(teacherProfessions);
-			// create ResponseFromServer (to client) with all student data.
-			ResponseFromServer respond = new ResponseFromServer("TEACHER DATA");
-			respond.setResponseData(teacher);
-			// sent to client.
-			try {
-				client.sendToClient(respond);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			// serverFrame.printToTextArea(??.toString());
+		case "getTeacherData_Login": {	
+			getTeacherData_Login((Teacher) req.getRequestData(), client);
 		}
 			break;
 
@@ -270,7 +204,7 @@ public class CEMSserver extends AbstractServer {
 
 		
 		case "SaveEditExam": {
-			// TODO: in other case in server, it will do: "UPDATE #### FROM exam blabla...;"
+			// TODO: "UPDATE #### FROM exam blabla...;"
 		}
 			break;
 
@@ -278,8 +212,103 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+
+
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
+	
+	private void getUser(User user, ConnectionToClient client) {
+		// logic of login
+		User userInSystem = null;
+		ResponseFromServer respon = dbController.verifyLoginUser((User) user);
+
+		userInSystem = (User) respon.getResponseData();
+		boolean exist = loggedInUsers.containsValue(userInSystem.getId()); // check if hashMap contains this user id
+		// in case this user exist in 'loggedInUsers' update isLogged to 1.
+		if (exist) {
+			user.setLogged(1); // set isLogged to 1.
+		}
+		try {
+			client.sendToClient(respon);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// serverFrame.printToTextArea(??.toString());
+		
+	}
+	
+	private void UpdateUserLoggedIn(User user, ConnectionToClient client) {
+		// logic of login- update logged status after successfully LOGIN action.
+		user.setLogged(1); // set isLogged to 1.
+		loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.			
+		//Response:
+		ResponseFromServer respond = new ResponseFromServer("USER LOGIN !");
+		printLoggedInUsersList();	//for DEBUG
+		try {
+			client.sendToClient(respond);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}	
+	
+	
+	
+	private void UpdateUserLoggedOut(User user, ConnectionToClient client) {
+		// logic of login- update logged status after LOGOUT action.
+		ResponseFromServer respond = new ResponseFromServer("USER LOGOUT");
+		loggedInUsers.remove(user.getId()); //remove this user from list.
+		printLoggedInUsersList();	//for DEBUG- print current list.		
+
+		// sent to client.
+		try {
+			client.sendToClient(respond);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void getStudentData_Login(Student student, ConnectionToClient client) {
+		// logic of login- gets student`s courses after successfully LOGIN action.
+		student = dbController.getStudentData_Logged(student);
+		student = dbController.getStudentCourses_Logged(student);
+		// create ResponseFromServer (to client) with all student data.
+		ResponseFromServer respond = new ResponseFromServer("STUDENT DATA");
+		respond.setResponseData(student);
+		// sent to client.
+		try {
+			client.sendToClient(respond);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// serverFrame.printToTextArea(??.toString());
+		
+	}
+	
+	
+	private void getTeacherData_Login(Teacher teacher, ConnectionToClient client) {
+		// logic of login- gets teacher`s profession after successfully login action.
+		ArrayList<String> professionIds = dbController.getTeacherProfessionIDs(teacher);
+		ArrayList<Profession> teacherProfessions = new ArrayList<>();
+		for (String id: professionIds) {
+			teacherProfessions.add(dbController.getProfessionByID(id));
+		}
+		teacher.setProfessions(teacherProfessions);
+		// create ResponseFromServer (to client) with all student data.
+		ResponseFromServer respond = new ResponseFromServer("TEACHER DATA");
+		respond.setResponseData(teacher);
+		// sent to client.
+		try {
+			client.sendToClient(respond);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// serverFrame.printToTextArea(??.toString());
+		
+	}
 	/**
 	 * print all loggedIn users in hashMap list.
 	 */

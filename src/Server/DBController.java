@@ -191,36 +191,6 @@ public class DBController {
 
 	}
 
-// updated ScoreApproval
-	public boolean setLoginUserLogged(int userID, int num) {
-		PreparedStatement pstmt;
-		int check = 0;
-		int flag; // The flag checks what is the current status of this user and updates to the
-					// reverse mode
-
-		if (num == 1)
-			flag = 0;
-		else
-			flag = 1;
-
-		try {
-			// UPDATE tblName
-			// SET column=value
-			// WHERE condition(s)
-			pstmt = conn.prepareStatement("UPDATE user SET isLogged=? WHERE id=" + userID + ";");
-			pstmt.setInt(5, flag);
-			check = pstmt.executeUpdate();
-			if (check == 1) {
-				System.out.println("Details Of user Logged Updated!");
-				return true;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
 	/**
 	 * @param question inserts new question to DB
 	 * @return

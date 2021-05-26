@@ -73,12 +73,6 @@ public class LoginController {
 	private PasswordField txtPassword;
 
 	@FXML
-	private Label lblShow;
-
-	@FXML
-	private CheckBox checkBoxRememberMe;
-
-	@FXML
 	private Button btnLogin;
 
 	@FXML
