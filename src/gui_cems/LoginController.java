@@ -285,6 +285,8 @@ public class LoginController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		listenToCloseWindow(primaryStage);
 	}
 
 	/**
@@ -355,6 +357,31 @@ public class LoginController {
 	void pressQuit(ActionEvent event) {
 		System.exit(0);
 	}
+	
+	/**
+	 * listen for close events on a JavaFX Stage, notified when the user clicks the
+	 * button with the X on, in the upper right corner of the Stage
+	 * 
+	 * @param primaryStage
+	 */
+	private void listenToCloseWindow(Stage primaryStage) {
+
+		primaryStage.setOnCloseRequest((event) -> {
+			System.out.println("Closing Stage");
+			RequestToServer reqLogged = new RequestToServer("ClientDisconected");
+			reqLogged.setRequestData("ClientDisconected_from_login_fram");
+			ClientUI.cems.accept(reqLogged);
+			if (CEMSClient.responseFromServer.getResponseType().equals("USER LOGOUT")) {
+				
+			}
+
+		});
+
+	}
+	
+	
+	
+	
 	/*
 	 * NOT WORKING with this. //Need to verify with jar file!!
 	 * 
