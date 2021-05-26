@@ -72,7 +72,7 @@
          </font>
       </Button>
       <Separator layoutX="3.0" layoutY="387.0" prefHeight="3.0" prefWidth="221.0" />
-      <Button fx:id="btnViewInfo" alignment="CENTER" layoutX="3.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnViewInfo" prefHeight="49.0" prefWidth="221.0" text="View info">
+      <Button fx:id="btnViewExamBanckinfo" alignment="CENTER" layoutX="3.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnViewExamBanckinfo" prefHeight="49.0" prefWidth="221.0" text="View Exam Banck info">
          <font>
             <Font size="15.0" />
          </font>
@@ -83,5 +83,11 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
+      <Separator layoutX="2.0" layoutY="442.0" prefHeight="3.0" prefWidth="221.0" />
+      <Button fx:id="btnViewQuestionBanckinfo" alignment="CENTER" layoutX="2.0" layoutY="390.0" mnemonicParsing="false" onAction="#btnViewQuestionBanckinfo" prefHeight="49.0" prefWidth="221.0" text="View Question Banck info">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

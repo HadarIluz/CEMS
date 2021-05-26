@@ -3,6 +3,8 @@ package gui_principal;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import client.CEMSClient;
 import client.ClientUI;
 import entity.User;
 import gui_cems.LoginController;
@@ -24,52 +26,52 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import logic.RequestToServer;
 
 /**
  * @author Hadar_Iluz
  *
  */
-public class PrincipalController extends Application implements Initializable{
+public class PrincipalController extends Application implements Initializable {
 
-    @FXML
-    private ImageView person;
+	@FXML
+	private ImageView person;
 
-    @FXML
-    private ImageView logo;
+	@FXML
+	private ImageView logo;
 
-    @FXML
-    private Label lblUserName;
+	@FXML
+	private Label lblUserName;
 
-    @FXML
-    private ImageView phone;
+	@FXML
+	private ImageView phone;
 
-    @FXML
-    private ImageView messageContactUs;
+	@FXML
+	private ImageView messageContactUs;
 
-    @FXML
-    private Button btnGetReports;
+	@FXML
+	private Button btnGetReports;
 
-    @FXML
-    private Button btnApproveTimeExtention;
+	@FXML
+	private Button btnApproveTimeExtention;
 
-    @FXML
-    private Button btnViewInfo;
+	@FXML
+	private Button btnViewInfo;
 
-    @FXML
-    private Label pressLogout;
+	@FXML
+	private Label pressLogout;
 
 	public LoginController loginController;
 	protected User principal;
 	protected static GridPane root;
 	public Scene scene;
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		principal=ClientUI.loggedInUser.getUser();
-		lblUserName.setText(principal.getFirstName()+" " +principal.getLastName());
+		principal = ClientUI.loggedInUser.getUser();
+		lblUserName.setText(principal.getFirstName() + " " + principal.getLastName());
 	}
-	
-	
+
 	/**
 	 * @param primaryStage
 	 * @throws Exception
@@ -83,18 +85,33 @@ public class PrincipalController extends Application implements Initializable{
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
-//		/*
-//		 * listen for close events on a JavaFX Stage, notified when the user clicks the
-//		 * button with the X on, in the upper right corner of the Stage
-//		 */
-//		primaryStage.setOnCloseRequest((event) -> {
-//			System.out.println("Closing Stage");
-//			//need to notified server about this?
-//		});
-		
-		
-		//-----pic-----//
-		
+		listenToCloseWindow(primaryStage);
+	}
+
+	/**
+	 * listen for close events on a JavaFX Stage, notified when the user clicks the
+	 * button with the X on, in the upper right corner of the Stage
+	 * 
+	 * @param primaryStage
+	 */
+	private void listenToCloseWindow(Stage primaryStage) {
+
+		primaryStage.setOnCloseRequest((event) -> {
+			System.out.println("Closing Stage");
+			RequestToServer reqLogged = new RequestToServer("ClientDisconected");
+			reqLogged.setRequestData(ClientUI.loggedInUser.getUser());
+			ClientUI.cems.accept(reqLogged);
+			// "USER LOGOUT"
+			if (CEMSClient.responseFromServer.getResponseType().equals("USER LOGOUT")) {
+				System.exit(0);
+			}
+
+		});
+
+	}
+
+	// -----pic-----//
+
 //		// <ImageView fx:id="person" fitHeight="111.0" fitWidth="112.0" layoutX="58.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
 //	      //creating the image object
 //	      InputStream stream = new FileInputStream("@../../images/teacher-Principal_img/PrincipalUserImg.png");
@@ -105,10 +122,6 @@ public class PrincipalController extends Application implements Initializable{
 //	      imgPrincipal.setX(58);
 //	      imgPrincipal.setY(56);
 //	      imgPrincipal.setPreserveRatio(true);
-		
-
-		
-	}
 
 	/**
 	 * @param event that loading the teacher's right screen after pressing a button.
@@ -116,9 +129,9 @@ public class PrincipalController extends Application implements Initializable{
 	@FXML
 	void btnApproveTimeExtention(ActionEvent event) {
 		try {
-			Pane newPaneRight= FXMLLoader.load(getClass().getResource("ApprovalTimeExtention.fxml"));
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ApprovalTimeExtention.fxml"));
 			root.add(newPaneRight, 1, 0);
-			
+
 		} catch (IOException e) {
 			System.out.println("Couldn't load- ApprovalTimeExtention.fxml");
 			e.printStackTrace();
@@ -132,33 +145,54 @@ public class PrincipalController extends Application implements Initializable{
 	@FXML
 	void btnGetReports(ActionEvent event) {
 		try {
-			Pane newPaneRight= FXMLLoader.load(getClass().getResource("PrincipalGetReports.fxml"));
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("PrincipalGetReports.fxml"));
 			root.add(newPaneRight, 1, 0);
-			
+
 		} catch (IOException e) {
 			System.out.println("Couldn't load- PrincipalGetReports.fxml");
 			e.printStackTrace();
 		}
 	}
-	
-	//need to create here screen with buttons according to our screen assignment
+
+	/**
+	 * @param event that load 'QuestionBank' screen in order to allow principal to
+	 *              see data stored in CEMS system. We use teacher screens to
+	 *              configure them in a way that will not be editable by principal.
+	 */
 	@FXML
-	void btnViewInfo(ActionEvent event) {
-		//TODO: task Lior (TERELLO).
-		/*
+	void btnViewExamBanckinfo(ActionEvent event) {
 		try {
-			//Pane newPaneRight= FXMLLoader.load(getClass().getResource("/gui_principal/?????.fxml"));
-			//root.add(newPaneRight, 1, 0);
-			
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_teacher/ExamBank.fxml"));
+			root.add(newPaneRight, 1, 0);
+
 		} catch (IOException e) {
 			System.out.println("Couldn't load fxml");
 			e.printStackTrace();
 		}
-		 */
+
 	}
 
-	 
-	/**Event Logout that occur when clicking on logout at the left menu
+	/**
+	 * @param event that load 'QuestionBank' screen in order to allow principal to
+	 *              see data stored in CEMS system. We use teacher screens to
+	 *              configure them in a way that will not be editable by principal.
+	 */
+	@FXML
+	void btnViewQuestionBanckinfo(ActionEvent event) {
+		try {
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_teacher/QuestionBank.fxml"));
+			root.add(newPaneRight, 1, 0);
+
+		} catch (IOException e) {
+			System.out.println("Couldn't load fxml");
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Event Logout that occur when clicking on logout at the left menu
+	 * 
 	 * @param event that display pop up message and ask if he want to logout.
 	 */
 	@FXML
@@ -179,14 +213,12 @@ public class PrincipalController extends Application implements Initializable{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
+
 				loginController.performLogout(principal);
 
 			}
 		});
 
 	}
-	
-
 
 }

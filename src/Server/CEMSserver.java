@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import client.ClientUI;
 import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
@@ -23,7 +24,6 @@ import logic.ResponseFromServer;
 import logic.StatusMsg;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
-
 
 public class CEMSserver extends AbstractServer {
 	// Class variables *************************************************
@@ -48,7 +48,7 @@ public class CEMSserver extends AbstractServer {
 	public CEMSserver(int port, ServerFrameController serverUI) {
 		super(port);
 		this.serverFrame = serverUI;
-		loggedInUsers=new HashMap<Integer,User>();
+		loggedInUsers = new HashMap<Integer, User>();
 	}
 
 	// Instance methods ************************************************
@@ -86,17 +86,17 @@ public class CEMSserver extends AbstractServer {
 
 		case "UpdateUserLoggedOut": {
 			UpdateUserLoggedOut((User) req.getRequestData(), client);
-			
+
 		}
 			break;
 
-		case "getStudentData_Login": {		
+		case "getStudentData_Login": {
 			getStudentData_Login((Student) req.getRequestData(), client);
 
 		}
 			break;
 
-		case "getTeacherData_Login": {	
+		case "getTeacherData_Login": {
 			getTeacherData_Login((Teacher) req.getRequestData(), client);
 		}
 			break;
@@ -166,24 +166,20 @@ public class CEMSserver extends AbstractServer {
 			}
 
 		}
-		
-		
-		case "getQuestions":{
-			
-		try {
-			
-			ResponseFromServer respond = new ResponseFromServer("TEACHER QUESTIONS");
-			respond.setResponseData(dbController.GetTeacherQuestions((Integer)req.getRequestData()));
-			
-			
-			client.sendToClient(respond);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}	
-			
-			
-			
+
+		case "getQuestions": {
+
+			try {
+
+				ResponseFromServer respond = new ResponseFromServer("TEACHER QUESTIONS");
+				respond.setResponseData(dbController.GetTeacherQuestions((Integer) req.getRequestData()));
+
+				client.sendToClient(respond);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 		case "getEditExamData": {
@@ -202,21 +198,29 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		
 		case "SaveEditExam": {
 			// TODO: "UPDATE #### FROM exam blabla...;"
 		}
 			break;
 
+		case "ClientDisconected": {
+			User user= (User) req.getRequestData();
+			serverFrame.printToTextArea("Client disconnected --->" + user.getUserType()+ " logout.");
+			UpdateUserLoggedOut((User) req.getRequestData(), client);
+	
 		}
+			break;
 
+		}
+		
 	}
-
-
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
 	
+	
+	
+	//
 	private void getUser(User user, ConnectionToClient client) {
 		// logic of login
 		User userInSystem = null;
@@ -235,31 +239,29 @@ public class CEMSserver extends AbstractServer {
 		}
 
 		// serverFrame.printToTextArea(??.toString());
-		
+
 	}
-	
+
 	private void UpdateUserLoggedIn(User user, ConnectionToClient client) {
 		// logic of login- update logged status after successfully LOGIN action.
 		user.setLogged(1); // set isLogged to 1.
-		loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.			
-		//Response:
+		loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.
+		// Response:
 		ResponseFromServer respond = new ResponseFromServer("USER LOGIN !");
-		printLoggedInUsersList();	//for DEBUG
+		printLoggedInUsersList(); // for DEBUG
 		try {
 			client.sendToClient(respond);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-	}	
-	
-	
-	
+
+	}
+
 	private void UpdateUserLoggedOut(User user, ConnectionToClient client) {
 		// logic of login- update logged status after LOGOUT action.
 		ResponseFromServer respond = new ResponseFromServer("USER LOGOUT");
-		loggedInUsers.remove(user.getId()); //remove this user from list.
-		printLoggedInUsersList();	//for DEBUG- print current list.		
+		loggedInUsers.remove(user.getId()); // remove this user from list.
+		printLoggedInUsersList(); // for DEBUG- print current list.
 
 		// sent to client.
 		try {
@@ -269,7 +271,7 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
-	
+
 	private void getStudentData_Login(Student student, ConnectionToClient client) {
 		// logic of login- gets student`s courses after successfully LOGIN action.
 		student = dbController.getStudentData_Logged(student);
@@ -284,15 +286,14 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		// serverFrame.printToTextArea(??.toString());
-		
+
 	}
-	
-	
+
 	private void getTeacherData_Login(Teacher teacher, ConnectionToClient client) {
 		// logic of login- gets teacher`s profession after successfully login action.
 		ArrayList<String> professionIds = dbController.getTeacherProfessionIDs(teacher);
 		ArrayList<Profession> teacherProfessions = new ArrayList<>();
-		for (String id: professionIds) {
+		for (String id : professionIds) {
 			teacherProfessions.add(dbController.getProfessionByID(id));
 		}
 		teacher.setProfessions(teacherProfessions);
@@ -307,16 +308,17 @@ public class CEMSserver extends AbstractServer {
 		}
 
 		// serverFrame.printToTextArea(??.toString());
-		
+
 	}
+
 	/**
 	 * print all loggedIn users in hashMap list.
 	 */
 	private void printLoggedInUsersList() {
-		//for(loggedInUsers log : )
-		for (Integer user: loggedInUsers.keySet()) {
-		    String key = loggedInUsers.toString();
-		    System.out.println(key);
+		// for(loggedInUsers log : )
+		for (Integer user : loggedInUsers.keySet()) {
+			String key = loggedInUsers.toString();
+			System.out.println(key);
 		}
 	}
 

@@ -221,6 +221,7 @@ public class LoginController {
 					System.out.println(user.getId() + " login Successfully as: " + user.getUserType().toString());
 
 					// sent to server pk(id) in order to change the login status of this user.
+					
 					RequestToServer reqLogged = new RequestToServer("UpdateUserLoggedIn");
 					reqLogged.setRequestData(user);
 					ClientUI.cems.accept(reqLogged);
