@@ -316,6 +316,7 @@ public class LoginController {
 	 */
 	public void performLogout(User user) {
 		// sent to server pk(id) in order to change the login status of this user.
+		user.setLogged(0);
 		RequestToServer reqLoged = new RequestToServer("UpdateUserLoggedOut");
 		reqLoged.setRequestData(user);
 		ClientUI.cems.accept(reqLoged);

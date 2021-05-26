@@ -2,7 +2,10 @@ package entity;
 
 import java.io.Serializable;
 
-//Entity class - define user in the CEMS system.
+/**Entity class - define user in the CEMS system.
+ * @author Hadar Iluz
+ *
+ */
 @SuppressWarnings("serial")
 public class User implements Serializable {
 
@@ -71,13 +74,18 @@ public class User implements Serializable {
 	public void setLogged(int isLogged) {
 		this.isLogged = isLogged;
 	}
-	//for now only for my debug, i see all info of each student, don`t remove it(:
-	
-	//to string method to serverLog(ASK: server use it from this class??)...or.. console debugging
+
 	@Override
 	public String toString() {
-		return "User: " + userType + " isLogged=" + isLogged + "]";
-		//return "User [id=" + id + ", password=" + password + ", isLogged=" + isLogged + "]";
+		return "User: " + userType + " isLogged=" + isLogged ;
+	}
+	
+	public UserType getUserType() {
+		return userType;
+	}
+
+	public void setUserType(UserType userType) {
+		this.userType = userType;
 	}
 	
 //	/*equal method in order to checks if users are equal,
@@ -95,16 +103,6 @@ public class User implements Serializable {
 //				email==user.email &&
 //				isLogged==1;
 //	}
-	
-
-	//
-	public UserType getUserType() {
-		return userType;
-	}
-
-	public void setUserType(UserType userType) {
-		this.userType = userType;
-	}
 
 		
 }

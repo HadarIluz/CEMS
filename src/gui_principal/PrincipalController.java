@@ -6,11 +6,13 @@ import java.util.ResourceBundle;
 import client.ClientUI;
 import entity.User;
 import gui_cems.LoginController;
+import gui_student.StudentController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -60,7 +62,6 @@ public class PrincipalController extends Application implements Initializable{
 	protected User principal;
 	protected static GridPane root;
 	public Scene scene;
-
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -165,9 +166,9 @@ public class PrincipalController extends Application implements Initializable{
 	 */
 	@FXML
 	void pressLogout(MouseEvent event) {
-		Alert alert = new Alert(Alert.AlertType.WARNING);
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		alert.setTitle("Logout");
-		alert.setContentText("Are you Sure?");
+		alert.setContentText("Are you sure you want to logout ?");
 		ButtonType okButton = new ButtonType("Yes", ButtonData.YES);
 		ButtonType noButton = new ButtonType("No", ButtonData.NO);
 
@@ -176,13 +177,22 @@ public class PrincipalController extends Application implements Initializable{
 			if (type == okButton) {
 				// ASK -Sure not like that, I currently do not know what it
 				// will look like after learning about the singleton.
+				
+				loginController = new LoginController();
+				((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
+				try {
+					loginController.start(new Stage());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
 				loginController.performLogout(principal);
 
 			}
 		});
 
 	}
-
+	
 
 
 }

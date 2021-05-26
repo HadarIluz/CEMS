@@ -98,11 +98,11 @@ public class CEMSserver extends AbstractServer {
 			User user = (User) req.getRequestData();
 			user.setLogged(1); // set isLogged to 1.
 			loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.
-			printLoggedInUsersLisk();	//for DEBUG
+			printLoggedInUsersList();	//for DEBUG
 
 			//Response:
 			ResponseFromServer respond = new ResponseFromServer("USER LOGGEDIN");
-			respond.setResponseData(respond);
+			respond.setResponseData(user);
 			// sent to client.
 			try {
 				client.sendToClient(respond);
@@ -114,15 +114,13 @@ public class CEMSserver extends AbstractServer {
 
 		case "UpdateUserLoggedOut": {
 			// logic of login- update logged status after LOGOUT action.
-			//TODO: will call from each menu left
 			User user = (User) req.getRequestData();
-			user.setLogged(0); // set isLogged to 0. (disconnected)
-			loggedInUsers.put(user.getId(), user); // remove this user from hashMap of all the logged users.
-			printLoggedInUsersLisk();	//for DEBUG
-			
+			loggedInUsers.remove(user.getId()); //remove this user from list.
+			printLoggedInUsersList();	//for DEBUG- print current list.
+						
 			//Response:
 			ResponseFromServer respond = new ResponseFromServer("USER LOGGEDOUT");
-			respond.setResponseData(respond);
+			respond.setResponseData(user);
 			// sent to client.
 			try {
 				client.sendToClient(respond);
@@ -285,7 +283,7 @@ public class CEMSserver extends AbstractServer {
 	/**
 	 * print all loggedIn users in hashMap list.
 	 */
-	private void printLoggedInUsersLisk() {
+	private void printLoggedInUsersList() {
 		//for(loggedInUsers log : )
 		for (Integer user: loggedInUsers.keySet()) {
 		    String key = loggedInUsers.toString();
