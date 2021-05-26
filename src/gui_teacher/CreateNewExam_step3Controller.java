@@ -2,6 +2,7 @@ package gui_teacher;
 
 import java.io.IOException;
 
+import client.ClientUI;
 import entity.Exam;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -68,6 +69,8 @@ public class CreateNewExam_step3Controller {
     	btnBack.setDisable(true);
     	RequestToServer req = new RequestToServer("createNewExam");
     	req.setRequestData(newExam);
+		ClientUI.cems.accept(req);
+
 
     }
     

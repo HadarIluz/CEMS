@@ -2,6 +2,7 @@ package gui_teacher;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -10,6 +11,7 @@ import client.ClientUI;
 import entity.Course;
 import entity.Exam;
 import entity.Profession;
+import entity.Question;
 import entity.Teacher;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -133,6 +135,7 @@ public class CreateExam_step1Controller implements Initializable{
     			noQbankError.setVisible(true);
     		}
     		else {
+    			CreateExam_addQ_step2Controller.loadAvailableQuestions((ArrayList<Question>) CEMSClient.responseFromServer.getResponseData());
     			req = new RequestToServer("getCoursesByProfession");
     			req.setRequestData(selectedProfession);
         		ClientUI.cems.accept(req);
