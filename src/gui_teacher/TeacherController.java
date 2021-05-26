@@ -65,7 +65,7 @@ public class TeacherController extends Application implements Initializable {
 	 protected static GridPane root;
 	 Scene scene;
 
-	protected User teacher;
+	//protected Teacher teacher;
 	
 	LoginController login;
     private static HashMap<String, Profession> professionsMap = null;

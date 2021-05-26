@@ -169,7 +169,13 @@ public class CreateExam_step1Controller implements Initializable{
 	}
 	
 	private void loadProfessionsToCombobox() {
-		selectProffessionList.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
+		//selectProffessionList.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
+		ArrayList<String> bla = new ArrayList<>();
+		bla.add("1");
+		bla.add("2");
+
+		selectProffessionList.setItems(FXCollections.observableArrayList(bla));
+    
     }
 	
 	// create a popup with a message
