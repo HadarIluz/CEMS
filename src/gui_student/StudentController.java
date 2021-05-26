@@ -3,11 +3,9 @@ package gui_student;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import client.CEMSClient;
 import client.ClientUI;
 import entity.Student;
-import entity.User;
 import gui_cems.LoginController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -26,7 +24,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import logic.LoggedInUser;
 import logic.RequestToServer;
 
 /**

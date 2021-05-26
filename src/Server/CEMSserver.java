@@ -210,17 +210,17 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		}
-		
+
 	}
 
 	private void clientDisconected(Object requestData, ConnectionToClient client) {
-		if ( requestData instanceof User) {
-		User user= (User) requestData;
-		serverFrame.printToTextArea("Client disconnected --->" + user.getUserType()+ " logout.");
-		UpdateUserLoggedOut(user, client);
+		if (requestData instanceof User) {
+			User user = (User) requestData;
+			serverFrame.printToTextArea("Client disconnected --->" + user.getUserType() + " logout.");
+			UpdateUserLoggedOut(user, client);
 		}
-		
-		else if(requestData.equals("ClientDisconected_from_login_fram")) {
+
+		else if (requestData.equals("ClientDisconected_from_login_fram")) {
 			serverFrame.printToTextArea("---> Client Disconnected <---");
 			ResponseFromServer respon = new ResponseFromServer("CLIENT DISCONECT !");
 			try {
@@ -229,14 +229,15 @@ public class CEMSserver extends AbstractServer {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
-	
-	
-	
+	private void printMessageInLogFramServer(String str, ResponseFromServer response) {
+		serverFrame.printToTextArea("--->" + str + " " + response.toString());
+	}
+
 	//
 	private void getUser(User user, ConnectionToClient client) {
 		// logic of login
@@ -254,8 +255,7 @@ public class CEMSserver extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		// serverFrame.printToTextArea(??.toString());
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 
 	}
 
@@ -264,28 +264,30 @@ public class CEMSserver extends AbstractServer {
 		user.setLogged(1); // set isLogged to 1.
 		loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.
 		// Response:
-		ResponseFromServer respond = new ResponseFromServer("USER LOGIN !");
+		ResponseFromServer response = new ResponseFromServer("USER LOGIN !");
 		printLoggedInUsersList(); // for DEBUG
 		try {
-			client.sendToClient(respond);
+			client.sendToClient(response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		printMessageInLogFramServer("Message to Client: " + user.toString(), response);// print to server log.
 
 	}
 
 	private void UpdateUserLoggedOut(User user, ConnectionToClient client) {
 		// logic of login- update logged status after LOGOUT action.
-		ResponseFromServer respond = new ResponseFromServer("USER LOGOUT");
+		ResponseFromServer response = new ResponseFromServer("USER LOGOUT");
 		loggedInUsers.remove(user.getId()); // remove this user from list.
 		printLoggedInUsersList(); // for DEBUG- print current list.
 
 		// sent to client.
 		try {
-			client.sendToClient(respond);
+			client.sendToClient(response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		printMessageInLogFramServer("Message to Client: " + user.getUserType(), response);// print to server log.
 
 	}
 
@@ -294,15 +296,15 @@ public class CEMSserver extends AbstractServer {
 		student = dbController.getStudentData_Logged(student);
 		student = dbController.getStudentCourses_Logged(student);
 		// create ResponseFromServer (to client) with all student data.
-		ResponseFromServer respond = new ResponseFromServer("STUDENT DATA");
-		respond.setResponseData(student);
+		ResponseFromServer response = new ResponseFromServer("STUDENT DATA");
+		response.setResponseData(student);
 		// sent to client.
 		try {
-			client.sendToClient(respond);
+			client.sendToClient(response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// serverFrame.printToTextArea(??.toString());
+		printMessageInLogFramServer("Message to Client: transferred the ", response);// print to server log.
 
 	}
 
@@ -315,16 +317,16 @@ public class CEMSserver extends AbstractServer {
 		}
 		teacher.setProfessions(teacherProfessions);
 		// create ResponseFromServer (to client) with all student data.
-		ResponseFromServer respond = new ResponseFromServer("TEACHER DATA");
-		respond.setResponseData(teacher);
+		ResponseFromServer response = new ResponseFromServer("TEACHER DATA");
+		response.setResponseData(teacher);
 		// sent to client.
 		try {
-			client.sendToClient(respond);
+			client.sendToClient(response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		// serverFrame.printToTextArea(??.toString());
+		printMessageInLogFramServer("Message to Client: transferred the ", response);// print to server log.
 
 	}
 

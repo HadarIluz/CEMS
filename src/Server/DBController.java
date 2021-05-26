@@ -61,7 +61,7 @@ public class DBController {
 	public ResponseFromServer verifyLoginUser(Object obj) {
 
 		User existUser = (User) obj;
-		ResponseFromServer respond = null;
+		ResponseFromServer response = null;
 
 		try {
 			PreparedStatement pstmt;
@@ -82,15 +82,15 @@ public class DBController {
 		}
 		//in case not found any user match..
 		if (existUser.getPassword() == null) {
-			respond = new ResponseFromServer("USER NOT FOUND");
+			response = new ResponseFromServer("USER NOT FOUND");
 		}
 		else{
-			respond = new ResponseFromServer("USER FOUND");	
+			response = new ResponseFromServer("USER FOUND");	
 		}
 		// ResponseFromServer class ready to client with StatusMsg and  
 		//'Object responseData', in case user found existUser include all data, otherwise null.
-		respond.setResponseData(existUser);
-		return respond;
+		response.setResponseData(existUser);
+		return response;
 	}
 	
 	
