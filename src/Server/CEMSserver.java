@@ -11,6 +11,7 @@ import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
 import entity.ExtensionRequest;
+import entity.Profession;
 import entity.Question;
 import entity.Student;
 import entity.Teacher;
@@ -146,7 +147,12 @@ public class CEMSserver extends AbstractServer {
 		case "getTeacherData_Login": {
 			// logic of login- gets teacher`s profession after successfully login action.
 			Teacher teacher = (Teacher) req.getRequestData();
-			teacher = dbController.getTeacherProfession_Logged(teacher);
+			ArrayList<String> professionIds = dbController.getTeacherProfessionIDs(teacher);
+			ArrayList<Profession> teacherProfessions = new ArrayList<>();
+			for (String id: professionIds) {
+				teacherProfessions.add(dbController.getProfessionByID(id));
+			}
+			teacher.setProfessions(teacherProfessions);
 			// create ResponseFromServer (to client) with all student data.
 			ResponseFromServer respond = new ResponseFromServer("TEACHER DATA");
 			respond.setResponseData(teacher);
