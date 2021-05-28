@@ -13,12 +13,12 @@
    <children>
       <ImageView fx:id="person" fitHeight="111.0" fitWidth="112.0" layoutX="58.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/teacher-Principal_img/PrincipalUserImg.png" />
+            <Image url="@PrincipalUserImg.png" />
          </image>
       </ImageView>
       <ImageView fx:id="logo" fitHeight="71.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/cems_img/NewLogo.png" />
+            <Image url="@NewLogo.png" />
          </image>
       </ImageView>
       <Label alignment="CENTER" layoutX="38.0" layoutY="172.0" prefHeight="27.0" prefWidth="145.0" text="Hello Principal," textFill="#420775">
@@ -43,7 +43,7 @@
       </Label>
       <ImageView fx:id="phone" fitHeight="25.0" fitWidth="28.0" layoutX="14.0" layoutY="514.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/phoneIcon.png" />
+            <Image url="@phoneIcon.png" />
          </image>
       </ImageView>
       <Label alignment="CENTER_RIGHT" layoutX="39.0" layoutY="546.0" prefHeight="25.0" prefWidth="181.0" text="E-mail: cems@gmail.com">
@@ -56,7 +56,7 @@
       </Label>
       <ImageView fx:id="messageContactUs" fitHeight="62.0" fitWidth="30.0" layoutX="7.0" layoutY="544.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/messageContactUsIcon.png" />
+            <Image url="@email.png" />
          </image>
       </ImageView>
       <Button fx:id="btnGetReports" alignment="CENTER" layoutX="4.0" layoutY="227.0" mnemonicParsing="false" onAction="#btnGetReports" prefHeight="49.0" prefWidth="221.0" text="Get Reports">

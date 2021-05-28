@@ -18,7 +18,7 @@
       </ImageView>
       <ImageView fx:id="imgLogo" fitHeight="71.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/cems_img/NewLogo.png" />
+            <Image url="@NewLogo.png" />
          </image>
       </ImageView>
       <Label alignment="CENTER" layoutX="42.0" layoutY="172.0" prefHeight="27.0" prefWidth="145.0" text="Hello Teacher," textFill="#420775">
@@ -48,7 +48,7 @@
       </Label>
       <ImageView fx:id="imgPhone" fitHeight="25.0" fitWidth="28.0" layoutX="14.0" layoutY="514.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/phoneIcon.png" />
+            <Image url="@phoneIcon.png" />
          </image>
       </ImageView>
       <Label alignment="CENTER_RIGHT" layoutX="39.0" layoutY="546.0" prefHeight="25.0" prefWidth="181.0" text="E-mail: cems@gmail.com">
@@ -61,7 +61,7 @@
       </Label>
       <ImageView fx:id="imgEmail" fitHeight="62.0" fitWidth="30.0" layoutX="7.0" layoutY="544.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/messageContactUsIcon.png" />
+            <Image url="@email.png" />
          </image>
       </ImageView>
       <Button fx:id="btnCreateActiveExam" alignment="CENTER" layoutX="4.0" layoutY="227.0" mnemonicParsing="false" onAction="#btnCreateActiveExam" prefHeight="35.0" prefWidth="221.0" text="Create Active Exam">
