@@ -11,21 +11,21 @@ public class ActiveExam implements Serializable {
 	private Calendar date; // including start time
 	private Exam exam;
 	private String examCode;
-	private int timeOfExam;
+	private int timeAllotedForTest;
 	private String activeExamType = null; //{manual / computerized}
 	private Time time;
 	private Time endTimeToTakeExam;
 
 	public ActiveExam(Exam exam) {
 		this.exam = exam;
-		timeOfExam = exam.getTimeOfExam();
+		timeAllotedForTest = exam.getTimeOfExam();
 	}
 
 	public ActiveExam(Calendar date, Exam exam, String examCode) {
 		this.date = date;
 		this.exam = exam;
 		this.examCode = examCode;
-		timeOfExam = exam.getTimeOfExam();
+		timeAllotedForTest = exam.getTimeOfExam();
 	}
 	//for old enter to exam
 	public ActiveExam(Calendar date, String examCode) {
@@ -40,11 +40,11 @@ public class ActiveExam implements Serializable {
 	}
 	
 	public int getTimeOfExam() {
-		return timeOfExam;
+		return timeAllotedForTest;
 	}
 
 	public void setTimeOfExam(String timeOfExam) {
-		this.timeOfExam = Integer.parseInt(timeOfExam);
+		this.timeAllotedForTest = Integer.parseInt(timeOfExam);
 	}
 
 	public Calendar getDate() {

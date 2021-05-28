@@ -3,9 +3,7 @@ package gui_student;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Time;
-import java.util.Calendar;
 import java.util.ResourceBundle;
-
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
@@ -21,11 +19,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.RequestToServer;
-
 
 /**
  * @author Hadar Iluz
@@ -67,56 +63,50 @@ public class EnterToExamController extends StudentController implements Initiali
 		String studentID = textStudentID.getText().trim();
 
 		boolean condition = checkConditionToStart(examCode, studentID);
-
 		if (condition) {
-
-			// TODO:
-			// Check if there is an active exam for the following parameters:
-			// startTime(00:00:00), examCode
-
 
 //TODO: Should this activeExam be "assigned" to a student somehow? (new table or something else?)..
 //TODO:ASK TEAM.-->do i need to do insert row into table of exam of student?? 
 
-			//newwwwwwwwwwwwwwwwwwwwwwwww:
+			/*
+			 * Gets current time that student try to insert into his active exam The student
+			 * has a half-hour range in which he can enter and begin construction from the
+			 * exam`s start time.
+			 */
 			long now = System.currentTimeMillis();
 			Time sqlTime = new Time(now);
-			//now add half an hour, 1 800 000 miliseconds = 30 minutes
-			long halfAnHourLater = (long) now + 1800000;	
+			// now add half an hour, 1 800 000 miliseconds = 30 minutes
+			long halfAnHourLater = (long) now + 1800000;
 			Time sqlEndRangeTimeToTakeExam = new Time(halfAnHourLater);
 			System.out.println(sqlTime);
 			System.out.println(sqlEndRangeTimeToTakeExam);
-			
-			ActiveExam activeExam = new ActiveExam(sqlTime,sqlEndRangeTimeToTakeExam, examCode);
-			// Request to server to return an examID for this examCode and startTime if
-			// exist.
+
+			ActiveExam activeExam = new ActiveExam(sqlTime, sqlEndRangeTimeToTakeExam, examCode);
+			// Request to server to return an examID for this examCode if exist.
 			// if not return null.
 			RequestToServer req = new RequestToServer("isActiveExamExist");
 			req.setRequestData(activeExam);
 			ClientUI.cems.accept(req);
 
-			// verify if examID return or not.
-
 			if ((CEMSClient.responseFromServer.getResponseType()).equals("ACTIVE EXAM EXIST")) {
-
 				// At this point we found exam so we can be sure an object has arrived in this
 				// response.
 				activeExam = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
 				String existExamID = activeExam.getExam().getExamID();
 				String ActiveExamType = activeExam.getActiveExamType();
-
-				// message in console -DEBUG
-				System.out.println("Respont: there is active examID:" + existExamID + "type: " + ActiveExamType); // PRINT
+				// message in console
+				System.out.println("Respont: there is active examID: " + existExamID + " type: " + ActiveExamType); // PRINT
 
 				// The student has entered all the given details and transfer to exam screen
 				// - computerized or manual
-				((Pane) event.getSource()).getScene().getWindow().hide(); // hiding right pane window
+				// ((Pane) event.getSource()).getScene().getWindow().hide(); // hiding right
+				// pane window
 
 				switch (ActiveExamType) {
 				case "manual": {
 					// load manual start exam fxml
 					try {
-						root = FXMLLoader.load(getClass().getResource("/gui_student/StartManualExam.fxml"));
+						root = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -125,7 +115,7 @@ public class EnterToExamController extends StudentController implements Initiali
 				case "computerized": {
 					// load computerized start exam fxml
 					try {
-						root = FXMLLoader.load(getClass().getResource("/gui_student/SolveExam.fxml"));
+						root = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -148,7 +138,8 @@ public class EnterToExamController extends StudentController implements Initiali
 	 * 
 	 * @param examCode
 	 * @param studentID
-	 * @return Returns true if all fields are filled otherwise returns false.
+	 * @return Returns true if all fields are filled currently, otherwise returns
+	 *         false.
 	 */
 	private boolean checkConditionToStart(String examCode, String studentID) {
 		boolean approve1 = ApprovalInsrtuctions.isSelected();
@@ -193,7 +184,7 @@ public class EnterToExamController extends StudentController implements Initiali
 		for (char ch : str.toCharArray()) {
 			if (!Character.isDigit(ch)) {
 				containsLetter = false;
-				System.out.println("id includ letter");
+				System.out.println("id include letter");
 				break;
 			}
 		}
@@ -218,6 +209,9 @@ public class EnterToExamController extends StudentController implements Initiali
 		dialog.show();
 	}
 
+	/**
+	 * initialize function to prepare the screen after it is loaded.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		student = (Student) ClientUI.loggedInUser.getUser();
@@ -226,13 +220,3 @@ public class EnterToExamController extends StudentController implements Initiali
 	}
 
 }
-
-//TODO: After DEBUG: check if my implementation with 1 'RequestToServer' works, and delete the following:
-//// Request from server to return ActiveExamType of this exist active exam we found.
-//ActiveExam reqActiveExamType = new ActiveExam(time, new Exam(existExamID), examCode);
-//req = new RequestToServer("getActiveExamType");
-//req.setRequestData(reqActiveExamType);
-//ClientUI.cems.accept(req);
-//// server returns examType
-//String examType = (String) CEMSClient.responseFromServer.getResponseData();
-//System.out.println(examType); // message to console for DEBUG.

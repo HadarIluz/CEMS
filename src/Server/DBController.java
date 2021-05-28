@@ -512,29 +512,22 @@ public class DBController {
 	public ResponseFromServer verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
 		Exam exam = new Exam(null);
 		ResponseFromServer response = null;
-		
-		//only for DEBUG:
-//		long now = System.currentTimeMillis();
-//		//now add half an hour, 1 800 000 miliseconds = 30 minutes
-//		Time sqlEndRangeTime = new Time(now);
-//		long halfAnHourLater = (long) now + 1800000; //(30*60*1000)
-//		Time sqlEndRangeTimeToTakeExam = new Time(halfAnHourLater);
-//		System.out.println(halfAnHourLater);
-		
 		/***EnterToExam***/
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE examCode=? and startTime>=? and startTime<?;");
+			pstmt = conn.prepareStatement("SELECT exam, timeAllotedForTest, examType FROM active_exam WHERE examCode=? and startTime>=? and startTime<?;");
 			pstmt.setString(1, activeExam.getExamCode());
 			pstmt.setTime(2, activeExam.getTime());
 			pstmt.setTime(3, activeExam.getEndTimeToTakeExam());
+			//Time Range for start the exam:
+			System.out.println(activeExam.getTime() + " - " + activeExam.getEndTimeToTakeExam());
 			
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				exam.setExamID(rs.getString(1));
 				activeExam.setExam(exam);
-				activeExam.setTimeOfExam(rs.getString(3));
-				activeExam.setActiveExamType(rs.getString(5));
+				activeExam.setTimeOfExam(rs.getString(2));
+				activeExam.setActiveExamType(rs.getString(3));
 				rs.close();
 			}
 			
