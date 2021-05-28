@@ -130,15 +130,16 @@ public class CEMSserver extends AbstractServer {
 		case "isActiveExamExist": {
 			// logic for 'EnterToExam'
 			// verify if activeExam exist at this date, set ActiveExam object if found.
+			ResponseFromServer response = null;
 			ActiveExam activeExam = (ActiveExam) req.getRequestData();
-			activeExam = dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam);
+			response = dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam);
 			// sent to client.
 			try {
-				client.sendToClient(activeExam);
+				client.sendToClient(response);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			// serverFrame.printToTextArea(??.toString());
+			printMessageInLogFramServer("Message to Client:", response);
 		}
 			break;
 

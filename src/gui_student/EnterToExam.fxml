@@ -29,7 +29,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="textExamCode" layoutX="286.0" layoutY="115.0" prefHeight="45.0" prefWidth="205.0" />
+      <TextField fx:id="textExamCode" layoutX="286.0" layoutY="115.0" prefHeight="45.0" prefWidth="205.0" promptText="4-digits/letters only" />
       <TextField fx:id="textStudentID" layoutX="287.0" layoutY="179.0" prefHeight="45.0" prefWidth="205.0" />
       <Label layoutX="283.0" layoutY="345.0" prefHeight="60.0" prefWidth="231.0" text="Best of luck in your exam!" textFill="#1f9aff">
          <font>
@@ -51,6 +51,11 @@
       <Label layoutX="266.0" layoutY="288.0" prefHeight="19.0" prefWidth="27.0" text="*" textFill="#f40808">
          <font>
             <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="textConfirm" layoutX="275.0" layoutY="301.0" prefHeight="60.0" prefWidth="231.0" text="You must confirm all terms" textFill="#ff5421" visible="false">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
          </font>
       </Label>
    </children>

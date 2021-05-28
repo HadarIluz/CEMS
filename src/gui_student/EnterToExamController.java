@@ -1,26 +1,25 @@
 package gui_student;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Calendar;
+import java.util.ResourceBundle;
+
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
-import entity.Exam;
-import entity.ExamOfStudent;
 import entity.Student;
-import entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -30,7 +29,7 @@ import logic.RequestToServer;
  * @author Hadar Iluz
  *
  */
-public class EnterToExamController {
+public class EnterToExamController extends StudentController implements Initializable {
 
 	@FXML
 	private Button btnStart;
@@ -46,9 +45,12 @@ public class EnterToExamController {
 
 	@FXML
 	private CheckBox CommitPreformByMyself;
+	
+    @FXML
+    private Label textConfirm;
 
 	private Student student;
-	private Pane newPaneRight;
+	// private Pane newPaneRight;
 
 	/**
 	 * The method checks that all the conditions for starting the exam have been
@@ -66,32 +68,41 @@ public class EnterToExamController {
 		boolean condition = checkConditionToStart(examCode, studentID);
 
 		if (condition) {
+
+			// TODO:
+			// Check if there is an active exam for the following parameters:
+			// startTime(00:00:00), examCode
+
 			Calendar time = Calendar.getInstance();
 			System.out.println("The current date is : " + time.getTime());
 			time.add(Calendar.HOUR, 0);
-			// Prepared student id
-			int id = Integer.parseInt(studentID.trim());
-			student.setId(id);
+
+			System.out.println(time); // --DEBUG
 //TODO: Should this activeExam be "assigned" to a student somehow? (new table or something else?)..
+//TODO:ASK TEAM.-->do i need to do insert row into table of exam of student?? 
 
 			ActiveExam activeExam = new ActiveExam(time, examCode);
-			// Request to server to checks if examID for this examCode and date are exist.
-			// if yes so return it examID. else return null.
+			System.out.println(activeExam.getActiveExamStartTime()); // --DEBUG
+
+			// Request to server to return an examID for this examCode and startTime if
+			// exist.
+			// if not return null.
 			RequestToServer req = new RequestToServer("isActiveExamExist");
 			req.setRequestData(activeExam);
 			ClientUI.cems.accept(req);
 
 			// verify if examID return or not.
-			if ((CEMSClient.responseFromServer.getStatusMsg().getStatus()).equals("ACTIVE EXAM EXIST")) {
+
+			if ((CEMSClient.responseFromServer.getResponseType()).equals("ACTIVE EXAM EXIST")) {
 
 				// At this point we found exam so we can be sure an object has arrived in this
 				// response.
-				ActiveExam exam = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
-				String existExamID = exam.getExam().getExamID();
-				String ActiveExamType = exam.getActiveExamType();
+				activeExam = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
+				String existExamID = activeExam.getExam().getExamID();
+				String ActiveExamType = activeExam.getActiveExamType();
 
-				// message in console
-				System.out.println("Respont: there is active examID:" + existExamID + "type: " + ActiveExamType); //PRINT
+				// message in console -DEBUG
+				System.out.println("Respont: there is active examID:" + existExamID + "type: " + ActiveExamType); // PRINT
 
 				// The student has entered all the given details and transfer to exam screen
 				// - computerized or manual
@@ -101,8 +112,7 @@ public class EnterToExamController {
 				case "manual": {
 					// load manual start exam fxml
 					try {
-						this.newPaneRight = FXMLLoader
-								.load(getClass().getResource("/gui_student/StartManualExam.fxml"));
+						root = FXMLLoader.load(getClass().getResource("/gui_student/StartManualExam.fxml"));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -111,7 +121,7 @@ public class EnterToExamController {
 				case "computerized": {
 					// load computerized start exam fxml
 					try {
-						this.newPaneRight = FXMLLoader.load(getClass().getResource("/gui_student/SolveExam.fxml"));
+						root = FXMLLoader.load(getClass().getResource("/gui_student/SolveExam.fxml"));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -129,7 +139,7 @@ public class EnterToExamController {
 	}
 
 	/**
-	 * Checks whether the student has filled all the required fields, if not open
+	 * Checks whether the student has filled all the required fields, if not display
 	 * popUp message.
 	 * 
 	 * @param examCode
@@ -139,15 +149,51 @@ public class EnterToExamController {
 	private boolean checkConditionToStart(String examCode, String studentID) {
 		boolean approve1 = ApprovalInsrtuctions.isSelected();
 		boolean approve2 = CommitPreformByMyself.isSelected();
-
+		textConfirm.setVisible(false);
+		
 		if (examCode.length() == 0 || studentID.length() == 0 || examCode.length() != 4) {
 			popUp("One or more of the parameters which insert are incorrect. Please try again.");
 			return false;
-		} else if (!approve1 && !approve2) {
-			popUp("You must confirm all terms in orderto start the exam!");
+		} else if (checkStudentID(studentID)) {
+			return false;
+		} else if (!approve1 || !approve2) {
+			textConfirm.setVisible(true);
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param studentID
+	 * @return true if the id that student insert match to this logged student AND
+	 *         if id includes only digits.
+	 */
+	private boolean checkStudentID(String studentID) {
+		if (studentID.equals(String.valueOf(student.getId())) == false && isOnlyDigits(studentID)) {
+			popUp("The ID you entered does not match your profile information.\n"
+					+ "You can not take this exam. try again");
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * this method checks if the given string includes letters.
+	 * 
+	 * @param str
+	 * @return true only if the String contains something that isn't a digit.
+	 */
+	private boolean isOnlyDigits(String str) {
+		boolean containsLetter = true;
+		for (char ch : str.toCharArray()) {
+			if (!Character.isDigit(ch)) {
+				containsLetter = false;
+				System.out.println("id includ letter");
+				break;
+			}
+		}
+		return containsLetter;
 	}
 
 	/**
@@ -159,36 +205,19 @@ public class EnterToExamController {
 		final Stage dialog = new Stage();
 		VBox dialogVbox = new VBox(20);
 		Label lbl = new Label(msg);
-		lbl.setPadding(new Insets(5));
+		lbl.setPadding(new Insets(15));
 		lbl.setAlignment(Pos.CENTER);
 		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), 15);
+		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
 		dialog.setScene(dialogScene);
 		dialog.show();
 	}
 
-	// Loading this fxml window while loading this controller from another location
-	// Not sure it's need to be like that !!!
-
-	/**
-	 * load this controller, performs initialization.
-	 * 
-	 * @param primaryStage
-	 */
-	public void start(Stage primaryStage) {
-		try {
-			newPaneRight = FXMLLoader.load(getClass().getResource("/gui_student/EnterToExam.fxml"));
-			GridPane root = null;
-			root.add(newPaneRight, 1, 0);
-			Scene scene = new Scene(root);
-
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
-			System.out.println(e);
-			e.printStackTrace();
-		}
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		student = (Student) ClientUI.loggedInUser.getUser();
+		textConfirm.setVisible(false);
 
 	}
 

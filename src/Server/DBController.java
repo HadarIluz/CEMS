@@ -509,13 +509,13 @@ public class DBController {
 	/**
 	 * @param activeExam object which include 2 parameters of date and examcode for Query.
 	 */
-	public ActiveExam verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
+	public ResponseFromServer verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
 		Exam exam = new Exam(null);
-		ResponseFromServer respond = null;
+		ResponseFromServer response = null;
 		/***EnterToExam***/
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE date=? examcode=?;");
+			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE startTime=? examCode=?;");
 			pstmt.setString(1, activeExam.getActiveExamStartTime());
 			pstmt.setString(2, activeExam.getExamCode());
 
@@ -523,7 +523,8 @@ public class DBController {
 			if (rs.next()) {
 				exam.setExamID(rs.getString(1));
 				activeExam.setExam(exam);
-				activeExam.setActiveExamType(rs.getString(2));
+				activeExam.setTimeOfExam(rs.getString(3));
+				activeExam.setActiveExamType(rs.getString(5));
 				rs.close();
 			}
 			
@@ -532,12 +533,13 @@ public class DBController {
 		}
 		
 		if (activeExam.getExam()== null) {
-			respond = new ResponseFromServer("ACTIVE EXAM EXIST");		// StatusMsg.statusMsg
-			respond.setResponseData(activeExam);
+			response = new ResponseFromServer("ACTIVE EXAM_NOT_EXIST");
+			
 		} else {
-			respond = new ResponseFromServer("ACTIVE EXAM_NOT_EXIST");	// StatusMsg.statusMsg
+			response = new ResponseFromServer("ACTIVE EXAM EXIST");	
+			response.setResponseData(activeExam);
 		}
-		return activeExam;
+		return response;
 		
 	}
 	
