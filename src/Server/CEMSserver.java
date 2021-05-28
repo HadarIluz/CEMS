@@ -117,7 +117,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 			
 		case "createNewExtensionRequest": {
-			dbController.createNewExtensionRequest((ExtensionRequest) req.getRequestData());
+			createNewExtensionRequest((ExtensionRequest) req.getRequestData(), client);
 		}
 			break;
 
@@ -404,14 +404,16 @@ public class CEMSserver extends AbstractServer {
 	}
 	
 	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
-		ActiveExam activeExamInSystem = null; //need?? 
 		ResponseFromServer respon = dbController.verifyActiveExam((ActiveExam) activeExam);
-		activeExamInSystem = (ActiveExam) respon.getResponseData(); //need??
 		try {
 			client.sendToClient(respon);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+	}
+	
+	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {
+		dbController.createNewExtensionRequest(extensionRequest);
 	}
 }

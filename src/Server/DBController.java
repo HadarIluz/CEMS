@@ -321,8 +321,7 @@ public class DBController {
 			pstmt.setString(1, existActiveExam.getExam().getExamID());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-////Matar: there is problem here because the line below. need to fix //// ????
-			//	existActiveExam.setDate((Calendar) rs.getObject(2));
+				existActiveExam.setTime(rs.getTime(2));
 				existActiveExam.setTimeOfExam(rs.getString(3));
 				existActiveExam.setExamCode(rs.getString(4));
 				rs.close();
@@ -355,7 +354,6 @@ public class DBController {
 			pstmt.setString(1, extensionRequest.getActiveExam().getExam().getExamID());
 			pstmt.setString(2, extensionRequest.getAdditionalTime());
 			pstmt.setString(3, extensionRequest.getReason());
-
 			if (pstmt.executeUpdate() == 1) {
 				return true;
 			}
@@ -364,7 +362,6 @@ public class DBController {
 			return false;
 		}
 		return false;
-
 	}
 
 	public ArrayList<TestRow> GetTeacherExams(Object obj) {
@@ -515,10 +512,10 @@ public class DBController {
 		/***EnterToExam***/
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE date=? examcode=?;");
-			pstmt.setString(1, activeExam.getActiveExamStartTime());
-			pstmt.setString(2, activeExam.getExamCode());
-
+			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE examCode=? and startTime>=? and startTime<?;");
+			pstmt.setString(1, activeExam.getExamCode());
+			pstmt.setTime(2, activeExam.getTime());
+			//pstmt.setTime(3, activeExam.getEndTimeToTakeExam());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				exam.setExamID(rs.getString(1));

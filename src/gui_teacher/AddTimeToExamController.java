@@ -94,7 +94,7 @@ public class AddTimeToExamController {
 						RequestToServer extReq = new RequestToServer("createNewExtensionRequest");
 						extReq.setRequestData(newExtensionReq);
 ////Matar: work until here	 ////					
-						//ClientUI.cems.accept(extReq);
+					//	ClientUI.cems.accept(extReq);
 						popUp("The request to add time for the exam was sent to the principal.\nPlease wait for approval.");	
 					}
 				}
