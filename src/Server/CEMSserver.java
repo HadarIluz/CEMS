@@ -413,14 +413,24 @@ public class CEMSserver extends AbstractServer {
 	}
 	
 	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
-		//ActiveExam activeExamInSystem = null;
+		ActiveExam activeExamInSystem = null; //need??
 		ResponseFromServer respon = dbController.verifyActiveExam((ActiveExam) activeExam);
-		//activeExamInSystem = (ActiveExam) respon.getResponseData();
+		activeExamInSystem = (ActiveExam) respon.getResponseData(); //need??
+		System.out.println(activeExamInSystem.getExamCode()); //// good
 		try {
-			client.sendToClient(respon);
+			client.sendToClient(respon); //??
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
+	
+
+		//ResponseFromServer respon = dbController.verifyLoginUser((User) user);
+
+		//boolean exist = loggedInUsers.containsValue(userInSystem.getId()); // check if hashMap contains this user id
+		// in case this user exist in 'loggedInUsers' update isLogged to 1.
+		//if (exist) {
+			//user.setLogged(1); // set isLogged to 1.
+		//}
 }

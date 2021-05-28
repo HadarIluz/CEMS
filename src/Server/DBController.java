@@ -321,8 +321,8 @@ public class DBController {
 			pstmt.setString(1, existActiveExam.getExam().getExamID());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				existActiveExam.setExam((Exam) rs.getObject(1));
-				existActiveExam.setDate((Calendar) rs.getObject(2));
+////Matar: there is problem here because the line below. need to fix ////
+			//	existActiveExam.setDate((Calendar) rs.getObject(2));
 				existActiveExam.setTimeOfExam(rs.getString(3));
 				existActiveExam.setExamCode(rs.getString(4));
 				rs.close();
@@ -339,7 +339,7 @@ public class DBController {
 		// 'Object responseData', in case active exam found existActiveExam include all
 		// data, other null.
 		response.setResponseData(existActiveExam);
-		return response;
+		return response;	
 	}
 
 	/**

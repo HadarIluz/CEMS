@@ -74,7 +74,7 @@ public class ActiveExam implements Serializable {
 	// maybe should be moved to controller????
 	// this method calculate the end time by doing: start time + time of exam
 	public Calendar getEndTime() {
-		Calendar endTime = date.getInstance();
+		Calendar endTime = Calendar.getInstance();
 		int hoursOfExam = exam.getTimeOfExam() / 60;
 		int minutesOfExam = exam.getTimeOfExam() % 60;
 		endTime.add(Calendar.HOUR, hoursOfExam);
@@ -83,9 +83,9 @@ public class ActiveExam implements Serializable {
 	}
 	
 	public String getActiveExamStartTime() {
-		Calendar startTime = date.getInstance();
-		int startH= date.HOUR;
-		int startM= this.date.MINUTE;
+		Calendar startTime = Calendar.getInstance();
+		int startH= Calendar.HOUR;
+		int startM= Calendar.MINUTE;
 		startTime.add(startH, 0);
 		startTime.add(startM, 0);
 		SimpleDateFormat sdf = new SimpleDateFormat("h:mm"); //For example 12:08 

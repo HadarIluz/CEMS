@@ -52,6 +52,7 @@ public class AddTimeToExamController {
 		String examCode = textExamCode.getText();
 		String additionalTime = textAdditionalTime.getText();
 		String reqReason = textReqReason.getText();
+		ActiveExam respon; //////////
 
 		// Check that all fields that must be filled are filled.
 		if (textExamID.getText().trim().isEmpty()) {
@@ -67,15 +68,12 @@ public class AddTimeToExamController {
 		else {
 			if (examID.length() == 6 && isOnlyDigits(examID) && examCode.length() == 4
 					&& isOnlyDigits(additionalTime)) {
-//////////////////////////////////////////////////////////////////////////////////////////////
 				exam = new Exam(examID);
 				activeExam = new ActiveExam(exam);
-////Matar: exam contain only examID but in create activeExam it is intalize timeOfExam////
 				// set in 'Serializable' class my request from server.
 				RequestToServer req = new RequestToServer("addTimeToExam");
 				req.setRequestData(activeExam);
 				System.out.println("CHECK0"); ///////////////
-////Matar: UNTIL HERE IT IS WORK !!  PRINT CHECK 0 ////
 				ClientUI.cems.accept(req); // sent server pk(exam) to DB in order to checks if activeExam exist or not.
 				System.out.println("CHECK1");///////////////
 				// activeExam does not exist in cems system.
@@ -85,14 +83,17 @@ public class AddTimeToExamController {
 					System.out.println("CHECK2");//////////////
 
 				}
-////Matar: the problem is in searching the exam in DB.////
 				// handle case that activeExam found and checks examCode.
 				else {
+					respon = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
 					System.out.println("CHECK3"); /////////////
-
 					// the exam code entered does not match the set exam code
-					if (examCode.equals(activeExam.getExamCode()) == false)
+					System.out.println(examCode);//////////////
+					System.out.println(respon.getExamCode());//////////////
+
+					if (examCode.equals(respon.getExamCode()) == false)
 						popUp("The examCode insert is incorrect. Please try again.");
+//// Matar: UNTIL HERE IT IS WORK !! ////
 					// the exam code entered correctly.
 					else if (Integer.parseInt(additionalTime) <= 0)
 						// When additional time is not a positive number.
