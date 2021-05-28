@@ -47,7 +47,7 @@ public class AddTimeToExamController {
 	 * @throws IOException if failed.
 	 */
 	@FXML
-	void btnSubmitTimeExtentionRequest(ActionEvent event) {
+	void btnSubmitTimeExtentionRequest(ActionEvent event) throws IOException {
 		String examID = textExamID.getText();
 		String examCode = textExamCode.getText();
 		String additionalTime = textAdditionalTime.getText();
@@ -67,39 +67,46 @@ public class AddTimeToExamController {
 		else {
 			if (examID.length() == 6 && isOnlyDigits(examID) && examCode.length() == 4
 					&& isOnlyDigits(additionalTime)) {
+//////////////////////////////////////////////////////////////////////////////////////////////
 				exam = new Exam(examID);
 				activeExam = new ActiveExam(exam);
+////Matar: exam contain only examID but in create activeExam it is intalize timeOfExam////
 				// set in 'Serializable' class my request from server.
 				RequestToServer req = new RequestToServer("addTimeToExam");
 				req.setRequestData(activeExam);
-				// work until here
+				System.out.println("CHECK0"); ///////////////
+////Matar: UNTIL HERE IT IS WORK !!  PRINT CHECK 0 ////
 				ClientUI.cems.accept(req); // sent server pk(exam) to DB in order to checks if activeExam exist or not.
+				System.out.println("CHECK1");///////////////
 				// activeExam does not exist in cems system.
-				if (CEMSClient.statusMsg.getStatus().equals("ACTIVE EXAM NOT FOUND")) {
+				if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("ACTIVE EXAM NOT FOUND")) {
 					System.out.println("press on submit button and server returns: -->ACTIVE EXAM NOT FOUND");
 					popUp("This activeExam doesn`t exist in CEMS system.");
+					System.out.println("CHECK2");//////////////
+
 				}
+////Matar: the problem is in searching the exam in DB.////
 				// handle case that activeExam found and checks examCode.
 				else {
+					System.out.println("CHECK3"); /////////////
+
 					// the exam code entered does not match the set exam code
-					if (examCode.equals(activeExam.getExamCode()) == false) {
+					if (examCode.equals(activeExam.getExamCode()) == false)
 						popUp("The examCode insert is incorrect. Please try again.");
-					}
 					// the exam code entered correctly.
+					else if (Integer.parseInt(additionalTime) <= 0)
+						// When additional time is not a positive number.
+						popUp("The additional time must be positive.");
 					else {
-						//When additional time is not a positive number.
-						if(Integer.parseInt(additionalTime) <= 0) {
-							popUp("The additional time must be positive.");
-						}
-						else {
-							ExtensionRequest newExtensionReq = new ExtensionRequest(activeExam, additionalTime, reqReason);
-							RequestToServer extReq = new RequestToServer("createNewExtensionRequest");
-							req.setRequestData(newExtensionReq);
-							ClientUI.cems.accept(extReq);
-						}
+////Matar: to check from here.////						
+						ExtensionRequest newExtensionReq = new ExtensionRequest(activeExam, additionalTime, reqReason);
+						RequestToServer extReq = new RequestToServer("createNewExtensionRequest");
+						req.setRequestData(newExtensionReq);
+						ClientUI.cems.accept(extReq);
 					}
 				}
-			}
+			} else 
+				popUp("At least one of the fields was not entered as required.\nExam ID number: 6 digits\nExam code number: 4 digits or letters\nExtra time for the exam: A positive number");
 		}
 	}
 

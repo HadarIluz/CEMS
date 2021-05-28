@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 //Entity class - define Active Exam in the CEMS system.
+@SuppressWarnings("serial")
 public class ActiveExam implements Serializable {
 
 	private Calendar date; // including start time
