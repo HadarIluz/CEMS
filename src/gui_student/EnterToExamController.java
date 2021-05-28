@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.RequestToServer;
@@ -101,13 +102,16 @@ public class EnterToExamController extends StudentController implements Initiali
 				// - computerized or manual
 				// ((Pane) event.getSource()).getScene().getWindow().hide(); // hiding right
 				// pane window
-
 				switch (ActiveExamType) {
 				case "manual": {
 					// load manual start exam fxml
 					try {
-						root = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
+						Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
+						newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+						StudentController.root.add(newPaneRight, 1, 0);
+						SolveExamController.setActiveExamState(activeExam);
 					} catch (IOException e) {
+						System.out.println("Couldn't load!");
 						e.printStackTrace();
 					}
 				}
@@ -115,18 +119,20 @@ public class EnterToExamController extends StudentController implements Initiali
 				case "computerized": {
 					// load computerized start exam fxml
 					try {
-						root = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
+						Pane newPaneRight = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
+						newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+						StudentController.root.add(newPaneRight, 1, 0);
+						SolveExamController.setActiveExamState(activeExam);
 					} catch (IOException e) {
+						System.out.println("Couldn't load!");
 						e.printStackTrace();
 					}
 				}
 					break;
-				}// END switch
+				}
 
 			} else {
-
 				popUp("There is no active exam for exam code number: " + examCode);
-
 			}
 
 		}

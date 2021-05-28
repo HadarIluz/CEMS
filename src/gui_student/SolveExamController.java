@@ -1,7 +1,12 @@
 package gui_student;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import entity.ActiveExam;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -11,7 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
-public class SolveExamController {
+public class SolveExamController implements Initializable{
 
 	@FXML
 	private Button btnSubmitExam;
@@ -63,7 +68,12 @@ public class SolveExamController {
 
 	@FXML
 	private Label lblnotificationMsg;
+	
+	
 
+    private static ActiveExam newActiveExam;
+
+    
 	@FXML
 	void btnAnswer1(MouseEvent event) {
 
@@ -92,6 +102,16 @@ public class SolveExamController {
 	@FXML
 	void checkBoxShowTime(MouseEvent event) {
 
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
+		newActiveExam = newActiveExamInProgress;
 	}
 
 }

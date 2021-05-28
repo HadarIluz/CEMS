@@ -128,18 +128,8 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "isActiveExamExist": {
-			// logic for 'EnterToExam'
-			// verify if activeExam exist at this date, set ActiveExam object if found.
-			ResponseFromServer response = null;
-			ActiveExam activeExam = (ActiveExam) req.getRequestData();
-			response = dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam);
-			// sent to client.
-			try {
-				client.sendToClient(response);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			printMessageInLogFramServer("Message to Client:", response);
+			isActiveExamExist((ActiveExam) req.getRequestData(), client);
+
 		}
 			break;
 
@@ -214,6 +204,32 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	/*------------------------------------Private Methods-------------------------------------------------*/
+
+	/**
+	 * Verify if activeExam exist at this time, set ActiveExam object if found.
+	 * 
+	 * @param activeExam
+	 * @param client
+	 */
+	private void isActiveExamExist(ActiveExam activeExam, ConnectionToClient client) {
+		// logic for 'EnterToExam'
+		ResponseFromServer response = null;
+		response = dbController.verifyActiveExam_byDate_and_Code(activeExam);
+		// sent to client.
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+
+	}
+
+	/**
+	 * @param requestData
+	 * @param client
+	 */
 	private void clientDisconected(Object requestData, ConnectionToClient client) {
 		if (requestData instanceof User) {
 			User user = (User) requestData;
@@ -233,11 +249,10 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
-	/*------------------------------------Private Methods-------------------------------------------------*/
-
 	/**
-	 * @param str is a message which displayed in server`s log.
-	 * @param response contains the information that the server transmits to the Client.
+	 * @param str      is a message which displayed in server`s log.
+	 * @param response contains the information that the server transmits to the
+	 *                 client.
 	 */
 	private void printMessageInLogFramServer(String str, ResponseFromServer response) {
 		serverFrame.printToTextArea("--->" + str + " " + response.toString());
@@ -245,7 +260,7 @@ public class CEMSserver extends AbstractServer {
 
 	//
 	/**
-	 * @param user is who server needs to identify the details.
+	 * @param user   is who server needs to identify the details.
 	 * @param client
 	 */
 	private void getUser(User user, ConnectionToClient client) {
@@ -268,8 +283,10 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
-	/** logic of login: update logged status after successfully LOGIN action.
-	 * @param user who server needs to identify and update his details.
+	/**
+	 * logic of login: update logged status after successfully LOGIN action.
+	 * 
+	 * @param user   who server needs to identify and update his details.
 	 * @param client
 	 */
 	private void UpdateUserLoggedIn(User user, ConnectionToClient client) {
@@ -287,8 +304,10 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
-	/**logic of login: update logged status after LOGOUT action.
-	 * @param user who server needs to identify and update his details.
+	/**
+	 * logic of login: update logged status after LOGOUT action.
+	 * 
+	 * @param user   who server needs to identify and update his details.
 	 * @param client
 	 */
 	private void UpdateUserLoggedOut(User user, ConnectionToClient client) {
@@ -306,7 +325,9 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
-	/**logic of login- gets student`s courses after successfully LOGIN action.
+	/**
+	 * logic of login- gets student`s courses after successfully LOGIN action.
+	 * 
 	 * @param student who server needs to identify and get his all data.
 	 * @param client
 	 */
