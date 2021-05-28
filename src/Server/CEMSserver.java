@@ -250,7 +250,7 @@ public class CEMSserver extends AbstractServer {
 	private void getUser(User user, ConnectionToClient client) {
 		// logic of login
 		User userInSystem = null;
-		ResponseFromServer respon = dbController.verifyLoginUser((User) user);
+		ResponseFromServer respon = dbController.verifyLoginUser(user);
 
 		userInSystem = (User) respon.getResponseData();
 		boolean exist = loggedInUsers.containsValue(userInSystem.getId()); // check if hashMap contains this user id

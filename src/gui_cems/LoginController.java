@@ -136,12 +136,14 @@ public class LoginController {
 			// handle case that user found and checks password && if the user already
 			// login(now) by checking (isLogged()==1) && userType
 			else {
-				if (userPassword.equals(user.getPassword()) == false) {
+				user = (User)CEMSClient.responseFromServer.getResponseData();
+				if (userPassword.equals(user.getPassword()) == false ) {
 					popUp("The password insert is incorrect. Please try again.");
-				} else if (user.isLogged() == 1) {
-					popUp("This user already login to CEMS system!.");
-
-				} else {
+				} 
+				else if(userID.equals(user.getId())==false) {
+					popUp("The id insert is incorrect. Please try again.");
+				}
+				else {
 
 					user.setLogged(1);
 
@@ -221,7 +223,6 @@ public class LoginController {
 					System.out.println(user.getId() + " login Successfully as: " + user.getUserType().toString());
 
 					// sent to server pk(id) in order to change the login status of this user.
-					
 					RequestToServer reqLogged = new RequestToServer("UpdateUserLoggedIn");
 					reqLogged.setRequestData(user);
 					ClientUI.cems.accept(reqLogged);
@@ -234,6 +235,8 @@ public class LoginController {
 		// handle case that one of the parameters is invalid.
 		else {
 			popUp("One or more of the parameters which insert are incorrect.\n Please try again.");
+			reqFieldUserName.setText("");;
+			reqFieldPassword.setText("");
 		}
 
 	}

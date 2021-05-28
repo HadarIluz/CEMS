@@ -58,11 +58,11 @@ public class DBController {
 	/*checks if the user that try to login exists in the DB.
 	 * @param obj of user which include student id to verify if exists.
 	 */
-	public ResponseFromServer verifyLoginUser(Object obj) {
+	public ResponseFromServer verifyLoginUser(User obj) {
 
-		User existUser = (User) obj;
+		User existUser = obj;
 		ResponseFromServer response = null;
-
+		existUser.setPassword(null); //put null in order to check at the end if user found or not by this id.
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM user WHERE id=?");
@@ -80,8 +80,8 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		//in case not found any user match..
-		if (existUser.getPassword() == null) {
+		//in case not found any user match ..
+		if (existUser.getPassword() ==null) {
 			response = new ResponseFromServer("USER NOT FOUND");
 		}
 		else{
