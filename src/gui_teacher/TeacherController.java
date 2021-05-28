@@ -2,8 +2,12 @@ package gui_teacher;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import client.ClientUI;
+import entity.Profession;
+import entity.Teacher;
 import entity.User;
 import gui_cems.LoginController;
 import javafx.application.Application;
@@ -70,6 +74,7 @@ public class TeacherController extends Application implements Initializable {
 	public Scene scene;
 	protected User teacher;
 	LoginController login;
+	 private static HashMap<String, Profession> professionsMap = null;
 
 	@FXML
 	void brnManageQuestionsBank(ActionEvent event) {
@@ -199,7 +204,7 @@ public class TeacherController extends Application implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		teacher=ClientUI.loggedInUser.getUser();
 		textTeacherName.setText(teacher.getFirstName()+" " +teacher.getLastName());
-		
+		setProfessionMap(((Teacher)ClientUI.loggedInUser.getUser()).getProfessions());
 		Image flag = new Image("file:src/images/teacher_userImg.png");
 
 		// private Image flag = new Image("file:src/resources/flag.png");
@@ -207,7 +212,16 @@ public class TeacherController extends Application implements Initializable {
 		imgPrincipal = new ImageView(flag);
 	}
 	
+	public void setProfessionMap(ArrayList<Profession> professionsList) {
+		professionsMap = new HashMap<>();
+		for (Profession p: professionsList) {
+			professionsMap.put(p.getProfessionName(), p);
+		}
+	}
 	
+	public static HashMap<String, Profession> getProfessionsMap() {
+		return professionsMap;
+	}
 
 
 }
