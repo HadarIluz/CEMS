@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -12,7 +13,9 @@ public class ActiveExam implements Serializable {
 	private String examCode;
 	private int timeOfExam;
 	private String activeExamType = null; //{manual / computerized}
-	
+	private Time time;
+	private Time endTimeToTakeExam;
+
 	public ActiveExam(Exam exam) {
 		this.exam = exam;
 		timeOfExam = exam.getTimeOfExam();
@@ -24,9 +27,15 @@ public class ActiveExam implements Serializable {
 		this.examCode = examCode;
 		timeOfExam = exam.getTimeOfExam();
 	}
-	
+	//for old enter to exam
 	public ActiveExam(Calendar date, String examCode) {
 		this.date = date;
+		this.examCode = examCode;
+	}
+	//for new!!! enter to exam
+	public ActiveExam(Time time, Time endTimeToTakeExam, String examCode) { //ok??debug it
+		this.time = time;
+		this.endTimeToTakeExam = endTimeToTakeExam;
 		this.examCode = examCode;
 	}
 	
@@ -80,16 +89,36 @@ public class ActiveExam implements Serializable {
 		endTime.add(Calendar.MINUTE, minutesOfExam);
 		return endTime;
 	}
+//	//still nor used:
+//	public String getActiveExamStartTime() {
+//		Calendar startTime = date.getInstance();
+//		int startH= date.HOUR;
+//		int startM= this.date.MINUTE;
+//		startTime.add(startH, 0);
+//		startTime.add(startM, 0);
+//		SimpleDateFormat sdf = new SimpleDateFormat("h:mm"); //For example 12:08 
+//		String formattedTime = sdf.format(startTime);
+//		System.out.println(formattedTime);
+//		return formattedTime;
+//	}
+//	//still nor used:
+//	public String getActiveExamStartTimeFORMAT_DB() {
+//		return date.HOUR_OF_DAY + ":" + date.MINUTE + ":" + date.SECOND;
+//	}
 	
-	public String getActiveExamStartTime() {
-		Calendar startTime = date.getInstance();
-		int startH= date.HOUR;
-		int startM= this.date.MINUTE;
-		startTime.add(startH, 0);
-		startTime.add(startM, 0);
-		SimpleDateFormat sdf = new SimpleDateFormat("h:mm"); //For example 12:08 
-		String formattedTime = sdf.format(startTime);
-		System.out.println(formattedTime);
-		return formattedTime;
+	public Time getTime() {
+		return time;
+	}
+
+	public void setTime(Time time) {
+		this.time = time;
+	}
+	
+	public Time getEndTimeToTakeExam() {
+		return endTimeToTakeExam;
+	}
+
+	public void setEndTimeToTakeExam(Time endTimeToTakeExam) {
+		this.endTimeToTakeExam = endTimeToTakeExam;
 	}
 }

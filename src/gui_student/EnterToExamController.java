@@ -2,6 +2,7 @@ package gui_student;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
@@ -25,6 +26,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
+
 /**
  * @author Hadar Iluz
  *
@@ -45,12 +47,11 @@ public class EnterToExamController extends StudentController implements Initiali
 
 	@FXML
 	private CheckBox CommitPreformByMyself;
-	
-    @FXML
-    private Label textConfirm;
+
+	@FXML
+	private Label textConfirm;
 
 	private Student student;
-	// private Pane newPaneRight;
 
 	/**
 	 * The method checks that all the conditions for starting the exam have been
@@ -73,17 +74,20 @@ public class EnterToExamController extends StudentController implements Initiali
 			// Check if there is an active exam for the following parameters:
 			// startTime(00:00:00), examCode
 
-			Calendar time = Calendar.getInstance();
-			System.out.println("The current date is : " + time.getTime());
-			time.add(Calendar.HOUR, 0);
 
-			System.out.println(time); // --DEBUG
 //TODO: Should this activeExam be "assigned" to a student somehow? (new table or something else?)..
 //TODO:ASK TEAM.-->do i need to do insert row into table of exam of student?? 
 
-			ActiveExam activeExam = new ActiveExam(time, examCode);
-			System.out.println(activeExam.getActiveExamStartTime()); // --DEBUG
-
+			//newwwwwwwwwwwwwwwwwwwwwwwww:
+			long now = System.currentTimeMillis();
+			Time sqlTime = new Time(now);
+			//now add half an hour, 1 800 000 miliseconds = 30 minutes
+			long halfAnHourLater = (long) now + 1800000;	
+			Time sqlEndRangeTimeToTakeExam = new Time(halfAnHourLater);
+			System.out.println(sqlTime);
+			System.out.println(sqlEndRangeTimeToTakeExam);
+			
+			ActiveExam activeExam = new ActiveExam(sqlTime,sqlEndRangeTimeToTakeExam, examCode);
 			// Request to server to return an examID for this examCode and startTime if
 			// exist.
 			// if not return null.
@@ -150,11 +154,11 @@ public class EnterToExamController extends StudentController implements Initiali
 		boolean approve1 = ApprovalInsrtuctions.isSelected();
 		boolean approve2 = CommitPreformByMyself.isSelected();
 		textConfirm.setVisible(false);
-		
+
 		if (examCode.length() == 0 || studentID.length() == 0 || examCode.length() != 4) {
 			popUp("One or more of the parameters which insert are incorrect. Please try again.");
 			return false;
-		} else if (checkStudentID(studentID)) {
+		} else if (!checkStudentID(studentID)) {
 			return false;
 		} else if (!approve1 || !approve2) {
 			textConfirm.setVisible(true);
