@@ -140,9 +140,9 @@ public class LoginController {
 				if (userPassword.equals(user.getPassword()) == false ) {
 					popUp("The password insert is incorrect. Please try again.");
 				} 
-				else if(userID.equals(user.getId())==false) {
-					popUp("The id insert is incorrect. Please try again.");
-				}
+//				else if(userID.equals((user.getId()).toString()   )==false) {
+//					popUp("The id insert is incorrect. Please try again.");
+//				}
 				else {
 
 					user.setLogged(1);
