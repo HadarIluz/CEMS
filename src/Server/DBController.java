@@ -321,7 +321,7 @@ public class DBController {
 			pstmt.setString(1, existActiveExam.getExam().getExamID());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-////Matar: there is problem here because the line below. need to fix ////
+////Matar: there is problem here because the line below. need to fix //// ????
 			//	existActiveExam.setDate((Calendar) rs.getObject(2));
 				existActiveExam.setTimeOfExam(rs.getString(3));
 				existActiveExam.setExamCode(rs.getString(4));

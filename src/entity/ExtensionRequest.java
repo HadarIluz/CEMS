@@ -2,6 +2,7 @@ package entity;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 //Entity class - define Extension Request in the CEMS system.
 public class ExtensionRequest implements Serializable {
 	private ActiveExam activeExam;

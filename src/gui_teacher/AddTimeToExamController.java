@@ -52,7 +52,7 @@ public class AddTimeToExamController {
 		String examCode = textExamCode.getText();
 		String additionalTime = textAdditionalTime.getText();
 		String reqReason = textReqReason.getText();
-		ActiveExam respon; //////////
+		ActiveExam activeExamInSystem;
 
 		// Check that all fields that must be filled are filled.
 		if (textExamID.getText().trim().isEmpty()) {
@@ -73,37 +73,29 @@ public class AddTimeToExamController {
 				// set in 'Serializable' class my request from server.
 				RequestToServer req = new RequestToServer("addTimeToExam");
 				req.setRequestData(activeExam);
-				System.out.println("CHECK0"); ///////////////
 				ClientUI.cems.accept(req); // sent server pk(exam) to DB in order to checks if activeExam exist or not.
-				System.out.println("CHECK1");///////////////
 				// activeExam does not exist in cems system.
 				if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("ACTIVE EXAM NOT FOUND")) {
 					System.out.println("press on submit button and server returns: -->ACTIVE EXAM NOT FOUND");
 					popUp("This activeExam doesn`t exist in CEMS system.");
-					System.out.println("CHECK2");//////////////
-
 				}
 				// handle case that activeExam found and checks examCode.
 				else {
-					respon = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
-					System.out.println("CHECK3"); /////////////
+					activeExamInSystem = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
 					// the exam code entered does not match the set exam code
-					System.out.println(examCode);//////////////
-					System.out.println(respon.getExamCode());//////////////
-
-					if (examCode.equals(respon.getExamCode()) == false)
+					if (examCode.equals(activeExamInSystem.getExamCode()) == false)
 						popUp("The examCode insert is incorrect. Please try again.");
-//// Matar: UNTIL HERE IT IS WORK !! ////
 					// the exam code entered correctly.
 					else if (Integer.parseInt(additionalTime) <= 0)
 						// When additional time is not a positive number.
 						popUp("The additional time must be positive.");
 					else {
-////Matar: to check from here.////						
 						ExtensionRequest newExtensionReq = new ExtensionRequest(activeExam, additionalTime, reqReason);
 						RequestToServer extReq = new RequestToServer("createNewExtensionRequest");
-						req.setRequestData(newExtensionReq);
-						ClientUI.cems.accept(extReq);
+						extReq.setRequestData(newExtensionReq);
+////Matar: work until here	 ////					
+						//ClientUI.cems.accept(extReq);
+						popUp("The request to add time for the exam was sent to the principal.\nPlease wait for approval.");	
 					}
 				}
 			} else 
