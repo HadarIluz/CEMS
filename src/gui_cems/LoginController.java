@@ -133,16 +133,15 @@ public class LoginController {
 				popUp("This user doesn`t exist in CEMS system.");
 			}
 
-			// handle case that user found and checks password && if the user already
-			// login(now) by checking (isLogged()==1) && userType
+			// handle case that user found and checks password
 			else {
 				user = (User)CEMSClient.responseFromServer.getResponseData();
 				if (userPassword.equals(user.getPassword()) == false ) {
 					popUp("The password insert is incorrect. Please try again.");
 				} 
-//				else if(userID.equals((user.getId()).toString()   )==false) {
-//					popUp("The id insert is incorrect. Please try again.");
-//				}
+				else if(userID.equals(String.valueOf(user.getId()))==false) {
+					popUp("The id insert is incorrect. Please try again.");
+				}
 				else {
 
 					user.setLogged(1);
@@ -382,21 +381,5 @@ public class LoginController {
 
 	}
 	
-	
-	
-	
-	/*
-	 * NOT WORKING with this. //Need to verify with jar file!!
-	 * 
-	 * @Override public void initialize(URL location, ResourceBundle resources) {
-	 * 
-	 * Image image = new
-	 * Image(getClass().getResourceAsStream("..\\..\\images\\LogInBackground.jpg"));
-	 * ImageView imageView = new ImageView(image); imageView.setFitHeight(550);
-	 * imageView.setFitWidth(898);
-	 * 
-	 * //and to the same to the rest of the pic.. }
-	 * 
-	 */
 
 }
