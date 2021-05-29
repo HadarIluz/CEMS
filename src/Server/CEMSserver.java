@@ -111,19 +111,13 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "addTimeToExam": {
-			ActiveExam activeExam = (ActiveExam) req.getRequestData();
-			ActiveExam activeExamInSystem = null;
-			dbController.verifyActiveExam((ActiveExam) activeExam);
-			try {
-				client.sendToClient(activeExamInSystem);
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
+		case "addTimeToExam": { 
+			addTimeToExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
+			
 		case "createNewExtensionRequest": {
-			dbController.createNewExtensionRequest((ExtensionRequest) req.getRequestData());
+			createNewExtensionRequest((ExtensionRequest) req.getRequestData(), client);
 		}
 			break;
 
@@ -429,5 +423,25 @@ public class CEMSserver extends AbstractServer {
 	 */
 	protected void serverStopped() {
 		serverFrame.printToTextArea("Server has stopped listening for connections.");
+	}
+	
+	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
+		ResponseFromServer respon = dbController.verifyActiveExam((ActiveExam) activeExam);
+		try {
+			client.sendToClient(respon);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+	}
+	
+	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {
+		ResponseFromServer respon = dbController.createNewExtensionRequest((ExtensionRequest) extensionRequest);
+		try {
+			client.sendToClient(respon);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
 }

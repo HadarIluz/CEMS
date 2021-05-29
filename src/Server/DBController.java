@@ -312,18 +312,16 @@ public class DBController {
 	 * check if the activeExam exist in the DB
 	 * @param obj of ActiveExam which include exam to verify if exists.
 	 */
-	public void verifyActiveExam(Object obj) {
+	public ResponseFromServer verifyActiveExam(Object obj) {
 		ActiveExam existActiveExam = (ActiveExam) obj;
-		ResponseFromServer respond = null;
+		ResponseFromServer response = null;
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=? ");
+			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=?");
 			pstmt.setString(1, existActiveExam.getExam().getExamID());
-
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				existActiveExam.setExam((Exam) rs.getObject(1));
-				existActiveExam.setDate((Calendar) rs.getObject(2));
+				existActiveExam.setTime(rs.getTime(2));
 				existActiveExam.setTimeOfExam(rs.getString(3));
 				existActiveExam.setExamCode(rs.getString(4));
 				rs.close();
@@ -333,13 +331,14 @@ public class DBController {
 		}
 		// in case not found any active exam match.
 		if (existActiveExam.getExamCode() == null) {
-			respond = new ResponseFromServer("ACTIVE EXAM NOT FOUND");
+			response = new ResponseFromServer("ACTIVE EXAM NOT FOUND");
 		} else
-			respond = new ResponseFromServer("ACTIVE EXAM FOUND");
+			response = new ResponseFromServer("ACTIVE EXAM FOUND");
 		// ResponseFromServer class ready to client with StatusMsg and
 		// 'Object responseData', in case active exam found existActiveExam include all
 		// data, other null.
-		respond.setResponseData(existActiveExam);
+		response.setResponseData(existActiveExam);
+		return response;	
 	}
 
 	/**
@@ -348,23 +347,25 @@ public class DBController {
 	 * @return true if creating a new extension request in DB succeeded, else return
 	 *         false
 	 */
-	public boolean createNewExtensionRequest(ExtensionRequest extensionRequest) {
+	public ResponseFromServer createNewExtensionRequest(ExtensionRequest extensionRequest) {
 		PreparedStatement pstmt;
+		ResponseFromServer response = null;
+
 		try {
 			pstmt = conn.prepareStatement("INSERT INTO extension_request VALUES(?, ?, ?);");
 			pstmt.setString(1, extensionRequest.getActiveExam().getExam().getExamID());
 			pstmt.setString(2, extensionRequest.getAdditionalTime());
 			pstmt.setString(3, extensionRequest.getReason());
-
 			if (pstmt.executeUpdate() == 1) {
-				return true;
+				response = new ResponseFromServer("EXTENSION REQUEST CREATED");
+			}
+			else {
+				response = new ResponseFromServer("EXTENSION REQUEST DIDNT CREATED");
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
-			return false;
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		return false;
-
+		return response;
 	}
 
 	public ArrayList<TestRow> GetTeacherExams(Object obj) {

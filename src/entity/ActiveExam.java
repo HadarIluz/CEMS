@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 //Entity class - define Active Exam in the CEMS system.
+@SuppressWarnings("serial")
 public class ActiveExam implements Serializable {
 
 	private Calendar date; // including start time
@@ -13,7 +14,7 @@ public class ActiveExam implements Serializable {
 	private String examCode;
 	private int timeAllotedForTest;
 	private String activeExamType = null; //{manual / computerized}
-	private Time time;
+	private Time startTime; 	
 	private Time endTimeToTakeExam;
 
 	public ActiveExam(Exam exam) {
@@ -21,8 +22,8 @@ public class ActiveExam implements Serializable {
 		timeAllotedForTest = exam.getTimeOfExam();
 	}
 
-	public ActiveExam(Calendar date, Exam exam, String examCode) {
-		this.date = date;
+	public ActiveExam(Time startTime, Exam exam, String examCode) {
+		this.startTime = startTime;
 		this.exam = exam;
 		this.examCode = examCode;
 		timeAllotedForTest = exam.getTimeOfExam();
@@ -47,12 +48,12 @@ public class ActiveExam implements Serializable {
 		this.timeAllotedForTest = Integer.parseInt(timeOfExam);
 	}
 
-	public Calendar getDate() {
-		return date;
+	public Time getTime() {
+		return startTime;
 	}
 
-	public void setDate(Calendar date) {
-		this.date = date;
+	public void setTime(Time startTime) {
+		this.startTime = startTime;
 	}
 
 	public Exam getExam() {
