@@ -93,9 +93,15 @@ public class AddTimeToExamController {
 						ExtensionRequest newExtensionReq = new ExtensionRequest(activeExam, additionalTime, reqReason);
 						RequestToServer extReq = new RequestToServer("createNewExtensionRequest");
 						extReq.setRequestData(newExtensionReq);
-////Matar: work until here	 ////					
-					//	ClientUI.cems.accept(extReq);
-						popUp("The request to add time for the exam was sent to the principal.\nPlease wait for approval.");	
+						ClientUI.cems.accept(extReq);
+						// the extension didn't sent to the principal.
+						if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("EXTENSION REQUEST DIDN'T CREATED")) {
+							System.out.println("press on submit button and server returns: -->EXTENSION REQUEST DIDN'T CREATED");
+							popUp("The request to add time for the exam was not sent to the principal.");
+						}
+						else {	// the extension sent to the principal.
+							popUp("The request to add time for the exam was sent to the principal.\nPlease wait for approval.");	
+						}
 					}
 				}
 			} else 

@@ -414,6 +414,12 @@ public class CEMSserver extends AbstractServer {
 	}
 	
 	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {
-		dbController.createNewExtensionRequest(extensionRequest);
+		ResponseFromServer respon = dbController.createNewExtensionRequest((ExtensionRequest) extensionRequest);
+		try {
+			client.sendToClient(respon);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
 }

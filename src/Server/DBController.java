@@ -347,21 +347,25 @@ public class DBController {
 	 * @return true if creating a new extension request in DB succeeded, else return
 	 *         false
 	 */
-	public boolean createNewExtensionRequest(ExtensionRequest extensionRequest) {
+	public ResponseFromServer createNewExtensionRequest(ExtensionRequest extensionRequest) {
 		PreparedStatement pstmt;
+		ResponseFromServer response = null;
+
 		try {
 			pstmt = conn.prepareStatement("INSERT INTO extension_request VALUES(?, ?, ?);");
 			pstmt.setString(1, extensionRequest.getActiveExam().getExam().getExamID());
 			pstmt.setString(2, extensionRequest.getAdditionalTime());
 			pstmt.setString(3, extensionRequest.getReason());
 			if (pstmt.executeUpdate() == 1) {
-				return true;
+				response = new ResponseFromServer("EXTENSION REQUEST CREATED");
+			}
+			else {
+				response = new ResponseFromServer("EXTENSION REQUEST DIDNT CREATED");
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
-			return false;
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		return false;
+		return response;
 	}
 
 	public ArrayList<TestRow> GetTeacherExams(Object obj) {
