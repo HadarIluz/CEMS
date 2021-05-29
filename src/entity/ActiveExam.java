@@ -2,7 +2,6 @@ package entity;
 
 import java.io.Serializable;
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 //Entity class - define Active Exam in the CEMS system.
@@ -35,7 +34,7 @@ public class ActiveExam implements Serializable {
 	}
 	//for new!!! enter to exam
 	public ActiveExam(Time time, Time endTimeToTakeExam, String examCode) { //ok??debug it
-		this.time = time;
+		this.startTime = time;
 		this.endTimeToTakeExam = endTimeToTakeExam;
 		this.examCode = examCode;
 	}
@@ -106,14 +105,6 @@ public class ActiveExam implements Serializable {
 //	public String getActiveExamStartTimeFORMAT_DB() {
 //		return date.HOUR_OF_DAY + ":" + date.MINUTE + ":" + date.SECOND;
 //	}
-	
-	public Time getTime() {
-		return time;
-	}
-
-	public void setTime(Time time) {
-		this.time = time;
-	}
 	
 	public Time getEndTimeToTakeExam() {
 		return endTimeToTakeExam;
