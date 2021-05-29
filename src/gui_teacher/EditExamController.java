@@ -1,5 +1,6 @@
 package gui_teacher;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import entity.Question;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -54,13 +57,7 @@ public class EditExamController implements Initializable{
     private TextArea textStudentComment;
 
     @FXML
-    private Button btnUpdate_studentComment;
-
-    @FXML
-    private Button btnUpdate_teacherComment;
-
-    @FXML
-    private Button btnSaveEditeExam;
+    private Button btnSaveEditExam;
 
     @FXML
     private Button btnBack;
@@ -68,15 +65,18 @@ public class EditExamController implements Initializable{
     @FXML
     private Text textNavigation;
     
-    private String commentForTeacher;
-    private String commentForStudent;
-    private String examID;
-    private String TimeAllocatedToExam;
-    public static Exam editedExam;
-    private static HashMap<String, Question> questionsMap = null;
-    private Question selectedQuestion;
+    private String commentForTeacher; // comment for teacher
+    private String commentForStudent; // comment for student 
+    private String examID; // exam ID
+    private String TimeAllocatedToExam; // time allocate for exam
+    public static Exam editedExam; // new exam - the edited exam
+    private static HashMap<String, Question> questionsMap = null; // hash map for questions
+    private Question selectedQuestion; //the question that is chosen to be seen from comboBox
+    
+    private ArrayList<Question> questions; // questions of exist exam- getting it from DB
+    private HashMap<String,Integer> questionScores; // mapping the questionID(string) to score(integer)- getting it from DB
    
-    //TODO: principal
+    //TODO: principal ???
     @FXML
     void btnBack(ActionEvent event) {
 
@@ -85,10 +85,12 @@ public class EditExamController implements Initializable{
     @FXML
     void btnRemoveQuestion(MouseEvent event) {
     	questionsMap.remove(selectedQuestion);
+    	//removing question is changing total score of exam-we need to let the user know and notice for it
+    	popUp("Pay Attention: remove question is chanching eaxm total score");
     }
 
     @FXML
-    void btnSaveEditeExam(ActionEvent event) {
+    void btnSaveEditExam(ActionEvent event) {
 
     	commentForTeacher=textTeacherComment.getText();
         commentForStudent=textStudentComment.getText();;
@@ -102,30 +104,27 @@ public class EditExamController implements Initializable{
      			popUp("Please fill the Time Allocated For Exam Field");
      			} else {
      				if (examID.length() == 6 && isOnlyDigits(examID)&& isOnlyDigits(TimeAllocatedToExam))
-     					editedExam=new Exam(examID); //TODO:need more pk(?)
-     				//editedExam.setTeacher(currentTeacher);
+     					{editedExam=new Exam(examID); //examID is the only PK. There are FK (profession and course) that create together the PK.
+     					
+     					
+     					}	    
+     				//editedExam.setTeacher(currentTeacher);???
+     				
      	    		RequestToServer req = new RequestToServer("SaveEditExam");
      	    		req.setRequestData(editedExam);
-     	    		ClientUI.cems.accept(req);
-     				
+     	    		ClientUI.cems.accept(req);		
      			}
     }
 
     @FXML
     void btnShowQuestion(ActionEvent event) {
     	//TODO: load screen of edit question
-    	popUp(selectedQuestion.getQuestion());
-    }
-
-    @FXML
-    void btnUpdate_studentComment(MouseEvent event) {
-    	commentForStudent=textStudentComment.getText();
     	
-    }
-
-    @FXML
-    void btnUpdate_teacherComment(MouseEvent event) {
-    	commentForTeacher=textTeacherComment.getText();
+    	/*I don't agree to load screen of edit question- 
+    	If we do- how the user will go back? the "back" in edit question screen
+    	 won't go back to edit exam.*/
+    	
+    	popUp(selectedQuestion.getQuestion());	
     }
 
     @FXML
@@ -136,7 +135,7 @@ public class EditExamController implements Initializable{
 
     }
     
-    //load questions from hashMap to combobox. In combobox we will see questionID
+    //load questions from hashMap to comboBox. In comboBox we will see questionID
     public void loadQuestionsToCombobox() {
     	selectQuestion.setItems(FXCollections.observableArrayList(questionsMap.keySet()));
     }
@@ -144,12 +143,23 @@ public class EditExamController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedQuestion = null;
+		
+		
 		//TODO:1. req from server data of the specific exam according to examID.
+		RequestToServer req = new RequestToServer("getEditExamData");
+ 		req.setRequestData(editedExam);
+ 		ClientUI.cems.accept(req);
+ 		
+ 		//goal: edited exam is returning here with all exist exam info.	
+		
+		
 		//2. response(  return Exam)  RequestToServer req = new RequestToServer("getEditExamData");
 		//3. insert data to test filed by setText from object.
+			
+		
 		loadQuestionsToCombobox();
 		
-		//ClientUI.loggedInUser..... המורה מחזירה את רשימתה קורסים שלה ואת השם.
+		//ClientUI.loggedInUser..... המורה מחזירה את רשימתה קורסים שלה ואת השם.???
 	}
     
 	//set hashMap of questions 

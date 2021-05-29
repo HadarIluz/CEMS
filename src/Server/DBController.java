@@ -546,36 +546,30 @@ public class DBController {
 		
 	}
 	
-	
 	/**
 	 * @param EditExam
-	 * @return return true if succeed to edit exist exam, in any other case false.
+	 * @return return the true if succeed to edit exam in table exam in DB, other return false/
 	 */
 	public boolean editExam(Exam editedExam) {
-		Exam existExam = editedExam; //remove, it is the same.
-		
-		
+			
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM exam ;"); //TODO: add WHERE with exam id "WHERE id=?;"
-			pstmt.setString(1, existExam.getExamID());
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				existExam.setCommentForTeacher(editedExam.getCommentForTeacher());
-				existExam.setCommentForStudents(editedExam.getCommentForStudents());
-				existExam.setTimeOfExam(editedExam.getTimeOfExam());
-				existExam.setQuestions(editedExam.getQuestions());
-				rs.close();
+			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE id="+ editedExam.getExamID()+";"); 
+			pstmt.setLong(4, editedExam.getTimeOfExam());
+			pstmt.setString(5, editedExam.getCommentForTeacher());
+			pstmt.setString(6, editedExam.getCommentForStudents());
+			pstmt.setInt(7, editedExam.getAuthor().getId());
+
+			if (pstmt.executeUpdate() == 1) {
+				return true;
 			}
-			
-			//TODO: remove boolean return Exam object.
-		} catch (SQLException ex) {
-			ex.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
 			return false;
 		}
-		return true;
+		return false;
 	}
-
+	
 	public Profession getProfessionByID(String id) {
 		Profession p = new Profession(id);
 

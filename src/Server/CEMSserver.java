@@ -174,10 +174,14 @@ public class CEMSserver extends AbstractServer {
 		}
 
 		case "getEditExamData": {
+			
+			Exam exam = null;
+			
+			
+			
 			// TODO: new Exam object Exam exam=null;
 			// TODO: prepared the array list of question of this exam & HashMap and
 			// others....
-			dbController.editExam((Exam) req.getRequestData());
 			// exam= dbController.editExam(exam);
 			// exam= dbController.funName(exam);
 			// each one ot then returns an object of exam and give to the other until we
@@ -190,7 +194,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "SaveEditExam": {
-			// TODO: "UPDATE #### FROM exam blabla...;"
+			dbController.editExam((Exam) req.getRequestData());
 		}
 			break;
 

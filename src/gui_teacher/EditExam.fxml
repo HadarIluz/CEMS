@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.EditExamController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.EditExamController">
    <children>
       <Text layoutX="80.0" layoutY="249.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question Number : ">
          <font>
@@ -60,16 +60,6 @@
          </font>
       </Text>
       <TextArea fx:id="textStudentComment" layoutX="281.0" layoutY="422.0" prefHeight="91.0" prefWidth="333.0" />
-      <Button fx:id="btnUpdate_studentComment" layoutX="637.0" layoutY="453.0" mnemonicParsing="false" onAction="#btnUpdate_studentComment" onMouseClicked="#btnUpdate_studentComment" prefHeight="30.0" prefWidth="74.0" text="Update">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="btnUpdate_teacherComment" layoutX="637.0" layoutY="346.0" mnemonicParsing="false" onAction="#btnUpdate_teacherComment" onMouseClicked="#btnUpdate_teacherComment" prefHeight="30.0" prefWidth="74.0" text="Update">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
       <Button fx:id="btnSaveEditeExam" layoutX="329.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnSaveEditeExam" prefHeight="30.0" prefWidth="122.0" text="Save Changes">
          <font>
             <Font size="14.0" />
