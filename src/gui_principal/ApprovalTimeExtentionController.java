@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import client.ClientUI;
+import entity.ActiveExam;
 import entity.ExtensionRequest;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -48,6 +49,8 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 	private static HashMap<String, ExtensionRequest> extensionRequestMap = null;
 	private ExtensionRequest selectedExtensionRequest;
 	private int timeOfExam;
+    private static ArrayList<ExtensionRequest> extensionRequestLIst;
+
 	/**
 	 * @param event that occurs when clicking on 'Approve' button
 	 * @throws IOException if failed.
@@ -136,6 +139,10 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
 		dialog.setScene(dialogScene);
 		dialog.show();
+	}
+
+	public static void setExtensionRequestList(ArrayList<ExtensionRequest> extensionRequest) {
+		extensionRequestLIst = extensionRequest;
 	}
 
 }
