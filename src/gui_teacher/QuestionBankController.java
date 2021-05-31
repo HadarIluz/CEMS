@@ -28,7 +28,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
-public class QuestionBankController extends TeacherController implements Initializable  {
+public class QuestionBankController implements Initializable  {
 
     @FXML 
     private Button btnEditQuestion;
@@ -86,7 +86,7 @@ public class QuestionBankController extends TeacherController implements Initial
 		try {
 
 			AnchorPane newPaneRight = FXMLLoader.load(getClass().getResource("CreateQuestion.fxml"));
-			root.add(newPaneRight, 1, 0);
+			TeacherController.root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");
@@ -110,7 +110,7 @@ public class QuestionBankController extends TeacherController implements Initial
     	try {
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditQuestion.fxml"));
-			root.add(newPaneRight, 1, 0);
+			TeacherController.root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");

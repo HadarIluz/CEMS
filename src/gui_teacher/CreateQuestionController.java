@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import client.CEMSClient;
 import client.ClientUI;
+import entity.Course;
 import entity.Profession;
 import entity.Question;
 import entity.Teacher;
@@ -28,7 +30,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class CreateQuestionController extends QuestionBankController implements Initializable{
+public class CreateQuestionController implements Initializable{
 
     @FXML
     private TextField textTheQuestion;
