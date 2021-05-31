@@ -6,10 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import entity.ActiveExam;
 import entity.Course;
@@ -606,7 +603,6 @@ public class DBController {
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM extension_request;");
-
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				exam.setExamID(rs.getString(1));
@@ -616,7 +612,6 @@ public class DBController {
 				extensionRequestsList.add(extensionRequest);
 			}		
 			rs.close();
-
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}	

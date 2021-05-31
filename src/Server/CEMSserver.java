@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import client.ClientUI;
 import entity.ActiveExam;
-import entity.Course;
 import entity.Exam;
 import entity.ExtensionRequest;
 import entity.Profession;
@@ -18,7 +16,6 @@ import entity.Student;
 import entity.Teacher;
 import entity.User;
 import gui_server.ServerFrameController;
-import logic.LoggedInUser;
 import logic.RequestToServer;
 import logic.ResponseFromServer;
 import logic.StatusMsg;
