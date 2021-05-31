@@ -46,10 +46,10 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 	@FXML
 	private Button btnApprove;
 
-	private static HashMap<String, ExtensionRequest> extensionRequestMap = null;
+	private static HashMap<String, ExtensionRequest> extensionRequestMap = new HashMap<String, ExtensionRequest>();
 	private ExtensionRequest selectedExtensionRequest;
 	private int timeOfExam;
-    private static ArrayList<ExtensionRequest> extensionRequestLIst;
+    private static ArrayList<ExtensionRequest> extensionRequestList = new ArrayList<ExtensionRequest>();
 
 	/**
 	 * @param event that occurs when clicking on 'Approve' button
@@ -117,9 +117,9 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 	}
 
 	public static void setExtensionRequestMap(ArrayList<ExtensionRequest> extensionRequestList) {
-		extensionRequestMap = new HashMap<>();
-		for (ExtensionRequest er : extensionRequestList) {
-			extensionRequestMap.put(er.getActiveExam().getExam().getExamID(), er);
+		 for (ExtensionRequest ex : extensionRequestList) {
+			System.out.println(ex);
+			extensionRequestMap.put(ex.getActiveExam().getExam().getExamID(), ex);
 		}
 	}
 
@@ -142,7 +142,7 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 	}
 
 	public static void setExtensionRequestList(ArrayList<ExtensionRequest> extensionRequest) {
-		extensionRequestLIst = extensionRequest;
+		extensionRequestList = extensionRequest;
 	}
 
 }

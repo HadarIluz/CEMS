@@ -124,7 +124,7 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "approvTimeExtention": {
+		case "approvalTimeExtention": {
 			approvTimeExtention((ExtensionRequest)req.getRequestData(), client);
 		}
 			break;

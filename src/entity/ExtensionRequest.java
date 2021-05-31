@@ -14,6 +14,10 @@ public class ExtensionRequest implements Serializable {
 		this.additionalTime = additionalTime;
 		this.reqReason = reqReason;
 	}
+	
+	public ExtensionRequest(ActiveExam activeExam) {
+		this.activeExam = activeExam;
+	}
 
 	public ActiveExam getActiveExam() {
 		return activeExam;

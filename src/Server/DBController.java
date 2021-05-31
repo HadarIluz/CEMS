@@ -597,16 +597,18 @@ public class DBController {
 
 	public ArrayList<ExtensionRequest> getExtensionsRequests() {
 		ArrayList<ExtensionRequest> extensionRequestsList = new ArrayList<ExtensionRequest>();
-		ExtensionRequest extensionRequest = null;
-		Exam exam = null;
-
+		//ExtensionRequest extensionRequest = new ExtensionRequest (null,null,null);
+		Exam exam = new Exam(null);
+		ActiveExam activeExam = new ActiveExam(exam);
+		ExtensionRequest extensionRequest = new ExtensionRequest(activeExam);
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM extension_request;");
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				exam.setExamID(rs.getString(1));
-				extensionRequest.setActiveExam(new ActiveExam (exam));
+				activeExam.setExam(exam);
+				extensionRequest.setActiveExam(activeExam);
 				extensionRequest.setAdditionalTime(rs.getString(2));
 				extensionRequest.setReason(rs.getString(3));
 				extensionRequestsList.add(extensionRequest);
