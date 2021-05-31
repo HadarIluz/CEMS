@@ -45,9 +45,11 @@ public class ApprovalTimeExtentionController implements Initializable {
 	@FXML
 	private Button btnApprove;
 
-	private static HashMap<String, ExtensionRequest> extensionRequestMap = null;
-	private ExtensionRequest selectedExtensionRequest;
-	private int timeOfExam;
+	private static HashMap<String, ExtensionRequest> extensionRequestMap = null; //????need to hold all the requests
+	private ExtensionRequest selectedExtensionRequest; 
+	private int timeOfExam; 
+	//ArrayList<ExtensionRequest> extensionRequestList = new ArrayList<ExtensionRequest>(); //????
+	
 	/**
 	 * @param event that occurs when clicking on 'Approve' button
 	 * @throws IOException if failed.
@@ -64,7 +66,7 @@ public class ApprovalTimeExtentionController implements Initializable {
 			timeOfExam = selectedExtensionRequest.getActiveExam().getExam().getTimeOfExam();
 			timeOfExam += Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
 			selectedExtensionRequest.getActiveExam().getExam().setTimeOfExam(timeOfExam);
-			RequestToServer req = new RequestToServer("approvTimeExtention");
+			RequestToServer req = new RequestToServer("approvTimeExtention");//????to check that update time
 			req.setRequestData(selectedExtensionRequest);
 			ClientUI.cems.accept(req);
 		}
@@ -82,7 +84,7 @@ public class ApprovalTimeExtentionController implements Initializable {
 		}
 		//When a test is selected
 		else {
-			RequestToServer req = new RequestToServer("approvalTimeExtention");
+			RequestToServer req = new RequestToServer("declineTimeExtention");//???? to check that remove the request
 			req.setRequestData(selectedExtensionRequest);
 			ClientUI.cems.accept(req);
 		}
@@ -101,19 +103,23 @@ public class ApprovalTimeExtentionController implements Initializable {
 		}
 	}
 ////Matar: need to fix !! ////
-	public void loadExamExtensionToCombobox() {
+	public void loadExamExtensionsToCombobox() {
+		//RequestToServer req = new RequestToServer("getExtensionRequests");
+		//req.setRequestData(extensionRequestList); 
+		//ClientUI.cems.accept(req);
+		setExtensionRequestMap(extensionRequestList);//????
 		//selectExamExtension.setItems(FXCollections.observableArrayList(extensionRequestMap.keySet()));
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedExtensionRequest = null;
-		loadExamExtensionToCombobox(); 
+		//loadExamExtensionsToCombobox(); 
 		lblAdditionalTime.setText("");
 		textReasonField.setText("");
 	}
 
-	public static void setExtensionRequestMap(ArrayList<ExtensionRequest> extensionRequestList) {
+	public static void setExtensionRequestMap(ArrayList<ExtensionRequest> extensionRequestList) {//????need list of all the requests
 		extensionRequestMap = new HashMap<>();
 		for (ExtensionRequest er : extensionRequestList) {
 			extensionRequestMap.put(er.getActiveExam().getExam().getExamID(), er);

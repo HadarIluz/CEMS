@@ -4,6 +4,7 @@
 package Server;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -100,6 +101,11 @@ public class CEMSserver extends AbstractServer {
 			getTeacherData_Login((Teacher) req.getRequestData(), client);
 		}
 			break;
+			
+		case "getPrincipalData_Login": {
+			getPrincipalData_Login((Principal) req.getRequestData(), client);
+		}
+			break;
 
 		case "createNewQuestion": {
 			createNewQuestion((Question) req.getRequestData());
@@ -135,6 +141,7 @@ public class CEMSserver extends AbstractServer {
 			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
 		}
 			break;
+			
 		case "declineTimeExtention": {
 			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
 			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
@@ -193,6 +200,13 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
+
+		case "getExtensionRequests": {
+			getExtensionRequests(client);
+
+		}
+			break;
+
 
 		}
 
@@ -366,6 +380,28 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client: transferred the ", response);// print to server log.
 
 	}
+	
+	/**
+	 * @param Principal who server needs to identify and get his all data.
+	 * @param client
+	 */
+	private void getPrincipalData_Login(Principal principal, ConnectionToClient client) {
+		// logic of login- gets principal extension requests after successfully login action.
+		ArrayList<ExtensionRequest> extensionRequestsList = dbController.getExtensionRequests();
+		principal.setExtensionRequestsList(extensionRequestsList);
+		// create ResponseFromServer (to client) with all principal data.
+		ResponseFromServer response = new ResponseFromServer("PRINCIPAL DATA");
+		response.setResponseData(principal);
+		// sent to client.
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		printMessageInLogFramServer("Message to Client: transferred the ", response);// print to server log.
+
+	}
 
 	/**
 	 * print all loggedIn users in hashMap list.
@@ -441,6 +477,17 @@ public class CEMSserver extends AbstractServer {
 			client.sendToClient(respon);
 		} catch (IOException ex) {
 			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+	}
+	
+	private void getExtensionRequests(ConnectionToClient client) {//****
+		ResponseFromServer respon = new ResponseFromServer("EXTENSION REQUESTS");
+		try {	
+			respon.setResponseData(dbController.getExtensionRequests());
+			client.sendToClient(respon);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}

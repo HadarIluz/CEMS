@@ -1,9 +1,12 @@
 package gui_cems;
 
 import java.io.IOException;
+import java.security.Principal;
+import java.util.ArrayList;
 
 import client.CEMSClient;
 import client.ClientUI;
+import entity.ExtensionRequest;
 import entity.Student;
 import entity.Teacher;
 import entity.User;
@@ -203,8 +206,16 @@ public class LoginController {
 
 					case "Principal": {
 						// Create new principal
-						User principal = (User) CEMSClient.responseFromServer.getResponseData();
-						ClientUI.loggedInUser = LoggedInUser.getInstance(principal);
+						Principal principal = new Principal(user, null);
+						RequestToServer reqPrincipalData = new RequestToServer("getPrincipalData_Login"); //????
+						reqPrincipalData.setRequestData(principal); //?????
+						ClientUI.cems.accept(reqPrincipalData);//????
+						
+						// response from server principal = (Principal);
+						principal = (Principal) CEMSClient.responseFromServer.getResponseData(); // response: "PRINCIPAL DATA"
+						// Create new principal
+						Principal newPrincipal = new Principal(user, principal.getExtensionRequestsList);
+						ClientUI.loggedInUser = LoggedInUser.getInstance(newPrincipal);
 						principalController = new PrincipalController();
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 						// call start function in principalController for initialization.
