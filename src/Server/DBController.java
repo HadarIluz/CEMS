@@ -598,32 +598,6 @@ public class DBController {
 		return p;
 	}
 
-	public ArrayList<ExtensionRequest> getExtensionRequests() {
-		
-		ArrayList<ExtensionRequest> extensionRequestsList = new ArrayList<ExtensionRequest>();
-		ExtensionRequest extensionRequest = null;
-		Exam exam = null;
-		
-		try {
-			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM extension_request;");
-
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				exam.setExamID(rs.getString(1));
-				extensionRequest.setActiveExam(new ActiveExam (exam));
-				extensionRequest.setAdditionalTime(rs.getString(2));
-				extensionRequest.setReason(rs.getString(3));
-				extensionRequestsList.add(extensionRequest);
-			}		
-			rs.close();
-
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}	
-	return extensionRequestsList;	
-	}
-
 
 
 
