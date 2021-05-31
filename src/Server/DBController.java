@@ -58,11 +58,11 @@ public class DBController {
 	/*checks if the user that try to login exists in the DB.
 	 * @param obj of user which include student id to verify if exists.
 	 */
-	public ResponseFromServer verifyLoginUser(Object obj) {
+	public ResponseFromServer verifyLoginUser(User obj) {
 
-		User existUser = (User) obj;
-		ResponseFromServer respond = null;
-
+		User existUser = obj;
+		ResponseFromServer response = null;
+		existUser.setPassword(null); //put null in order to check at the end if user found or not by this id.
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM user WHERE id=?");
@@ -80,17 +80,17 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		//in case not found any user match..
-		if (existUser.getPassword() == null) {
-			respond = new ResponseFromServer("USER NOT FOUND");
+		//in case not found any user match ..
+		if (existUser.getPassword() ==null) {
+			response = new ResponseFromServer("USER NOT FOUND");
 		}
 		else{
-			respond = new ResponseFromServer("USER FOUND");	
+			response = new ResponseFromServer("USER FOUND");	
 		}
 		// ResponseFromServer class ready to client with StatusMsg and  
 		//'Object responseData', in case user found existUser include all data, otherwise null.
-		respond.setResponseData(existUser);
-		return respond;
+		response.setResponseData(existUser);
+		return response;
 	}
 	
 	
@@ -189,36 +189,6 @@ public class DBController {
 
 		return stdScore;
 
-	}
-
-// updated ScoreApproval
-	public boolean setLoginUserLogged(int userID, int num) {
-		PreparedStatement pstmt;
-		int check = 0;
-		int flag; // The flag checks what is the current status of this user and updates to the
-					// reverse mode
-
-		if (num == 1)
-			flag = 0;
-		else
-			flag = 1;
-
-		try {
-			// UPDATE tblName
-			// SET column=value
-			// WHERE condition(s)
-			pstmt = conn.prepareStatement("UPDATE user SET isLogged=? WHERE id=" + userID + ";");
-			pstmt.setInt(5, flag);
-			check = pstmt.executeUpdate();
-			if (check == 1) {
-				System.out.println("Details Of user Logged Updated!");
-				return true;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
 	}
 
 	/**
@@ -342,18 +312,16 @@ public class DBController {
 	 * check if the activeExam exist in the DB
 	 * @param obj of ActiveExam which include exam to verify if exists.
 	 */
-	public void verifyActiveExam(Object obj) {
+	public ResponseFromServer verifyActiveExam(Object obj) {
 		ActiveExam existActiveExam = (ActiveExam) obj;
-		ResponseFromServer respond = null;
+		ResponseFromServer response = null;
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=? ");
+			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=?");
 			pstmt.setString(1, existActiveExam.getExam().getExamID());
-
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				existActiveExam.setExam((Exam) rs.getObject(1));
-				existActiveExam.setDate((Calendar) rs.getObject(2));
+				existActiveExam.setTime(rs.getTime(2));
 				existActiveExam.setTimeOfExam(rs.getString(3));
 				existActiveExam.setExamCode(rs.getString(4));
 				rs.close();
@@ -363,13 +331,14 @@ public class DBController {
 		}
 		// in case not found any active exam match.
 		if (existActiveExam.getExamCode() == null) {
-			respond = new ResponseFromServer("ACTIVE EXAM NOT FOUND");
+			response = new ResponseFromServer("ACTIVE EXAM NOT FOUND");
 		} else
-			respond = new ResponseFromServer("ACTIVE EXAM FOUND");
+			response = new ResponseFromServer("ACTIVE EXAM FOUND");
 		// ResponseFromServer class ready to client with StatusMsg and
 		// 'Object responseData', in case active exam found existActiveExam include all
 		// data, other null.
-		respond.setResponseData(existActiveExam);
+		response.setResponseData(existActiveExam);
+		return response;	
 	}
 
 	/**
@@ -378,23 +347,25 @@ public class DBController {
 	 * @return true if creating a new extension request in DB succeeded, else return
 	 *         false
 	 */
-	public boolean createNewExtensionRequest(ExtensionRequest extensionRequest) {
+	public ResponseFromServer createNewExtensionRequest(ExtensionRequest extensionRequest) {
 		PreparedStatement pstmt;
+		ResponseFromServer response = null;
+
 		try {
 			pstmt = conn.prepareStatement("INSERT INTO extension_request VALUES(?, ?, ?);");
 			pstmt.setString(1, extensionRequest.getActiveExam().getExam().getExamID());
 			pstmt.setString(2, extensionRequest.getAdditionalTime());
 			pstmt.setString(3, extensionRequest.getReason());
-
 			if (pstmt.executeUpdate() == 1) {
-				return true;
+				response = new ResponseFromServer("EXTENSION REQUEST CREATED");
+			}
+			else {
+				response = new ResponseFromServer("EXTENSION REQUEST DIDNT CREATED");
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
-			return false;
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		return false;
-
+		return response;
 	}
 
 	public ArrayList<TestRow> GetTeacherExams(Object obj) {
@@ -539,21 +510,25 @@ public class DBController {
 	/**
 	 * @param activeExam object which include 2 parameters of date and examcode for Query.
 	 */
-	public ActiveExam verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
+	public ResponseFromServer verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
 		Exam exam = new Exam(null);
-		ResponseFromServer respond = null;
+		ResponseFromServer response = null;
 		/***EnterToExam***/
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE date=? examcode=?;");
-			pstmt.setString(1, activeExam.getActiveExamStartTime());
-			pstmt.setString(2, activeExam.getExamCode());
-
+			pstmt = conn.prepareStatement("SELECT exam, timeAllotedForTest, examType FROM active_exam WHERE examCode=? and startTime>=? and startTime<?;");
+			pstmt.setString(1, activeExam.getExamCode());
+			pstmt.setTime(2, activeExam.getTime());
+			pstmt.setTime(3, activeExam.getEndTimeToTakeExam());
+			//Time Range for start the exam:
+			System.out.println(activeExam.getTime() + " - " + activeExam.getEndTimeToTakeExam());
+			
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				exam.setExamID(rs.getString(1));
 				activeExam.setExam(exam);
-				activeExam.setActiveExamType(rs.getString(2));
+				activeExam.setTimeOfExam(rs.getString(2));
+				activeExam.setActiveExamType(rs.getString(3));
 				rs.close();
 			}
 			
@@ -562,12 +537,13 @@ public class DBController {
 		}
 		
 		if (activeExam.getExam()== null) {
-			respond = new ResponseFromServer("ACTIVE EXAM EXIST");		// StatusMsg.statusMsg
-			respond.setResponseData(activeExam);
+			response = new ResponseFromServer("ACTIVE EXAM_NOT_EXIST");
+			
 		} else {
-			respond = new ResponseFromServer("ACTIVE EXAM_NOT_EXIST");	// StatusMsg.statusMsg
+			response = new ResponseFromServer("ACTIVE EXAM EXIST");	
+			response.setResponseData(activeExam);
 		}
-		return activeExam;
+		return response;
 		
 	}
 	

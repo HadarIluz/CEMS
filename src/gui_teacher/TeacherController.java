@@ -1,10 +1,13 @@
 package gui_teacher;
 
-import java.io.IOException;
+import java.io.IOException
+;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+
+import client.CEMSClient;
 import client.ClientUI;
 import entity.Profession;
 import entity.Teacher;
@@ -28,6 +31,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import logic.RequestToServer;
 
 
 /**
@@ -197,6 +201,8 @@ public class TeacherController extends Application implements Initializable {
 		primaryStage.setTitle("CEMS-Computerized Exam Management System");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		listenToCloseWindow(primaryStage);
 
 	}
 
@@ -212,6 +218,7 @@ public class TeacherController extends Application implements Initializable {
 		imgPrincipal = new ImageView(flag);
 	}
 	
+
 	public void setProfessionMap(ArrayList<Profession> professionsList) {
 		professionsMap = new HashMap<>();
 		for (Profession p: professionsList) {
@@ -221,6 +228,27 @@ public class TeacherController extends Application implements Initializable {
 	
 	public static HashMap<String, Profession> getProfessionsMap() {
 		return professionsMap;
+	}
+	/**
+	 * listen for close events on a JavaFX Stage, notified when the user clicks the
+	 * button with the X on, in the upper right corner of the Stage
+	 * 
+	 * @param primaryStage
+	 */
+	private void listenToCloseWindow(Stage primaryStage) {
+
+		primaryStage.setOnCloseRequest((event) -> {
+			System.out.println("Closing Stage");
+			RequestToServer reqLogged = new RequestToServer("ClientDisconected");
+			reqLogged.setRequestData(ClientUI.loggedInUser.getUser());
+			ClientUI.cems.accept(reqLogged);
+			// "USER LOGOUT"
+			if (CEMSClient.responseFromServer.getResponseType().equals("USER LOGOUT")) {
+				System.exit(0);
+			}
+
+		});
+
 	}
 
 

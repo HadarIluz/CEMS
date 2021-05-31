@@ -73,12 +73,6 @@ public class LoginController {
 	private PasswordField txtPassword;
 
 	@FXML
-	private Label lblShow;
-
-	@FXML
-	private CheckBox checkBoxRememberMe;
-
-	@FXML
 	private Button btnLogin;
 
 	@FXML
@@ -139,15 +133,16 @@ public class LoginController {
 				popUp("This user doesn`t exist in CEMS system.");
 			}
 
-			// handle case that user found and checks password && if the user already
-			// login(now) by checking (isLogged()==1) && userType
+			// handle case that user found and checks password
 			else {
-				if (userPassword.equals(user.getPassword()) == false) {
+				user = (User)CEMSClient.responseFromServer.getResponseData();
+				if (userPassword.equals(user.getPassword()) == false ) {
 					popUp("The password insert is incorrect. Please try again.");
-				} else if (user.isLogged() == 1) {
-					popUp("This user already login to CEMS system!.");
-
-				} else {
+				} 
+				else if(userID.equals(String.valueOf(user.getId()))==false) {
+					popUp("The id insert is incorrect. Please try again.");
+				}
+				else {
 
 					user.setLogged(1);
 
@@ -239,6 +234,8 @@ public class LoginController {
 		// handle case that one of the parameters is invalid.
 		else {
 			popUp("One or more of the parameters which insert are incorrect.\n Please try again.");
+			reqFieldUserName.setText("");;
+			reqFieldPassword.setText("");
 		}
 
 	}
@@ -290,6 +287,8 @@ public class LoginController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		listenToCloseWindow(primaryStage);
 	}
 
 	/**
@@ -360,18 +359,27 @@ public class LoginController {
 	void pressQuit(ActionEvent event) {
 		System.exit(0);
 	}
-	/*
-	 * NOT WORKING with this. //Need to verify with jar file!!
+	
+	/**
+	 * listen for close events on a JavaFX Stage, notified when the user clicks the
+	 * button with the X on, in the upper right corner of the Stage
 	 * 
-	 * @Override public void initialize(URL location, ResourceBundle resources) {
-	 * 
-	 * Image image = new
-	 * Image(getClass().getResourceAsStream("..\\..\\images\\LogInBackground.jpg"));
-	 * ImageView imageView = new ImageView(image); imageView.setFitHeight(550);
-	 * imageView.setFitWidth(898);
-	 * 
-	 * //and to the same to the rest of the pic.. }
-	 * 
+	 * @param primaryStage
 	 */
+	private void listenToCloseWindow(Stage primaryStage) {
+
+		primaryStage.setOnCloseRequest((event) -> {
+			System.out.println("Closing Stage");
+			RequestToServer reqLogged = new RequestToServer("ClientDisconected");
+			reqLogged.setRequestData("ClientDisconected_from_login_fram");
+			ClientUI.cems.accept(reqLogged);
+			if (CEMSClient.responseFromServer.getResponseType().equals("USER LOGOUT")) {
+				
+			}
+
+		});
+
+	}
+	
 
 }

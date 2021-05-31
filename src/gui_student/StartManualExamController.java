@@ -1,7 +1,12 @@
 package gui_student;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import entity.ActiveExam;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -9,7 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
-public class StartManualExamController {
+public class StartManualExamController implements Initializable{
 
     @FXML
     private Button btnDownload;
@@ -49,6 +54,8 @@ public class StartManualExamController {
 
     @FXML
     private Label textTimeLeft;
+    
+    private static ActiveExam newActiveExam;
 
     @FXML
     void btnDownload(ActionEvent event) {
@@ -64,5 +71,15 @@ public class StartManualExamController {
     void checkBoxShowTime(MouseEvent event) {
 
     }
+    
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
+		newActiveExam = newActiveExamInProgress;
+	}
 
 }

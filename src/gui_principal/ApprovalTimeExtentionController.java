@@ -100,15 +100,15 @@ public class ApprovalTimeExtentionController implements Initializable {
 			textReasonField.setText(selectedExtensionRequest.getReason());
 		}
 	}
-
+////Matar: need to fix !! ////
 	public void loadExamExtensionToCombobox() {
-		selectExamExtension.setItems(FXCollections.observableArrayList(extensionRequestMap.keySet()));
+		//selectExamExtension.setItems(FXCollections.observableArrayList(extensionRequestMap.keySet()));
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedExtensionRequest = null;
-		loadExamExtensionToCombobox();
+		loadExamExtensionToCombobox(); 
 		lblAdditionalTime.setText("");
 		textReasonField.setText("");
 	}

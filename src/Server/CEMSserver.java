@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import client.ClientUI;
 import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
@@ -23,7 +24,6 @@ import logic.ResponseFromServer;
 import logic.StatusMsg;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
-
 
 public class CEMSserver extends AbstractServer {
 	// Class variables *************************************************
@@ -48,7 +48,7 @@ public class CEMSserver extends AbstractServer {
 	public CEMSserver(int port, ServerFrameController serverUI) {
 		super(port);
 		this.serverFrame = serverUI;
-		loggedInUsers=new HashMap<Integer,User>();
+		loggedInUsers = new HashMap<Integer, User>();
 	}
 
 	// Instance methods ************************************************
@@ -73,97 +73,31 @@ public class CEMSserver extends AbstractServer {
 		switch (req.getRequestType()) {
 
 		case "getUser": {
-			// logic of login
-			User user = (User) req.getRequestData();
-			User userInSystem = null;
-			respon = dbController.verifyLoginUser((User) user);
+			getUser((User) req.getRequestData(), client);
 
-			userInSystem = (User) respon.getResponseData();
-			boolean exist = loggedInUsers.containsValue(userInSystem.getId()); // check if hashMap contains this user id
-			// in case this user exist in 'loggedInUsers' update isLogged to 1.
-			if (exist) {
-				user.setLogged(1); // set isLogged to 1.
-			}
-			try {
-				client.sendToClient(respon);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			// serverFrame.printToTextArea(??.toString());
 		}
 
 			break;
 		case "UpdateUserLoggedIn": {
-			// logic of login- update logged status after successfully LOGIN action.
-			User user = (User) req.getRequestData();
-			user.setLogged(1); // set isLogged to 1.
-			loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.			//Response:
-			ResponseFromServer respond = new ResponseFromServer("USER LOGIN !");
-			printLoggedInUsersList();	//for DEBUG
-			try {
-				client.sendToClient(respond);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			UpdateUserLoggedIn((User) req.getRequestData(), client);
+
 		}
 			break;
 
 		case "UpdateUserLoggedOut": {
-			// logic of login- update logged status after LOGOUT action.
-			User user = (User) req.getRequestData();
-			ResponseFromServer respond = new ResponseFromServer("USER LOGOUT");
-			loggedInUsers.remove(user.getId()); //remove this user from list.
-			printLoggedInUsersList();	//for DEBUG- print current list.		
+			UpdateUserLoggedOut((User) req.getRequestData(), client);
 
-			// sent to client.
-			try {
-				client.sendToClient(respond);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 			break;
 
 		case "getStudentData_Login": {
-			// logic of login- gets student`s courses after successfully LOGIN action.
-			Student student = (Student) req.getRequestData();
-			student = dbController.getStudentData_Logged(student);
-			student = dbController.getStudentCourses_Logged(student);
-			// create ResponseFromServer (to client) with all student data.
-			ResponseFromServer respond = new ResponseFromServer("STUDENT DATA");
-			respond.setResponseData(student);
-			// sent to client.
-			try {
-				client.sendToClient(respond);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			getStudentData_Login((Student) req.getRequestData(), client);
 
-			// serverFrame.printToTextArea(??.toString());
 		}
 			break;
 
 		case "getTeacherData_Login": {
-			// logic of login- gets teacher`s profession after successfully login action.
-			Teacher teacher = (Teacher) req.getRequestData();
-			ArrayList<String> professionIds = dbController.getTeacherProfessionIDs(teacher);
-			ArrayList<Profession> teacherProfessions = new ArrayList<>();
-			for (String id: professionIds) {
-				teacherProfessions.add(dbController.getProfessionByID(id));
-			}
-			teacher.setProfessions(teacherProfessions);
-			// create ResponseFromServer (to client) with all student data.
-			ResponseFromServer respond = new ResponseFromServer("TEACHER DATA");
-			respond.setResponseData(teacher);
-			// sent to client.
-			try {
-				client.sendToClient(respond);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			// serverFrame.printToTextArea(??.toString());
+			getTeacherData_Login((Teacher) req.getRequestData(), client);
 		}
 			break;
 
@@ -182,34 +116,19 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "addTimeToExam": {
-			ActiveExam activeExam = (ActiveExam) req.getRequestData();
-			ActiveExam activeExamInSystem = null;
-			dbController.verifyActiveExam((ActiveExam) activeExam);
-			try {
-				client.sendToClient(activeExamInSystem);
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
+		case "addTimeToExam": { 
+			addTimeToExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
+			
 		case "createNewExtensionRequest": {
-			dbController.createNewExtensionRequest((ExtensionRequest) req.getRequestData());
+			createNewExtensionRequest((ExtensionRequest) req.getRequestData(), client);
 		}
 			break;
 
 		case "isActiveExamExist": {
-			// logic for 'EnterToExam'
-			// verify if activeExam exist at this date, set ActiveExam object if found.
-			ActiveExam activeExam = (ActiveExam) req.getRequestData();
-			activeExam = dbController.verifyActiveExam_byDate_and_Code((ActiveExam) activeExam);
-			// sent to client.
-			try {
-				client.sendToClient(activeExam);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			// serverFrame.printToTextArea(??.toString());
+			isActiveExamExist((ActiveExam) req.getRequestData(), client);
+
 		}
 			break;
 
@@ -237,24 +156,20 @@ public class CEMSserver extends AbstractServer {
 			}
 
 		}
-		
-		
-		case "getQuestions":{
-			
-		try {
-			
-			ResponseFromServer respond = new ResponseFromServer("TEACHER QUESTIONS");
-			respond.setResponseData(dbController.GetTeacherQuestions((Integer)req.getRequestData()));
-			
-			
-			client.sendToClient(respond);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}	
-			
-			
-			
+
+		case "getQuestions": {
+
+			try {
+
+				ResponseFromServer respond = new ResponseFromServer("TEACHER QUESTIONS");
+				respond.setResponseData(dbController.GetTeacherQuestions((Integer) req.getRequestData()));
+
+				client.sendToClient(respond);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 		case "getEditExamData": {
@@ -273,9 +188,14 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		
 		case "SaveEditExam": {
-			// TODO: in other case in server, it will do: "UPDATE #### FROM exam blabla...;"
+			// TODO: "UPDATE #### FROM exam blabla...;"
+		}
+			break;
+
+		case "ClientDisconected": {
+			clientDisconected(req.getRequestData(), client);
+
 		}
 			break;
 
@@ -286,13 +206,180 @@ public class CEMSserver extends AbstractServer {
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
 	/**
+	 * Verify if activeExam exist at this time, set ActiveExam object if found.
+	 * 
+	 * @param activeExam
+	 * @param client
+	 */
+	private void isActiveExamExist(ActiveExam activeExam, ConnectionToClient client) {
+		// logic for 'EnterToExam'
+		ResponseFromServer response = null;
+		response = dbController.verifyActiveExam_byDate_and_Code(activeExam);
+		// sent to client.
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+
+	}
+
+	/**
+	 * @param requestData
+	 * @param client
+	 */
+	private void clientDisconected(Object requestData, ConnectionToClient client) {
+		if (requestData instanceof User) {
+			User user = (User) requestData;
+			serverFrame.printToTextArea("Client disconnected --->" + user.getUserType() + " logout.");
+			UpdateUserLoggedOut(user, client);
+		}
+
+		else if (requestData.equals("ClientDisconected_from_login_fram")) {
+			serverFrame.printToTextArea("---> Client Disconnected <---");
+			ResponseFromServer respon = new ResponseFromServer("CLIENT DISCONECT !");
+			try {
+				client.sendToClient(respon);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	/**
+	 * @param str      is a message which displayed in server`s log.
+	 * @param response contains the information that the server transmits to the
+	 *                 client.
+	 */
+	private void printMessageInLogFramServer(String str, ResponseFromServer response) {
+		serverFrame.printToTextArea("--->" + str + " " + response.toString());
+	}
+
+	//
+	/**
+	 * @param user   is who server needs to identify the details.
+	 * @param client
+	 */
+	private void getUser(User user, ConnectionToClient client) {
+		// logic of login
+		User userInSystem = null;
+		ResponseFromServer respon = dbController.verifyLoginUser(user);
+
+		userInSystem = (User) respon.getResponseData();
+		boolean exist = loggedInUsers.containsValue(userInSystem.getId()); // check if hashMap contains this user id
+		// in case this user exist in 'loggedInUsers' update isLogged to 1.
+		if (exist) {
+			user.setLogged(1); // set isLogged to 1.
+		}
+		try {
+			client.sendToClient(respon);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+
+	}
+
+	/**
+	 * logic of login: update logged status after successfully LOGIN action.
+	 * 
+	 * @param user   who server needs to identify and update his details.
+	 * @param client
+	 */
+	private void UpdateUserLoggedIn(User user, ConnectionToClient client) {
+		user.setLogged(1); // set isLogged to 1.
+		loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.
+		// Response:
+		ResponseFromServer response = new ResponseFromServer("USER LOGIN !");
+		printLoggedInUsersList(); // for DEBUG
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client: " + user.toString(), response);// print to server log.
+
+	}
+
+	/**
+	 * logic of login: update logged status after LOGOUT action.
+	 * 
+	 * @param user   who server needs to identify and update his details.
+	 * @param client
+	 */
+	private void UpdateUserLoggedOut(User user, ConnectionToClient client) {
+		ResponseFromServer response = new ResponseFromServer("USER LOGOUT");
+		loggedInUsers.remove(user.getId()); // remove this user from list.
+		printLoggedInUsersList(); // for DEBUG- print current list.
+
+		// sent to client.
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client: " + user.getUserType(), response);// print to server log.
+
+	}
+
+	/**
+	 * logic of login- gets student`s courses after successfully LOGIN action.
+	 * 
+	 * @param student who server needs to identify and get his all data.
+	 * @param client
+	 */
+	private void getStudentData_Login(Student student, ConnectionToClient client) {
+		student = dbController.getStudentData_Logged(student);
+		student = dbController.getStudentCourses_Logged(student);
+		// create ResponseFromServer (to client) with all student data.
+		ResponseFromServer response = new ResponseFromServer("STUDENT DATA");
+		response.setResponseData(student);
+		// sent to client.
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client: transferred the ", response);// print to server log.
+
+	}
+
+	/**
+	 * @param teacher who server needs to identify and get his all data.
+	 * @param client
+	 */
+	private void getTeacherData_Login(Teacher teacher, ConnectionToClient client) {
+		// logic of login- gets teacher`s profession after successfully login action.
+		ArrayList<String> professionIds = dbController.getTeacherProfessionIDs(teacher);
+		ArrayList<Profession> teacherProfessions = new ArrayList<>();
+		for (String id : professionIds) {
+			teacherProfessions.add(dbController.getProfessionByID(id));
+		}
+		teacher.setProfessions(teacherProfessions);
+		// create ResponseFromServer (to client) with all student data.
+		ResponseFromServer response = new ResponseFromServer("TEACHER DATA");
+		response.setResponseData(teacher);
+		// sent to client.
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		printMessageInLogFramServer("Message to Client: transferred the ", response);// print to server log.
+
+	}
+
+	/**
 	 * print all loggedIn users in hashMap list.
 	 */
 	private void printLoggedInUsersList() {
-		//for(loggedInUsers log : )
-		for (Integer user: loggedInUsers.keySet()) {
-		    String key = loggedInUsers.toString();
-		    System.out.println(key);
+		// for(loggedInUsers log : )
+		for (Integer user : loggedInUsers.keySet()) {
+			String key = loggedInUsers.toString();
+			System.out.println(key);
 		}
 	}
 
@@ -359,5 +446,25 @@ public class CEMSserver extends AbstractServer {
 	 */
 	protected void serverStopped() {
 		serverFrame.printToTextArea("Server has stopped listening for connections.");
+	}
+	
+	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
+		ResponseFromServer respon = dbController.verifyActiveExam((ActiveExam) activeExam);
+		try {
+			client.sendToClient(respon);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+	}
+	
+	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {
+		ResponseFromServer respon = dbController.createNewExtensionRequest((ExtensionRequest) extensionRequest);
+		try {
+			client.sendToClient(respon);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
 }
