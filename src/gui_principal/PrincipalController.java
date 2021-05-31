@@ -2,13 +2,14 @@ package gui_principal;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
+import entity.ExtensionRequest;
 import entity.User;
 import gui_cems.LoginController;
-import gui_student.StudentController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -65,6 +66,7 @@ public class PrincipalController extends Application implements Initializable {
 	protected User principal;
 	protected static GridPane root;
 	public Scene scene;
+	ArrayList<ExtensionRequest> extensionRequestList; //????
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -123,11 +125,17 @@ public class PrincipalController extends Application implements Initializable {
 //	      imgPrincipal.setY(56);
 //	      imgPrincipal.setPreserveRatio(true);
 
+	@SuppressWarnings("unchecked")
 	/**
 	 * @param event that loading the teacher's right screen after pressing a button.
 	 */
 	@FXML
 	void btnApproveTimeExtention(ActionEvent event) {
+		RequestToServer req = new RequestToServer("getExtensionRequests");
+		ArrayList<ExtensionRequest> extensionRequest = new ArrayList<ExtensionRequest>();
+		//req.setRequestData(); //????
+		ClientUI.cems.accept(req);		
+		extensionRequest = (ArrayList<ExtensionRequest>) CEMSClient.responseFromServer.getResponseData();
 		try {
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ApprovalTimeExtention.fxml"));
 			root.add(newPaneRight, 1, 0);

@@ -28,7 +28,7 @@ import logic.RequestToServer;
  *
  */
 
-public class ApprovalTimeExtentionController implements Initializable {
+public class ApprovalTimeExtentionController extends PrincipalController implements Initializable {
 
 	@FXML
 	private ComboBox<String> selectExamExtension;
@@ -82,7 +82,7 @@ public class ApprovalTimeExtentionController implements Initializable {
 		}
 		//When a test is selected
 		else {
-			RequestToServer req = new RequestToServer("approvalTimeExtention");
+			RequestToServer req = new RequestToServer("declineTimeExtention");
 			req.setRequestData(selectedExtensionRequest);
 			ClientUI.cems.accept(req);
 		}
@@ -100,15 +100,15 @@ public class ApprovalTimeExtentionController implements Initializable {
 			textReasonField.setText(selectedExtensionRequest.getReason());
 		}
 	}
-////Matar: need to fix !! ////
-	public void loadExamExtensionToCombobox() {
+	public void loadExamExtensionsToCombobox() {
+		setExtensionRequestMap(extensionRequestList);//????
 		//selectExamExtension.setItems(FXCollections.observableArrayList(extensionRequestMap.keySet()));
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedExtensionRequest = null;
-		loadExamExtensionToCombobox(); 
+		loadExamExtensionsToCombobox(); 
 		lblAdditionalTime.setText("");
 		textReasonField.setText("");
 	}

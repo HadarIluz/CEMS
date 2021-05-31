@@ -128,16 +128,12 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "approvTimeExtention": {
-			// update time alloted for test in active exam after the principal approves the
-			// request.
-			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
-			dbController.setTimeForActiveTest(extensionRequest.getActiveExam(), extensionRequest.getAdditionalTime());
-			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
+			approvTimeExtention((ExtensionRequest)req.getRequestData(), client);
 		}
 			break;
+		
 		case "declineTimeExtention": {
-			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
-			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
+			declineTimeExtention((ExtensionRequest)req.getRequestData(), client);
 		}
 			break;
 
@@ -194,6 +190,11 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
+		case "getExtensionRequests": {
+			getExtensionRequests(client);
+
+		}
+			break;
 		}
 
 	}
@@ -443,5 +444,27 @@ public class CEMSserver extends AbstractServer {
 			ex.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+	}
+	
+	private void getExtensionRequests(ConnectionToClient client) {
+		ResponseFromServer respon = new ResponseFromServer("EXTENSION REQUESTS");
+		try {	
+			respon.setResponseData(dbController.getExtensionsRequests());
+			client.sendToClient(respon);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.		
+	}
+	
+	private void approvTimeExtention(ExtensionRequest extensionRequest, ConnectionToClient client) {
+		// update time alloted for test in active exam after the principal approves the
+		// request.
+		dbController.setTimeForActiveTest(extensionRequest.getActiveExam(), extensionRequest.getAdditionalTime());
+		dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
+	}
+	
+	private void declineTimeExtention(ExtensionRequest extensionRequest, ConnectionToClient client) {
+		dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
 	}
 }
