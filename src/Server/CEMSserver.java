@@ -130,7 +130,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 		
 		case "declineTimeExtention": {
-			approvalTimeExtention((ActiveExam)req.getRequestData(), client);
+			declineTimeExtention((ActiveExam)req.getRequestData(), client);
 		}
 			break;
 
@@ -474,7 +474,14 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.		
 	}
 	
-	//private void declineTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
-	//	dbController.deleteExtenxtionRequest(extensionRequest.getActiveExam());
-	//}
+	private void declineTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
+		ResponseFromServer respon = new ResponseFromServer("EXTENSION DECLINED");
+		try {
+			respon.setResponseData(dbController.deleteExtenxtionRequest(activeExam));
+			client.sendToClient(respon);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.	
+	}
 }

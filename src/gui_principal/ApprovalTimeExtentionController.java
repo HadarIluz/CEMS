@@ -66,7 +66,6 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 			timeOfExam = selectedExtensionRequest.getActiveExam().getTimeOfExam();
 			timeOfExam+= Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
 			selectedExtensionRequest.getActiveExam().setTimeOfExam("" + timeOfExam);
-//Matar: from here
 			RequestToServer req = new RequestToServer("approvalTimeExtention");
 			req.setRequestData(selectedExtensionRequest.getActiveExam());
 			ClientUI.cems.accept(req);
