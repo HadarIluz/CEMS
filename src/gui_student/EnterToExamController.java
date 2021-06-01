@@ -235,6 +235,7 @@ public class EnterToExamController extends StudentController implements Initiali
 		student = (Student) ClientUI.loggedInUser.getUser();
 		textConfirm.setVisible(false);
 		ActiveExam_selection = null;
+		//implement load active exam into Combo box.
 		loadActiveExamToCombobox(); 
 
 	}
