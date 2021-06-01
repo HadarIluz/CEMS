@@ -597,15 +597,14 @@ public class DBController {
 
 	public ArrayList<ExtensionRequest> getExtensionsRequests() {
 		ArrayList<ExtensionRequest> extensionRequestsList = new ArrayList<ExtensionRequest>();
-		//ExtensionRequest extensionRequest = new ExtensionRequest (null,null,null);
-		Exam exam = new Exam(null);
-		ActiveExam activeExam = new ActiveExam(exam);
-		ExtensionRequest extensionRequest = new ExtensionRequest(activeExam);
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM extension_request;");
-			ResultSet rs = pstmt.executeQuery();
+			pstmt = conn.prepareStatement("SELECT * FROM extension_request ;");
+			ResultSet rs = pstmt.executeQuery(); 
 			while (rs.next()) {
+				Exam exam = new Exam(null);
+				ActiveExam activeExam = new ActiveExam(exam);
+				ExtensionRequest extensionRequest = new ExtensionRequest(activeExam);
 				exam.setExamID(rs.getString(1));
 				activeExam.setExam(exam);
 				extensionRequest.setActiveExam(activeExam);

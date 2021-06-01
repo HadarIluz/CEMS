@@ -10,7 +10,6 @@ import client.ClientUI;
 import entity.ExtensionRequest;
 import entity.User;
 import gui_cems.LoginController;
-import gui_student.SolveExamController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -67,7 +66,6 @@ public class PrincipalController extends Application implements Initializable {
 	protected User principal;
 	protected static GridPane root;
 	public Scene scene;
-	ArrayList<ExtensionRequest> extensionRequestList; //????
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -134,14 +132,12 @@ public class PrincipalController extends Application implements Initializable {
 	void btnApproveTimeExtention(ActionEvent event) {
 		RequestToServer req = new RequestToServer("getExtensionRequests");
 		ArrayList<ExtensionRequest> extensionRequest = new ArrayList<ExtensionRequest>();
-		//req.setRequestData(); //????
 		ClientUI.cems.accept(req);		
 		extensionRequest = (ArrayList<ExtensionRequest>) CEMSClient.responseFromServer.getResponseData();
 		try {
+			ApprovalTimeExtentionController.setExtensionRequestList(extensionRequest);
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ApprovalTimeExtention.fxml"));
 			root.add(newPaneRight, 1, 0);
-			ApprovalTimeExtentionController.setExtensionRequestList(extensionRequest);
-
 		} catch (IOException e) {
 			System.out.println("Couldn't load- ApprovalTimeExtention.fxml");
 			e.printStackTrace();

@@ -5,9 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-
 import client.ClientUI;
-import entity.ActiveExam;
 import entity.ExtensionRequest;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -47,11 +45,12 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 	private Button btnApprove;
 
 	private static HashMap<String, ExtensionRequest> extensionRequestMap = new HashMap<String, ExtensionRequest>();
+    private static ArrayList<ExtensionRequest> extensionRequestList = new ArrayList<ExtensionRequest>();
+    private ArrayList<String> examIdList = new ArrayList<String>();
 	private ExtensionRequest selectedExtensionRequest;
 	private int timeOfExam;
-    private static ArrayList<ExtensionRequest> extensionRequestList = new ArrayList<ExtensionRequest>();
-
-	/**
+	
+	/** 
 	 * @param event that occurs when clicking on 'Approve' button
 	 * @throws IOException if failed.
 	 */
@@ -104,8 +103,22 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 		}
 	}
 	public void loadExamExtensionsToCombobox() {
-		setExtensionRequestMap(extensionRequestList);//????
-		//selectExamExtension.setItems(FXCollections.observableArrayList(extensionRequestMap.keySet()));
+		setExtensionRequestMap(extensionRequestList);
+		 for (ExtensionRequest ex : extensionRequestList) 
+			 examIdList.add(ex.getActiveExam().getExam().getExamID());
+		 selectExamExtension.setItems(FXCollections.observableList(examIdList));
+			
+			//selectExamExtension.setItems(extensionRequestList.get(i).getActiveExam().getExam().getExamID());
+		//	selectExamExtension.setId(extensionRequestList.get(i).getActiveExam().getExamCode() + " ");//hadar
+			//selectExamExtension.setItems(FXCollections.observableArrayList(extensionRequestMap.keySet()));//hadar
+
+		selectExamExtension.setDisable(false);//hadar
+
+		//selectExamExtension.setItems((ObservableList<ExtensionRequest>) extensionRequestLIstnew); //hadar
+		//selectExamExtension.setId(extensionRequestLIstnew.get(0).getActiveExam().getExamCode() + " ");//hadar
+		//selectExamExtension.setItems(FXCollections.observableArrayList(extensionRequestMap.keySet()));//hadar
+		//selectExamExtension.setDisable(false);//hadar
+	
 	}
 
 	@Override
@@ -118,7 +131,6 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 
 	public static void setExtensionRequestMap(ArrayList<ExtensionRequest> extensionRequestList) {
 		 for (ExtensionRequest ex : extensionRequestList) {
-			System.out.println(ex);
 			extensionRequestMap.put(ex.getActiveExam().getExam().getExamID(), ex);
 		}
 	}
