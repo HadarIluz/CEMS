@@ -466,7 +466,6 @@ public class DBController {
 
 	/**
 	 * @param activeExam
-	 * @param additionalTime
 	 * @return true if the additional Time for activeExam has been updated at
 	 * 		   table active_exam in DB.
 	 *         else, return false
@@ -596,7 +595,10 @@ public class DBController {
 		}
 		return p;
 	}
-
+	
+	/**
+	 * @return Returns a list of all the Extensions Requests in the database
+	 */
 	public ArrayList<ExtensionRequest> getExtensionsRequests() {
 		ArrayList<ExtensionRequest> extensionRequestsList = new ArrayList<ExtensionRequest>();
 		try {
@@ -624,7 +626,10 @@ public class DBController {
 	return extensionRequestsList;	
 	}
 
-	
+	/**
+	 * @param An active exam that is initialized with a exam only 
+	 * @return Initializes the rest of the fields of an active exam and returns it
+	 */
 	public ActiveExam getActiveExam(ActiveExam activeExam) {		
 		
 		try {

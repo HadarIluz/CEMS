@@ -423,6 +423,7 @@ public class CEMSserver extends AbstractServer {
 		serverFrame.printToTextArea("Server has stopped listening for connections.");
 	}
 	
+	
 	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer respon = dbController.verifyActiveExam((ActiveExam) activeExam);
 		try {

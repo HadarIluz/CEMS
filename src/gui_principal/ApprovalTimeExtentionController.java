@@ -66,6 +66,7 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 			timeOfExam = selectedExtensionRequest.getActiveExam().getTimeOfExam();
 			timeOfExam+= Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
 			selectedExtensionRequest.getActiveExam().setTimeOfExam("" + timeOfExam);
+			//Update the exam time and delete the extension Request in the database
 			RequestToServer req = new RequestToServer("approvalTimeExtention");
 			req.setRequestData(selectedExtensionRequest.getActiveExam());
 			ClientUI.cems.accept(req);
@@ -102,6 +103,12 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 			textReasonField.setText(selectedExtensionRequest.getReason());
 		}
 	}
+	
+	/**
+	 * @param This method is performed when the screen is initialized and it loads the comboBox with all the extension request in Data Base
+	 * @throws IOException if failed.
+	 */
+	@FXML
 	public void loadExamExtensionsToCombobox() {
 		setExtensionRequestMap(extensionRequestList);
 		 for (ExtensionRequest ex : extensionRequestList) 
@@ -118,6 +125,7 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 		textReasonField.setText("");
 	}
 
+	 
 	public static void setExtensionRequestMap(ArrayList<ExtensionRequest> extensionRequestList) {
 		 for (ExtensionRequest ex : extensionRequestList) {
 			extensionRequestMap.put(ex.getActiveExam().getExam().getExamID(), ex);
