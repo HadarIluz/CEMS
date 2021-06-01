@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import client.CEMSClient;
 import client.ClientUI;
 import entity.Course;
 import entity.Exam;
 import entity.Profession;
 import entity.Question;
+import entity.QuestionRow;
 import entity.Teacher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,9 +47,8 @@ public class ExamBankController extends TeacherController implements Initializab
 	@FXML
 	private Button btnCreateNewExam;
 
-		@FXML
+	@FXML
 	private Text textNavigation;
-
 
 	@FXML
 	private TableColumn<Exam, String> ExamID;
@@ -57,30 +58,57 @@ public class ExamBankController extends TeacherController implements Initializab
 
 	@FXML
 	private TableColumn<Exam, Integer> Time;
-	
+
 	private ObservableList<Exam> data;
 
-	
-	
 	@FXML
-    void MouseC(MouseEvent event) {
-    	
-    	
-     	ObservableList<Exam> Qlist;
-    	Qlist= tableExam.getSelectionModel().getSelectedItems();
-    	textExamID.setText(Qlist.get(0).getExamID());
+	void MouseC(MouseEvent event) {
 
-    }
+		ObservableList<Exam> Qlist;
+		Qlist = tableExam.getSelectionModel().getSelectedItems();
+		textExamID.setText(Qlist.get(0).getExamID());
 
+	}
+
+	
+	public Exam GetTableDetails(String ExamID) {
+
+		Exam exam;
+
+		for (Exam e : data) {
+			if (e.getExamID().equals(ExamID)) {
+				exam = new Exam(ExamID);
+				exam.setCourse(new Course(e.getCourse().getCourseName()));
+				exam.getCourse().setCourseID(e.getCourse().getCourseID());
+				exam.setProfessionName(e.getProfessionName());
+				return exam;
+
+			}
+
+		}
+
+		return null;
+
+	}
 
 	@FXML
 	void btnDeleteExam(ActionEvent event) {
+		// we need to insert case of letters of not 5 digits
+
 		ObservableList<Exam> Qlist;
 		
-    	Qlist= tableExam.getSelectionModel().getSelectedItems();
-    	
-    	data.removeAll(Qlist);
+		Exam ExamToDelete = GetTableDetails(textExamID.getText());
 
+		Qlist = tableExam.getSelectionModel().getSelectedItems();
+		RequestToServer req = new RequestToServer("DeleteExam");
+		req.setRequestData(ExamToDelete);
+		ClientUI.cems.accept(req);
+
+		if (CEMSClient.responseFromServer.getResponseData().equals("FALSE"))
+			System.out.println("failed to delete question");
+		else
+			data.removeAll(Qlist);
+		initTableRows();
 
 	}
 
@@ -117,33 +145,27 @@ public class ExamBankController extends TeacherController implements Initializab
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
- 
-		tableExam.setEditable(true);
-		/*
-		 * step 1 - ask for all teacher's test step 2- covert all for the type:
-		 * string,string,integer step 3- show on the screnn
-		 * 
-		 */
-		/*
-		 * RequestToServer req = new RequestToServer("GetTeacherExams");
-		 * req.setRequestData(teacher); ClientUI.cems.accept(req);
-		 */
-		
+		initTableRows();
 
-		 data = FXCollections.observableArrayList(new Exam("010203", "Algebra", 10), 
-				 								  new Exam("111111", "Masadim", 2));
+	}
 
+	@SuppressWarnings("unchecked")
+	public void initTableRows() {
+		textExamID.setEditable(true);
+
+		RequestToServer req = new RequestToServer("getExams");
+		req.setRequestData(ClientUI.loggedInUser.getUser().getId());
+		ArrayList<Exam> ExamsOfTeacher = new ArrayList<Exam>();
+		ClientUI.cems.accept(req);
+		ExamsOfTeacher = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
+		data = FXCollections.observableArrayList(ExamsOfTeacher);
 		tableExam.getColumns().clear();
-
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
-
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
-
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
-
 		tableExam.setItems(data);
- 
 		tableExam.getColumns().addAll(ExamID, Proffesion, Time);
 
 	}
+
 }

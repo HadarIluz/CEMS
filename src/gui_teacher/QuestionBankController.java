@@ -11,6 +11,8 @@ import entity.Exam;
 import entity.Profession;
 import entity.Question;
 import entity.QuestionRow;
+import entity.Teacher;
+import gui_cems.LoginController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,60 +30,57 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
-public class QuestionBankController extends TeacherController implements Initializable  {
+public class QuestionBankController extends TeacherController implements Initializable {
 
-    @FXML 
-    private Button btnEditQuestion;
+	@FXML
+	private Button btnEditQuestion;
 
-    @FXML
-    private Button btnDeleteQuestion;
+	@FXML
+	private Button btnDeleteQuestion;
 
-    @FXML
-    private TextField textQuestionID;
+	@FXML
+	private TextField textQuestionID;
 
-    @FXML
-    private TableView<QuestionRow> tableQuestion;
+	@FXML
+	private TableView<QuestionRow> tableQuestion;
 
-    @FXML
-    private Text textMsg1;
+	@FXML
+	private Text textMsg1;
 
-    @FXML
-    private Text textMsg2;
+	@FXML
+	private Text textMsg2;
 
-    @FXML
-    private Button btnCreateNewQuestion;
+	@FXML
+	private Button btnCreateNewQuestion;
 
-    @FXML
-    private Button btnOpenQuestionInfo;
+	@FXML
+	private Button btnOpenQuestionInfo;
 
-    @FXML
-    private Text textNavigation;
+	@FXML
+	private Text textNavigation;
 
-    
-    @FXML
-    private TableColumn<QuestionRow, String> QuestionID;
+	@FXML
+	private TableColumn<QuestionRow, String> QuestionID;
 
-    @FXML
-    private TableColumn<QuestionRow,String> Proffesion;
+	@FXML
+	private TableColumn<QuestionRow, String> Proffesion;
 
-    @FXML
-    private TableColumn<QuestionRow, String> Question;
-    
-    private ObservableList<QuestionRow> data;
+	@FXML
+	private TableColumn<QuestionRow, String> Question;
 
-    
-    @FXML
-    void MouseC(MouseEvent event) {
-    	
-    	
-     	ObservableList<QuestionRow> Qlist;
-    	Qlist= tableQuestion.getSelectionModel().getSelectedItems();
-    	textQuestionID.setText(Qlist.get(0).getQuestionID());
+	private ObservableList<QuestionRow> data;
 
-    }
+	@FXML
+	void MouseC(MouseEvent event) {
 
-    @FXML
-    void btnCreateNewQuestion(ActionEvent event)  {
+		ObservableList<QuestionRow> Qlist;
+		Qlist = tableQuestion.getSelectionModel().getSelectedItems();
+		textQuestionID.setText(Qlist.get(0).getQuestionID());
+
+	}
+
+	@FXML
+	void btnCreateNewQuestion(ActionEvent event) {
 
 		try {
 
@@ -95,19 +94,30 @@ public class QuestionBankController extends TeacherController implements Initial
 
 	}
 
-    @FXML
-    void btnDeleteQuestion(ActionEvent event) {
-    	ObservableList<QuestionRow> Qlist;
+	@FXML
+	void btnDeleteQuestion(ActionEvent event) {
+
+		ObservableList<QuestionRow> Qlist;
+		Question questionToDelete = new Question();
+		questionToDelete.setQuestionID(textQuestionID.getText());
+		questionToDelete.setTeacher(new Teacher(ClientUI.loggedInUser.getUser(), null));
+		Qlist = tableQuestion.getSelectionModel().getSelectedItems();
+		RequestToServer req = new RequestToServer("DeleteQuestion");
+		req.setRequestData(questionToDelete);
+		ClientUI.cems.accept(req);
+
+		if (CEMSClient.responseFromServer.getResponseData().equals("FALSE"))
+			System.out.println("failed to delete question");
+		else
+			data.removeAll(Qlist);
+		initTableRows();
 		
-    	Qlist= tableQuestion.getSelectionModel().getSelectedItems();
-    	
-    	data.removeAll(Qlist);
 
-    }
+	}
 
-    @FXML
-    void btnEditQuestion(ActionEvent event) {
-    	try {
+	@FXML
+	void btnEditQuestion(ActionEvent event) {
+		try {
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditQuestion.fxml"));
 			root.add(newPaneRight, 1, 0);
@@ -116,58 +126,43 @@ public class QuestionBankController extends TeacherController implements Initial
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-    }
+	}
 
-    
 
-	
-
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+initTableRows();
 
-		/*
-		 * Profession pro=new Profession("03","Math");
-		 * 
-		 * 
-		 * Question q1=new Question("1000", "what is the sqrt(9)?", null, null, 0,
-		 * pro,null); Question q2=new Question("1001", "what is the sqrt(25)?", null,
-		 * null, 0, pro,null);
-		 * 
-		 * 
-		 * QuestionRow qr= new QuestionRow(); qr.setQuestionID(q1.getQuestionID());
-		 * qr.setQuestion(q1.getQuestion());
-		 * qr.setProfession(q1.getProfession().getProfessionName());
-		 * 
-		 * QuestionRow qr2= new QuestionRow(); qr2.setQuestionID(q2.getQuestionID());
-		 * qr2.setQuestion(q2.getQuestion());
-		 * qr2.setProfession(q2.getProfession().getProfessionName());
-		 */
-		RequestToServer req=new RequestToServer("getQuestions");
-		
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public void initTableRows() {
+		textQuestionID.setEditable(true);
+
+		RequestToServer req = new RequestToServer("getQuestions");
+
 		req.setRequestData(ClientUI.loggedInUser.getUser().getId());
-		
-		ArrayList<QuestionRow> examsOfTeacher=new ArrayList<QuestionRow>();
-		
+
+		ArrayList<QuestionRow> examsOfTeacher = new ArrayList<QuestionRow>();
+
 		ClientUI.cems.accept(req);
-		
-		
-		examsOfTeacher=(ArrayList<QuestionRow>)CEMSClient.responseFromServer.getResponseData();
-		
-		 data = FXCollections.observableArrayList(examsOfTeacher);
-		
+
+		examsOfTeacher = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
+
+		data = FXCollections.observableArrayList(examsOfTeacher);
+
 		tableQuestion.getColumns().clear();
 		QuestionID.setCellValueFactory(new PropertyValueFactory<>("QuestionID"));
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("profession"));
 		Question.setCellValueFactory(new PropertyValueFactory<>("Question"));
-		
-		
+
 		tableQuestion.setItems(data);
-		
-		
+
 		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);
+
 		
-		 
 	}
 
 }

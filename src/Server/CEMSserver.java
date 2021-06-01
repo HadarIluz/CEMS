@@ -111,11 +111,11 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "addTimeToExam": { 
+		case "addTimeToExam": {
 			addTimeToExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-			
+
 		case "createNewExtensionRequest": {
 			createNewExtensionRequest((ExtensionRequest) req.getRequestData(), client);
 		}
@@ -194,6 +194,56 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
+		case "getExams": {
+
+			try {
+
+				ResponseFromServer respond = new ResponseFromServer("TEACHER EXAMS");
+				respond.setResponseData(dbController.GetTeacherExams((Integer) req.getRequestData()));
+
+				client.sendToClient(respond);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+			break;
+		case "DeleteQuestion": {
+			try {
+
+				ResponseFromServer respond = new ResponseFromServer("DELETE TEACHER QUESTION");
+				if (dbController.DeleteQuestion((Question) req.getRequestData()))
+					respond.setResponseData("TRUE");
+				else
+					respond.setResponseData("FALSE");
+
+				client.sendToClient(respond);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+			break;
+
+		case "DeleteExam": {
+			try {
+
+				ResponseFromServer respond = new ResponseFromServer("DELETE TEACHER EXAM");
+				if (dbController.DeleteExam((Exam) req.getRequestData()))
+					respond.setResponseData("TRUE");
+				else
+					respond.setResponseData("FALSE");
+
+				client.sendToClient(respond);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+			break;
 		}
 
 	}
@@ -424,7 +474,7 @@ public class CEMSserver extends AbstractServer {
 	protected void serverStopped() {
 		serverFrame.printToTextArea("Server has stopped listening for connections.");
 	}
-	
+
 	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer respon = dbController.verifyActiveExam((ActiveExam) activeExam);
 		try {
@@ -434,7 +484,7 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
-	
+
 	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {
 		ResponseFromServer respon = dbController.createNewExtensionRequest((ExtensionRequest) extensionRequest);
 		try {
