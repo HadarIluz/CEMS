@@ -313,11 +313,8 @@ public class DBController {
 	 * check if the activeExam exist in the DB
 	 * @param obj of ActiveExam which include exam to verify if exists.
 	 */
-<<<<<<< HEAD
-	public void verifyActiveExam(Object obj) {
-=======
+
 	public ResponseFromServer verifyActiveExam(Object obj) {
->>>>>>> 6b8013e4ff5549e269e19df5c494885cff95e1a4
 		ActiveExam existActiveExam = (ActiveExam) obj;
 		ResponseFromServer response = null;
 		try {
@@ -507,11 +504,7 @@ public class DBController {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			return false;
 		}
-<<<<<<< HEAD
-		return true;
-=======
 		return false;
->>>>>>> 6b8013e4ff5549e269e19df5c494885cff95e1a4
 	}
 
 	/**
@@ -678,26 +671,6 @@ public class DBController {
 		}
 		return true;		
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 6b8013e4ff5549e269e19df5c494885cff95e1a4
-
-	
-	
 	
 
 //public static void main(String[] args) {
