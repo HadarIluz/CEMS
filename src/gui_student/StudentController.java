@@ -114,8 +114,8 @@ public class StudentController extends Application implements Initializable {
 	@FXML
 	void btnStartManualExam(ActionEvent event) {
 		
-		EnterToExamController.setAllActiveExamBeforEnter2Exam(getAllActiveExamBeforEnter2Exam());
 		try {
+			EnterToExamController.setAllActiveExamBeforEnter2Exam(getAllActiveExamBeforEnter2Exam());
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 
@@ -194,7 +194,7 @@ public class StudentController extends Application implements Initializable {
 	@SuppressWarnings("unchecked")
 	private ArrayList<ActiveExam> getAllActiveExamBeforEnter2Exam() {
 		
-		ArrayList<ActiveExam> activeExamList;//= new ArrayList<ActiveExam>();
+		ArrayList<ActiveExam> activeExamList= new ArrayList<ActiveExam>();
 		RequestToServer req = new RequestToServer("getAllActiveExamBeforEnter2Exam");
 		ClientUI.cems.accept(req);
 		//DEBUG:

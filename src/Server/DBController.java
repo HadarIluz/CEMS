@@ -604,8 +604,6 @@ public class DBController {
 	public ResponseFromServer getAllActiveExam() {
 		
 		ArrayList<ActiveExam> activeExamList = new ArrayList<ActiveExam>();
-		Exam exam = new Exam(null);
-		ActiveExam activeExam= new ActiveExam(exam);
 		ResponseFromServer response = null;
 		/***EnterToExam***/
 		try {
@@ -614,7 +612,9 @@ public class DBController {
 			
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
+				Exam exam = new Exam(null);
 				exam.setExamID(rs.getString(1));
+				ActiveExam activeExam= new ActiveExam(exam);
 				activeExam.setExam(exam);
 				activeExam.setStartTime(rs.getTime(2));
 				activeExam.setTimeAllotedForTest(rs.getString(3));
@@ -626,14 +626,10 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		
-		if (activeExam.getExam()== null) {
-			response = new ResponseFromServer("NOT FOUND");
-			
-		} else {
-			response = new ResponseFromServer("ACTIVE EXAMS FOUND");	
-			response.setResponseData(activeExamList);
-		}
+
+		response = new ResponseFromServer("ACTIVE EXAMS FOUND");	
+		response.setResponseData(activeExamList);
+
 		return response;
 	}
 
