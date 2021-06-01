@@ -79,11 +79,11 @@ public class EnterToExamController extends StudentController implements Initiali
 		boolean condition = checkConditionToStart(examCode, studentID);
 		if (condition) {
 
-//			if (activeExam_selection == null) {
-//				popUp("Please choose your exam.");
-//			} 
-//			else 
-//			{
+			if (activeExam_selection == null) {
+				popUp("Please choose your exam.");
+			} 
+			else 
+			{
 //TODO: Should this activeExam be "assigned" to a student somehow? (new table or something else?)..
 //TODO:ASK TEAM.-->do i need to do insert row into table of exam of student?? 
 
@@ -154,7 +154,7 @@ public class EnterToExamController extends StudentController implements Initiali
 				}
 
 			}
-		//}
+		}
 	}
 
 	/**
