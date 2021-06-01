@@ -247,15 +247,14 @@ public class EnterToExamController extends StudentController implements Initiali
 	}
 
 	private void loadActiveExamToCombobox() {
-//		for (ActiveExam ac : activeExamtList) {
-//			activeExamtMap.put(ac.getExam().getExamID(), ac);
-//		}
 		setActiveExamtMap(activeExamtList);
 		for (ActiveExam ae : activeExamtList) {
 			examIdList.add(ae.getExam().getExamID());
 		}
 		//	not working here
-		selectActiveExamFromCB.setItems(FXCollections.observableList(examIdList));
+		
+		selectActiveExamFromCB.setItems(FXCollections.observableArrayList(examIdList));
+		//selectActiveExamFromCB.setItems(FXCollections.observableList(examIdList));
 		//selectActiveExamFromCB.setItems(FXCollections.observableArrayList(activeExamtMap.keySet()));
 		selectActiveExamFromCB.setDisable(false);
 	}
