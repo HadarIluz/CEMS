@@ -21,8 +21,8 @@ public class DisplayScreenTask extends Application {
 			//LEFT SCREENS:
 			//-->
 			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("/boundary/PrincipalMenuLeft.fxml"));
-			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("/gui_teacher/TeacherMenuLeft.fxml"));
-			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("PrincipalMenuLeft.fxml"));
+			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("/gui_teacher/TeacherMenuLeft.fxml"));
+			Pane newMnueLeft = FXMLLoader.load(getClass().getResource("PrincipalMenuLeft.fxml"));
 			//Pane newMnueLeft = FXMLLoader.load(getClass().getResource("Login.fxml"));
 			//primaryStage.setTitle("CEMS-Computerized Exam Management System");
 			//-->
@@ -42,7 +42,7 @@ public class DisplayScreenTask extends Application {
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_step1.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("createExam_addQ_step2.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("createNewExam_step3.fxml"));
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_teacher/AddTimeToExam.fxml"));
+			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_teacher/AddTimeToExam.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("ScoreApproval.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("TeacherStatistics.fxml"));
@@ -53,7 +53,7 @@ public class DisplayScreenTask extends Application {
 			
 			//PRINCIPAL:
 			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("PrincipalGetReports.fxml"));
-			//Pane newPaneRight = FXMLLoader.load(getClass().getResource("ApprovalTimeExtention.fxml"));
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ApprovalTimeExtention.fxml"));
 			
 			//-->
 			root.add(newPaneRight, 1, 0);

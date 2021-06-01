@@ -6,11 +6,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
+
+import client.CEMSClient;
+import client.ClientUI;
 import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
@@ -24,6 +24,7 @@ import entity.TestRow;
 import entity.User;
 import entity.UserType;
 import gui_server.ServerFrameController;
+import logic.RequestToServer;
 import logic.ResponseFromServer;
 
 /**
@@ -465,26 +466,21 @@ public class DBController {
 
 	/**
 	 * @param activeExam
-	 * @param additionalTime
 	 * @return true if the additional Time for activeExam has been updated at
 	 * 		   table active_exam in DB.
 	 *         else, return false
 	 */
-	public boolean setTimeForActiveTest(ActiveExam activeExam, String additionalTime) {
+	public boolean setTimeForActiveTest(ActiveExam activeExam) {
 		PreparedStatement pstmt;
-		int check = 0;
 
 		try {
-			pstmt = conn.prepareStatement(
-					"UPDATE active_exam SET timeAllotedForTest=? WHERE exam=" + activeExam.getExam().getExamID() + ";");
-			pstmt.setString(3, additionalTime);
-			check = pstmt.executeUpdate();
-			if (check == 1) {
-				System.out.println("Time for active exam Updated!");
+			pstmt = conn.prepareStatement("UPDATE active_exam SET timeAllotedForTest=? WHERE exam=?");
+			pstmt.setInt(1, activeExam.getTimeOfExam());
+			pstmt.setString(2, activeExam.getExam().getExamID());
+			if (pstmt.executeUpdate() == 1) 
 				return true;
-			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 		return false;
 	}
@@ -495,16 +491,18 @@ public class DBController {
 	 * @return true if deleting request for activeExam from table active_exam in DB
 	 *         succeeded, else return false
 	 */
-	public Boolean DeleteExtenxtionRequest(ActiveExam activeExam) {
+	public Boolean deleteExtenxtionRequest(ActiveExam activeExam) {
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("DELETE FROM extension_request WHERE exam=?");
 			pstmt.setString(1, activeExam.getExam().getExamID());
+			if (pstmt.executeUpdate() == 1) 
+				return true;
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			return false;
 		}
-		return true;
+		return false;
 	}
 
 	/**
@@ -597,6 +595,64 @@ public class DBController {
 		}
 		return p;
 	}
+	
+	/**
+	 * @return Returns a list of all the Extensions Requests in the database
+	 */
+	public ArrayList<ExtensionRequest> getExtensionsRequests() {
+		ArrayList<ExtensionRequest> extensionRequestsList = new ArrayList<ExtensionRequest>();
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM extension_request ;");
+			ResultSet rs = pstmt.executeQuery(); 
+			while (rs.next()) {
+				Exam exam = new Exam(null);
+				ActiveExam activeExam = new ActiveExam(exam);
+				ExtensionRequest extensionRequest = new ExtensionRequest(activeExam);
+				exam.setExamID(rs.getString(1));
+				activeExam.setExam(exam);
+				extensionRequest.setActiveExam(activeExam);
+				extensionRequest.setAdditionalTime(rs.getString(2));
+				extensionRequest.setReason(rs.getString(3));
+				extensionRequestsList.add(extensionRequest);
+			}		
+			rs.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}	
+		 for (ExtensionRequest ex : extensionRequestsList) {
+			 ex.setActiveExam(getActiveExam(ex.getActiveExam()));
+		 }
+	return extensionRequestsList;	
+	}
+
+	/**
+	 * @param An active exam that is initialized with a exam only 
+	 * @return Initializes the rest of the fields of an active exam and returns it
+	 */
+	public ActiveExam getActiveExam(ActiveExam activeExam) {		
+		
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=?");
+			pstmt.setString(1, activeExam.getExam().getExamID());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				activeExam.setTime(rs.getTime(2));
+				activeExam.setTimeOfExam(rs.getString(3));
+				activeExam.setExamCode(rs.getString(4));
+				rs.close();
+			}
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		
+		// in case not found any active exam match.
+		if (activeExam.getExamCode() == null) {
+			deleteExtenxtionRequest(activeExam);
+		}
+		return activeExam;	
+	}
 
 	public boolean DeleteExam(Exam exam) {
 		
@@ -615,7 +671,6 @@ public class DBController {
 		return true;
 		
 	}
-
 
 
 
