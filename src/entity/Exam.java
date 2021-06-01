@@ -33,7 +33,8 @@ public class Exam implements Serializable{
 		this.timeOfExam = timeOfExam;
 	}
 
-
+		
+		public String getProfName() {return ProfessionName; }
 	
 	  public String getProfessionName() { return profession.getProfessionID(); }
 	 

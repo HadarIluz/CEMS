@@ -388,6 +388,7 @@ public class DBController {
 				Exam exam = new Exam(rs.getString(1));
 				exam.setProfession(new Profession(rs.getString(2)));
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
+				exam.setCourse(new Course(rs.getString(3)));//addition
 				examsOfTeacher.add(exam);
 
 			}
@@ -655,21 +656,19 @@ public class DBController {
 	}
 
 	public boolean DeleteExam(Exam exam) {
-		
-		
+			
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("DELETE FROM exam WHERE examID=? AND profession=? AND course=?");
 			pstmt.setString(1, exam.getExamID());
-			pstmt.setString(2, exam.getProfessionName());
-			pstmt.setString(3, exam.getCourse().getCourseID());
+			pstmt.setString(2, exam.getProfName());
+			pstmt.setString(3, exam.getCourse().getCourseName());//need to be courseID
 			pstmt.executeUpdate();
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			return false;
 		}
-		return true;
-		
+		return true;		
 	}
 
 

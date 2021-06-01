@@ -19,7 +19,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -27,7 +31,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import logic.RequestToServer;
 
 public class QuestionBankController extends TeacherController implements Initializable {
@@ -96,7 +102,9 @@ public class QuestionBankController extends TeacherController implements Initial
 
 	@FXML
 	void btnDeleteQuestion(ActionEvent event) {
-
+		if (!checkForLegalID(textQuestionID.getText())) 
+			return;
+		
 		ObservableList<QuestionRow> Qlist;
 		Question questionToDelete = new Question();
 		questionToDelete.setQuestionID(textQuestionID.getText());
@@ -111,14 +119,15 @@ public class QuestionBankController extends TeacherController implements Initial
 		else
 			data.removeAll(Qlist);
 		initTableRows();
-		
 
 	}
 
 	@FXML
 	void btnEditQuestion(ActionEvent event) {
-		try {
+		if (!checkForLegalID(textQuestionID.getText()))
+			return;
 
+		try {
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditQuestion.fxml"));
 			root.add(newPaneRight, 1, 0);
 
@@ -128,15 +137,12 @@ public class QuestionBankController extends TeacherController implements Initial
 		}
 	}
 
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-initTableRows();
+		initTableRows();
 
 	}
-	
-	
-	
+
 	@SuppressWarnings("unchecked")
 	public void initTableRows() {
 		textQuestionID.setEditable(true);
@@ -162,7 +168,33 @@ initTableRows();
 
 		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);
 
-		
+	}
+
+	public boolean checkForLegalID(String QuestionID) {
+
+		if (QuestionID.length() != 5) {
+			popUp("Question ID Must be 5 digits.");
+			return false;
+		}
+		for (int i = 0; i < QuestionID.length(); i++)
+			if (!Character.isDigit(QuestionID.charAt(i))) {
+				popUp("Question ID Must Contains only digits.");
+				return false;
+			}
+		return true;
+	}
+
+	private void popUp(String msg) {
+		final Stage dialog = new Stage();
+		VBox dialogVbox = new VBox(20);
+		Label lbl = new Label(msg);
+		lbl.setPadding(new Insets(15));
+		lbl.setAlignment(Pos.CENTER);
+		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		dialogVbox.getChildren().add(lbl);
+		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
+		dialog.setScene(dialogScene);
+		dialog.show();
 	}
 
 }

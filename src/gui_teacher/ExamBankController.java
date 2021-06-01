@@ -20,14 +20,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import logic.RequestToServer;
 
 public class ExamBankController extends TeacherController implements Initializable {
@@ -70,7 +76,6 @@ public class ExamBankController extends TeacherController implements Initializab
 
 	}
 
-	
 	public Exam GetTableDetails(String ExamID) {
 
 		Exam exam;
@@ -79,7 +84,7 @@ public class ExamBankController extends TeacherController implements Initializab
 			if (e.getExamID().equals(ExamID)) {
 				exam = new Exam(ExamID);
 				exam.setCourse(new Course(e.getCourse().getCourseName()));
-				exam.getCourse().setCourseID(e.getCourse().getCourseID());
+				// exam.getCourse().setCourseID(e.getCourse().getCourseID());
 				exam.setProfessionName(e.getProfessionName());
 				return exam;
 
@@ -91,12 +96,29 @@ public class ExamBankController extends TeacherController implements Initializab
 
 	}
 
+	public boolean checkForLegalID(String ExamID) {
+
+		if (ExamID.length() != 6) {
+			popUp("Exam ID Must be 6 digits.");
+			return false;
+		}
+		for (int i = 0; i < ExamID.length(); i++)
+			if (!Character.isDigit(ExamID.charAt(i))) {
+				popUp("Exam ID Must Contains only digits.");
+				return false;
+			}
+		return true;
+	}
+
 	@FXML
 	void btnDeleteExam(ActionEvent event) {
 		// we need to insert case of letters of not 5 digits
 
+		if (!checkForLegalID(textExamID.getText()))
+			return;
+
 		ObservableList<Exam> Qlist;
-		
+
 		Exam ExamToDelete = GetTableDetails(textExamID.getText());
 
 		Qlist = tableExam.getSelectionModel().getSelectedItems();
@@ -114,6 +136,8 @@ public class ExamBankController extends TeacherController implements Initializab
 
 	@FXML
 	void btnEditExam(ActionEvent event) {
+		if (!checkForLegalID(textExamID.getText()))
+			return;
 
 		try {
 
@@ -166,6 +190,19 @@ public class ExamBankController extends TeacherController implements Initializab
 		tableExam.setItems(data);
 		tableExam.getColumns().addAll(ExamID, Proffesion, Time);
 
+	}
+
+	private void popUp(String msg) {
+		final Stage dialog = new Stage();
+		VBox dialogVbox = new VBox(20);
+		Label lbl = new Label(msg);
+		lbl.setPadding(new Insets(15));
+		lbl.setAlignment(Pos.CENTER);
+		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		dialogVbox.getChildren().add(lbl);
+		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
+		dialog.setScene(dialogScene);
+		dialog.show();
 	}
 
 }
