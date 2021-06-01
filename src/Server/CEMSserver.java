@@ -132,23 +132,13 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "getAllActiveExamBeforEnter2Exam": {
-			getAllActiveExamBeforEnter2Exam(client);
-		}
-			break;
-
-		case "getAllActiveExamBeforEnter2Exam": {
-			getAllActiveExamBeforEnter2Exam(client);
-		}
-			break;
-
 		case "approvalTimeExtention": {
 			approvalTimeExtention((ActiveExam)req.getRequestData(), client);
 		}
 			break;
 		case "declineTimeExtention": {
 			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
-			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
+			//dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
 		}
 			break;
 
