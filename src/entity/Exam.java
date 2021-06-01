@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@SuppressWarnings("serial")
 public class Exam implements Serializable{
 
 	private String examID;
@@ -15,7 +16,6 @@ public class Exam implements Serializable{
 	private String commentForTeacher;
 	private String commentForStudents;
 	private Teacher author; // is this relevant or to delete?
-	
 	private String ProfessionName;
 
 	
@@ -33,10 +33,11 @@ public class Exam implements Serializable{
 		this.timeOfExam = timeOfExam;
 	}
 
-
-	public String getProfessionName() {
-		return ProfessionName;
-	}
+		
+		public String getProfName() {return ProfessionName; }
+	
+	  public String getProfessionName() { return profession.getProfessionID(); }
+	 
 
 	public void setProfessionName(String professionName) {
 		ProfessionName = professionName;
@@ -67,6 +68,8 @@ public class Exam implements Serializable{
 	public void setProfession(Profession profession) {
 		this.profession = profession;
 	}
+	
+
 
 
 
