@@ -63,9 +63,9 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 		//When a test is selected
 		else {
 			//Adding the time required for the test time
-			timeOfExam = selectedExtensionRequest.getActiveExam().getTimeOfExam();
+			timeOfExam = selectedExtensionRequest.getActiveExam().getTimeAllotedForTest();
 			timeOfExam+= Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
-			selectedExtensionRequest.getActiveExam().setTimeOfExam("" + timeOfExam);
+			selectedExtensionRequest.getActiveExam().setTimeAllotedForTest("" + timeOfExam);
 			//Update the exam time and delete the extension Request in the database
 			RequestToServer req = new RequestToServer("approvalTimeExtention");
 			req.setRequestData(selectedExtensionRequest.getActiveExam());

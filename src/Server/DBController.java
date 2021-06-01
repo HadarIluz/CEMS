@@ -322,8 +322,8 @@ public class DBController {
 			pstmt.setString(1, existActiveExam.getExam().getExamID());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				existActiveExam.setTime(rs.getTime(2));
-				existActiveExam.setTimeOfExam(rs.getString(3));
+				existActiveExam.setStartTime(rs.getTime(2));
+				existActiveExam.setTimeAllotedForTest(rs.getString(3));
 				existActiveExam.setExamCode(rs.getString(4));
 				rs.close();
 			}
@@ -476,7 +476,7 @@ public class DBController {
 
 		try {
 			pstmt = conn.prepareStatement("UPDATE active_exam SET timeAllotedForTest=? WHERE exam=?");
-			pstmt.setInt(1, activeExam.getTimeOfExam());
+			pstmt.setInt(1, activeExam.getTimeAllotedForTest());
 			pstmt.setString(2, activeExam.getExam().getExamID());
 			if (pstmt.executeUpdate() == 1) 
 				return true;
@@ -517,16 +517,16 @@ public class DBController {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT exam, timeAllotedForTest, examType FROM active_exam WHERE examCode=? and startTime>=? and startTime<?;");
 			pstmt.setString(1, activeExam.getExamCode());
-			pstmt.setTime(2, activeExam.getTime());
+			pstmt.setTime(2, activeExam.getStartTime());
 			pstmt.setTime(3, activeExam.getEndTimeToTakeExam());
 			//Time Range for start the exam:
-			System.out.println(activeExam.getTime() + " - " + activeExam.getEndTimeToTakeExam());
+			System.out.println(activeExam.getStartTime() + " - " + activeExam.getEndTimeToTakeExam());
 			
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				exam.setExamID(rs.getString(1));
 				activeExam.setExam(exam);
-				activeExam.setTimeOfExam(rs.getString(2));
+				activeExam.setTimeAllotedForTest(rs.getString(2));
 				activeExam.setActiveExamType(rs.getString(3));
 				rs.close();
 			}
@@ -639,8 +639,8 @@ public class DBController {
 			pstmt.setString(1, activeExam.getExam().getExamID());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				activeExam.setTime(rs.getTime(2));
-				activeExam.setTimeOfExam(rs.getString(3));
+				activeExam.setStartTime(rs.getTime(2));
+				activeExam.setTimeAllotedForTest(rs.getString(3));
 				activeExam.setExamCode(rs.getString(4));
 				rs.close();
 			}
@@ -669,6 +669,41 @@ public class DBController {
 			return false;
 		}
 		return true;		
+	}
+
+	/**
+	 * @return
+	 */
+	public ResponseFromServer getAllActiveExam() {
+		
+		ArrayList<ActiveExam> activeExamList = new ArrayList<ActiveExam>();
+		ResponseFromServer response = null;
+		/***EnterToExam***/
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM active_exam;");
+			
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Exam exam = new Exam(null);
+				exam.setExamID(rs.getString(1));
+				ActiveExam activeExam= new ActiveExam(exam);
+				activeExam.setExam(exam);
+				activeExam.setStartTime(rs.getTime(2));
+				activeExam.setTimeAllotedForTest(rs.getString(3));
+				activeExam.setExamCode(rs.getString(4));
+				activeExam.setActiveExamType(rs.getString(5));
+				activeExamList.add(activeExam);
+			}
+			rs.close();
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+
+		response = new ResponseFromServer("ACTIVE EXAMS FOUND");	
+		response.setResponseData(activeExamList);
+
+		return response;
 	}
 
 

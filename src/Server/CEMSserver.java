@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import client.ClientUI;
 import entity.ActiveExam;
+import entity.Course;
 import entity.Exam;
 import entity.ExtensionRequest;
 import entity.Profession;
@@ -16,6 +18,7 @@ import entity.Student;
 import entity.Teacher;
 import entity.User;
 import gui_server.ServerFrameController;
+import logic.LoggedInUser;
 import logic.RequestToServer;
 import logic.ResponseFromServer;
 import logic.StatusMsg;
@@ -108,11 +111,11 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "addTimeToExam": { 
+		case "addTimeToExam": {
 			addTimeToExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-			
+
 		case "createNewExtensionRequest": {
 			createNewExtensionRequest((ExtensionRequest) req.getRequestData(), client);
 		}
@@ -124,13 +127,28 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
+		case "getAllActiveExamBeforEnter2Exam": {
+			getAllActiveExamBeforEnter2Exam(client);
+		}
+			break;
+
+		case "getAllActiveExamBeforEnter2Exam": {
+			getAllActiveExamBeforEnter2Exam(client);
+		}
+			break;
+
+		case "getAllActiveExamBeforEnter2Exam": {
+			getAllActiveExamBeforEnter2Exam(client);
+		}
+			break;
+
 		case "approvalTimeExtention": {
 			approvalTimeExtention((ActiveExam)req.getRequestData(), client);
 		}
 			break;
-		
 		case "declineTimeExtention": {
-			declineTimeExtention((ActiveExam)req.getRequestData(), client);
+			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
+			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
 		}
 			break;
 
@@ -218,7 +236,6 @@ public class CEMSserver extends AbstractServer {
 			}
 
 		}
-			break;
 
 		case "DeleteExam": {
 			try {
@@ -267,6 +284,21 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);
 
+	}
+	
+	
+	private void getAllActiveExamBeforEnter2Exam(ConnectionToClient client) {
+		// logic for 'EnterToExam'
+		ResponseFromServer response = null;
+		response = dbController.getAllActiveExam();
+		// sent to client.
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+		
 	}
 
 	/**
