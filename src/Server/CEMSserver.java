@@ -125,12 +125,12 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "approvalTimeExtention": {
-			approvTimeExtention((ExtensionRequest)req.getRequestData(), client);
+			approvalTimeExtention((ActiveExam)req.getRequestData(), client);
 		}
 			break;
 		
 		case "declineTimeExtention": {
-			declineTimeExtention((ExtensionRequest)req.getRequestData(), client);
+			approvalTimeExtention((ActiveExam)req.getRequestData(), client);
 		}
 			break;
 
@@ -448,20 +448,33 @@ public class CEMSserver extends AbstractServer {
 		try {	
 			respon.setResponseData(dbController.getExtensionsRequests());
 			client.sendToClient(respon);
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.		
 	}
 	
-	private void approvTimeExtention(ExtensionRequest extensionRequest, ConnectionToClient client) {
+	private void approvalTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
 		// update time alloted for test in active exam after the principal approves the
 		// request.
-		dbController.setTimeForActiveTest(extensionRequest.getActiveExam(), extensionRequest.getAdditionalTime());
-		dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
+		ResponseFromServer respon = new ResponseFromServer("EXTENSION APPROVED");
+		try {
+			if(dbController.setTimeForActiveTest(activeExam)){//succed
+				if(dbController.deleteExtenxtionRequest(activeExam)) 
+					respon.setResponseData((Boolean) true);
+				else 
+					respon.setResponseData((Boolean) false);
+			}
+			else
+				respon.setResponseData((Boolean) false);
+			client.sendToClient(respon);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.		
 	}
 	
-	private void declineTimeExtention(ExtensionRequest extensionRequest, ConnectionToClient client) {
-		dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
-	}
+	//private void declineTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
+	//	dbController.deleteExtenxtionRequest(extensionRequest.getActiveExam());
+	//}
 }

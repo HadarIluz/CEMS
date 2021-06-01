@@ -63,11 +63,12 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 		//When a test is selected
 		else {
 			//Adding the time required for the test time
-			timeOfExam = selectedExtensionRequest.getActiveExam().getExam().getTimeOfExam();
-			timeOfExam += Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
-			selectedExtensionRequest.getActiveExam().getExam().setTimeOfExam(timeOfExam);
-			RequestToServer req = new RequestToServer("approvTimeExtention");
-			req.setRequestData(selectedExtensionRequest);
+			timeOfExam = selectedExtensionRequest.getActiveExam().getTimeOfExam();
+			timeOfExam+= Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
+			selectedExtensionRequest.getActiveExam().setTimeOfExam("" + timeOfExam);
+//Matar: from here
+			RequestToServer req = new RequestToServer("approvalTimeExtention");
+			req.setRequestData(selectedExtensionRequest.getActiveExam());
 			ClientUI.cems.accept(req);
 		}
 	}
@@ -85,7 +86,7 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 		//When a test is selected
 		else {
 			RequestToServer req = new RequestToServer("declineTimeExtention");
-			req.setRequestData(selectedExtensionRequest);
+			req.setRequestData(selectedExtensionRequest.getActiveExam());
 			ClientUI.cems.accept(req);
 		}
 	}
@@ -107,18 +108,7 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 		 for (ExtensionRequest ex : extensionRequestList) 
 			 examIdList.add(ex.getActiveExam().getExam().getExamID());
 		 selectExamExtension.setItems(FXCollections.observableList(examIdList));
-			
-			//selectExamExtension.setItems(extensionRequestList.get(i).getActiveExam().getExam().getExamID());
-		//	selectExamExtension.setId(extensionRequestList.get(i).getActiveExam().getExamCode() + " ");//hadar
-			//selectExamExtension.setItems(FXCollections.observableArrayList(extensionRequestMap.keySet()));//hadar
-
-		selectExamExtension.setDisable(false);//hadar
-
-		//selectExamExtension.setItems((ObservableList<ExtensionRequest>) extensionRequestLIstnew); //hadar
-		//selectExamExtension.setId(extensionRequestLIstnew.get(0).getActiveExam().getExamCode() + " ");//hadar
-		//selectExamExtension.setItems(FXCollections.observableArrayList(extensionRequestMap.keySet()));//hadar
-		//selectExamExtension.setDisable(false);//hadar
-	
+		 selectExamExtension.setDisable(false);
 	}
 
 	@Override
