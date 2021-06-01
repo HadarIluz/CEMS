@@ -643,8 +643,9 @@ public class DBController {
 		}
 		
 		// in case not found any active exam match.
-		//if (activeExam.getExamCode() == null) 
-		//	return null;
+		if (activeExam.getExamCode() == null) {
+			deleteExtenxtionRequest(activeExam);
+		}
 		return activeExam;	
 	}
 
