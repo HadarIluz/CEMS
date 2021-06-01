@@ -35,26 +35,27 @@ import logic.RequestToServer;
  */
 public class EnterToExamController extends StudentController implements Initializable {
 
-	@FXML
-	private Button btnStart;
+    @FXML
+    private Button btnStart;
 
-	@FXML
-	private TextField textExamCode;
+    @FXML
+    private TextField textExamCode;
 
-	@FXML
-	private TextField textStudentID;
+    @FXML
+    private TextField textStudentID;
 
-	@FXML
-	private CheckBox ApprovalInsrtuctions;
+    @FXML
+    private CheckBox ApprovalInsrtuctions;
 
-	@FXML
-	private CheckBox CommitPreformByMyself;
+    @FXML
+    private CheckBox CommitPreformByMyself;
 
-	@FXML
-	private Label textConfirm;
+    @FXML
+    private Label textConfirm;
 
-	@FXML
-	private ComboBox<String> selectActiveExamFromCB;
+    @FXML
+    private ComboBox<String> selectActiveExamFromCB;
+
 
 	private static HashMap<String, ActiveExam> activeExamtMap = new HashMap<String, ActiveExam>();
 	private static ArrayList<ActiveExam> activeExamtList = new ArrayList<ActiveExam>();
