@@ -3,11 +3,15 @@ package gui_student;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
 import entity.Student;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +21,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -48,6 +53,13 @@ public class EnterToExamController extends StudentController implements Initiali
 	@FXML
 	private Label textConfirm;
 
+	@FXML
+	private ComboBox<String> selectActiveExamFromCB;
+
+	private static HashMap<String, ActiveExam> activeExamtMap = new HashMap<>();//= new HashMap<String, ActiveExam>();
+	private static ArrayList<ActiveExam> activeExamtList;
+	private ArrayList<String> CBlbalesList = new ArrayList<String>();
+	private ActiveExam ActiveExam_selection;
 	private Student student;
 
 	/**
@@ -222,7 +234,35 @@ public class EnterToExamController extends StudentController implements Initiali
 	public void initialize(URL location, ResourceBundle resources) {
 		student = (Student) ClientUI.loggedInUser.getUser();
 		textConfirm.setVisible(false);
+		ActiveExam_selection = null;
+		loadActiveExamToCombobox(); 
 
+	}
+
+	private void loadActiveExamToCombobox() {
+		for (ActiveExam ac : activeExamtList) {
+			activeExamtMap.put(ac.getExam().getExamID(), ac);
+		}
+		for (ActiveExam acl : activeExamtList) {
+			CBlbalesList.add(acl.getExam().getExamID());
+		}
+		
+		//selectActiveExamFromCB.setItems(FXCollections.observableArrayList(CBlbalesList));
+		selectActiveExamFromCB.setItems(FXCollections.observableArrayList(activeExamtMap.keySet()));
+		selectActiveExamFromCB.setDisable(false);
+	}
+	
+
+	@FXML
+	void selectActiveExam(ActionEvent event) {
+		if (activeExamtMap.containsKey(selectActiveExamFromCB.getValue())) {
+			ActiveExam_selection = activeExamtMap.get(selectActiveExamFromCB.getValue());
+		}
+
+	}
+
+	public static void setAllActiveExamBeforEnter2Exam(ArrayList<ActiveExam> ActiveExamList) {
+		activeExamtList = ActiveExamList;
 	}
 
 }
