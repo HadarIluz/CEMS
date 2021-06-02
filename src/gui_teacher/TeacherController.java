@@ -40,48 +40,51 @@ import logic.RequestToServer;
  */
 public class TeacherController extends Application implements Initializable {
 
-	@FXML
-	private ImageView imgPrincipal;
 
-	@FXML
-	private ImageView imgLogo;
+    @FXML
+    private ImageView imgPrincipal;
 
-	@FXML
-	public Label textTeacherName;
+    @FXML
+    private ImageView imgLogo;
 
-	@FXML
-	private Button brnManageQuestionsBank;
+    @FXML
+    private Label textTeacherName;
 
-	@FXML
-	private ImageView imgPhone;
+    @FXML
+    private Button brnManageQuestionsBank;
 
-	@FXML
-	private ImageView imgEmail;
+    @FXML
+    private ImageView imgPhone;
 
-	@FXML
-	private Button btnCreateActiveExam;
+    @FXML
+    private ImageView imgEmail;
 
-	@FXML
-	private Button btnManageExamsBank;
+    @FXML
+    private Button btnManageExamsBank;
 
-	@FXML
-	private Button btnGetStatistics;
+    @FXML
+    private Button btnGetStatistics;
 
-	@FXML
-	private Button btnScoreApproval;
+    @FXML
+    private Button btnScoreApproval;
 
-	@FXML
-	private Button btnChangeExamTime;
+    @FXML
+    private Button btnChangeExamTime;
+
+    @FXML
+    private Label pressLogout;
 	
 	public LoginController loginController;
 	protected static GridPane root;
 	public Scene scene;
 	protected User teacher;
-	LoginController login;
-	 private static HashMap<String, Profession> professionsMap = null;
+	private static HashMap<String, Profession> professionsMap = null;
 
+	/**TODO: add comment
+	 * @param event
+	 */
 	@FXML
-	void brnManageQuestionsBank(ActionEvent event) {
+	void btnManageQuestionsBank(ActionEvent event) {
 		try {
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("QuestionBank.fxml"));
@@ -94,6 +97,9 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
+	/*TODO: add comment
+	 * @param event
+	 */
 	@FXML
 	void btnChangeExamTime(ActionEvent event) {
 		try {
@@ -108,24 +114,12 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
-	@FXML
-	void btnCreateActiveExam(ActionEvent event) {
-		try {
-
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
-			root.add(newPaneRight, 1, 0);
-
-		} catch (IOException e) {
-			System.out.println("Couldn't load!");
-			e.printStackTrace();
-		}
-
-	}
-
+	/**TODO: add comment
+	 * @param event
+	 */
 	@FXML
 	void btnGetStatistics(ActionEvent event) {
 		try {
-
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("DemoStatistics.fxml"));
 			root.add(newPaneRight, 1, 0);
 
@@ -136,10 +130,12 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
+	/** TODO: add comment
+	 * @param event
+	 */
 	@FXML
 	void btnManageExamsBank(ActionEvent event) {
 		try {
-
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ExamBank.fxml"));
 			root.add(newPaneRight, 1, 0);
 		} catch (IOException e) {
@@ -149,10 +145,12 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
+	/** TODO: add comment
+	 * @param event
+	 */
 	@FXML
 	void btnScoreApproval(ActionEvent event) {
 		try {
-
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ScoreApproval.fxml"));
 			root.add(newPaneRight, 1, 0);
 

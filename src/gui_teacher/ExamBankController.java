@@ -15,6 +15,8 @@ import entity.Profession;
 import entity.Question;
 import entity.QuestionRow;
 import entity.Teacher;
+import gui_student.SolveExamController;
+import gui_student.StudentController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,7 +39,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class ExamBankController extends TeacherController implements Initializable {
+public class ExamBankController implements Initializable {
 
 	@FXML
 	private Button btnEditExam;
@@ -67,6 +69,11 @@ public class ExamBankController extends TeacherController implements Initializab
 	private TableColumn<Exam, Integer> Time;
 
 	private ObservableList<Exam> data;
+	
+    @FXML
+    private Button btnCreateActiveExam;
+    
+    private static TeacherController teacherController;
 
 	@FXML
 	void MouseC(MouseEvent event) {
@@ -86,6 +93,7 @@ public class ExamBankController extends TeacherController implements Initializab
 				exam = new Exam(ExamID);
 				exam.setCourse(new Course(e.getCourse().getCourseName()));
 				// exam.getCourse().setCourseID(e.getCourse().getCourseID());
+				exam.setProfession(e.getProfession());
 				exam.setProfession(e.getProfession());
 				return exam;
 
@@ -143,7 +151,7 @@ public class ExamBankController extends TeacherController implements Initializab
 		try {
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
-			root.add(newPaneRight, 1, 0);
+			teacherController.root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");
@@ -159,7 +167,7 @@ public class ExamBankController extends TeacherController implements Initializab
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_step1.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-			root.add(newPaneRight, 1, 0);
+			teacherController.root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");
@@ -220,5 +228,22 @@ public class ExamBankController extends TeacherController implements Initializab
 		dialog.setScene(dialogScene);
 		dialog.show();
 	}
+	
+	//TODO: btnCreateActiveExam open new fxml (HADAR)
+    @FXML
+    void btnCreateActiveExam(ActionEvent event) {
+    	
+    	try {
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
+			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			teacherController.root.add(newPaneRight, 1, 0);
+			//funcName.setActiveExamState(/**/);
+		} catch (IOException e) {
+			System.out.println("Couldn't load!");
+			e.printStackTrace();
+		}
+    	    	
+    }
 
 }
