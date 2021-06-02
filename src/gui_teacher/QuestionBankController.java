@@ -7,12 +7,9 @@ import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
-import entity.Exam;
-import entity.Profession;
 import entity.Question;
 import entity.QuestionRow;
 import entity.Teacher;
-import gui_cems.LoginController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,7 +33,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class QuestionBankController extends TeacherController implements Initializable {
+public class QuestionBankController implements Initializable {
 
 	@FXML
 	private Button btnEditQuestion;
@@ -75,6 +72,8 @@ public class QuestionBankController extends TeacherController implements Initial
 	private TableColumn<QuestionRow, String> Question;
 
 	private ObservableList<QuestionRow> data;
+	
+	private static TeacherController teacherController;
 
 	@FXML
 	void MouseC(MouseEvent event) {
@@ -89,9 +88,8 @@ public class QuestionBankController extends TeacherController implements Initial
 	void btnCreateNewQuestion(ActionEvent event) {
 
 		try {
-
 			AnchorPane newPaneRight = FXMLLoader.load(getClass().getResource("CreateQuestion.fxml"));
-			root.add(newPaneRight, 1, 0);
+			teacherController.root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");
@@ -129,7 +127,7 @@ public class QuestionBankController extends TeacherController implements Initial
 
 		try {
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditQuestion.fxml"));
-			root.add(newPaneRight, 1, 0);
+			teacherController.root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");

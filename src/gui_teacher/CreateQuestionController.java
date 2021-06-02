@@ -28,7 +28,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class CreateQuestionController extends QuestionBankController implements Initializable{
+public class CreateQuestionController implements Initializable{
 
     @FXML
     private TextField textTheQuestion;
@@ -76,6 +76,8 @@ public class CreateQuestionController extends QuestionBankController implements 
     private Integer[] answerNumbers = {1, 2, 3, 4};
     private Integer selectedIndex;
     private Profession selectedProfession;
+    
+    private  static QuestionBankController questionBankController; //will be needed for btnBack button (for root, to dispaly the prev screen)
 
     @FXML
     void btnBack(ActionEvent event) {
@@ -163,6 +165,11 @@ public class CreateQuestionController extends QuestionBankController implements 
 			Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
 			dialog.setScene(dialogScene);
 			dialog.show();
+		}
+
+
+		public void setData_From_QuestionBankController(QuestionBankController questionBankController) {
+			this.questionBankController = questionBankController;
 		}
 
 }
