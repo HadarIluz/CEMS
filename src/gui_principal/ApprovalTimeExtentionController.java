@@ -27,7 +27,7 @@ import logic.RequestToServer;
  *
  */
 
-public class ApprovalTimeExtentionController extends PrincipalController implements Initializable {
+public class ApprovalTimeExtentionController implements Initializable {
 
 	@FXML
 	private ComboBox<String> selectExamExtension;
@@ -44,6 +44,7 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 	@FXML
 	private Button btnApprove;
 
+	private static PrincipalController principalController;
 	private static HashMap<String, ExtensionRequest> extensionRequestMap = new HashMap<String, ExtensionRequest>();
     private static ArrayList<ExtensionRequest> extensionRequestList = new ArrayList<ExtensionRequest>();
     private ArrayList<String> examIdList = new ArrayList<String>();

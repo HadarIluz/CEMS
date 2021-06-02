@@ -33,7 +33,7 @@ import logic.RequestToServer;
  * @author Hadar Iluz
  *
  */
-public class EnterToExamController extends StudentController implements Initializable {
+public class EnterToExamController implements Initializable {
 
     @FXML
     private Button btnStart;
@@ -56,7 +56,7 @@ public class EnterToExamController extends StudentController implements Initiali
     @FXML
     private ComboBox<String> selectActiveExamFromCB;
 
-
+    private static StudentController studentController;
 	private static HashMap<String, ActiveExam> activeExamtMap = new HashMap<String, ActiveExam>();
 	private static ArrayList<ActiveExam> activeExamtList = new ArrayList<ActiveExam>();
 	private ArrayList<String> examIdList = new ArrayList<String>();
@@ -124,7 +124,7 @@ public class EnterToExamController extends StudentController implements Initiali
 						try {
 							Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
 							newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-							StudentController.root.add(newPaneRight, 1, 0);
+							studentController.root.add(newPaneRight, 1, 0);
 							SolveExamController.setActiveExamState(activeExam);
 						} catch (IOException e) {
 							System.out.println("Couldn't load!");
@@ -137,7 +137,7 @@ public class EnterToExamController extends StudentController implements Initiali
 						try {
 							Pane newPaneRight = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
 							newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-							StudentController.root.add(newPaneRight, 1, 0);
+							studentController.root.add(newPaneRight, 1, 0);
 							SolveExamController.setActiveExamState(activeExam);
 						} catch (IOException e) {
 							System.out.println("Couldn't load!");

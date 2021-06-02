@@ -64,7 +64,7 @@ public class StudentController extends Application implements Initializable {
     @FXML
     private Button btnStartComputerizedExam;
 
-	LoginController loginController;
+	private static LoginController loginController;
 	protected Student student;
 	protected static GridPane root;
 	public Scene scene;
