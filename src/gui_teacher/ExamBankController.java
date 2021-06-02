@@ -10,10 +10,12 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.Course;
 import entity.Exam;
+import entity.ExtensionRequest;
 import entity.Profession;
 import entity.Question;
 import entity.QuestionRow;
 import entity.Teacher;
+import gui_principal.ApprovalTimeExtentionController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -138,9 +140,16 @@ public class ExamBankController extends TeacherController implements Initializab
 	void btnEditExam(ActionEvent event) {
 		if (!checkForLegalID(textExamID.getText()))
 			return;
-
+		
+		//Sending ExamID in new Object of Exam to server
+		Exam ExamToEdit= new Exam(textExamID.getText());
+		RequestToServer req = new RequestToServer("getEditExamData");
+		req.setRequestData(ExamToEdit);
+		ClientUI.cems.accept(req);
+		ExamToEdit = (Exam)CEMSClient.responseFromServer.getResponseData();
+		//Loading EditExam screen
 		try {
-
+			EditExamController.setEditExam(ExamToEdit);
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 

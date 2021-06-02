@@ -21,22 +21,20 @@ public class Exam implements Serializable{
 	
 	
 	public Exam(String examID) {
-		super();
 		this.examID = examID;
 	}
 	
 	public Exam(String examID, String profession,int timeOfExam)
 	{
-		super();
 		this.examID = examID;
 		this.ProfessionName = profession;
 		this.timeOfExam = timeOfExam;
 	}
 
 		
-		public String getProfName() {return ProfessionName; }
+	public String getProfName() {return ProfessionName; }
 	
-	  public String getProfessionName() { return profession.getProfessionID(); }
+	 public String getProfessionName() { return profession.getProfessionID(); }
 	 
 
 	public void setProfessionName(String professionName) {

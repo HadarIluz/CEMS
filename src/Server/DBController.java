@@ -548,26 +548,35 @@ public class DBController {
 	
 	/**
 	 * @param EditExam
-	 * @return return the true if succeed to edit exam in table exam in DB, other return false/
+	 * @return Return 
 	 */
-	public boolean editExam(Exam editedExam) {
-			
+	public Exam editExamGetValues(Exam editedExam) {
+	    Exam e = editedExam;
 		try {
+			
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE id="+ editedExam.getExamID()+";"); 
-			pstmt.setLong(4, editedExam.getTimeOfExam());
-			pstmt.setString(5, editedExam.getCommentForTeacher());
-			pstmt.setString(6, editedExam.getCommentForStudents());
-			pstmt.setInt(7, editedExam.getAuthor().getId());
-
-			if (pstmt.executeUpdate() == 1) {
-				return true;
+			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE id=?"); 
+			pstmt.setString(1, editedExam.getExamID());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				e.setTimeOfExam(Integer.parseInt(rs.getString(4)));
+				e.setCommentForTeacher(rs.getString(5));
+				e.setCommentForStudents(rs.getString(6));
+				e.setCommentForStudents(rs.getString(7));
+				rs.close();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			
+		} catch (SQLException ex) {
+			ex.printStackTrace();
 		}
+		return e;
+	}
+	
+	
+	public boolean editExamSave(Exam editedExam) {
+		
 		return false;
+		
 	}
 	
 	public Profession getProfessionByID(String id) {

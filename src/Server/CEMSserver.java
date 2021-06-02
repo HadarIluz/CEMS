@@ -169,27 +169,26 @@ public class CEMSserver extends AbstractServer {
 		}
 
 		case "getEditExamData": {
-			
-			Exam exam = null;
-			
-			
-			
-			// TODO: new Exam object Exam exam=null;
-			// TODO: prepared the array list of question of this exam & HashMap and
-			// others....
-			// exam= dbController.editExam(exam);
-			// exam= dbController.funName(exam);
-			// each one ot then returns an object of exam and give to the other until we
-			// have everything for the counstr..
+			ResponseFromServer response= null;
+			Exam exam= new Exam(null);
+			exam= dbController.editExamGetValues((Exam) req.getRequestData());
+			response.setResponseData(exam);
+			// sent to client.
+			try {
+				client.sendToClient(response);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			printMessageInLogFramServer("Message to Client:", response);
 
-			// TODO: create a ResponseFromServer
-			// TODO: after Exam obj ready need to client.sendToClient(....)
+			
+
 
 		}
 			break;
 
 		case "SaveEditExam": {
-			dbController.editExam((Exam) req.getRequestData());
+			dbController.editExamSave((Exam) req.getRequestData());
 		}
 			break;
 
