@@ -778,6 +778,36 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 		return response;
 	}
 
+	public ResponseFromServer getCoursesByProfession(Profession requestData) {
+		ArrayList<Course> cList = new ArrayList<Course>();
+		ResponseFromServer response = null;
+		/***EnterToExam***/
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT courseID, CourseName FROM cems.course WHERE profession=?;");
+			pstmt.setString(1, requestData.getProfessionID());
+
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Course c = new Course(rs.getString(1));
+				c.setCourseName(rs.getString(2));
+				
+				cList.add(c);
+			}
+			rs.close();
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		if (cList.size() > 0) {
+		response = new ResponseFromServer("Courses FOUND");	
+		response.setResponseData(cList);
+		}
+		else {
+			response = new ResponseFromServer("No courses");
+		}
+		return response;
+	}
+
 
 
 

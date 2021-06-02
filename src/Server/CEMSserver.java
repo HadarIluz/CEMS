@@ -278,10 +278,15 @@ public class CEMSserver extends AbstractServer {
 		}
 		
 		break;
+		case "getCoursesByProfession": {
+			getCoursesByProfession((Profession)req.getRequestData(), client);
+		}
+		break;
 		
 		}
 
 	}
+
 
 
 
@@ -303,6 +308,17 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	
+
+	private void getCoursesByProfession(Profession requestData, ConnectionToClient client) {
+		try {
+			client.sendToClient(dbController.getCoursesByProfession(requestData));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**

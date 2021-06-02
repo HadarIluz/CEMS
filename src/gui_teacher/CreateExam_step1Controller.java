@@ -48,7 +48,7 @@ public class CreateExam_step1Controller implements Initializable{
     private ComboBox<String> selectProffessionList;
 
     @FXML
-    private ComboBox<Course> selectCourseList;
+    private ComboBox<String> selectCourseList;
 
     @FXML
     private TextField textExamDuration;
@@ -67,8 +67,10 @@ public class CreateExam_step1Controller implements Initializable{
     
     private HashMap<String, Profession> professionsMap = null;
     private Profession selectedProfession;
-    private Course courseList;
+    private ArrayList<Course> courseList;
     private Course selectedCourse = null;
+    private HashMap<String, Course> courseMap = null;
+
 
 
     @FXML
@@ -116,7 +118,9 @@ public class CreateExam_step1Controller implements Initializable{
 
 	@FXML
     void selectCourseList(ActionEvent event) {
-    	selectedCourse = selectCourseList.getValue();
+		if (courseMap.containsKey(selectCourseList.getValue())) {
+			selectedCourse = courseMap.get(selectCourseList.getValue());
+		}
     }
 
     @FXML
@@ -133,7 +137,7 @@ public class CreateExam_step1Controller implements Initializable{
     		req.setRequestData(q);
     		ClientUI.cems.accept(req);
     		
-    		if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("No Question Bank")) {
+    		if (CEMSClient.responseFromServer.getResponseType().equals("No Question Bank")) {
     			noQbankError.setText("No question bank was found for this profession");
     			noQbankError.setVisible(true);
     		}
@@ -143,12 +147,12 @@ public class CreateExam_step1Controller implements Initializable{
     			req.setRequestData(selectedProfession);
         		ClientUI.cems.accept(req);
         		
-        		if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("No Courses")) {
+        		if (CEMSClient.responseFromServer.getResponseType().equals("No Courses")) {
         			noQbankError.setText("There are no courses available for this profession");
         			noQbankError.setVisible(true);
         		}
         		else {
-        			courseList = (Course)CEMSClient.responseFromServer.getResponseData();
+        			courseList = (ArrayList<Course>)CEMSClient.responseFromServer.getResponseData();
         			loadCourseListIntoComboBox();
         		}
     		}
@@ -156,7 +160,11 @@ public class CreateExam_step1Controller implements Initializable{
     }
 
 	private void loadCourseListIntoComboBox() {
-		selectCourseList.setItems(FXCollections.observableArrayList(courseList));
+		courseMap = new HashMap<>();
+		for (Course c: courseList) {
+			courseMap.put(c.getCourseName(), c);
+		}
+		selectCourseList.setItems(FXCollections.observableArrayList(courseMap.keySet()));
 		selectCourseList.setDisable(false);
 	}
 
