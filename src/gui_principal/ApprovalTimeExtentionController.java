@@ -27,7 +27,7 @@ import logic.RequestToServer;
  *
  */
 
-public class ApprovalTimeExtentionController extends PrincipalController implements Initializable {
+public class ApprovalTimeExtentionController implements Initializable {
 
 	@FXML
 	private ComboBox<String> selectExamExtension;
@@ -44,6 +44,7 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 	@FXML
 	private Button btnApprove;
 
+	private static PrincipalController principalController;
 	private static HashMap<String, ExtensionRequest> extensionRequestMap = new HashMap<String, ExtensionRequest>();
     private static ArrayList<ExtensionRequest> extensionRequestList = new ArrayList<ExtensionRequest>();
     private ArrayList<String> examIdList = new ArrayList<String>();
@@ -63,9 +64,9 @@ public class ApprovalTimeExtentionController extends PrincipalController impleme
 		//When a test is selected
 		else {
 			//Adding the time required for the test time
-			timeOfExam = selectedExtensionRequest.getActiveExam().getTimeOfExam();
+			timeOfExam = selectedExtensionRequest.getActiveExam().getTimeAllotedForTest();
 			timeOfExam+= Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
-			selectedExtensionRequest.getActiveExam().setTimeOfExam("" + timeOfExam);
+			selectedExtensionRequest.getActiveExam().setTimeAllotedForTest("" + timeOfExam);
 			//Update the exam time and delete the extension Request in the database
 			RequestToServer req = new RequestToServer("approvalTimeExtention");
 			req.setRequestData(selectedExtensionRequest.getActiveExam());

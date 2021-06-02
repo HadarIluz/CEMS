@@ -70,8 +70,8 @@ public class SolveExamController implements Initializable{
 	private Label lblnotificationMsg;
 	
 	
-
-    private static ActiveExam newActiveExam;
+    private static StudentController studentController;
+    private static ActiveExam newActiveExam;  //check if needed.
 
     
 	@FXML

@@ -1,34 +1,45 @@
 package gui_teacher;
 
 import java.io.IOException;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import client.CEMSClient;
 import client.ClientUI;
 import entity.Course;
 import entity.Exam;
 import entity.Profession;
 import entity.Question;
+import entity.QuestionRow;
 import entity.Teacher;
+import gui_student.SolveExamController;
+import gui_student.StudentController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class ExamBankController extends TeacherController implements Initializable {
+public class ExamBankController implements Initializable {
 
 	@FXML
 	private Button btnEditExam;
@@ -45,9 +56,8 @@ public class ExamBankController extends TeacherController implements Initializab
 	@FXML
 	private Button btnCreateNewExam;
 
-		@FXML
+	@FXML
 	private Text textNavigation;
-
 
 	@FXML
 	private TableColumn<Exam, String> ExamID;
@@ -57,40 +67,91 @@ public class ExamBankController extends TeacherController implements Initializab
 
 	@FXML
 	private TableColumn<Exam, Integer> Time;
-	
+
 	private ObservableList<Exam> data;
+	
+    @FXML
+    private Button btnCreateActiveExam;
+    
+    private static TeacherController teacherController;
 
-	
-	
 	@FXML
-    void MouseC(MouseEvent event) {
-    	
-    	
-     	ObservableList<Exam> Qlist;
-    	Qlist= tableExam.getSelectionModel().getSelectedItems();
-    	textExamID.setText(Qlist.get(0).getExamID());
+	void MouseC(MouseEvent event) {
 
-    }
+		ObservableList<Exam> Qlist;
+		Qlist = tableExam.getSelectionModel().getSelectedItems();
+		textExamID.setText(Qlist.get(0).getExamID());
 
+	}
+
+	public Exam GetTableDetails(String ExamID) {
+
+		Exam exam;
+
+		for (Exam e : data) {
+			if (e.getExamID().equals(ExamID)) {
+				exam = new Exam(ExamID);
+				exam.setCourse(new Course(e.getCourse().getCourseName()));
+				// exam.getCourse().setCourseID(e.getCourse().getCourseID());
+				exam.setProfession(e.getProfession());
+				exam.setProfession(e.getProfession());
+				return exam;
+
+			}
+
+		}
+
+		return null;
+
+	}
+
+	public boolean checkForLegalID(String ExamID) {
+
+		if (ExamID.length() != 6) {
+			popUp("Exam ID Must be 6 digits.");
+			return false;
+		}
+		for (int i = 0; i < ExamID.length(); i++)
+			if (!Character.isDigit(ExamID.charAt(i))) {
+				popUp("Exam ID Must Contains only digits.");
+				return false;
+			}
+		return true;
+	}
 
 	@FXML
 	void btnDeleteExam(ActionEvent event) {
-		ObservableList<Exam> Qlist;
-		
-    	Qlist= tableExam.getSelectionModel().getSelectedItems();
-    	
-    	data.removeAll(Qlist);
+		// we need to insert case of letters of not 5 digits
 
+		if (!checkForLegalID(textExamID.getText()))
+			return;
+
+		ObservableList<Exam> Qlist;
+
+		Exam ExamToDelete = GetTableDetails(textExamID.getText());
+
+		Qlist = tableExam.getSelectionModel().getSelectedItems();
+		RequestToServer req = new RequestToServer("DeleteExam");
+		req.setRequestData(ExamToDelete);
+		ClientUI.cems.accept(req);
+
+		if (CEMSClient.responseFromServer.getResponseData().equals("FALSE"))
+			System.out.println("failed to delete question");
+		else
+			data.removeAll(Qlist);
+		initTableRows();
 
 	}
 
 	@FXML
 	void btnEditExam(ActionEvent event) {
+		if (!checkForLegalID(textExamID.getText()))
+			return;
 
 		try {
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
-			root.add(newPaneRight, 1, 0);
+			teacherController.root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");
@@ -106,7 +167,7 @@ public class ExamBankController extends TeacherController implements Initializab
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_step1.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-			root.add(newPaneRight, 1, 0);
+			teacherController.root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");
@@ -129,21 +190,60 @@ public class ExamBankController extends TeacherController implements Initializab
 		 * req.setRequestData(teacher); ClientUI.cems.accept(req);
 		 */
 		
+		// tests:
+		 //data = FXCollections.observableArrayList(new Exam("010203", "Algebra", 10), 
+				 								  //new Exam("111111", "Masadim", 2));
+		initTableRows();
 
-		 data = FXCollections.observableArrayList(new Exam("010203", "Algebra", 10), 
-				 								  new Exam("111111", "Masadim", 2));
+	}
 
+	@SuppressWarnings("unchecked")
+	public void initTableRows() {
+		textExamID.setEditable(true);
+
+		RequestToServer req = new RequestToServer("getExams");
+		req.setRequestData(ClientUI.loggedInUser.getUser().getId());
+		ArrayList<Exam> ExamsOfTeacher = new ArrayList<Exam>();
+		ClientUI.cems.accept(req);
+		ExamsOfTeacher = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
+		data = FXCollections.observableArrayList(ExamsOfTeacher);
 		tableExam.getColumns().clear();
-
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
-
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
-
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
-
 		tableExam.setItems(data);
- 
 		tableExam.getColumns().addAll(ExamID, Proffesion, Time);
 
 	}
+
+	private void popUp(String msg) {
+		final Stage dialog = new Stage();
+		VBox dialogVbox = new VBox(20);
+		Label lbl = new Label(msg);
+		lbl.setPadding(new Insets(15));
+		lbl.setAlignment(Pos.CENTER);
+		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		dialogVbox.getChildren().add(lbl);
+		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
+		dialog.setScene(dialogScene);
+		dialog.show();
+	}
+	
+	//TODO: btnCreateActiveExam open new fxml (HADAR)
+    @FXML
+    void btnCreateActiveExam(ActionEvent event) {
+    	
+    	try {
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
+			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+			
+			teacherController.root.add(newPaneRight, 1, 0);
+			//funcName.setActiveExamState(/**/);
+		} catch (IOException e) {
+			System.out.println("Couldn't load!");
+			e.printStackTrace();
+		}
+    	    	
+    }
+
 }

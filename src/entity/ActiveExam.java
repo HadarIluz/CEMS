@@ -18,40 +18,33 @@ public class ActiveExam implements Serializable {
 
 	public ActiveExam(Exam exam) {
 		this.exam = exam;
-		timeAllotedForTest = exam.getTimeOfExam();
 	}
 
 	public ActiveExam(Time startTime, Exam exam, String examCode) {
 		this.startTime = startTime;
 		this.exam = exam;
 		this.examCode = examCode;
-		timeAllotedForTest = exam.getTimeOfExam();
 	}
-	//for old enter to exam
-	public ActiveExam(Calendar date, String examCode) {
-		this.date = date;
-		this.examCode = examCode;
-	}
-	//for new!!! enter to exam
-	public ActiveExam(Time time, Time endTimeToTakeExam, String examCode) { //ok??debug it
+
+	public ActiveExam(Time time, Time endTimeToTakeExam, String examCode) {
 		this.startTime = time;
 		this.endTimeToTakeExam = endTimeToTakeExam;
 		this.examCode = examCode;
 	}
 	
-	public int getTimeOfExam() {
+	public int getTimeAllotedForTest() {
 		return timeAllotedForTest;
 	}
 
-	public void setTimeOfExam(String timeOfExam) {
+	public void setTimeAllotedForTest(String timeOfExam) {
 		this.timeAllotedForTest = Integer.parseInt(timeOfExam);
 	}
 
-	public Time getTime() {
+	public Time getStartTime() {
 		return startTime;
 	}
 
-	public void setTime(Time startTime) {
+	public void setStartTime(Time startTime) {
 		this.startTime = startTime;
 	}
 

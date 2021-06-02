@@ -1,11 +1,16 @@
 package gui_teacher;
 
-import java.io.IOException;
+import java.io.IOException
+;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
+import entity.Profession;
+import entity.Teacher;
 import entity.User;
 import gui_cems.LoginController;
 import javafx.application.Application;
@@ -35,47 +40,51 @@ import logic.RequestToServer;
  */
 public class TeacherController extends Application implements Initializable {
 
-	@FXML
-	private ImageView imgPrincipal;
 
-	@FXML
-	private ImageView imgLogo;
+    @FXML
+    private ImageView imgPrincipal;
 
-	@FXML
-	public Label textTeacherName;
+    @FXML
+    private ImageView imgLogo;
 
-	@FXML
-	private Button brnManageQuestionsBank;
+    @FXML
+    private Label textTeacherName;
 
-	@FXML
-	private ImageView imgPhone;
+    @FXML
+    private Button brnManageQuestionsBank;
 
-	@FXML
-	private ImageView imgEmail;
+    @FXML
+    private ImageView imgPhone;
 
-	@FXML
-	private Button btnCreateActiveExam;
+    @FXML
+    private ImageView imgEmail;
 
-	@FXML
-	private Button btnManageExamsBank;
+    @FXML
+    private Button btnManageExamsBank;
 
-	@FXML
-	private Button btnGetStatistics;
+    @FXML
+    private Button btnGetStatistics;
 
-	@FXML
-	private Button btnScoreApproval;
+    @FXML
+    private Button btnScoreApproval;
 
-	@FXML
-	private Button btnChangeExamTime;
+    @FXML
+    private Button btnChangeExamTime;
+
+    @FXML
+    private Label pressLogout;
 	
 	public LoginController loginController;
 	protected static GridPane root;
 	public Scene scene;
 	protected User teacher;
-	LoginController login;
+	private static HashMap<String, Profession> professionsMap = null;
 
+	/**TODO: add comment
+	 * @param event
+	 */
 	@FXML
-	void brnManageQuestionsBank(ActionEvent event) {
+	void btnManageQuestionsBank(ActionEvent event) {
 		try {
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("QuestionBank.fxml"));
@@ -88,6 +97,9 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
+	/*TODO: add comment
+	 * @param event
+	 */
 	@FXML
 	void btnChangeExamTime(ActionEvent event) {
 		try {
@@ -102,24 +114,12 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
-	@FXML
-	void btnCreateActiveExam(ActionEvent event) {
-		try {
-
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
-			root.add(newPaneRight, 1, 0);
-
-		} catch (IOException e) {
-			System.out.println("Couldn't load!");
-			e.printStackTrace();
-		}
-
-	}
-
+	/**TODO: add comment
+	 * @param event
+	 */
 	@FXML
 	void btnGetStatistics(ActionEvent event) {
 		try {
-
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("DemoStatistics.fxml"));
 			root.add(newPaneRight, 1, 0);
 
@@ -130,10 +130,12 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
+	/** TODO: add comment
+	 * @param event
+	 */
 	@FXML
 	void btnManageExamsBank(ActionEvent event) {
 		try {
-
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ExamBank.fxml"));
 			root.add(newPaneRight, 1, 0);
 		} catch (IOException e) {
@@ -143,10 +145,12 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
+	/** TODO: add comment
+	 * @param event
+	 */
 	@FXML
 	void btnScoreApproval(ActionEvent event) {
 		try {
-
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ScoreApproval.fxml"));
 			root.add(newPaneRight, 1, 0);
 
@@ -204,7 +208,7 @@ public class TeacherController extends Application implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		teacher=ClientUI.loggedInUser.getUser();
 		textTeacherName.setText(teacher.getFirstName()+" " +teacher.getLastName());
-		
+		setProfessionMap(((Teacher)ClientUI.loggedInUser.getUser()).getProfessions());
 		Image flag = new Image("file:src/images/teacher_userImg.png");
 
 		// private Image flag = new Image("file:src/resources/flag.png");
@@ -212,6 +216,17 @@ public class TeacherController extends Application implements Initializable {
 		imgPrincipal = new ImageView(flag);
 	}
 	
+
+	public void setProfessionMap(ArrayList<Profession> professionsList) {
+		professionsMap = new HashMap<>();
+		for (Profession p: professionsList) {
+			professionsMap.put(p.getProfessionName(), p);
+		}
+	}
+	
+	public static HashMap<String, Profession> getProfessionsMap() {
+		return professionsMap;
+	}
 	/**
 	 * listen for close events on a JavaFX Stage, notified when the user clicks the
 	 * button with the X on, in the upper right corner of the Stage

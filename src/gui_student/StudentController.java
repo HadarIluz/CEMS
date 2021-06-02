@@ -2,9 +2,11 @@ package gui_student;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import client.CEMSClient;
 import client.ClientUI;
+import entity.ActiveExam;
 import entity.Student;
 import gui_cems.LoginController;
 import javafx.application.Application;
@@ -62,11 +64,14 @@ public class StudentController extends Application implements Initializable {
     @FXML
     private Button btnStartComputerizedExam;
 
-	LoginController loginController;
+	private static LoginController loginController;
 	protected Student student;
 	protected static GridPane root;
 	public Scene scene;
 
+	/**
+	 *Initializes the controller at the moment it loads.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		student = (Student) ClientUI.loggedInUser.getUser();
@@ -95,8 +100,10 @@ public class StudentController extends Application implements Initializable {
 	 */
 	@FXML
 	void btnStartComputerizedExam(ActionEvent event) {
+
 		try {
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_student/EnterToExam.fxml"));
+			EnterToExamController.setAllActiveExamBeforEnter2Exam(getAllActiveExamBeforEnter2Exam());
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
@@ -109,8 +116,10 @@ public class StudentController extends Application implements Initializable {
 	 */
 	@FXML
 	void btnStartManualExam(ActionEvent event) {
+		
 		try {
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_student/EnterToExam.fxml"));
+			EnterToExamController.setAllActiveExamBeforEnter2Exam(getAllActiveExamBeforEnter2Exam());
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
@@ -185,7 +194,19 @@ public class StudentController extends Application implements Initializable {
 
 	}
 	
-	
+	/**
+	 * @return List of all active tests received as answer from server.
+	 */
+	@SuppressWarnings("unchecked")
+	private ArrayList<ActiveExam> getAllActiveExamBeforEnter2Exam() {
+		
+		ArrayList<ActiveExam> activeExamList= new ArrayList<ActiveExam>();
+		RequestToServer req = new RequestToServer("getAllActiveExamBeforEnter2Exam");
+		ClientUI.cems.accept(req);
+		//DEBUG:
+		activeExamList= (ArrayList<ActiveExam>) CEMSClient.responseFromServer.getResponseData();
+		return activeExamList;
+	}
 
 	// TODO:
 	/*

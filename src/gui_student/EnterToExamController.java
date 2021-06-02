@@ -3,11 +3,15 @@ package gui_student;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
 import entity.Student;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +21,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -28,26 +33,34 @@ import logic.RequestToServer;
  * @author Hadar Iluz
  *
  */
-public class EnterToExamController extends StudentController implements Initializable {
+public class EnterToExamController implements Initializable {
 
-	@FXML
-	private Button btnStart;
+    @FXML
+    private Button btnStart;
 
-	@FXML
-	private TextField textExamCode;
+    @FXML
+    private TextField textExamCode;
 
-	@FXML
-	private TextField textStudentID;
+    @FXML
+    private TextField textStudentID;
 
-	@FXML
-	private CheckBox ApprovalInsrtuctions;
+    @FXML
+    private CheckBox ApprovalInsrtuctions;
 
-	@FXML
-	private CheckBox CommitPreformByMyself;
+    @FXML
+    private CheckBox CommitPreformByMyself;
 
-	@FXML
-	private Label textConfirm;
+    @FXML
+    private Label textConfirm;
 
+    @FXML
+    private ComboBox<String> selectActiveExamFromCB;
+
+    private static StudentController studentController;
+	private static HashMap<String, ActiveExam> activeExamtMap = new HashMap<String, ActiveExam>();
+	private static ArrayList<ActiveExam> activeExamtList = new ArrayList<ActiveExam>();
+	private ArrayList<String> examIdList = new ArrayList<String>();
+	private ActiveExam activeExam_selection;
 	private Student student;
 
 	/**
@@ -66,75 +79,79 @@ public class EnterToExamController extends StudentController implements Initiali
 		boolean condition = checkConditionToStart(examCode, studentID);
 		if (condition) {
 
+			if (activeExam_selection == null) {
+				popUp("Please choose your exam.");
+			} 
+			else 
+			{
 //TODO: Should this activeExam be "assigned" to a student somehow? (new table or something else?)..
 //TODO:ASK TEAM.-->do i need to do insert row into table of exam of student?? 
 
-			/*
-			 * Gets current time that student try to insert into his active exam The student
-			 * has a half-hour range in which he can enter and begin construction from the
-			 * exam`s start time.
-			 */
-			long now = System.currentTimeMillis();
-			Time sqlTime = new Time(now);
-			// now add half an hour, 1 800 000 miliseconds = 30 minutes
-			long halfAnHourLater = (long) now + 1800000;
-			Time sqlEndRangeTimeToTakeExam = new Time(halfAnHourLater);
-			System.out.println(sqlTime);
-			System.out.println(sqlEndRangeTimeToTakeExam);
+				/*
+				 * Gets current time that student try to insert into his active exam The student
+				 * has a half-hour range in which he can enter and begin construction from the
+				 * exam`s start time.
+				 */
+				long now = System.currentTimeMillis();
+				Time sqlTime = new Time(now);
+				// now add half an hour, 1 800 000 miliseconds = 30 minutes
+				long halfAnHourLater = (long) now + 1800000;
+				Time sqlEndRangeTimeToTakeExam = new Time(halfAnHourLater);
+				System.out.println(sqlTime);
+				System.out.println(sqlEndRangeTimeToTakeExam);
 
-			ActiveExam activeExam = new ActiveExam(sqlTime, sqlEndRangeTimeToTakeExam, examCode);
-			// Request to server to return an examID for this examCode if exist.
-			// if not return null.
-			RequestToServer req = new RequestToServer("isActiveExamExist");
-			req.setRequestData(activeExam);
-			ClientUI.cems.accept(req);
+				ActiveExam activeExam = new ActiveExam(sqlTime, sqlEndRangeTimeToTakeExam, examCode);
+				// Request to server to return an examID for this examCode if exist.
+				// if not return null.
+				RequestToServer req = new RequestToServer("isActiveExamExist");
+				req.setRequestData(activeExam);
+				ClientUI.cems.accept(req);
 
-			if ((CEMSClient.responseFromServer.getResponseType()).equals("ACTIVE EXAM EXIST")) {
-				// At this point we found exam so we can be sure an object has arrived in this
-				// response.
-				activeExam = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
-				String existExamID = activeExam.getExam().getExamID();
-				String ActiveExamType = activeExam.getActiveExamType();
-				// message in console
-				System.out.println("Respont: there is active examID: " + existExamID + " type: " + ActiveExamType); // PRINT
+				if ((CEMSClient.responseFromServer.getResponseType()).equals("ACTIVE EXAM EXIST")) {
+					// At this point we found exam so we can be sure an object has arrived in this
+					// response.
+					activeExam = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
+					String existExamID = activeExam.getExam().getExamID();
+					String ActiveExamType = activeExam.getActiveExamType();
+					// message in console
+					System.out.println("Respont: there is active examID: " + existExamID + " type: " + ActiveExamType); // PRINT
 
-				// The student has entered all the given details and transfer to exam screen
-				// - computerized or manual
-				// ((Pane) event.getSource()).getScene().getWindow().hide(); // hiding right
-				// pane window
-				switch (ActiveExamType) {
-				case "manual": {
-					// load manual start exam fxml
-					try {
-						Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
-						newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-						StudentController.root.add(newPaneRight, 1, 0);
-						SolveExamController.setActiveExamState(activeExam);
-					} catch (IOException e) {
-						System.out.println("Couldn't load!");
-						e.printStackTrace();
+					// The student has entered all the given details and transfer to exam screen
+					// - computerized or manual
+					switch (ActiveExamType) {
+					case "manual": {
+						// load manual start exam fxml
+						try {
+							Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
+							newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+							studentController.root.add(newPaneRight, 1, 0);
+							SolveExamController.setActiveExamState(activeExam);
+						} catch (IOException e) {
+							System.out.println("Couldn't load!");
+							e.printStackTrace();
+						}
 					}
-				}
-					break;
-				case "computerized": {
-					// load computerized start exam fxml
-					try {
-						Pane newPaneRight = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
-						newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-						StudentController.root.add(newPaneRight, 1, 0);
-						SolveExamController.setActiveExamState(activeExam);
-					} catch (IOException e) {
-						System.out.println("Couldn't load!");
-						e.printStackTrace();
+						break;
+					case "computerized": {
+						// load computerized start exam fxml
+						try {
+							Pane newPaneRight = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
+							newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+							studentController.root.add(newPaneRight, 1, 0);
+							SolveExamController.setActiveExamState(activeExam);
+						} catch (IOException e) {
+							System.out.println("Couldn't load!");
+							e.printStackTrace();
+						}
 					}
-				}
-					break;
+						break;
+					}
+
+				} else {
+					popUp("There is no active exam for exam code number: " + examCode);
 				}
 
-			} else {
-				popUp("There is no active exam for exam code number: " + examCode);
 			}
-
 		}
 	}
 
@@ -222,7 +239,49 @@ public class EnterToExamController extends StudentController implements Initiali
 	public void initialize(URL location, ResourceBundle resources) {
 		student = (Student) ClientUI.loggedInUser.getUser();
 		textConfirm.setVisible(false);
+		activeExam_selection = null;
+		// implement load active exam into Combo box.
+		loadActiveExamToCombobox();
 
+	}
+
+	/**
+	 * The method prepares the list of tests and loads them into the comboBox.
+	 */
+	private void loadActiveExamToCombobox() {
+		setActiveExamtMap(activeExamtList);
+		for (ActiveExam ae : activeExamtList) {
+			examIdList.add(ae.getExam().getExamID());
+		}
+		selectActiveExamFromCB.setItems(FXCollections.observableArrayList(examIdList));
+		selectActiveExamFromCB.setDisable(false);
+	}
+	
+	
+	public static void setActiveExamtMap(ArrayList<ActiveExam> activeExamtList) {
+		 for (ActiveExam ae : activeExamtList) {
+			 activeExamtMap.put(ae.getExam().getExamID(), ae);
+		}
+	}
+
+
+	/**
+	 * @param event that occurs when a student selects a test from the comboBox.
+	 */
+	@FXML
+	void selectActiveExam(ActionEvent event) {
+		if (activeExamtMap.containsKey(selectActiveExamFromCB.getValue())) {
+			activeExam_selection = activeExamtMap.get(selectActiveExamFromCB.getValue());
+			System.out.println(activeExam_selection.getExam().getExamID()); //DEBUG
+		}
+
+	}
+
+	/**Gets the list of active tests from the previous screen.
+	 * @param activeExamListFromDB
+	 */
+	public static void setAllActiveExamBeforEnter2Exam(ArrayList<ActiveExam> activeExamListFromDB) {
+		activeExamtList = activeExamListFromDB;
 	}
 
 }

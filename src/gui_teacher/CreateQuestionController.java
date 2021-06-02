@@ -1,17 +1,21 @@
 package gui_teacher;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import client.CEMSClient;
 import client.ClientUI;
+import entity.Course;
 import entity.Profession;
 import entity.Question;
 import entity.Teacher;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,12 +27,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class CreateQuestionController extends QuestionBankController implements Initializable{
+public class CreateQuestionController implements Initializable{
 
     @FXML
     private TextField textTheQuestion;
@@ -72,10 +77,12 @@ public class CreateQuestionController extends QuestionBankController implements 
     @FXML
     private Text textProfession;
     
-    private static HashMap<String, Profession> professionsMap = null;
+    private HashMap<String, Profession> professionsMap = null;
     private Integer[] answerNumbers = {1, 2, 3, 4};
     private Integer selectedIndex;
     private Profession selectedProfession;
+    
+    private  static QuestionBankController questionBankController; //will be needed for btnBack button (for root, to dispaly the prev screen)
 
     @FXML
     void btnBack(ActionEvent event) {
@@ -111,45 +118,60 @@ public class CreateQuestionController extends QuestionBankController implements 
     		if (textDescription.getText().trim().length() > 0) {
     			newQuestion.setDescription(textDescription.getText().trim());
     		}
+    		newQuestion.setTeacher((Teacher)ClientUI.loggedInUser.getUser());
     		//newQuestion.setTeacher(currentTeacher);
     		RequestToServer req = new RequestToServer("createNewQuestion");
     		req.setRequestData(newQuestion);
     		ClientUI.cems.accept(req);
+    		if (CEMSClient.responseFromServer.getResponseType().equals("SuccessCreateNewQuestion")) {
+        			popUp("Created new question succesfully");
+        			// go back to question bank page
+        			try {
+
+        				Pane newPaneRight = FXMLLoader.load(getClass().getResource("QuestionBank.fxml"));
+        				TeacherController.root.add(newPaneRight, 1, 0);
+
+        			} catch (IOException e) {
+        				System.out.println("Couldn't load!");
+        				e.printStackTrace();
+        			}
+        		}
+    		
+    		
+    		else {
+    			popUp("Failed to create new question, please try again later.");
+    		}
     	}
     	
     }
 
     @FXML
-    void selectCorrectAnswer(MouseEvent event) {
+    void selectCorrectAnswer(ActionEvent event) {
     	selectedIndex = selectCorrectAnswer.getValue();
     }
-
+    
+    
     @FXML
-    void selectProfession(MouseEvent event) {
+    void selectProfession(ActionEvent event) {
     	if (professionsMap.containsKey(selectProfession.getValue())) {
     		selectedProfession = professionsMap.get(selectProfession.getValue());
     	}
     }
     
-    public void loadProfessionsToCombobox() {
-   // 	selectProfession.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
+    private void loadProfessionsToCombobox() {
+    	selectProfession.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
     }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedIndex = null;
 		selectedProfession = null;
+		professionsMap = TeacherController.getProfessionsMap();
 		loadProfessionsToCombobox();
 		selectCorrectAnswer.setItems(FXCollections.observableArrayList(answerNumbers));
 		
 	}
-	
-	public static void setProfessionMap(ArrayList<Profession> professionsList) {
-		professionsMap = new HashMap<>();
-		for (Profession p: professionsList) {
-			professionsMap.put(p.getProfessionName(), p);
-		}
-	}
+
     
 	// create a popup with a message
 		public void popUp(String txt) {
@@ -163,6 +185,11 @@ public class CreateQuestionController extends QuestionBankController implements 
 			Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
 			dialog.setScene(dialogScene);
 			dialog.show();
+		}
+
+
+		public void setData_From_QuestionBankController(QuestionBankController questionBankController) {
+			this.questionBankController = questionBankController;
 		}
 
 }
