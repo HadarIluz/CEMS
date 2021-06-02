@@ -33,7 +33,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="textMedian" alignment="CENTER" layoutX="146.0" layoutY="241.0" prefHeight="35.0" prefWidth="66.0">
+      <Label fx:id="textMedian" alignment="CENTER" layoutX="146.0" layoutY="241.0" prefHeight="35.0" prefWidth="77.0">
          <font>
             <Font size="20.0" />
          </font>
@@ -77,7 +77,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="textAverage" alignment="CENTER" layoutX="552.0" layoutY="241.0" prefHeight="35.0" prefWidth="71.0">
+      <Label fx:id="textAverage" alignment="CENTER" layoutX="543.0" layoutY="241.0" prefHeight="35.0" prefWidth="94.0">
          <font>
             <Font size="20.0" />
          </font>

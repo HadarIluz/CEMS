@@ -792,6 +792,21 @@ public class DBController {
 		return "TRUE";
 	}
 
+	public ArrayList<Integer> gradesAverageCalc(String examID) {
+		ArrayList<Integer> grades=new ArrayList<Integer>();
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT score FROM exam_of_student WHERE exam=?;");
+			pstmt.setString(1, examID);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next())
+				grades.add(rs.getInt(1));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return grades;
+	}
+
 //public static void main(String[] args) {
 //
 //	DBController db = new DBController();

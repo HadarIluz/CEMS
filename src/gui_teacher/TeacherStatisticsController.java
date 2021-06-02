@@ -1,5 +1,6 @@
 package gui_teacher;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import client.CEMSClient;
@@ -58,14 +59,42 @@ public class TeacherStatisticsController {
 		String CourseID = "" + ExamID.charAt(2) + ExamID.charAt(3);
 		if (!checkForLegalID(ExamID))
 			return;
-		if(!chechExamExist(ExamID)) 
+		if (!chechExamExist(ExamID))
 			return;
-			
+
 		getProffesionsNames();
 		getCoursesNames();
 		textProfession.setText(ProfName.get(ProfID) + "(" + ProfID + ")");
 		textCourse.setText(ProfCourseName.get(ProfID).getCourses().get(CourseID) + "(" + CourseID + ")");
+		textAverage.setText(String.valueOf(gradesAverageCalc(ExamID)));
+	}
+	
+	public void medianCalc(ArrayList<Integer> grades) {
+		
+		if(grades.size()%2==0) {
+			int first,second;
+			first=grades.size()/2-1;
+			second=(grades.size()+2)/2-1;
+			textMedian.setText(String.valueOf(((float)grades.get(first)+grades.get(second))/2));    
+		}
+		else 
+			textMedian.setText(String.valueOf((float)grades.get((grades.size()+1)/2-1)));
+		
+	}
 
+	@SuppressWarnings("unchecked")
+	public float gradesAverageCalc(String ExamID) {
+		ArrayList<Integer> grades;
+		float sum = 0;
+		RequestToServer req = new RequestToServer("gradesAverageCalc");
+		req.setRequestData(ExamID);
+		ClientUI.cems.accept(req);
+		grades = (ArrayList<Integer>) CEMSClient.responseFromServer.getResponseData();
+		for (Integer a : grades)
+			sum += a;
+		sum/=grades.size();
+		medianCalc(grades);
+		return sum;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -95,18 +124,18 @@ public class TeacherStatisticsController {
 			}
 		return true;
 	}
-	
+
 	public boolean chechExamExist(String ExamID) {
-		boolean isExsit=true;
+		boolean isExsit = true;
 		RequestToServer req = new RequestToServer("chechExamExist");
 		req.setRequestData(ExamID);
 		ClientUI.cems.accept(req);
-		if(CEMSClient.responseFromServer.getResponseData().equals("FALSE")) {
+		if (CEMSClient.responseFromServer.getResponseData().equals("FALSE")) {
 			popUp("Exam does not exist.");
-			isExsit=false;
+			isExsit = false;
 		}
 		return isExsit;
-	
+
 	}
 
 	private void popUp(String msg) {

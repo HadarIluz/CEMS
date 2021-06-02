@@ -153,6 +153,11 @@ public class CEMSserver extends AbstractServer {
 			approvalTimeExtention((ActiveExam) req.getRequestData(), client);
 		}
 			break;
+			
+		case "gradesAverageCalc": {
+			gradesAverageCalc((String) req.getRequestData(), client);
+		}
+			break;
 		case "declineTimeExtention": {
 			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
 			// dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
@@ -294,6 +299,17 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
+	private void gradesAverageCalc(String ExamID, ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Calculate Grades Average");
+			Res.setResponseData(dbController.gradesAverageCalc(ExamID));
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	/**
 	 * Verify if activeExam exist at this time, set ActiveExam object if found.
