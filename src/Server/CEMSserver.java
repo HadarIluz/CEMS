@@ -7,10 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-
-import client.ClientUI;
-
 import entity.ActiveExam;
 import entity.Exam;
 import entity.ExtensionRequest;
@@ -18,7 +14,6 @@ import entity.Profession;
 import entity.Question;
 import entity.Student;
 import entity.Teacher;
-import entity.UpdateScoreRequest;
 import entity.User;
 import gui_server.ServerFrameController;
 import logic.RequestToServer;
@@ -104,25 +99,20 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "createNewQuestion": {
-			createNewQuestion((Question) req.getRequestData(), client);
+			createNewQuestion((Question) req.getRequestData());
 		}
 			break;
 
 		case "createNewExam": {
-			try {
-				client.sendToClient(createNewExam((Exam) req.getRequestData()));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			createNewExam((Exam) req.getRequestData());
 		}
 			break;
 
-		case "addTimeToExam": {
+		case "addTimeToExam": { 
 			addTimeToExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-
+			
 		case "createNewExtensionRequest": {
 			createNewExtensionRequest((ExtensionRequest) req.getRequestData(), client);
 		}
@@ -134,32 +124,26 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "getAllActiveExamBeforEnter2Exam": {
-			getAllActiveExamBeforEnter2Exam(client);
-		}
-			break;
-
 		case "approvalTimeExtention": {
 			approvalTimeExtention((ActiveExam)req.getRequestData(), client);
 		}
 			break;
+		
 		case "declineTimeExtention": {
-			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
-			//dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
+			declineTimeExtention((ActiveExam)req.getRequestData(), client);
 		}
 			break;
 
 		case "getStudentsByExamID": {
 			try {
-				ResponseFromServer Res = new ResponseFromServer("SCORE APPROVAL");
-				Res.setResponseData(dbController.SetDetailsForScoreApprovel((String) req.getRequestData()));
-				client.sendToClient(Res);
+				ResponseFromServer Res = new ResponseFromServer(null);
+
+				client.sendToClient(dbController.SetDetailsForScoreApprovel((String) req.getRequestData()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
 		}
-		break;
 
 		case "getQuestions": {
 
@@ -203,79 +187,11 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "getExams": {
-
-			try {
-
-				ResponseFromServer respond = new ResponseFromServer("TEACHER EXAMS");
-				respond.setResponseData(dbController.GetTeacherExams((Integer) req.getRequestData()));
-
-				client.sendToClient(respond);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		}
-			break;
-		case "DeleteQuestion": {
-			try {
-
-				ResponseFromServer respond = new ResponseFromServer("DELETE TEACHER QUESTION");
-				if (dbController.DeleteQuestion((Question) req.getRequestData()))
-					respond.setResponseData("TRUE");
-				else
-					respond.setResponseData("FALSE");
-
-				client.sendToClient(respond);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		}
-
-		case "DeleteExam": {
-			try {
-
-				ResponseFromServer respond = new ResponseFromServer("DELETE TEACHER EXAM");
-				if (dbController.DeleteExam((Exam) req.getRequestData()))
-					respond.setResponseData("TRUE");
-				else
-					respond.setResponseData("FALSE");
-
-				client.sendToClient(respond);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		}
-			break;
-			
 		case "getExtensionRequests": {
 			getExtensionRequests(client);
 
 		}
 			break;
-			
-			
-			
-		case "Update Grade":{
-			try {
-
-				ResponseFromServer respond = new ResponseFromServer("TEACHER SCORE UPDATE");
-				respond.setResponseData(dbController.UpdateScoreOfStudent((UpdateScoreRequest) req.getRequestData()));
-
-				client.sendToClient(respond);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		break;
-		
 		}
 
 	}
@@ -300,21 +216,6 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);
 
-	}
-	
-	
-	private void getAllActiveExamBeforEnter2Exam(ConnectionToClient client) {
-		// logic for 'EnterToExam'
-		ResponseFromServer response = null;
-		response = dbController.getAllActiveExam();
-		// sent to client.
-		try {
-			client.sendToClient(response);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		printMessageInLogFramServer("Message to Client:", response);
-		
 	}
 
 	/**
@@ -479,61 +380,30 @@ public class CEMSserver extends AbstractServer {
 	 * @param questionData this method creates the question ID and then inserts the
 	 *                     new question into the DB.
 	 */
-	private void createNewQuestion(Question questionData, ConnectionToClient client) {
+	private void createNewQuestion(Question questionData) {
 		int numOfQuestions = dbController.getNumOfQuestionsInProfession(questionData.getProfession().getProfessionID());
 		String questionID = String.valueOf(numOfQuestions + 1);
-		questionID = ("000" + questionID).substring(questionID.length());
+		questionID = ("0000" + questionID).substring(questionID.length());
 		questionID = questionData.getProfession().getProfessionID() + questionID;
 		questionData.setQuestionID(questionID);
-		ResponseFromServer res;
-		if (dbController.createNewQuestion(questionData)) {
-			 res = new ResponseFromServer("SuccessCreateNewQuestion");
-		}
-		else {
-			 res = new ResponseFromServer("FailCreateNewQuestion");
-
-		}
-		try {
-			client.sendToClient(res);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		dbController.createNewQuestion(questionData);
 	}
 
 	/**
 	 * TODO: add comment
 	 * 
 	 * @param examData
-	 * @return 
 	 */
-	private ResponseFromServer createNewExam(Exam examData) {
+	private void createNewExam(Exam examData) {
 		// create the exam ID by number of exams in this profession and course
 		int numOfExams = dbController.getNumOfExamsInCourse(examData.getCourse().getCourseID()) + 1;
 		String examID = numOfExams < 10 ? "0" + String.valueOf(numOfExams) : String.valueOf(numOfExams);
 		examID = examData.getProfession().getProfessionID() + examData.getCourse().getCourseID() + examID;
 		examData.setExamID(examID);
 		// create the new exam in DB
-		if (!dbController.createNewExam(examData)) {
-			ResponseFromServer res = new ResponseFromServer("Error creating new Exam");
-			StatusMsg stat = new StatusMsg();
-			stat.setStatus("ERROR");
-			stat.setDescription("There was a problem with saving the new exam in DB!");
-			res.setStatusMsg(stat);
-		}
+		dbController.createNewExam(examData);
 		// add questions and scores to DB
-		if (!dbController.addQuestionsInExam(examID, examData.getQuestionScores())) {
-			// return error
-			ResponseFromServer res = new ResponseFromServer("Error creating new Exam");
-			StatusMsg stat = new StatusMsg();
-			stat.setStatus("ERROR");
-			stat.setDescription("There was a problem with saving the questions for new exam in DB!");
-			res.setStatusMsg(stat);
-
-		}
-		ResponseFromServer res = new ResponseFromServer("Success Create New Exam");
-		res.setResponseData(examData.getExamID());
-		return res;
+		dbController.addQuestionsInExam(examID, examData.getQuestionScores());
 	}
 
 	/**
@@ -552,7 +422,8 @@ public class CEMSserver extends AbstractServer {
 	protected void serverStopped() {
 		serverFrame.printToTextArea("Server has stopped listening for connections.");
 	}
-
+	
+	
 	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer respon = dbController.verifyActiveExam((ActiveExam) activeExam);
 		try {
@@ -562,7 +433,7 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
-
+	
 	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {
 		ResponseFromServer respon = dbController.createNewExtensionRequest((ExtensionRequest) extensionRequest);
 		try {

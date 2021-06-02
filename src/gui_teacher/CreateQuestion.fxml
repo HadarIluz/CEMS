@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.CreateQuestionController">
    <children>
-      <TextField fx:id="textTheQuestion" layoutX="236.0" layoutY="134.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Question" />
+      <TextField fx:id="textTheQuestion" editable="false" layoutX="236.0" layoutY="134.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Question" />
       <Text layoutX="59.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Question:">
          <font>
             <Font name="System Bold" size="16.0" />
@@ -30,7 +30,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <ComboBox fx:id="selectProfession" layoutX="235.0" layoutY="178.0" onAction="#selectProfession" prefWidth="150.0" promptText="profession list" />
+      <ComboBox fx:id="selectProfession" layoutX="235.0" layoutY="178.0" onAction="#selectProfession" onMouseClicked="#selectProfession" prefWidth="150.0" promptText="profession list" />
       <Text fill="#e44d4d" layoutX="47.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
@@ -46,25 +46,25 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Text>
-      <TextField fx:id="textAnswer1" layoutX="235.0" layoutY="219.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" />
+      <TextField fx:id="textAnswer1" editable="false" layoutX="235.0" layoutY="219.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" />
       <Text layoutX="58.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 1:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="textAnswer2" layoutX="234.0" layoutY="262.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" />
+      <TextField fx:id="textAnswer2" editable="false" layoutX="234.0" layoutY="262.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" />
       <Text layoutX="57.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 2:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="textAnswer3" layoutX="233.0" layoutY="308.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" />
+      <TextField fx:id="textAnswer3" editable="false" layoutX="233.0" layoutY="308.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" />
       <Text layoutX="56.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="textAnswer4" layoutX="232.0" layoutY="351.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" />
+      <TextField fx:id="textAnswer4" editable="false" layoutX="232.0" layoutY="351.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Answer" />
       <Text layoutX="55.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 4:">
          <font>
             <Font name="System Bold" size="16.0" />
@@ -90,7 +90,7 @@
             <Font size="21.0" />
          </font>
       </Text>
-      <ComboBox fx:id="selectCorrectAnswer" layoutX="230.0" layoutY="398.0" onAction="#selectCorrectAnswer" prefHeight="25.0" prefWidth="193.0" promptText="choose correct answer" />
+      <ComboBox fx:id="selectCorrectAnswer" layoutX="230.0" layoutY="398.0" onAction="#selectCorrectAnswer" onMouseClicked="#selectCorrectAnswer" prefHeight="25.0" prefWidth="193.0" promptText="choose correct answer" />
       <Text fx:id="textCorrectAnswerIndex" fill="#3f3f3f" layoutX="234.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3." visible="false" wrappingWidth="131.80004842579365">
          <font>
             <Font size="14.0" />

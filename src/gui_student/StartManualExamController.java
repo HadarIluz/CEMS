@@ -55,7 +55,6 @@ public class StartManualExamController implements Initializable{
     @FXML
     private Label textTimeLeft;
     
-    private static StudentController studentController;
     private static ActiveExam newActiveExam;
 
     @FXML

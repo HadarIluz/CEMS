@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.CreateExam_step1Controller">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.CreateExam_step1Controller">
    <children>
       <Text layoutX="59.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Author : ">
          <font>
@@ -29,7 +29,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextArea fx:id="textStudent_Instructions" layoutX="233.0" layoutY="437.0" prefHeight="72.0" prefWidth="383.0" promptText="Please write comment to student" />
+      <TextArea fx:id="textLecturers_Instructions" layoutX="233.0" layoutY="437.0" prefHeight="72.0" prefWidth="383.0" promptText="Please write comment to student" />
       <Button fx:id="btnNext" layoutX="590.0" layoutY="536.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnNext" prefHeight="25.0" prefWidth="124.0" text="NEXT &gt;" />
       <Text layoutX="59.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profession:">
          <font>
@@ -89,15 +89,15 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
+      <Label layoutX="395.0" layoutY="198.0" text="No question bank was found for this profession." textFill="#f45050">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
       <ImageView fx:id="imgComputer" fitHeight="137.0" fitWidth="135.0" layoutX="578.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/teacher-Principal_img/desktop.png" />
          </image>
       </ImageView>
-      <Label fx:id="noQbankError" layoutX="395.0" layoutY="198.0" text="No question bank was found for this profession." textFill="#f45050">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>

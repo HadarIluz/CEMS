@@ -75,10 +75,6 @@ public class EditExamController implements Initializable{
     public static Exam editedExam;
     private static HashMap<String, Question> questionsMap = null;
     private Question selectedQuestion;
-    
-    
-    private static TeacherController teacherController; //we will use it for load the prev/next screen ! (using root).
-
    
     //TODO: principal
     @FXML

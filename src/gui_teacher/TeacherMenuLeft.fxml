@@ -31,7 +31,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="btnManageQuestionsBank" alignment="CENTER" layoutX="3.0" layoutY="225.0" mnemonicParsing="false" onAction="#btnManageQuestionsBank" prefHeight="35.0" prefWidth="221.0" text="Manage Questions Bank">
+      <Button fx:id="brnManageQuestionsBank" alignment="CENTER" layoutX="3.0" layoutY="267.0" mnemonicParsing="false" onAction="#brnManageQuestionsBank" prefHeight="35.0" prefWidth="221.0" text="Manage Questions Bank">
          <font>
             <Font size="15.0" />
          </font>
@@ -64,32 +64,38 @@
             <Image url="@email.png" />
          </image>
       </ImageView>
-      <Separator layoutX="6.0" layoutY="222.0" prefHeight="3.0" prefWidth="221.0" />
-      <Button fx:id="btnManageExamsBank" alignment="CENTER" layoutX="3.0" layoutY="265.0" mnemonicParsing="false" onAction="#btnManageExamsBank" prefHeight="35.0" prefWidth="221.0" text="Manage Exams Bank">
+      <Button fx:id="btnCreateActiveExam" alignment="CENTER" layoutX="4.0" layoutY="227.0" mnemonicParsing="false" onAction="#btnCreateActiveExam" prefHeight="35.0" prefWidth="221.0" text="Create Active Exam">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Separator layoutX="6.0" layoutY="262.0" prefHeight="3.0" prefWidth="221.0" />
-      <Button fx:id="btnGetStatistics" alignment="CENTER" layoutX="4.0" layoutY="380.0" mnemonicParsing="false" onAction="#btnGetStatistics" prefHeight="35.0" prefWidth="221.0" text="Get Statistics">
+      <Separator layoutX="6.0" layoutY="264.0" prefHeight="3.0" prefWidth="221.0" />
+      <Separator layoutX="3.0" layoutY="224.0" prefHeight="3.0" prefWidth="221.0" />
+      <Button fx:id="btnManageExamsBank" alignment="CENTER" layoutX="3.0" layoutY="307.0" mnemonicParsing="false" onAction="#btnManageExamsBank" prefHeight="35.0" prefWidth="221.0" text="Manage Exams Bank">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button fx:id="btnScoreApproval" alignment="CENTER" layoutX="4.0" layoutY="341.0" mnemonicParsing="false" onAction="#btnScoreApproval" prefHeight="35.0" prefWidth="221.0" text="Score Approval">
+      <Separator layoutX="6.0" layoutY="304.0" prefHeight="3.0" prefWidth="221.0" />
+      <Button fx:id="btnGetStatistics" alignment="CENTER" layoutX="4.0" layoutY="422.0" mnemonicParsing="false" onAction="#btnGetStatistics" prefHeight="35.0" prefWidth="221.0" text="Get Statistics">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Separator layoutX="6.0" layoutY="377.0" prefHeight="3.0" prefWidth="221.0" />
-      <Separator layoutX="3.0" layoutY="339.0" prefHeight="3.0" prefWidth="221.0" />
-      <Separator layoutX="5.0" layoutY="417.0" prefHeight="3.0" prefWidth="221.0" />
-      <Button fx:id="btnChangeExamTime" alignment="CENTER" layoutX="3.0" layoutY="303.0" mnemonicParsing="false" onAction="#btnChangeExamTime" prefHeight="35.0" prefWidth="221.0" text="Change Exam Time">
+      <Button fx:id="btnScoreApproval" alignment="CENTER" layoutX="4.0" layoutY="383.0" mnemonicParsing="false" onAction="#btnScoreApproval" prefHeight="35.0" prefWidth="221.0" text="Score Approval">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Separator layoutX="5.0" layoutY="301.0" prefHeight="3.0" prefWidth="221.0" />
+      <Separator layoutX="6.0" layoutY="419.0" prefHeight="3.0" prefWidth="221.0" />
+      <Separator layoutX="3.0" layoutY="381.0" prefHeight="3.0" prefWidth="221.0" />
+      <Separator layoutX="5.0" layoutY="459.0" prefHeight="3.0" prefWidth="221.0" />
+      <Button fx:id="btnChangeExamTime" alignment="CENTER" layoutX="3.0" layoutY="345.0" mnemonicParsing="false" onAction="#btnChangeExamTime" prefHeight="35.0" prefWidth="221.0" text="Change Exam Time">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Separator layoutX="5.0" layoutY="343.0" prefHeight="3.0" prefWidth="221.0" />
       <Label fx:id="pressLogout" layoutX="172.0" layoutY="3.0" onMouseClicked="#pressLogout" text="Logout" textFill="#7a32cc" underline="true">
          <font>
             <Font name="System Bold" size="15.0" />
@@ -97,4 +103,3 @@
       </Label>
    </children>
 </AnchorPane>
-

@@ -30,8 +30,6 @@ public class PrincipalDisplayReporByController implements Initializable {
 
 	@FXML
 	private NumberAxis na; 
-	
-	private static PrincipalController principalController;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

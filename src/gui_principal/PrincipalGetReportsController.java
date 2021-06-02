@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 
-public class PrincipalGetReportsController implements Initializable {
+public class PrincipalGetReportsController extends PrincipalController implements Initializable {
 
     @FXML
     private Button btnGenarateReport;
@@ -34,8 +34,6 @@ public class PrincipalGetReportsController implements Initializable {
 
     @FXML
     private ComboBox<?> selectProfession;
-    
-    private static PrincipalController principalController;
 
     @FXML
     void btnGenarateReport(ActionEvent event) {

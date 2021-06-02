@@ -32,8 +32,6 @@ public class TeacherStatisticsController {
 
     @FXML
     private Label textAverage;
-    
-    private TeacherController teacherController; //we will use it for load the next screen ! (using root).
 
     @FXML
     void btnShowStatistic(MouseEvent event) {

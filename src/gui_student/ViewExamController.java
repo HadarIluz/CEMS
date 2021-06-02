@@ -51,8 +51,6 @@ public class ViewExamController {
 
     @FXML
     private ImageView imgRefresh;
-    
-    private static StudentController studentController;
 
     @FXML
     void btnGetCopyOfExam(MouseEvent event) {
