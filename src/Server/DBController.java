@@ -210,7 +210,7 @@ public class DBController {
 			pstmt.setInt(9, question.getCorrectAnswerIndex());
 			pstmt.setString(10, question.getDescription());
 
-			if (pstmt.executeUpdate() == 1) {
+			if (pstmt.executeUpdate() != 0) {
 				return true;
 			}
 			// to do something with status
@@ -231,7 +231,10 @@ public class DBController {
 			pstmt = conn.prepareStatement("SELECT SUM(profession=?) as sum FROM question;");
 			pstmt.setString(1, professionID);
 			ResultSet rs = pstmt.executeQuery();
-			return rs.getInt(1);
+			if (rs.next()) {
+				int x = rs.getInt(1);
+				return x;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

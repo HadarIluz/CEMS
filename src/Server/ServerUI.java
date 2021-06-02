@@ -34,6 +34,7 @@ public class ServerUI extends Application {
 
 		serverFrame = new ServerFrameController(); // create Server frame controller		 
 		serverFrame.start(primaryStage);
+		
 	}
 
 	public ServerFrameController getSFC() {

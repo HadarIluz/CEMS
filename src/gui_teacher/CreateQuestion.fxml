@@ -30,7 +30,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <ComboBox fx:id="selectProfession" layoutX="235.0" layoutY="178.0" onAction="#selectProfession" onMouseClicked="#selectProfession" prefWidth="150.0" promptText="profession list" />
+      <ComboBox fx:id="selectProfession" layoutX="235.0" layoutY="178.0" onAction="#selectProfession" prefWidth="150.0" promptText="profession list" />
       <Text fill="#e44d4d" layoutX="47.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
@@ -90,7 +90,7 @@
             <Font size="21.0" />
          </font>
       </Text>
-      <ComboBox fx:id="selectCorrectAnswer" layoutX="230.0" layoutY="398.0" onAction="#selectCorrectAnswer" onMouseClicked="#selectCorrectAnswer" prefHeight="25.0" prefWidth="193.0" promptText="choose correct answer" />
+      <ComboBox fx:id="selectCorrectAnswer" layoutX="230.0" layoutY="398.0" onAction="#selectCorrectAnswer" prefHeight="25.0" prefWidth="193.0" promptText="choose correct answer" />
       <Text fx:id="textCorrectAnswerIndex" fill="#3f3f3f" layoutX="234.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3." visible="false" wrappingWidth="131.80004842579365">
          <font>
             <Font size="14.0" />

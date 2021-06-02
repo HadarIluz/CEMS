@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.mysql.cj.xdevapi.Client;
+
 import client.ClientUI;
 import entity.ActiveExam;
 import entity.Course;
@@ -102,7 +104,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "createNewQuestion": {
-			createNewQuestion((Question) req.getRequestData());
+			createNewQuestion((Question) req.getRequestData(), client);
 		}
 			break;
 
@@ -387,13 +389,26 @@ public class CEMSserver extends AbstractServer {
 	 * @param questionData this method creates the question ID and then inserts the
 	 *                     new question into the DB.
 	 */
-	private void createNewQuestion(Question questionData) {
+	private void createNewQuestion(Question questionData, ConnectionToClient client) {
 		int numOfQuestions = dbController.getNumOfQuestionsInProfession(questionData.getProfession().getProfessionID());
 		String questionID = String.valueOf(numOfQuestions + 1);
-		questionID = ("0000" + questionID).substring(questionID.length());
+		questionID = ("000" + questionID).substring(questionID.length());
 		questionID = questionData.getProfession().getProfessionID() + questionID;
 		questionData.setQuestionID(questionID);
-		dbController.createNewQuestion(questionData);
+		ResponseFromServer res;
+		if (dbController.createNewQuestion(questionData)) {
+			 res = new ResponseFromServer("SuccessCreateNewQuestion");
+		}
+		else {
+			 res = new ResponseFromServer("FailCreateNewQuestion");
+
+		}
+		try {
+			client.sendToClient(res);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
