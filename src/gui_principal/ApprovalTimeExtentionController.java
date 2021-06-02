@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-
 import client.ClientUI;
 import entity.ExtensionRequest;
 import javafx.collections.FXCollections;
@@ -28,7 +27,7 @@ import logic.RequestToServer;
  *
  */
 
-public class ApprovalTimeExtentionController implements Initializable {
+public class ApprovalTimeExtentionController extends PrincipalController implements Initializable {
 
 	@FXML
 	private ComboBox<String> selectExamExtension;
@@ -45,10 +44,13 @@ public class ApprovalTimeExtentionController implements Initializable {
 	@FXML
 	private Button btnApprove;
 
-	private static HashMap<String, ExtensionRequest> extensionRequestMap = null;
+	private static HashMap<String, ExtensionRequest> extensionRequestMap = new HashMap<String, ExtensionRequest>();
+    private static ArrayList<ExtensionRequest> extensionRequestList = new ArrayList<ExtensionRequest>();
+    private ArrayList<String> examIdList = new ArrayList<String>();
 	private ExtensionRequest selectedExtensionRequest;
 	private int timeOfExam;
-	/**
+	
+	/** 
 	 * @param event that occurs when clicking on 'Approve' button
 	 * @throws IOException if failed.
 	 */
@@ -61,11 +63,12 @@ public class ApprovalTimeExtentionController implements Initializable {
 		//When a test is selected
 		else {
 			//Adding the time required for the test time
-			timeOfExam = selectedExtensionRequest.getActiveExam().getExam().getTimeOfExam();
-			timeOfExam += Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
-			selectedExtensionRequest.getActiveExam().getExam().setTimeOfExam(timeOfExam);
-			RequestToServer req = new RequestToServer("approvTimeExtention");
-			req.setRequestData(selectedExtensionRequest);
+			timeOfExam = selectedExtensionRequest.getActiveExam().getTimeAllotedForTest();
+			timeOfExam+= Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
+			selectedExtensionRequest.getActiveExam().setTimeAllotedForTest("" + timeOfExam);
+			//Update the exam time and delete the extension Request in the database
+			RequestToServer req = new RequestToServer("approvalTimeExtention");
+			req.setRequestData(selectedExtensionRequest.getActiveExam());
 			ClientUI.cems.accept(req);
 		}
 	}
@@ -82,8 +85,8 @@ public class ApprovalTimeExtentionController implements Initializable {
 		}
 		//When a test is selected
 		else {
-			RequestToServer req = new RequestToServer("approvalTimeExtention");
-			req.setRequestData(selectedExtensionRequest);
+			RequestToServer req = new RequestToServer("declineTimeExtention");
+			req.setRequestData(selectedExtensionRequest.getActiveExam());
 			ClientUI.cems.accept(req);
 		}
 	}
@@ -100,23 +103,32 @@ public class ApprovalTimeExtentionController implements Initializable {
 			textReasonField.setText(selectedExtensionRequest.getReason());
 		}
 	}
-
-	public void loadExamExtensionToCombobox() {
-		selectExamExtension.setItems(FXCollections.observableArrayList(extensionRequestMap.keySet()));
+	
+	/**
+	 * @param This method is performed when the screen is initialized and it loads the comboBox with all the extension request in Data Base
+	 * @throws IOException if failed.
+	 */
+	@FXML
+	public void loadExamExtensionsToCombobox() {
+		setExtensionRequestMap(extensionRequestList);
+		 for (ExtensionRequest ex : extensionRequestList) 
+			 examIdList.add(ex.getActiveExam().getExam().getExamID());
+		 selectExamExtension.setItems(FXCollections.observableList(examIdList));
+		 selectExamExtension.setDisable(false);
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedExtensionRequest = null;
-		loadExamExtensionToCombobox();
+		loadExamExtensionsToCombobox(); 
 		lblAdditionalTime.setText("");
 		textReasonField.setText("");
 	}
 
+	 
 	public static void setExtensionRequestMap(ArrayList<ExtensionRequest> extensionRequestList) {
-		extensionRequestMap = new HashMap<>();
-		for (ExtensionRequest er : extensionRequestList) {
-			extensionRequestMap.put(er.getActiveExam().getExam().getExamID(), er);
+		 for (ExtensionRequest ex : extensionRequestList) {
+			extensionRequestMap.put(ex.getActiveExam().getExam().getExamID(), ex);
 		}
 	}
 
@@ -136,6 +148,10 @@ public class ApprovalTimeExtentionController implements Initializable {
 		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
 		dialog.setScene(dialogScene);
 		dialog.show();
+	}
+
+	public static void setExtensionRequestList(ArrayList<ExtensionRequest> extensionRequest) {
+		extensionRequestList = extensionRequest;
 	}
 
 }

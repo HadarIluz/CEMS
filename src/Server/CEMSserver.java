@@ -112,18 +112,12 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "addTimeToExam": {
-			ActiveExam activeExam = (ActiveExam) req.getRequestData();
-			ActiveExam activeExamInSystem = null;
-			dbController.verifyActiveExam((ActiveExam) activeExam);
-			try {
-				client.sendToClient(activeExamInSystem);
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
+			addTimeToExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
+
 		case "createNewExtensionRequest": {
-			dbController.createNewExtensionRequest((ExtensionRequest) req.getRequestData());
+			createNewExtensionRequest((ExtensionRequest) req.getRequestData(), client);
 		}
 			break;
 
@@ -133,17 +127,18 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "approvTimeExtention": {
-			// update time alloted for test in active exam after the principal approves the
-			// request.
-			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
-			dbController.setTimeForActiveTest(extensionRequest.getActiveExam(), extensionRequest.getAdditionalTime());
-			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
+		case "getAllActiveExamBeforEnter2Exam": {
+			getAllActiveExamBeforEnter2Exam(client);
+		}
+			break;
+
+		case "approvalTimeExtention": {
+			approvalTimeExtention((ActiveExam)req.getRequestData(), client);
 		}
 			break;
 		case "declineTimeExtention": {
 			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
-			dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
+			//dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
 		}
 			break;
 
@@ -204,6 +199,61 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
+		case "getExams": {
+
+			try {
+
+				ResponseFromServer respond = new ResponseFromServer("TEACHER EXAMS");
+				respond.setResponseData(dbController.GetTeacherExams((Integer) req.getRequestData()));
+
+				client.sendToClient(respond);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+			break;
+		case "DeleteQuestion": {
+			try {
+
+				ResponseFromServer respond = new ResponseFromServer("DELETE TEACHER QUESTION");
+				if (dbController.DeleteQuestion((Question) req.getRequestData()))
+					respond.setResponseData("TRUE");
+				else
+					respond.setResponseData("FALSE");
+
+				client.sendToClient(respond);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		case "DeleteExam": {
+			try {
+
+				ResponseFromServer respond = new ResponseFromServer("DELETE TEACHER EXAM");
+				if (dbController.DeleteExam((Exam) req.getRequestData()))
+					respond.setResponseData("TRUE");
+				else
+					respond.setResponseData("FALSE");
+
+				client.sendToClient(respond);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+			break;
+			
+		case "getExtensionRequests": {
+			getExtensionRequests(client);
+
+		}
+			break;
 		}
 
 	}
@@ -228,6 +278,21 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);
 
+	}
+	
+	
+	private void getAllActiveExamBeforEnter2Exam(ConnectionToClient client) {
+		// logic for 'EnterToExam'
+		ResponseFromServer response = null;
+		response = dbController.getAllActiveExam();
+		// sent to client.
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+		
 	}
 
 	/**
@@ -433,5 +498,67 @@ public class CEMSserver extends AbstractServer {
 	 */
 	protected void serverStopped() {
 		serverFrame.printToTextArea("Server has stopped listening for connections.");
+	}
+
+	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
+		ResponseFromServer respon = dbController.verifyActiveExam((ActiveExam) activeExam);
+		try {
+			client.sendToClient(respon);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+	}
+
+	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {
+		ResponseFromServer respon = dbController.createNewExtensionRequest((ExtensionRequest) extensionRequest);
+		try {
+			client.sendToClient(respon);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+	}
+	
+	private void getExtensionRequests(ConnectionToClient client) {
+		ResponseFromServer respon = new ResponseFromServer("EXTENSION REQUESTS");
+		try {	
+			respon.setResponseData(dbController.getExtensionsRequests());
+			client.sendToClient(respon);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.		
+	}
+	
+	private void approvalTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
+		// update time alloted for test in active exam after the principal approves the
+		// request.
+		ResponseFromServer respon = new ResponseFromServer("EXTENSION APPROVED");
+		try {
+			if(dbController.setTimeForActiveTest(activeExam)){//succed
+				if(dbController.deleteExtenxtionRequest(activeExam)) 
+					respon.setResponseData((Boolean) true);
+				else 
+					respon.setResponseData((Boolean) false);
+			}
+			else
+				respon.setResponseData((Boolean) false);
+			client.sendToClient(respon);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.		
+	}
+	
+	private void declineTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
+		ResponseFromServer respon = new ResponseFromServer("EXTENSION DECLINED");
+		try {
+			respon.setResponseData(dbController.deleteExtenxtionRequest(activeExam));
+			client.sendToClient(respon);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.	
 	}
 }
