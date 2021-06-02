@@ -69,6 +69,9 @@ public class StudentController extends Application implements Initializable {
 	protected static GridPane root;
 	public Scene scene;
 
+	/**
+	 *Initializes the controller at the moment it loads.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		student = (Student) ClientUI.loggedInUser.getUser();
@@ -191,6 +194,9 @@ public class StudentController extends Application implements Initializable {
 
 	}
 	
+	/**
+	 * @return List of all active tests received as answer from server.
+	 */
 	@SuppressWarnings("unchecked")
 	private ArrayList<ActiveExam> getAllActiveExamBeforEnter2Exam() {
 		

@@ -118,8 +118,6 @@ public class EnterToExamController extends StudentController implements Initiali
 
 					// The student has entered all the given details and transfer to exam screen
 					// - computerized or manual
-					// ((Pane) event.getSource()).getScene().getWindow().hide(); // hiding right
-					// pane window
 					switch (ActiveExamType) {
 					case "manual": {
 						// load manual start exam fxml
@@ -247,16 +245,15 @@ public class EnterToExamController extends StudentController implements Initiali
 
 	}
 
+	/**
+	 * The method prepares the list of tests and loads them into the comboBox.
+	 */
 	private void loadActiveExamToCombobox() {
 		setActiveExamtMap(activeExamtList);
 		for (ActiveExam ae : activeExamtList) {
 			examIdList.add(ae.getExam().getExamID());
 		}
-		//	not working here
-		
 		selectActiveExamFromCB.setItems(FXCollections.observableArrayList(examIdList));
-		//selectActiveExamFromCB.setItems(FXCollections.observableList(examIdList));
-		//selectActiveExamFromCB.setItems(FXCollections.observableArrayList(activeExamtMap.keySet()));
 		selectActiveExamFromCB.setDisable(false);
 	}
 	
@@ -268,6 +265,9 @@ public class EnterToExamController extends StudentController implements Initiali
 	}
 
 
+	/**
+	 * @param event that occurs when a student selects a test from the comboBox.
+	 */
 	@FXML
 	void selectActiveExam(ActionEvent event) {
 		if (activeExamtMap.containsKey(selectActiveExamFromCB.getValue())) {
@@ -277,6 +277,9 @@ public class EnterToExamController extends StudentController implements Initiali
 
 	}
 
+	/**Gets the list of active tests from the previous screen.
+	 * @param activeExamListFromDB
+	 */
 	public static void setAllActiveExamBeforEnter2Exam(ArrayList<ActiveExam> activeExamListFromDB) {
 		activeExamtList = activeExamListFromDB;
 	}
