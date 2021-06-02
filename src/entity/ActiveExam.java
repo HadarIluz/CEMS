@@ -18,22 +18,15 @@ public class ActiveExam implements Serializable {
 
 	public ActiveExam(Exam exam) {
 		this.exam = exam;
-		timeAllotedForTest = exam.getTimeOfExam();
 	}
 
 	public ActiveExam(Time startTime, Exam exam, String examCode) {
 		this.startTime = startTime;
 		this.exam = exam;
 		this.examCode = examCode;
-		timeAllotedForTest = exam.getTimeOfExam();
 	}
-	//for old enter to exam
-	public ActiveExam(Calendar date, String examCode) {
-		this.date = date;
-		this.examCode = examCode;
-	}
-	//for new!!! enter to exam
-	public ActiveExam(Time time, Time endTimeToTakeExam, String examCode) { //ok??debug it
+
+	public ActiveExam(Time time, Time endTimeToTakeExam, String examCode) {
 		this.startTime = time;
 		this.endTimeToTakeExam = endTimeToTakeExam;
 		this.examCode = examCode;
@@ -52,9 +45,6 @@ public class ActiveExam implements Serializable {
 	}
 
 	public void setStartTime(Time startTime) {
-		//System.out.println(startTime);//DEBUG
-		//this.startTime =Time.valueOf(startTime);
-		//System.out.println(this.startTime);//DEBUG
 		this.startTime = startTime;
 	}
 
