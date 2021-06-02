@@ -16,11 +16,8 @@ public class Exam implements Serializable{
 	private String commentForTeacher;
 	private String commentForStudents;
 	private Teacher author; // is this relevant or to delete?
-<<<<<<< HEAD
-=======
 	private String ProfessionName;
 
->>>>>>> b1dbfdba17a99e995bdc1efabf09813ef1ab7c18
 	
 	
 	public Exam(String examID) {
@@ -35,7 +32,6 @@ public class Exam implements Serializable{
 		this.profession = profession;
 		this.timeOfExam = timeOfExam;
 	}
-<<<<<<< HEAD
 	
 	public Exam(Profession profession, Course course, int timeOfExam)
 	{
@@ -44,15 +40,12 @@ public class Exam implements Serializable{
 		this.profession = profession;
 		this.timeOfExam = timeOfExam;
 	}
-=======
 
 		
 		public String getProfName() {return ProfessionName; }
 	
 	  public String getProfessionName() { return profession.getProfessionID(); }
 	 
->>>>>>> b1dbfdba17a99e995bdc1efabf09813ef1ab7c18
-
 
 	public Exam(String examID, Profession profession, Course course, int timeOfExam, ArrayList<Question> questions,
 			HashMap<String, Integer> questionScores, String commentForTeacher, String commentForStudents, Teacher author) {
