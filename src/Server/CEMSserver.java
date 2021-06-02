@@ -144,8 +144,8 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 		case "declineTimeExtention": {
-			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
-			//dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
+			declineTimeExtention((ActiveExam)req.getRequestData(), client);
+
 		}
 			break;
 
