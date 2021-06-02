@@ -1,22 +1,14 @@
 package gui_teacher;
 
 import java.io.IOException;
-
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
 import entity.Course;
 import entity.Exam;
-import entity.Profession;
-import entity.Question;
-import entity.QuestionRow;
-import entity.Teacher;
-import gui_student.SolveExamController;
-import gui_student.StudentController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -69,13 +61,13 @@ public class ExamBankController implements Initializable {
 	private TableColumn<Exam, Integer> Time;
 
 	private ObservableList<Exam> data;
-	
-    @FXML
-    private Button btnCreateActiveExam;
-    private static TeacherController teacherController;
 
 	@FXML
-	void selectExamFromTable(MouseEvent event) { 
+	private Button btnCreateActiveExam;
+	private static TeacherController teacherController;
+
+	@FXML
+	void selectExamFromTable(MouseEvent event) {
 		ObservableList<Exam> Qlist;
 		Qlist = tableExam.getSelectionModel().getSelectedItems();
 		textExamID.setText(Qlist.get(0).getExamID());
@@ -134,11 +126,11 @@ public class ExamBankController implements Initializable {
 
 	@FXML
 	void btnEditExam(ActionEvent event) {
+		getExistExamDetails(textExamID.getText());
+
 		if (!checkForLegalID(textExamID.getText()))
 			return;
-
 		try {
-
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
 			teacherController.root.add(newPaneRight, 1, 0);
 
@@ -165,23 +157,8 @@ public class ExamBankController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
- 
 		tableExam.setEditable(true);
-		/*
-		 * step 1 - ask for all teacher's test step 2- covert all for the type:
-		 * string,string,integer step 3- show on the screnn
-		 * 
-		 */
-		/*
-		 * RequestToServer req = new RequestToServer("GetTeacherExams");
-		 * req.setRequestData(teacher); ClientUI.cems.accept(req);
-		 */
-		
-		// tests:
-		 //data = FXCollections.observableArrayList(new Exam("010203", "Algebra", 10), 
-				 								  //new Exam("111111", "Masadim", 2));
 		initTableRows();
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -215,34 +192,37 @@ public class ExamBankController implements Initializable {
 		dialog.setScene(dialogScene);
 		dialog.show();
 	}
-	
-	//TODO: btnCreateActiveExam open new fxml (HADAR)
-    @FXML
-    void btnCreateActiveExam(ActionEvent event) {
-    	
-    	getExistExamDetails(textExamID.getText());
-    	try {
+
+	// TODO: btnCreateActiveExam open new fxml (HADAR)
+	@FXML
+	void btnCreateActiveExam(ActionEvent event) {
+
+		getExistExamDetails(textExamID.getText());
+		if (!checkForLegalID(textExamID.getText()))
+			return;
+
+		try {
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-			
+
 			teacherController.root.add(newPaneRight, 1, 0);
-			//funcName.setActiveExamState(/**/);
+			// funcName.setActiveExamState(/**/);
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-    	    	
-    }
-    
-    //TODO: HADAR
-    private void getExistExamDetails(String examID) {
-    	
-    	Exam selectedExam= new Exam(examID);
+
+	}
+
+	// TODO: HADAR
+	private void getExistExamDetails(String examID) {
+
+		Exam selectedExam = new Exam(examID);
 		RequestToServer req = new RequestToServer("getSelectedExamData_byID");
 		req.setRequestData(selectedExam);
 		ClientUI.cems.accept(req);
-		selectedExam = (Exam)CEMSClient.responseFromServer.getResponseData();
-		
-    }
+		selectedExam = (Exam) CEMSClient.responseFromServer.getResponseData();
+
+	}
 
 }

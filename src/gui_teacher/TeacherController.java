@@ -209,11 +209,6 @@ public class TeacherController extends Application implements Initializable {
 		teacher=ClientUI.loggedInUser.getUser();
 		textTeacherName.setText(teacher.getFirstName()+" " +teacher.getLastName());
 		setProfessionMap(((Teacher)ClientUI.loggedInUser.getUser()).getProfessions());
-		Image flag = new Image("file:src/images/teacher_userImg.png");
-
-		// private Image flag = new Image("file:src/resources/flag.png");
-
-		imgPrincipal = new ImageView(flag);
 	}
 	
 
