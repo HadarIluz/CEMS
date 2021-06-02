@@ -9,10 +9,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.TeacherStatisticsController">
    <children>
-      <Label layoutX="67.0" layoutY="101.0" prefHeight="31.0" prefWidth="148.0" text="Enter Exam ID:">
+      <Label layoutX="40.0" layoutY="101.0" prefHeight="31.0" prefWidth="148.0" text="Enter Exam ID:">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
@@ -22,27 +23,27 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </TextField>
-      <Label contentDisplay="TOP" layoutX="372.0" layoutY="240.0" prefHeight="37.0" prefWidth="157.0" text="Grades Average: " textAlignment="RIGHT">
+      <Label contentDisplay="TOP" layoutX="358.0" layoutY="240.0" prefHeight="37.0" prefWidth="157.0" text="Grades Average: " textAlignment="RIGHT">
          <font>
-            <Font name="System Bold" size="19.0" />
+            <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="109.0" layoutY="242.0" text="Median:">
+      <Label layoutX="40.0" layoutY="242.0" text="Median:">
          <font>
-            <Font name="System Bold" size="22.0" />
+            <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="textMedian" alignment="CENTER" layoutX="215.0" layoutY="241.0" prefHeight="35.0" prefWidth="66.0">
+      <Label fx:id="textMedian" alignment="CENTER" layoutX="146.0" layoutY="241.0" prefHeight="35.0" prefWidth="66.0">
          <font>
-            <Font size="24.0" />
+            <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="textCourse" alignment="CENTER" layoutX="456.0" layoutY="176.0" prefHeight="35.0" prefWidth="201.0">
+      <Label fx:id="textCourse" alignment="CENTER" layoutX="429.0" layoutY="176.0" prefHeight="35.0" prefWidth="312.0" textAlignment="CENTER">
          <font>
-            <Font size="17.0" />
+            <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="253.0" layoutY="45.0" text="Exam Statistics" textFill="#4867c4">
+      <Label layoutX="253.0" layoutY="45.0" textFill="#4867c4">
          <font>
             <Font name="Arial Bold" size="32.0" />
          </font>
@@ -61,25 +62,30 @@
             <Font name="System Bold" size="11.0" />
          </font>
       </Label>
-      <Label layoutX="109.0" layoutY="177.0" text="Profession:">
+      <Label layoutX="40.0" layoutY="177.0" text="Profession:">
          <font>
-            <Font name="System Bold" size="22.0" />
+            <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="371.0" layoutY="178.0" text="Course:">
+      <Label layoutX="357.0" layoutY="178.0" text="Course:">
          <font>
-            <Font name="System Bold" size="22.0" />
+            <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="textProfession" alignment="CENTER" layoutX="227.0" layoutY="176.0" prefHeight="35.0" prefWidth="71.0" text="Math">
+      <Label fx:id="textProfession" alignment="CENTER" layoutX="139.0" layoutY="176.0" prefHeight="35.0" prefWidth="201.0" textAlignment="CENTER">
          <font>
-            <Font size="24.0" />
+            <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="textAverage" alignment="CENTER" layoutX="524.0" layoutY="241.0" prefHeight="35.0" prefWidth="71.0">
+      <Label fx:id="textAverage" alignment="CENTER" layoutX="552.0" layoutY="241.0" prefHeight="35.0" prefWidth="71.0">
          <font>
-            <Font size="24.0" />
+            <Font size="20.0" />
          </font>
       </Label>
+      <Text fill="#4672ae" layoutX="166.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam Statistics" textAlignment="CENTER" wrappingWidth="392.1504211425781">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
