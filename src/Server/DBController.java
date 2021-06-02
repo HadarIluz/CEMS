@@ -768,10 +768,13 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-
+		if (qList.size() > 0) {
 		response = new ResponseFromServer("Question bank FOUND");	
 		response.setResponseData(qList);
-
+		}
+		else {
+			response = new ResponseFromServer("No Question Bank");
+		}
 		return response;
 	}
 
