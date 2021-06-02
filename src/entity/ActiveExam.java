@@ -39,19 +39,22 @@ public class ActiveExam implements Serializable {
 		this.examCode = examCode;
 	}
 	
-	public int getTimeOfExam() {
+	public int getTimeAllotedForTest() {
 		return timeAllotedForTest;
 	}
 
-	public void setTimeOfExam(String timeOfExam) {
+	public void setTimeAllotedForTest(String timeOfExam) {
 		this.timeAllotedForTest = Integer.parseInt(timeOfExam);
 	}
 
-	public Time getTime() {
+	public Time getStartTime() {
 		return startTime;
 	}
 
-	public void setTime(Time startTime) {
+	public void setStartTime(Time startTime) {
+		//System.out.println(startTime);//DEBUG
+		//this.startTime =Time.valueOf(startTime);
+		//System.out.println(this.startTime);//DEBUG
 		this.startTime = startTime;
 	}
 
