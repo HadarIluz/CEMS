@@ -8,6 +8,9 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.Exam;
 import entity.Question;
+import entity.QuestionInExamRow;
+import entity.QuestionRow;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
@@ -54,16 +58,16 @@ public class CreateExam_addQ_step2Controller implements Initializable{
     private Label textErrorMsg;
 
     @FXML
-    private TableView<?> tableAddedQuestions;
+    private TableView<QuestionInExamRow> tableAddedQuestions;
 
     @FXML
-    private TableColumn<?, ?> questionID;
+    private TableColumn<QuestionInExamRow, String> questionID;
 
     @FXML
-    private TableColumn<?, ?> questionScore;
+    private TableColumn<QuestionInExamRow, Integer> questionScore;
 
     @FXML
-    private TableColumn<?, ?> question;
+    private TableColumn<QuestionInExamRow, String> question;
 
     @FXML
     private Button btnBrowseQuestions;
@@ -82,8 +86,8 @@ public class CreateExam_addQ_step2Controller implements Initializable{
     
     private static Exam newExam;
     
-    private ArrayList<Question> selectedQuestions;
     private static ArrayList<Question> availableQuestions;
+    private ArrayList<QuestionInExamRow> selectedQuestions;
 
     @FXML
     void DeleteFromExam(ActionEvent event) {
@@ -134,6 +138,19 @@ public class CreateExam_addQ_step2Controller implements Initializable{
 		availableQuestions = questionBank;
 	}
 	
-	
+	public void initTableRows() {
+
+		
+
+		tableAddedQuestions.getColumns().clear();
+		questionID.setCellValueFactory(new PropertyValueFactory<>("questionID"));
+		questionScore.setCellValueFactory(new PropertyValueFactory<>("score"));
+		question.setCellValueFactory(new PropertyValueFactory<>("question"));
+
+		tableAddedQuestions.setItems(FXCollections.observableArrayList(selectedQuestions));
+
+		tableAddedQuestions.getColumns().addAll(questionID, questionScore, question);
+
+	}
 
 }

@@ -102,11 +102,10 @@ public class CreateExam_step1Controller implements Initializable{
 
     private void startNextScreen(Exam newExam) {
     	try {
-
+			CreateExam_addQ_step2Controller.setExamState(newExam);
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_addQ_step2.fxml.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			TeacherController.root.add(newPaneRight, 1, 0);
-			CreateExam_addQ_step2Controller.setExamState(newExam);
 
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");
