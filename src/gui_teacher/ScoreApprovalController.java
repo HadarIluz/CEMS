@@ -87,7 +87,14 @@ public class ScoreApprovalController {
 
 		String changeReason = textGradeChangeReason.getText();
 		String newGrade = textnewGradeField.getText();
+		//check if student selected
 		
+		if(selectStudent.getSelectionModel().getSelectedItem()==null) {
+			textNewGradeReqField.setTextFill(Color.RED);
+			textNewGradeReqField.setText("Must choose student to update");
+			textNewGradeReqField.setVisible(true);
+			return;
+		}
 		//check if fields are empty
 		if (changeReason.isEmpty() || newGrade.trim().isEmpty()) {
 			textNewGradeReqField.setTextFill(Color.RED);
@@ -131,10 +138,10 @@ public class ScoreApprovalController {
 	@FXML
 	void ShowStudentByExamID(ActionEvent event) {
 		textNewGradeReqField.setVisible(false);
-		//textExamID.setText(null);
-	//	textGradeChangeReason.setText(null);
+		textnewGradeField.setText("");
+		textGradeChangeReason.setText("");
 		String ExamID = textExamID.getText();
-//
+
 		if (!checkForLegalID(ExamID))
 			return;
 

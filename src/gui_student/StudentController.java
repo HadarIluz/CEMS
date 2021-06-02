@@ -133,7 +133,7 @@ public class StudentController extends Application implements Initializable {
 	@FXML
 	void btnViewExamInfo(ActionEvent event) {
 		try {
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_student/ViewExam.fxml"));
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ViewExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
