@@ -21,6 +21,7 @@ import entity.QuestionRow;
 import entity.Student;
 import entity.Teacher;
 import entity.TestRow;
+import entity.UpdateScoreRequest;
 import entity.User;
 import entity.UserType;
 import gui_server.ServerFrameController;
@@ -95,6 +96,9 @@ public class DBController {
 	}
 	
 	
+	
+	
+	
 	/**We know that this student exists and we bring the additional data he has in addition to the user.
 	 * @param student include all data of student that hold by User object.
 	 */
@@ -167,6 +171,26 @@ public class DBController {
 		return professionIDs;
 	}
 
+	
+	
+	
+	
+
+public String UpdateScoreOfStudent(UpdateScoreRequest req) {
+		
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("UPDATE exam_of_student SET score = ?,updateReason=? WHERE student=? AND exam=?;");
+			pstmt.setInt(1, req.getUpdatedScore());
+			pstmt.setString(2,req.getReasonOfUpdate() );
+			pstmt.setString(3, req.getStudentID());
+			pstmt.setString(4, req.getExamID());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			return "FALSE";
+		}
+		return "TRUE";
+	}
 
 
 	public HashMap<String, Integer> SetDetailsForScoreApprovel(String examID) {
@@ -175,12 +199,12 @@ public class DBController {
 		PreparedStatement pstmt;
 		try {
 
-			pstmt = conn.prepareStatement("SELECT * FROM students_score  WHERE examID=?");
+			pstmt = conn.prepareStatement("SELECT * FROM exam_of_student  WHERE exam=?");
 			pstmt.setString(1, examID);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				stdScore.put(rs.getString(2), rs.getInt(3));
+				stdScore.put(rs.getString(2), rs.getInt(5));
 			}
 			rs.close();
 
@@ -191,6 +215,10 @@ public class DBController {
 		return stdScore;
 
 	}
+	
+	
+	
+	
 
 	/**
 	 * @param question inserts new question to DB

@@ -7,18 +7,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import client.ClientUI;
 import entity.ActiveExam;
-import entity.Course;
 import entity.Exam;
 import entity.ExtensionRequest;
 import entity.Profession;
 import entity.Question;
 import entity.Student;
 import entity.Teacher;
+import entity.UpdateScoreRequest;
 import entity.User;
 import gui_server.ServerFrameController;
-import logic.LoggedInUser;
 import logic.RequestToServer;
 import logic.ResponseFromServer;
 import logic.StatusMsg;
@@ -144,14 +142,15 @@ public class CEMSserver extends AbstractServer {
 
 		case "getStudentsByExamID": {
 			try {
-				ResponseFromServer Res = new ResponseFromServer(null);
-
-				client.sendToClient(dbController.SetDetailsForScoreApprovel((String) req.getRequestData()));
+				ResponseFromServer Res = new ResponseFromServer("SCORE APPROVAL");
+				Res.setResponseData(dbController.SetDetailsForScoreApprovel((String) req.getRequestData()));
+				client.sendToClient(Res);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
 		}
+		break;
 
 		case "getQuestions": {
 
@@ -250,6 +249,24 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
+			
+			
+			
+		case "Update Grade":{
+			try {
+
+				ResponseFromServer respond = new ResponseFromServer("TEACHER SCORE UPDATE");
+				respond.setResponseData(dbController.UpdateScoreOfStudent((UpdateScoreRequest) req.getRequestData()));
+
+				client.sendToClient(respond);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		break;
+		
 		}
 
 	}
