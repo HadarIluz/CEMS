@@ -72,41 +72,30 @@ public class ExamBankController implements Initializable {
 	
     @FXML
     private Button btnCreateActiveExam;
-    
     private static TeacherController teacherController;
 
 	@FXML
-	void MouseC(MouseEvent event) {
-
+	void selectExamFromTable(MouseEvent event) { 
 		ObservableList<Exam> Qlist;
 		Qlist = tableExam.getSelectionModel().getSelectedItems();
 		textExamID.setText(Qlist.get(0).getExamID());
-
 	}
 
-	public Exam GetTableDetails(String ExamID) {
-
+	private Exam GetTableDetails(String ExamID) {
 		Exam exam;
-
 		for (Exam e : data) {
 			if (e.getExamID().equals(ExamID)) {
 				exam = new Exam(ExamID);
 				exam.setCourse(new Course(e.getCourse().getCourseName()));
-				// exam.getCourse().setCourseID(e.getCourse().getCourseID());
 				exam.setProfession(e.getProfession());
 				exam.setProfession(e.getProfession());
 				return exam;
-
 			}
-
 		}
-
 		return null;
-
 	}
 
-	public boolean checkForLegalID(String ExamID) {
-
+	private boolean checkForLegalID(String ExamID) {
 		if (ExamID.length() != 6) {
 			popUp("Exam ID Must be 6 digits.");
 			return false;
@@ -162,9 +151,7 @@ public class ExamBankController implements Initializable {
 
 	@FXML
 	void CreateNewExam(ActionEvent event) {
-
 		try {
-
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_step1.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			teacherController.root.add(newPaneRight, 1, 0);
@@ -198,7 +185,7 @@ public class ExamBankController implements Initializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void initTableRows() {
+	private void initTableRows() {
 		textExamID.setEditable(true);
 
 		RequestToServer req = new RequestToServer("getExams");
@@ -233,6 +220,7 @@ public class ExamBankController implements Initializable {
     @FXML
     void btnCreateActiveExam(ActionEvent event) {
     	
+    	getExistExamDetails(textExamID.getText());
     	try {
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -244,6 +232,17 @@ public class ExamBankController implements Initializable {
 			e.printStackTrace();
 		}
     	    	
+    }
+    
+    //TODO: HADAR
+    private void getExistExamDetails(String examID) {
+    	
+    	Exam selectedExam= new Exam(examID);
+		RequestToServer req = new RequestToServer("getSelectedExamData_byID");
+		req.setRequestData(selectedExam);
+		ClientUI.cems.accept(req);
+		selectedExam = (Exam)CEMSClient.responseFromServer.getResponseData();
+		
     }
 
 }

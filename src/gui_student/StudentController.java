@@ -102,7 +102,7 @@ public class StudentController extends Application implements Initializable {
 	void btnStartComputerizedExam(ActionEvent event) {
 
 		try {
-			EnterToExamController.setAllActiveExamBeforEnter2Exam(getAllActiveExamBeforEnter2Exam());
+			EnterToExamController.setAllActiveExamBeforEnterToExam(getAllActiveExamBeforEnter2Exam());
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 
@@ -118,7 +118,7 @@ public class StudentController extends Application implements Initializable {
 	void btnStartManualExam(ActionEvent event) {
 		
 		try {
-			EnterToExamController.setAllActiveExamBeforEnter2Exam(getAllActiveExamBeforEnter2Exam());
+			EnterToExamController.setAllActiveExamBeforEnterToExam(getAllActiveExamBeforEnter2Exam());
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 

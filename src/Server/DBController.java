@@ -450,17 +450,7 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 
 	}
 
-	/*
-	 * public Boolean ExamQuestion(String ExamID) { try { PreparedStatement pstmt;
-	 * pstmt = conn.prepareStatement("DELETE FROM exam WHERE examID=?");
-	 * pstmt.setString(1, ExamID); } catch (SQLException ex) {
-	 * serverFrame.printToTextArea("SQLException: " + ex.getMessage()); return
-	 * false; } return true;
-	 * 
-	 * }
-	 */
 
-	
 	public ArrayList<QuestionRow> GetTeacherQuestions(Object obj) {
 
 		Teacher teacher;
@@ -488,9 +478,6 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			//teacher.setStatus("ERROR");
-			//message from Hadar: need to use ResponseFromServer class not?
-			//i put this as a note because it marks an error now. 
 		}
 		return examsOfTeacher;// return null if no exsiting tests
 
@@ -541,7 +528,7 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 	 * @param activeExam object which include 2 parameters of date and examcode for Query.
 	 */
 	public ResponseFromServer verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
-		Exam exam = new Exam(null);
+		Exam exam = new Exam();//TODO:i remove null-  need to check
 		ResponseFromServer response = null;
 		/***EnterToExam***/
 		try {
@@ -577,36 +564,6 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 		
 	}
 	
-	
-	/**
-	 * @param EditExam
-	 * @return return true if succeed to edit exist exam, in any other case false.
-	 */
-	public boolean editExam(Exam editedExam) {
-		Exam existExam = editedExam; //remove, it is the same.
-		
-		
-		try {
-			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM exam ;"); //TODO: add WHERE with exam id "WHERE id=?;"
-			pstmt.setString(1, existExam.getExamID());
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				existExam.setCommentForTeacher(editedExam.getCommentForTeacher());
-				existExam.setCommentForStudents(editedExam.getCommentForStudents());
-				existExam.setTimeOfExam(editedExam.getTimeOfExam());
-				existExam.setQuestions(editedExam.getQuestions());
-				rs.close();
-			}
-			
-			//TODO: remove boolean return Exam object.
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-
 	public Profession getProfessionByID(String id) {
 		Profession p = new Profession(id);
 
@@ -638,7 +595,7 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 			pstmt = conn.prepareStatement("SELECT * FROM extension_request ;");
 			ResultSet rs = pstmt.executeQuery(); 
 			while (rs.next()) {
-				Exam exam = new Exam(null);
+				Exam exam = new Exam(); //i remove null-  need to check
 				ActiveExam activeExam = new ActiveExam(exam);
 				ExtensionRequest extensionRequest = new ExtensionRequest(activeExam);
 				exam.setExamID(rs.getString(1));
@@ -716,7 +673,7 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 			
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Exam exam = new Exam(null);
+				Exam exam = new Exam();//TODO:i remove null-  need to check
 				exam.setExamID(rs.getString(1));
 				ActiveExam activeExam= new ActiveExam(exam);
 				activeExam.setExam(exam);
@@ -737,35 +694,50 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 		return response;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 	
-	
-	
+	public ResponseFromServer getSelectedExamData_byID(Exam exam) {
+		ResponseFromServer response= null;		
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE examID=?");
+			pstmt.setString(1, exam.getExamID());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				
+				Profession profession = new Profession(null, null);
+				profession.setProfessionName(rs.getString(2));
+				profession.setProfessionID(rs.getString(3));
+				exam.setProfession(profession);
+				
+				Course course = new Course(null);
+				course.setCourseID(rs.getString(4));
+				exam.setCourse(course);
+				
+				exam.setTimeOfExam(Integer.parseInt(rs.getString(5)));
+				exam.setCommentForTeacher(rs.getString(6));
+				exam.setCommentForStudents(rs.getString(7));
+				rs.close();
+			}
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		
+		response = new ResponseFromServer("EXAM DATA");	
+		response.setResponseData(exam);
 
-//public static void main(String[] args) {
-//
-//	DBController db = new DBController();
-//db.connectDB(new ServerFrameController());
-//
-//Teacher t= new Teacher(222222222, "PASS123", "avi", "Cohen", "asdsadsadsa", UserType.Teacher,new ArrayList<Profession>());
-//
-//ArrayList<TestRow> tst=db.GetTeacherExams(t);
-//
-//	System.out.println(tst);
-//
-//
-//
-//}
+		return response;		
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
