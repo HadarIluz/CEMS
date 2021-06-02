@@ -131,7 +131,7 @@ public class PrincipalController extends Application implements Initializable {
 	@FXML
 	void btnApproveTimeExtention(ActionEvent event) {
 		//Reading the information from the table extension_request in the database
-		RequestToServer req = new RequestToServer("getExtensionRequests");
+		RequestToServer req = new RequestToServer("getManualExam");
 		ArrayList<ExtensionRequest> extensionRequest = new ArrayList<ExtensionRequest>();
 		ClientUI.cems.accept(req);		
 		extensionRequest = (ArrayList<ExtensionRequest>) CEMSClient.responseFromServer.getResponseData();

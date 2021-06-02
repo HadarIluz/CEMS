@@ -1,9 +1,15 @@
 package gui_student;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import client.CEMSClient;
+import client.ClientUI;
 import entity.ActiveExam;
+import entity.ExamOfStudent;
+import entity.ExtensionRequest;
+import entity.Student;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import logic.RequestToServer;
 
 public class StartManualExamController implements Initializable{
 
@@ -56,9 +63,17 @@ public class StartManualExamController implements Initializable{
     private Label textTimeLeft;
     
     private static ActiveExam newActiveExam;
+    
+    private Student student;
+    
+    private ExamOfStudent examOfStudent; 
 
     @FXML
     void btnDownload(ActionEvent event) {
+    //Download the exam from the database to the student's computer
+    	RequestToServer req = new RequestToServer("getManualExam");
+		req.setRequestData(examOfStudent);
+    	ClientUI.cems.accept(req);		
 
     }
 
@@ -74,6 +89,9 @@ public class StartManualExamController implements Initializable{
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		examOfStudent.setActiveExam(newActiveExam);
+		student = (Student) ClientUI.loggedInUser.getUser();
+		examOfStudent.setStudent(student);
 		// TODO Auto-generated method stub
 		
 	}

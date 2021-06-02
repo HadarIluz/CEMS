@@ -106,10 +106,10 @@ public class EnterToExamController extends StudentController implements Initiali
 				case "manual": {
 					// load manual start exam fxml
 					try {
+						StartManualExamController.setActiveExamState(activeExam);
 						Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
 						newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 						StudentController.root.add(newPaneRight, 1, 0);
-						SolveExamController.setActiveExamState(activeExam);
 					} catch (IOException e) {
 						System.out.println("Couldn't load!");
 						e.printStackTrace();

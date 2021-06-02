@@ -14,6 +14,7 @@ import client.ClientUI;
 import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
+import entity.ExamOfStudent;
 import entity.ExtensionRequest;
 import entity.Profession;
 import entity.Question;
@@ -670,6 +671,11 @@ public class DBController {
 			return false;
 		}
 		return true;		
+	}
+
+	public boolean getManualExam(ExamOfStudent examOfStudent) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 

@@ -3,12 +3,16 @@
 // license found at www.lloseng.com 
 package Server;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import common.MyFile;
 import entity.ActiveExam;
 import entity.Exam;
+import entity.ExamOfStudent;
 import entity.ExtensionRequest;
 import entity.Profession;
 import entity.Question;
@@ -243,6 +247,13 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
+			
+		case "getManualExam": {
+			getManualExam((ExamOfStudent)req.getRequestData(),client);
+
+		}
+			break;
+			
 		}
 
 	}
@@ -535,4 +546,29 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.	
 	}
+
+	private void getManualExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
+		ResponseFromServer respon = new ResponseFromServer("STUDENT DOWNLOAD MANUAL EXAM");
+		try {
+			respon.setResponseData(dbController.getManualExam(examOfStudent));
+			client.sendToClient(respon);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+		
+		//int fileSize = ((MyFile) msg).getSize();
+		//MyFile fileExam = (MyFile) msg;
+		//String LocalfilePath = "C:\\Users\\Matar\\Desktop\\" + fileExam.getFileName(); //????
+		//try {
+		//	File newFile = new File(LocalfilePath);
+		//	FileOutputStream fos = new FileOutputStream(newFile);
+		//	BufferedOutputStream bos = new BufferedOutputStream(fos);
+		//	bos.write(fileExam.getMybytearray(), 0, fileSize);
+		//	bos.flush();
+		//	fos.flush();
+		//} catch (Exception e) {
+		//	System.out.println("Error send (Files)msg) to Server"); //????
+		//}
+	//}
 }
