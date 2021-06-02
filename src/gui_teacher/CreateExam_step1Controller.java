@@ -127,7 +127,10 @@ public class CreateExam_step1Controller implements Initializable{
     		selectedProfession = professionsMap.get(selectProffessionList.getValue());
     		
     		RequestToServer req = new RequestToServer("getQuestionBank");
-    		req.setRequestData(selectedProfession);
+    		Question q = new Question();
+    		q.setTeacher((Teacher)ClientUI.loggedInUser.getUser());
+    		q.setProfession(selectedProfession);
+    		req.setRequestData(q);
     		ClientUI.cems.accept(req);
     		
     		if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("No Question Bank")) {

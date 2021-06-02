@@ -122,7 +122,10 @@ public class CEMSserver extends AbstractServer {
 			addTimeToExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-
+		case "getQuestionBank": {
+			getQuestionBank((Question)req.getRequestData(), client);
+		}
+		break;
 		case "createNewExtensionRequest": {
 			createNewExtensionRequest((ExtensionRequest) req.getRequestData(), client);
 		}
@@ -280,8 +283,28 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+
+
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
+	
+	/**
+	 * @param requestData
+	 * @param client
+	 * 
+	 * gets from the client question with teacher and profession. 
+	 * gets from the DB all relevant questions and sends it back to the client
+	 */
+	private void getQuestionBank(Question requestData, ConnectionToClient client) {
+		try {
+			client.sendToClient(dbController.getQuestionByProfessionAndTeacher(requestData));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	/**
 	 * Verify if activeExam exist at this time, set ActiveExam object if found.
 	 * 
