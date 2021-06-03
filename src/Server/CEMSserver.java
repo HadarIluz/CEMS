@@ -4,8 +4,10 @@
 package Server;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -306,12 +308,20 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 			
+		case "submitManualExam": {//
+			submitManualExam((MyFile)req.getRequestData(),client);
+
+		}
+			break;
+			
+			
 		}
 
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
+	
 	private void gradesAverageCalc(String ExamID, ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Calculate Grades Average");
@@ -699,7 +709,7 @@ public class CEMSserver extends AbstractServer {
 	
 		String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_exam.docx";
 		MyFile exam = new MyFile(fileName);
-		String LocalfilePath = "/CEMS/files/" + fileName;
+		String LocalfilePath = "/CEMS/files/" + fileName; //I thing without fileName
 		try{
 		     File newFile = new File (LocalfilePath);
 		     byte [] mybytearray  = new byte [(int)newFile.length()];
@@ -717,6 +727,26 @@ public class CEMSserver extends AbstractServer {
 			ex.printStackTrace();		
 			}
 		//printMessageInLogFramServer("Message to Client:", respon);// print to server log.
-
 	}
+	
+	private void submitManualExam(MyFile msg, ConnectionToClient client) {
+		int fileSize = ((MyFile) msg).getSize();
+		System.out.println("Message received: " + msg + " from " + client);
+		System.out.println("length " + fileSize);
+
+		MyFile submitExam = (MyFile) msg;
+		String LocalfilePath = "/CEMS/files" + submitExam.getFileName();
+		try {
+			File newFile = new File(LocalfilePath);
+			FileOutputStream fos = new FileOutputStream(newFile);
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
+			bos.write(submitExam.getMybytearray(), 0, fileSize);
+			bos.flush();
+			fos.flush();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+	}
+
 }
