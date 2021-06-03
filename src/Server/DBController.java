@@ -700,22 +700,21 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE examID=?");
-			pstmt.setString(1, exam.getExamID());
+			pstmt.setInt(1,Integer.parseInt(exam.getExamID()));
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				
-				Profession profession = new Profession(null, null);
-				profession.setProfessionName(rs.getString(2));
-				profession.setProfessionID(rs.getString(3));
+				Profession profession = new Profession(null);
+				profession.setProfessionID(rs.getString(2));
 				exam.setProfession(profession);
 				
 				Course course = new Course(null);
-				course.setCourseID(rs.getString(4));
+				course.setCourseID(rs.getString(3));
 				exam.setCourse(course);
 				
-				exam.setTimeOfExam(Integer.parseInt(rs.getString(5)));
-				exam.setCommentForTeacher(rs.getString(6));
-				exam.setCommentForStudents(rs.getString(7));
+				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
+				exam.setCommentForTeacher(rs.getString(5));
+				exam.setCommentForStudents(rs.getString(6));
 				rs.close();
 			}
 		} catch (SQLException ex) {

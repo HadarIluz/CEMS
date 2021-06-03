@@ -198,6 +198,7 @@ public class ExamBankController implements Initializable {
 	void btnCreateActiveExam(ActionEvent event) {
 
 		getExistExamDetails(textExamID.getText());
+		
 		if (!checkForLegalID(textExamID.getText()))
 			return;
 

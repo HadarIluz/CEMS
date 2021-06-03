@@ -222,6 +222,8 @@ public class TeacherController extends Application implements Initializable {
 	public static HashMap<String, Profession> getProfessionsMap() {
 		return professionsMap;
 	}
+	
+	
 	/**
 	 * listen for close events on a JavaFX Stage, notified when the user clicks the
 	 * button with the X on, in the upper right corner of the Stage
