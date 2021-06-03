@@ -9,6 +9,7 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.Course;
 import entity.Exam;
+import gui_student.SolveExamController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -65,6 +66,7 @@ public class ExamBankController implements Initializable {
 	@FXML
 	private Button btnCreateActiveExam;
 	private static TeacherController teacherController;
+	private CreateActiveExamController createActiveExamController;
 
 	@FXML
 	void selectExamFromTable(MouseEvent event) {
@@ -126,11 +128,10 @@ public class ExamBankController implements Initializable {
 
 	@FXML
 	void btnEditExam(ActionEvent event) {
-		getExistExamDetails(textExamID.getText());
 
-		if (!checkForLegalID(textExamID.getText()))
-			return;
+		Exam selectedExam = getExistExamDetails(textExamID.getText());
 		try {
+			createActiveExamController.setActiveExamState(selectedExam);
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
 			teacherController.root.add(newPaneRight, 1, 0);
 
@@ -197,17 +198,13 @@ public class ExamBankController implements Initializable {
 	@FXML
 	void btnCreateActiveExam(ActionEvent event) {
 
-		getExistExamDetails(textExamID.getText());
-		
-		if (!checkForLegalID(textExamID.getText()))
-			return;
+		Exam selectedExam = getExistExamDetails(textExamID.getText());
 
 		try {
+			createActiveExamController.setActiveExamState(selectedExam);
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
 			teacherController.root.add(newPaneRight, 1, 0);
-			// funcName.setActiveExamState(/**/);
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
@@ -215,15 +212,13 @@ public class ExamBankController implements Initializable {
 
 	}
 
-	// TODO: HADAR
-	private void getExistExamDetails(String examID) {
+	private Exam getExistExamDetails(String examID) {
 
 		Exam selectedExam = new Exam(examID);
 		RequestToServer req = new RequestToServer("getSelectedExamData_byID");
 		req.setRequestData(selectedExam);
 		ClientUI.cems.accept(req);
-		selectedExam = (Exam) CEMSClient.responseFromServer.getResponseData();
-
+		return selectedExam = (Exam) CEMSClient.responseFromServer.getResponseData();
 	}
 
 }

@@ -11,76 +11,66 @@
 
 <AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.CreateActiveExamController">
    <children>
-      <Button fx:id="btnSaveActiveExam" disable="true" layoutX="590.0" layoutY="500.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnSaveActiveExam" prefHeight="25.0" prefWidth="124.0" text="Done" />
-      <Text layoutX="208.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profession:">
+      <Button fx:id="btnSaveActiveExam" disable="true" layoutX="575.0" layoutY="487.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnSaveActiveExam" prefHeight="40.0" prefWidth="141.0" text="Save new active exam" />
+      <Text layoutX="208.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profession:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <ComboBox fx:id="selectProfession" layoutX="384.0" layoutY="166.0" onAction="#selectProfession" prefWidth="150.0" promptText="choose profession" />
-      <Text layoutX="208.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Course:">
+      <Text layoutX="208.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Course:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <ComboBox fx:id="selectCourse" layoutX="384.0" layoutY="211.0" onAction="#selectCourse" prefWidth="150.0" promptText="choose course" />
-      <Text fill="#e44d4d" layoutX="195.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+      <Text fill="#e44d4d" layoutX="198.0" layoutY="382.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="196.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
-         <font>
-            <Font size="21.0" />
-         </font>
-      </Text>
-      <Text fill="#e44d4d" layoutX="198.0" layoutY="324.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
-         <font>
-            <Font size="21.0" />
-         </font>
-      </Text>
-      <Text layoutX="209.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam Code:">
+      <Text layoutX="209.0" layoutY="377.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam Code:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="textExamCode" editable="false" layoutX="384.0" layoutY="301.0" onAction="#textExamCode" prefWidth="150.0" promptText="4 digits and letters" />
+      <TextField fx:id="textExamCode" editable="false" layoutX="384.0" layoutY="359.0" prefWidth="150.0" promptText="4 digits and letters" />
       <Text fill="#4672ae" layoutX="245.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Active Exam" wrappingWidth="287.5">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="207.0" layoutY="278.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam ID:" wrappingWidth="75.753173828125">
+      <Text layoutX="207.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exam ID:" wrappingWidth="75.753173828125">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <ComboBox fx:id="selectExamID" disable="true" layoutX="384.0" layoutY="256.0" onAction="#selectExamID" prefWidth="150.0" promptText="choose exam id" />
-      <Text fill="#e44d4d" layoutX="196.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
-         <font>
-            <Font size="21.0" />
-         </font>
-      </Text>
-      <Text fill="#545454" layoutX="205.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose profession and course, then you will get a list of possible exam IDs" textAlignment="CENTER" wrappingWidth="326.61106872558594">
+      <Text fill="#31138e" layoutX="198.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2. Enter exam code and select an hour to define a new active exam." textAlignment="CENTER" wrappingWidth="342.61106872558594">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="198.0" layoutY="371.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+      <Text fill="#e44d4d" layoutX="198.0" layoutY="429.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Text layoutX="209.0" layoutY="366.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:">
+      <Text layoutX="209.0" layoutY="424.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <ComboBox fx:id="selectTime" layoutX="384.0" layoutY="346.0" onAction="#selectTime" prefWidth="150.0" promptText="choose time" />
-      <ImageView fx:id="imgClock" fitHeight="150.0" fitWidth="200.0" layoutX="298.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true">
+      <ComboBox fx:id="selectTime" layoutX="384.0" layoutY="404.0" onAction="#selectTime" prefWidth="150.0" promptText="choose time" />
+      <ImageView fx:id="imgClock" fitHeight="133.0" fitWidth="130.0" layoutX="316.0" layoutY="442.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/wall-clock.png" />
          </image>
       </ImageView>
+      <Text fill="#31138e" layoutX="189.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1. Verify exam`s details you selected from the exam bank." textAlignment="CENTER" wrappingWidth="342.6110612154007">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+      <TextField fx:id="textExamID" disable="true" editable="false" layoutX="384.0" layoutY="316.0" prefWidth="150.0" />
+      <TextField fx:id="textCourse" disable="true" editable="false" layoutX="384.0" layoutY="268.0" prefWidth="150.0" />
+      <TextField fx:id="textProfession" disable="true" editable="false" layoutX="384.0" layoutY="226.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

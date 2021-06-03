@@ -27,6 +27,7 @@ import entity.UserType;
 import gui_server.ServerFrameController;
 import logic.RequestToServer;
 import logic.ResponseFromServer;
+import logic.StatusMsg;
 
 /**
  * @author CEMS_Team
@@ -84,7 +85,8 @@ public class DBController {
 		}
 		//in case not found any user match ..
 		if (existUser.getPassword() ==null) {
-			response = new ResponseFromServer("USER NOT FOUND");
+			response = new ResponseFromServer("USER NOT FOUND IN THE SYSTEM");
+			response.getStatusMsg().setStatus("USER NOT FOUND");
 		}
 		else{
 			response = new ResponseFromServer("USER FOUND");	
@@ -725,6 +727,28 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 		response.setResponseData(exam);
 
 		return response;		
+	}
+
+	public ActiveExam isActiveExamAlreadyExists(ActiveExam activeExam) {
+		/***CheckBeforeCreateNewActiveExam***/
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT examCode FROM active_exam WHERE exam=? and startTime=?;");
+			pstmt.setString(1, activeExam.getExam().getExamID());
+			pstmt.setTime(2, activeExam.getStartTime());
+
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				activeExam.setExamCode(rs.getString(1));
+				activeExam.setStartTime(rs.getTime(2));
+				rs.close();
+			}
+			
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+
+		return activeExam;
 	}
 
 

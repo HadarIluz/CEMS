@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-
 import client.ClientUI;
 
 import entity.ActiveExam;
@@ -140,12 +138,12 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "approvalTimeExtention": {
-			approvalTimeExtention((ActiveExam)req.getRequestData(), client);
+			approvalTimeExtention((ActiveExam) req.getRequestData(), client);
 		}
 			break;
 		case "declineTimeExtention": {
 			ExtensionRequest extensionRequest = (ExtensionRequest) req.getRequestData();
-			//dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
+			// dbController.DeleteExtenxtionRequest(extensionRequest.getActiveExam());
 		}
 			break;
 
@@ -159,7 +157,7 @@ public class CEMSserver extends AbstractServer {
 			}
 
 		}
-		break;
+			break;
 
 		case "getQuestions": {
 
@@ -231,16 +229,14 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
-			
+
 		case "getExtensionRequests": {
 			getExtensionRequests(client);
 
 		}
 			break;
-			
-			
-			
-		case "Update Grade":{
+
+		case "Update Grade": {
 			try {
 
 				ResponseFromServer respond = new ResponseFromServer("TEACHER SCORE UPDATE");
@@ -252,17 +248,21 @@ public class CEMSserver extends AbstractServer {
 				e.printStackTrace();
 			}
 		}
-		
-		break;
-		
-		case "getSelectedExamData_byID":{
+
+			break;
+
+		case "getSelectedExamData_byID": {
 			/*--logic for createActive Exam && Edit exam--*/
 			getSelectedExamData_byID((Exam) req.getRequestData(), client);
-			
+
 		}
 			break;
-		
-		}	
+
+		case "CheckIfActiveExamAlreadyExists": {
+			CheckIfActiveExamAlreadyExists((ActiveExam) req.getRequestData(), client);
+		}
+
+		}
 
 	}
 
@@ -287,8 +287,7 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
-	
-	
+
 	private void getAllActiveExamBeforEnterToExam(ConnectionToClient client) {
 		// logic for 'EnterToExam'
 		ResponseFromServer response = null;
@@ -300,7 +299,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
-		
+
 	}
 
 	/**
@@ -473,10 +472,9 @@ public class CEMSserver extends AbstractServer {
 		questionData.setQuestionID(questionID);
 		ResponseFromServer res;
 		if (dbController.createNewQuestion(questionData)) {
-			 res = new ResponseFromServer("SuccessCreateNewQuestion");
-		}
-		else {
-			 res = new ResponseFromServer("FailCreateNewQuestion");
+			res = new ResponseFromServer("SuccessCreateNewQuestion");
+		} else {
+			res = new ResponseFromServer("FailCreateNewQuestion");
 
 		}
 		try {
@@ -491,7 +489,7 @@ public class CEMSserver extends AbstractServer {
 	 * TODO: add comment
 	 * 
 	 * @param examData
-	 * @return 
+	 * @return
 	 */
 	private ResponseFromServer createNewExam(Exam examData) {
 		// create the exam ID by number of exams in this profession and course
@@ -558,39 +556,38 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
-	
+
 	private void getExtensionRequests(ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("EXTENSION REQUESTS");
-		try {	
+		try {
 			respon.setResponseData(dbController.getExtensionsRequests());
 			client.sendToClient(respon);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", respon);// print to server log.		
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
-	
+
 	private void approvalTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
 		// update time alloted for test in active exam after the principal approves the
 		// request.
 		ResponseFromServer respon = new ResponseFromServer("EXTENSION APPROVED");
 		try {
-			if(dbController.setTimeForActiveTest(activeExam)){//succed
-				if(dbController.deleteExtenxtionRequest(activeExam)) 
+			if (dbController.setTimeForActiveTest(activeExam)) {// succed
+				if (dbController.deleteExtenxtionRequest(activeExam))
 					respon.setResponseData((Boolean) true);
-				else 
+				else
 					respon.setResponseData((Boolean) false);
-			}
-			else
+			} else
 				respon.setResponseData((Boolean) false);
 			client.sendToClient(respon);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", respon);// print to server log.		
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
-	
-	//FIXME: who call this function?
+
+	// FIXME: who call this function?
 	private void declineTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("EXTENSION DECLINED");
 		try {
@@ -599,10 +596,9 @@ public class CEMSserver extends AbstractServer {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", respon);// print to server log.	
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
-	
-	
+
 	private void getSelectedExamData_byID(Exam exam, ConnectionToClient client) {
 		ResponseFromServer response = null;
 		response = dbController.getSelectedExamData_byID(exam);
@@ -612,8 +608,45 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
+
+	}
+
+	private void CheckIfActiveExamAlreadyExists(ActiveExam activeExam, ConnectionToClient client) {
+		// logic for 'createNewActiveExam'
+		ActiveExam actExam = activeExam;
+		ResponseFromServer response = null;
+		actExam = dbController.isActiveExamAlreadyExists(actExam);
+		
+		if (actExam!= null) {
+			response = new ResponseFromServer("ACTIVE EXAM EXIST: " + activeExam.getExam().getExamID()
+					+ ", start time: " + activeExam.getStartTime());
+			
+			// check if they have the same start time AND code.
+			if (actExam.getStartTime().equals(activeExam.getStartTime())
+					&& actExam.getExamCode().equals(activeExam.getExamCode())) {
+				
+				response = new ResponseFromServer("ACTIVE EXAM NOT ALLOWES");
+				response.setResponseData(null);	
+			}
+			else {	
+				//we allowed to perform different exams at the same time.
+				//we allowed to perform the same exam but NOT in the same time
+				response.getStatusMsg().setStatus("Create action is allowed");
+				response.setResponseData(activeExam);
+			}
+			printMessageInLogFramServer("Message to Client:", response);
+		}
+
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
 	
+	
+	
+
 }
