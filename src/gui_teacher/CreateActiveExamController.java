@@ -12,6 +12,7 @@ import client.ClientUI;
 import entity.ActiveExam;
 import entity.Exam;
 import entity.Teacher;
+import entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -77,40 +78,52 @@ public class CreateActiveExamController implements Initializable {
 		if (selectedTime == null) {
 			popUp("Please choose your exam.");
 		} else {
-			
-			
-			exam.setAuthor(teacher); // TODO: think with tean id need to delete from DB or not.
-			ActiveExam newActiveExam = new ActiveExam(selectedTime, exam, examCode);
-			//before we create new active exam, Request from server to check that
-			//the same examID at the same time not already exist.
-			boolean isAllowed= isActiveExamExist(newActiveExam);
 
-			
-			RequestToServer req = new RequestToServer("createNewActiveExam");
-			req.setRequestData(newActiveExam);
-			ClientUI.cems.accept(req);
+			// TODO: crate radio button to choose examType and insert into new line 85 !!
 
-			
-			
-			
-			
-			
-			
-			
-			
-			
+			// exam.setAuthor(teacher); // TODO: think with team if need to delete from DB
+			// or not.
+			ActiveExam newActiveExam = new ActiveExam(selectedTime, exam, examCode/* , activeExamType */);
+			// before we create new active exam, Request from server to check that
+			// the same examID at the same time not already exist.
+			boolean isAllowed = isActiveExamExist(newActiveExam);
+
+			if (isAllowed) {
+				RequestToServer req = new RequestToServer("createNewActiveExam");
+				req.setRequestData(newActiveExam);
+				ClientUI.cems.accept(req);
+
+				// TODO: check SQL in DB for this :)
+
+				if (CEMSClient.responseFromServer.getStatusMsg().getStatus()
+						.equals("New active exam created successfully")) {
+					popUp("New active exam:" + newActiveExam.getExam().getExamID()
+							+ " has been successfully created in the system.");
+				}
+
+			} else {
+				popUp("This exam: " + newActiveExam.getExam().getExamID()
+						+ " was created as active in the same start time.\n" + "This exam can be set to active again "
+						+ newActiveExam.getTimeAllotedForTest() + " after " + newActiveExam.getStartTime());
+
+			}
+
 		}
 
 	}
 
 	// in order to avoid from create the same Active Exam in the same time!!
 	private boolean isActiveExamExist(ActiveExam activeExam) {
-		ActiveExam isActiveExamExists = activeExam;
 		RequestToServer req = new RequestToServer("CheckIfActiveExamAlreadyExists");
-		req.setRequestData(isActiveExamExists);
+		req.setRequestData(activeExam);
 		ClientUI.cems.accept(req);
-		
-		if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("Create action is allowed")) {
+
+		ActiveExam isActiveExamExists = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
+
+		System.out.println(isActiveExamExists.toString());// DEBUG !!
+
+		if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("Create action is allowed")
+				&& isActiveExamExists != null) {
 			return true;
 		}
 		return false;
@@ -118,7 +131,7 @@ public class CreateActiveExamController implements Initializable {
 
 	@FXML
 	void selectTime(ActionEvent event) {
-
+		// TODO: מחר !!
 	}
 
 	/**
@@ -142,7 +155,7 @@ public class CreateActiveExamController implements Initializable {
 	}
 
 	private void loadExamStartTimeToCombobox() {
-		// TODO Auto-generated method stub
+		// TODO מחר!!
 
 	}
 
