@@ -69,7 +69,7 @@ public class EnterToExamController implements Initializable {
 	 * is an existing exam right now and moves the student to the test solution
 	 * screen according to the exam`s type.
 	 * 
-	 * @param event event that occurs when clicking on 'start exam' button.
+	 * @param event that occurs when clicking on 'start exam' button.
 	 */
 	@FXML
 	void btnStart(ActionEvent event) {
@@ -122,7 +122,7 @@ public class EnterToExamController implements Initializable {
 					case "manual": {
 						// load manual start exam fxml
 						try {
-							SolveExamController.setActiveExamState(activeExam);
+							StartManualExamController.setActiveExamState(activeExam);
 							Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
 							newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 							studentController.root.add(newPaneRight, 1, 0);

@@ -7,6 +7,7 @@ package client;
 import ocsf.client.*
 ;
 import common.CemsIF;
+import common.MyFile;
 import gui_teacher.CreateQuestionController;
 import logic.ResponseFromServer;
 import logic.StatusMsg;
@@ -34,6 +35,8 @@ public class CEMSClient extends AbstractClient {
 	public static ResponseFromServer responseFromServer = new ResponseFromServer(null);
 	public static StatusMsg statusMsg = new StatusMsg();
 	public static boolean awaitResponse = false;
+	//public static MyFile exam; //matar ????
+
 
 	// Constructors ****************************************************
 
@@ -74,6 +77,25 @@ public class CEMSClient extends AbstractClient {
 			clientUI.display(responseFromServer.toString());
 			awaitResponse = false;
 			
+		}
+		
+		if(msg instanceof MyFile) {
+			int fileSize = ((MyFile) msg).getSize();
+			clientUI.display("Message received: " + msg + " from server");
+			clientUI.display("length " + fileSize);
+			MyFile exam = (MyFile) msg;
+			String LocalfilePath = "C:\\Users" + exam.getFileName();
+			try {
+				File newFile = new File(LocalfilePath);
+				FileOutputStream fos = new FileOutputStream(newFile);
+				BufferedOutputStream bos = new BufferedOutputStream(fos);
+				bos.write(exam.getMybytearray(), 0, fileSize);
+				bos.flush();
+				fos.flush();
+			} catch (Exception e) {
+				clientUI.display("Error send (Files)msg) to Client");
+			}
+			awaitResponse = false;
 		}
 	}
 

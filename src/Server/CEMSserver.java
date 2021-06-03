@@ -3,14 +3,18 @@
 // license found at www.lloseng.com 
 package Server;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import client.ClientUI;
-
+import common.MyFile;
 import entity.ActiveExam;
 import entity.Exam;
+import entity.ExamOfStudent;
 import entity.ExtensionRequest;
 import entity.Profession;
 import entity.Question;
@@ -158,6 +162,7 @@ public class CEMSserver extends AbstractServer {
 			gradesAverageCalc((String) req.getRequestData(), client);
 		}
 			break;
+			
 		case "declineTimeExtention": {
 			declineTimeExtention((ActiveExam)req.getRequestData(), client);
 
@@ -273,6 +278,7 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
+			
 		case "chechExamExist": {
 			chechExamExist((String)req.getRequestData(),client);
 
@@ -293,7 +299,13 @@ public class CEMSserver extends AbstractServer {
 		}
 
 			break;
+			
+		case "getManualExam": {
+			getManualExam((ExamOfStudent)req.getRequestData(),client);
 
+		}
+			break;
+			
 		}
 
 	}
@@ -681,5 +693,31 @@ public class CEMSserver extends AbstractServer {
 			ex.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+	}
+	
+	private void getManualExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
+	
+		String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_exam.docx";
+		MyFile exam = new MyFile(fileName);
+		String LocalfilePath = " " + fileName;//ok ? or without filename // to fix
+		
+		try{
+		     File newFile = new File (LocalfilePath);
+		     byte [] mybytearray  = new byte [(int)newFile.length()];
+		     FileInputStream fis = new FileInputStream(newFile);
+		     BufferedInputStream bis = new BufferedInputStream(fis);			  
+		      
+		     exam.initArray(mybytearray.length);
+		     exam.setSize(mybytearray.length);
+		      
+		     bis.read(exam.getMybytearray(),0,mybytearray.length);
+		     
+		     client.sendToClient(exam);
+		   }
+		catch (Exception ex) {
+			ex.printStackTrace();		
+			}
+		//printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+
 	}
 }

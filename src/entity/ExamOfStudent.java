@@ -7,7 +7,6 @@ public class ExamOfStudent implements Serializable {
 	private ActiveExam activeExam;
 	private Student student;
 	private int score;
-	//we talked that we don't need "score" but it is written on Class diagram ? 
 	
 	public ExamOfStudent(ActiveExam activeExam,Student student, int score ) {
 		super();

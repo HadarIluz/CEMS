@@ -61,7 +61,8 @@ public class StartManualExamController implements Initializable{
     
     private static StudentController studentController; //why ??
     private static ActiveExam newActiveExam;
-    private Student student;
+    
+    private Student student; //MAYBE NOT NEED BECAUSE STUDENTCONTROLLER ??
     private ExamOfStudent examOfStudent; 
 
     @FXML
@@ -79,7 +80,14 @@ public class StartManualExamController implements Initializable{
 
     @FXML
     void checkBoxShowTime(MouseEvent event) {
-
+    	//show time left
+    	if(checkBoxShowTime.isSelected()) {
+    		textTimeLeft.setDisable(false);
+    		textTimeLeft.setOpacity(1);
+    	} else { // Do not show time left
+    		textTimeLeft.setDisable(true);
+    		textTimeLeft.setOpacity(0);
+    	}
     }
     
 	@Override
