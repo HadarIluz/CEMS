@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-
 import client.ClientUI;
 
 import entity.ActiveExam;
@@ -108,11 +106,23 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
+		case "teacherStatistics": {
+
+		}
+			break;
+		case "getProfNames": {
+			getProfNames(client);
+		}
+			break;
+		case "getCoursesNames": {
+			getCoursesNames(client);
+		}
+			break;
+
 		case "createNewExam": {
 			try {
 				client.sendToClient(createNewExam((Exam) req.getRequestData()));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -140,7 +150,12 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "approvalTimeExtention": {
-			approvalTimeExtention((ActiveExam)req.getRequestData(), client);
+			approvalTimeExtention((ActiveExam) req.getRequestData(), client);
+		}
+			break;
+			
+		case "gradesAverageCalc": {
+			gradesAverageCalc((String) req.getRequestData(), client);
 		}
 			break;
 		case "declineTimeExtention": {
@@ -159,7 +174,7 @@ public class CEMSserver extends AbstractServer {
 			}
 
 		}
-		break;
+			break;
 
 		case "getQuestions": {
 
@@ -252,16 +267,19 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
-			
+
 		case "getExtensionRequests": {
 			getExtensionRequests(client);
 
 		}
 			break;
+		case "chechExamExist": {
+			chechExamExist((String)req.getRequestData(),client);
+
+		}
+			break;
 			
-			
-			
-		case "Update Grade":{
+		case "Update Grade": {
 			try {
 
 				ResponseFromServer respond = new ResponseFromServer("TEACHER SCORE UPDATE");
@@ -273,14 +291,25 @@ public class CEMSserver extends AbstractServer {
 				e.printStackTrace();
 			}
 		}
-		
-		break;
-		
+
+			break;
+
 		}
 
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
+	private void gradesAverageCalc(String ExamID, ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Calculate Grades Average");
+			Res.setResponseData(dbController.gradesAverageCalc(ExamID));
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	/**
 	 * Verify if activeExam exist at this time, set ActiveExam object if found.
@@ -301,8 +330,49 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
+
+	private void getProfNames(ConnectionToClient client) {
+
+		ResponseFromServer response = new ResponseFromServer("getProffesionsName");
+		response.setResponseData(dbController.getProfNames());
+		// sent to client.
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+
+	}
+
+	private void getCoursesNames(ConnectionToClient client) {
+
+		ResponseFromServer response = new ResponseFromServer("getCoursesNames");
+		response.setResponseData(dbController.getCoursesNames());
+		// sent to client.
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+
+	}
 	
-	
+	private void chechExamExist(String ExamID,ConnectionToClient client) {
+
+		ResponseFromServer response = new ResponseFromServer("CHECK EXAM EXIST");
+		response.setResponseData(dbController.chechExamExist(ExamID));
+		// sent to client.
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+
+	}
+
 	private void getAllActiveExamBeforEnter2Exam(ConnectionToClient client) {
 		// logic for 'EnterToExam'
 		ResponseFromServer response = null;
@@ -314,7 +384,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
-		
+
 	}
 
 	/**
@@ -487,10 +557,9 @@ public class CEMSserver extends AbstractServer {
 		questionData.setQuestionID(questionID);
 		ResponseFromServer res;
 		if (dbController.createNewQuestion(questionData)) {
-			 res = new ResponseFromServer("SuccessCreateNewQuestion");
-		}
-		else {
-			 res = new ResponseFromServer("FailCreateNewQuestion");
+			res = new ResponseFromServer("SuccessCreateNewQuestion");
+		} else {
+			res = new ResponseFromServer("FailCreateNewQuestion");
 
 		}
 		try {
@@ -505,7 +574,7 @@ public class CEMSserver extends AbstractServer {
 	 * TODO: add comment
 	 * 
 	 * @param examData
-	 * @return 
+	 * @return
 	 */
 	private ResponseFromServer createNewExam(Exam examData) {
 		// create the exam ID by number of exams in this profession and course
@@ -572,38 +641,37 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
-	
+
 	private void getExtensionRequests(ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("EXTENSION REQUESTS");
-		try {	
+		try {
 			respon.setResponseData(dbController.getExtensionsRequests());
 			client.sendToClient(respon);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", respon);// print to server log.		
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
-	
+
 	private void approvalTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
 		// update time alloted for test in active exam after the principal approves the
 		// request.
 		ResponseFromServer respon = new ResponseFromServer("EXTENSION APPROVED");
 		try {
-			if(dbController.setTimeForActiveTest(activeExam)){//succed
-				if(dbController.deleteExtenxtionRequest(activeExam)) 
+			if (dbController.setTimeForActiveTest(activeExam)) {// succed
+				if (dbController.deleteExtenxtionRequest(activeExam))
 					respon.setResponseData((Boolean) true);
-				else 
+				else
 					respon.setResponseData((Boolean) false);
-			}
-			else
+			} else
 				respon.setResponseData((Boolean) false);
 			client.sendToClient(respon);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", respon);// print to server log.		
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
-	
+
 	private void declineTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("EXTENSION DECLINED");
 		try {
@@ -612,6 +680,6 @@ public class CEMSserver extends AbstractServer {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", respon);// print to server log.	
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
 }

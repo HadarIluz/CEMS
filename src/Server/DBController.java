@@ -16,6 +16,7 @@ import entity.Course;
 import entity.Exam;
 import entity.ExtensionRequest;
 import entity.Profession;
+import entity.ProfessionCourseName;
 import entity.Question;
 import entity.QuestionRow;
 import entity.Student;
@@ -57,14 +58,16 @@ public class DBController {
 		}
 	}
 
-	/*checks if the user that try to login exists in the DB.
+	/*
+	 * checks if the user that try to login exists in the DB.
+	 * 
 	 * @param obj of user which include student id to verify if exists.
 	 */
 	public ResponseFromServer verifyLoginUser(User obj) {
 
 		User existUser = obj;
 		ResponseFromServer response = null;
-		existUser.setPassword(null); //put null in order to check at the end if user found or not by this id.
+		existUser.setPassword(null); // put null in order to check at the end if user found or not by this id.
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM user WHERE id=?");
@@ -82,28 +85,27 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		//in case not found any user match ..
-		if (existUser.getPassword() ==null) {
+		// in case not found any user match ..
+		if (existUser.getPassword() == null) {
 			response = new ResponseFromServer("USER NOT FOUND");
+		} else {
+			response = new ResponseFromServer("USER FOUND");
 		}
-		else{
-			response = new ResponseFromServer("USER FOUND");	
-		}
-		// ResponseFromServer class ready to client with StatusMsg and  
-		//'Object responseData', in case user found existUser include all data, otherwise null.
+		// ResponseFromServer class ready to client with StatusMsg and
+		// 'Object responseData', in case user found existUser include all data,
+		// otherwise null.
 		response.setResponseData(existUser);
 		return response;
 	}
-	
-	
-	
-	
-	
-	/**We know that this student exists and we bring the additional data he has in addition to the user.
+
+	/**
+	 * We know that this student exists and we bring the additional data he has in
+	 * addition to the user.
+	 * 
 	 * @param student include all data of student that hold by User object.
 	 */
 	public Student getStudentData_Logged(Student student) {
-		
+
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT AVG FROM student WHERE id=?;");
@@ -119,14 +121,14 @@ public class DBController {
 		}
 
 		return student;
-		
+
 	}
 
 	/**
 	 * @param student include all data of this logged student.
 	 */
 	public Student getStudentCourses_Logged(Student student) {
-		
+
 		ArrayList<Course> coursesOfStudent = new ArrayList<Course>();
 		try {
 			PreparedStatement pstmt;
@@ -135,7 +137,7 @@ public class DBController {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Course newCourse = new Course(rs.getString(2));
-				coursesOfStudent.add(newCourse); //add to list.
+				coursesOfStudent.add(newCourse); // add to list.
 			}
 			rs.close();
 
@@ -143,16 +145,14 @@ public class DBController {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 		student.setCourses(coursesOfStudent);
-		return student;		
+		return student;
 	}
-		
-
 
 	/**
 	 * @param teacherObj include all data of this logged teacher.
 	 */
 	public ArrayList<String> getTeacherProfessionIDs(Teacher teacher) {
-		
+
 		ArrayList<String> professionIDs = new ArrayList<String>();
 
 		try {
@@ -161,7 +161,7 @@ public class DBController {
 			pstmt.setInt(1, teacher.getId());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				professionIDs.add(rs.getString(1)); //add to list
+				professionIDs.add(rs.getString(1)); // add to list
 			}
 			rs.close();
 
@@ -171,18 +171,14 @@ public class DBController {
 		return professionIDs;
 	}
 
-	
-	
-	
-	
+	public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 
-public String UpdateScoreOfStudent(UpdateScoreRequest req) {
-		
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("UPDATE exam_of_student SET score = ?,updateReason=? WHERE student=? AND exam=?;");
+			pstmt = conn.prepareStatement(
+					"UPDATE exam_of_student SET score = ?,updateReason=? WHERE student=? AND exam=?;");
 			pstmt.setInt(1, req.getUpdatedScore());
-			pstmt.setString(2,req.getReasonOfUpdate() );
+			pstmt.setString(2, req.getReasonOfUpdate());
 			pstmt.setString(3, req.getStudentID());
 			pstmt.setString(4, req.getExamID());
 			pstmt.executeUpdate();
@@ -191,7 +187,6 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 		}
 		return "TRUE";
 	}
-
 
 	public HashMap<String, Integer> SetDetailsForScoreApprovel(String examID) {
 		HashMap<String, Integer> stdScore = new HashMap<>();
@@ -215,10 +210,6 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 		return stdScore;
 
 	}
-	
-	
-	
-	
 
 	/**
 	 * @param question inserts new question to DB
@@ -342,6 +333,7 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 
 	/**
 	 * check if the activeExam exist in the DB
+	 * 
 	 * @param obj of ActiveExam which include exam to verify if exists.
 	 */
 	public ResponseFromServer verifyActiveExam(Object obj) {
@@ -370,7 +362,7 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 		// 'Object responseData', in case active exam found existActiveExam include all
 		// data, other null.
 		response.setResponseData(existActiveExam);
-		return response;	
+		return response;
 	}
 
 	/**
@@ -390,8 +382,7 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 			pstmt.setString(3, extensionRequest.getReason());
 			if (pstmt.executeUpdate() == 1) {
 				response = new ResponseFromServer("EXTENSION REQUEST CREATED");
-			}
-			else {
+			} else {
 				response = new ResponseFromServer("EXTENSION REQUEST DIDNT CREATED");
 			}
 		} catch (SQLException ex) {
@@ -419,7 +410,7 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 				Exam exam = new Exam(rs.getString(1));
 				exam.setProfession(new Profession(rs.getString(2)));
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
-				exam.setCourse(new Course(rs.getString(3)));//addition
+				exam.setCourse(new Course(rs.getString(3)));// addition
 				examsOfTeacher.add(exam);
 
 			}
@@ -427,13 +418,13 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			//teacher.setStatus("ERROR"); //message from Hadar: need to use ResponseFromServer class not?
-			//i put this as a note because it marks an error now. 
+			// teacher.setStatus("ERROR"); //message from Hadar: need to use
+			// ResponseFromServer class not?
+			// i put this as a note because it marks an error now.
 		}
 		return examsOfTeacher;// return null if no exsiting tests
 
 	}
-
 
 	public Boolean DeleteQuestion(Question question) {
 		try {
@@ -460,7 +451,6 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 	 * }
 	 */
 
-	
 	public ArrayList<QuestionRow> GetTeacherQuestions(Object obj) {
 
 		Teacher teacher;
@@ -488,9 +478,9 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			//teacher.setStatus("ERROR");
-			//message from Hadar: need to use ResponseFromServer class not?
-			//i put this as a note because it marks an error now. 
+			// teacher.setStatus("ERROR");
+			// message from Hadar: need to use ResponseFromServer class not?
+			// i put this as a note because it marks an error now.
 		}
 		return examsOfTeacher;// return null if no exsiting tests
 
@@ -498,9 +488,8 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 
 	/**
 	 * @param activeExam
-	 * @return true if the additional Time for activeExam has been updated at
-	 * 		   table active_exam in DB.
-	 *         else, return false
+	 * @return true if the additional Time for activeExam has been updated at table
+	 *         active_exam in DB. else, return false
 	 */
 	public boolean setTimeForActiveTest(ActiveExam activeExam) {
 		PreparedStatement pstmt;
@@ -509,7 +498,7 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 			pstmt = conn.prepareStatement("UPDATE active_exam SET timeAllotedForTest=? WHERE exam=?");
 			pstmt.setInt(1, activeExam.getTimeAllotedForTest());
 			pstmt.setString(2, activeExam.getExam().getExamID());
-			if (pstmt.executeUpdate() == 1) 
+			if (pstmt.executeUpdate() == 1)
 				return true;
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
@@ -528,7 +517,7 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("DELETE FROM extension_request WHERE exam=?");
 			pstmt.setString(1, activeExam.getExam().getExamID());
-			if (pstmt.executeUpdate() == 1) 
+			if (pstmt.executeUpdate() == 1)
 				return true;
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
@@ -538,21 +527,23 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 	}
 
 	/**
-	 * @param activeExam object which include 2 parameters of date and examcode for Query.
+	 * @param activeExam object which include 2 parameters of date and examcode for
+	 *                   Query.
 	 */
 	public ResponseFromServer verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
 		Exam exam = new Exam(null);
 		ResponseFromServer response = null;
-		/***EnterToExam***/
+		/*** EnterToExam ***/
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT exam, timeAllotedForTest, examType FROM active_exam WHERE examCode=? and startTime>=? and startTime<?;");
+			pstmt = conn.prepareStatement(
+					"SELECT exam, timeAllotedForTest, examType FROM active_exam WHERE examCode=? and startTime>=? and startTime<?;");
 			pstmt.setString(1, activeExam.getExamCode());
 			pstmt.setTime(2, activeExam.getStartTime());
 			pstmt.setTime(3, activeExam.getEndTimeToTakeExam());
-			//Time Range for start the exam:
+			// Time Range for start the exam:
 			System.out.println(activeExam.getStartTime() + " - " + activeExam.getEndTimeToTakeExam());
-			
+
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				exam.setExamID(rs.getString(1));
@@ -561,34 +552,32 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 				activeExam.setActiveExamType(rs.getString(3));
 				rs.close();
 			}
-			
+
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		
-		if (activeExam.getExam()== null) {
+
+		if (activeExam.getExam() == null) {
 			response = new ResponseFromServer("ACTIVE EXAM_NOT_EXIST");
-			
+
 		} else {
-			response = new ResponseFromServer("ACTIVE EXAM EXIST");	
+			response = new ResponseFromServer("ACTIVE EXAM EXIST");
 			response.setResponseData(activeExam);
 		}
 		return response;
-		
+
 	}
-	
-	
+
 	/**
 	 * @param EditExam
 	 * @return return true if succeed to edit exist exam, in any other case false.
 	 */
 	public boolean editExam(Exam editedExam) {
-		Exam existExam = editedExam; //remove, it is the same.
-		
-		
+		Exam existExam = editedExam; // remove, it is the same.
+
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM exam ;"); //TODO: add WHERE with exam id "WHERE id=?;"
+			pstmt = conn.prepareStatement("SELECT * FROM exam ;"); // TODO: add WHERE with exam id "WHERE id=?;"
 			pstmt.setString(1, existExam.getExamID());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -598,8 +587,8 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 				existExam.setQuestions(editedExam.getQuestions());
 				rs.close();
 			}
-			
-			//TODO: remove boolean return Exam object.
+
+			// TODO: remove boolean return Exam object.
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			return false;
@@ -610,24 +599,27 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 	public Profession getProfessionByID(String id) {
 		Profession p = new Profession(id);
 
-		
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT professionName FROM profession WHERE professionID=?;"); //TODO: add WHERE with exam id "WHERE id=?;"
+			pstmt = conn.prepareStatement("SELECT professionName FROM profession WHERE professionID=?;"); // TODO: add
+																											// WHERE
+																											// with exam
+																											// id "WHERE
+																											// id=?;"
 			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				p.setProfessionName(rs.getString(1));
 				rs.close();
 			}
-			
-			//TODO: remove boolean return Exam object.
+
+			// TODO: remove boolean return Exam object.
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
 		return p;
 	}
-	
+
 	/**
 	 * @return Returns a list of all the Extensions Requests in the database
 	 */
@@ -636,7 +628,7 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM extension_request ;");
-			ResultSet rs = pstmt.executeQuery(); 
+			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Exam exam = new Exam(null);
 				ActiveExam activeExam = new ActiveExam(exam);
@@ -647,23 +639,23 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 				extensionRequest.setAdditionalTime(rs.getString(2));
 				extensionRequest.setReason(rs.getString(3));
 				extensionRequestsList.add(extensionRequest);
-			}		
+			}
 			rs.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-		}	
-		 for (ExtensionRequest ex : extensionRequestsList) {
-			 ex.setActiveExam(getActiveExam(ex.getActiveExam()));
-		 }
-	return extensionRequestsList;	
+		}
+		for (ExtensionRequest ex : extensionRequestsList) {
+			ex.setActiveExam(getActiveExam(ex.getActiveExam()));
+		}
+		return extensionRequestsList;
 	}
 
 	/**
-	 * @param An active exam that is initialized with a exam only 
+	 * @param An active exam that is initialized with a exam only
 	 * @return Initializes the rest of the fields of an active exam and returns it
 	 */
-	public ActiveExam getActiveExam(ActiveExam activeExam) {		
-		
+	public ActiveExam getActiveExam(ActiveExam activeExam) {
+
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=?");
@@ -678,47 +670,47 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		
+
 		// in case not found any active exam match.
 		if (activeExam.getExamCode() == null) {
 			deleteExtenxtionRequest(activeExam);
 		}
-		return activeExam;	
+		return activeExam;
 	}
 
 	public boolean DeleteExam(Exam exam) {
-			
+
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("DELETE FROM exam WHERE examID=? AND profession=? AND course=?");
 			pstmt.setString(1, exam.getExamID());
 			pstmt.setString(2, exam.getProfName());
-			pstmt.setString(3, exam.getCourse().getCourseName());//need to be courseID
+			pstmt.setString(3, exam.getCourse().getCourseName());// need to be courseID
 			pstmt.executeUpdate();
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			return false;
 		}
-		return true;		
+		return true;
 	}
 
 	/**
 	 * @return
 	 */
 	public ResponseFromServer getAllActiveExam() {
-		
+
 		ArrayList<ActiveExam> activeExamList = new ArrayList<ActiveExam>();
 		ResponseFromServer response = null;
-		/***EnterToExam***/
+		/*** EnterToExam ***/
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM active_exam;");
-			
+
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Exam exam = new Exam(null);
 				exam.setExamID(rs.getString(1));
-				ActiveExam activeExam= new ActiveExam(exam);
+				ActiveExam activeExam = new ActiveExam(exam);
 				activeExam.setExam(exam);
 				activeExam.setStartTime(rs.getTime(2));
 				activeExam.setTimeAllotedForTest(rs.getString(3));
@@ -731,28 +723,89 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 
-		response = new ResponseFromServer("ACTIVE EXAMS FOUND");	
+		response = new ResponseFromServer("ACTIVE EXAMS FOUND");
 		response.setResponseData(activeExamList);
 
 		return response;
 	}
 
+	public HashMap<String, String> getProfNames() {
+		HashMap<String, String> profName = new HashMap<String, String>();
 
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT * FROM profession;");
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next())
+				profName.put(rs.getString(1), rs.getString(2));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return profName;
+	}
 
+	public HashMap<String, ProfessionCourseName> getCoursesNames() {
+		HashMap<String, ProfessionCourseName> courseMap = new HashMap<String, ProfessionCourseName>();
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT * FROM course;");
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				String profID = rs.getString(1);
+				String courseID = rs.getString(2);
+				String courseName = rs.getString(3);
 
+				// create new profession
+				if (!courseMap.containsKey(profID)) {
+					ProfessionCourseName pcn = new ProfessionCourseName();
+					HashMap<String, String> courses = new HashMap<String, String>();
+					pcn.setProfessionID(profID);
+					courses.put(courseID, courseName);
+					pcn.setCourses(courses);
+					courseMap.put(profID, pcn);
+				}
+				// add new course to existing profession
+				else {
+					courseMap.get(profID).getCourses().put(courseID, courseName);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
+		return courseMap;
+	}
 
+	public String chechExamExist(String ExamID) {
+		String answer=null;
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE examID=?;");
+			pstmt.setString(1, ExamID);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			if(rs.first()==false)
+				return "FALSE";
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return "TRUE";
+	}
 
-
-
-
-
-
-
-
-	
-	
-	
+	public ArrayList<Integer> gradesAverageCalc(String examID) {
+		ArrayList<Integer> grades=new ArrayList<Integer>();
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT score FROM exam_of_student WHERE exam=?;");
+			pstmt.setString(1, examID);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next())
+				grades.add(rs.getInt(1));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return grades;
+	}
 
 //public static void main(String[] args) {
 //
