@@ -751,15 +751,28 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 		return activeExam;
 	}
 
-
-
-
-
-
-
-
-
-
+	public ResponseFromServer createNewActiveExam(ActiveExam newActiveExam) {
+		ResponseFromServer response = null;
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("INSERT INTO active_exam VALUES(?, ?, ?, ?, ?);");
+			pstmt.setString(1, newActiveExam.getExam().getExamID());
+			pstmt.setTime(2, newActiveExam.getStartTime());
+			pstmt.setInt(3, newActiveExam.getTimeAllotedForTest());
+			pstmt.setString(4, newActiveExam.getExamCode());
+			pstmt.setString(5, newActiveExam.getActiveExamType());
+			if (pstmt.executeUpdate() !=0) {
+				response = new ResponseFromServer("NEW ACTIVE EXAM CREATED");
+			}
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return response;
+		
+		
+		
+		
+	}
 
 
 

@@ -4,6 +4,8 @@
 package Server;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -261,12 +263,20 @@ public class CEMSserver extends AbstractServer {
 		case "CheckIfActiveExamAlreadyExists": {
 			CheckIfActiveExamAlreadyExists((ActiveExam) req.getRequestData(), client);
 		}
+		break;
+		
+		case "createNewActiveExam": {
+			createNewActiveExam((ActiveExam) req.getRequestData(), client);
+		}
+		break;
 
 		}
 
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
+
 
 	/**
 	 * Verify if activeExam exist at this time, set ActiveExam object if found.
@@ -634,7 +644,6 @@ public class CEMSserver extends AbstractServer {
 				response.getStatusMsg().setStatus("Create action is allowed");
 				response.setResponseData(activeExam);
 			}
-			printMessageInLogFramServer("Message to Client:", response);
 		}
 
 		try {
@@ -642,11 +651,34 @@ public class CEMSserver extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		printMessageInLogFramServer("Message to Client:", response);
+		
+	}
+	
+	
+	private void createNewActiveExam(ActiveExam newActiveExam, ConnectionToClient client) {
+		ResponseFromServer response = dbController.createNewActiveExam(newActiveExam);
+		response.getStatusMsg().setStatus("New active exam created successfully");
+		try {
+			client.sendToClient(response);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 		
 	}
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	//
 	
 
 }
