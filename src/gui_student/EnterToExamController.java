@@ -122,10 +122,10 @@ public class EnterToExamController implements Initializable {
 					case "manual": {
 						// load manual start exam fxml
 						try {
+							SolveExamController.setActiveExamState(activeExam);
 							Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
 							newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 							studentController.root.add(newPaneRight, 1, 0);
-							SolveExamController.setActiveExamState(activeExam);
 						} catch (IOException e) {
 							System.out.println("Couldn't load!");
 							e.printStackTrace();

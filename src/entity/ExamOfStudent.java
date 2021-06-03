@@ -33,7 +33,7 @@ public class ExamOfStudent implements Serializable {
 		this.activeExam=activeExam;
 	}
 	
-	public void Student(Student student) {
+	public void setStudent(Student student) {
 		this.student=student;
 		
 	}
