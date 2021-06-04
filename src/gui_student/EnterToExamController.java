@@ -280,7 +280,7 @@ public class EnterToExamController implements Initializable {
 	/**Gets the list of active tests from the previous screen.
 	 * @param activeExamListFromDB
 	 */
-	public static void setAllActiveExamBeforEnter2Exam(ArrayList<ActiveExam> activeExamListFromDB) {
+	public static void setAllActiveExamBeforEnterToExam(ArrayList<ActiveExam> activeExamListFromDB) {
 		activeExamtList = activeExamListFromDB;
 	}
 

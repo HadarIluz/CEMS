@@ -102,7 +102,7 @@ public class StudentController extends Application implements Initializable {
 	void btnStartComputerizedExam(ActionEvent event) {
 
 		try {
-			EnterToExamController.setAllActiveExamBeforEnter2Exam(getAllActiveExamBeforEnter2Exam());
+			EnterToExamController.setAllActiveExamBeforEnterToExam(getAllActiveExamBeforEnterToExam());
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 
@@ -118,7 +118,7 @@ public class StudentController extends Application implements Initializable {
 	void btnStartManualExam(ActionEvent event) {
 		
 		try {
-			EnterToExamController.setAllActiveExamBeforEnter2Exam(getAllActiveExamBeforEnter2Exam());
+			EnterToExamController.setAllActiveExamBeforEnterToExam(getAllActiveExamBeforEnterToExam());
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 
@@ -198,10 +198,10 @@ public class StudentController extends Application implements Initializable {
 	 * @return List of all active tests received as answer from server.
 	 */
 	@SuppressWarnings("unchecked")
-	private ArrayList<ActiveExam> getAllActiveExamBeforEnter2Exam() {
+	private ArrayList<ActiveExam> getAllActiveExamBeforEnterToExam() {
 		
 		ArrayList<ActiveExam> activeExamList= new ArrayList<ActiveExam>();
-		RequestToServer req = new RequestToServer("getAllActiveExamBeforEnter2Exam");
+		RequestToServer req = new RequestToServer("getAllActiveExamBeforEnterToExam");
 		ClientUI.cems.accept(req);
 		//DEBUG:
 		activeExamList= (ArrayList<ActiveExam>) CEMSClient.responseFromServer.getResponseData();
