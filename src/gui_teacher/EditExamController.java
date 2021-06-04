@@ -30,44 +30,35 @@ import logic.RequestToServer;
 
 public class EditExamController implements Initializable{
 
-    @FXML
-    private ComboBox<String> selectQuestion;
+	  @FXML
+	    private Text texTtitleScreen;
 
-    @FXML
-    private Text texTtitleScreen; //change  teacher and principal 
+	    @FXML
+	    private TextField textExamID;
 
-    @FXML
-    private TextField textExamID;
+	    @FXML
+	    private Button btnShowQuestion;
 
-    @FXML
-    private Button btnShowQuestion;
+	    @FXML
+	    private Label textTimeForExam;
 
-    @FXML
-    private Button btnRemoveQuestion;
+	    @FXML
+	    private TextArea textTeacherComment;
 
-    @FXML
-    private Label textTimeForExam;
+	    @FXML
+	    private TextArea textStudentComment;
 
-    @FXML
-    private TextArea textTeacherComment;
+	    @FXML
+	    private Button btnSaveEditeExam;
 
-    @FXML
-    private TextArea textStudentComment;
+	    @FXML
+	    private Button btnBack;
 
-    @FXML
-    private Button btnUpdate_studentComment;
+	    @FXML
+	    private Text textNavigation;
 
-    @FXML
-    private Button btnUpdate_teacherComment;
-
-    @FXML
-    private Button btnSaveEditeExam;
-
-    @FXML
-    private Button btnBack;
-
-    @FXML
-    private Text textNavigation;
+	    @FXML
+	    private TextField textTimeAllocateForExam;
     
     private String commentForTeacher;
     private String commentForStudent;
@@ -80,7 +71,9 @@ public class EditExamController implements Initializable{
     
     
     private static TeacherController teacherController; //we will use it for load the prev/next screen ! (using root).
+ 
 
+ 
    
     //TODO: principal
     @FXML
@@ -129,23 +122,23 @@ public class EditExamController implements Initializable{
     	
     }
 
-    @FXML
-    void btnUpdate_teacherComment(MouseEvent event) {
-    	commentForTeacher=textTeacherComment.getText();
-    }
+//    @FXML
+//    void btnUpdate_teacherComment(MouseEvent event) {
+//    	commentForTeacher=textTeacherComment.getText();
+//    }
 
-    @FXML
-    void selectQuestion(MouseEvent event) {
-    	if (questionsMap.containsKey(selectQuestion.getValue())) {
-    		selectedQuestion = questionsMap.get(selectQuestion.getValue());
-    	}
-
-    }
-    
-    //load questions from hashMap to combobox. In combobox we will see questionID
-    public void loadQuestionsToCombobox() {
-    	selectQuestion.setItems(FXCollections.observableArrayList(questionsMap.keySet()));
-    }
+//    @FXML
+//    void selectQuestion(MouseEvent event) {
+//    	if (questionsMap.containsKey(selectQuestion.getValue())) {
+//    		selectedQuestion = questionsMap.get(selectQuestion.getValue());
+//    	}
+//
+//    }
+//    
+//    //load questions from hashMap to combobox. In combobox we will see questionID
+//    public void loadQuestionsToCombobox() {
+//    	selectQuestion.setItems(FXCollections.observableArrayList(questionsMap.keySet()));
+//    }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
