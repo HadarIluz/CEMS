@@ -102,42 +102,44 @@ public class ExamBankController implements Initializable {
 
 	@FXML
 	void btnDeleteExam(ActionEvent event) {
-		// we need to insert case of letters of not 5 digits
+		// we need to insert case of letters of not 5 digits //TODO: ??
 
-		if (!checkForLegalID(textExamID.getText()))
-			return;
+		if (!textExamID.getText().isEmpty()) {
+			if (!checkForLegalID(textExamID.getText()))
+				return;
 
-		ObservableList<Exam> Qlist;
+			ObservableList<Exam> Qlist;
 
-		Exam ExamToDelete = GetTableDetails(textExamID.getText());
+			Exam ExamToDelete = GetTableDetails(textExamID.getText());
 
-		Qlist = tableExam.getSelectionModel().getSelectedItems();
-		RequestToServer req = new RequestToServer("DeleteExam");
-		req.setRequestData(ExamToDelete);
-		ClientUI.cems.accept(req);
+			Qlist = tableExam.getSelectionModel().getSelectedItems();
+			RequestToServer req = new RequestToServer("DeleteExam");
+			req.setRequestData(ExamToDelete);
+			ClientUI.cems.accept(req);
 
-		if (CEMSClient.responseFromServer.getResponseData().equals("FALSE"))
-			System.out.println("failed to delete question");
-		else
-			data.removeAll(Qlist);
-		initTableRows();
+			if (CEMSClient.responseFromServer.getResponseData().equals("FALSE"))
+				System.out.println("failed to delete question");
+			else
+				data.removeAll(Qlist);
+			initTableRows();
+		}
 
 	}
 
 	@FXML
 	void btnEditExam(ActionEvent event) {
+		if (!textExamID.getText().isEmpty()) {
+			Exam selectedExam = getExistExamDetails(textExamID.getText());
+			try {
+				EditExamController.setActiveExamState(selectedExam);
+				Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
+				teacherController.root.add(newPaneRight, 1, 0);
 
-		Exam selectedExam = getExistExamDetails(textExamID.getText());
-		try {
-			EditExamController.setActiveExamState(selectedExam);
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
-			teacherController.root.add(newPaneRight, 1, 0);
-
-		} catch (IOException e) {
-			System.out.println("Couldn't load!");
-			e.printStackTrace();
+			} catch (IOException e) {
+				System.out.println("Couldn't load!");
+				e.printStackTrace();
+			}
 		}
-
 	}
 
 	@FXML
@@ -194,22 +196,25 @@ public class ExamBankController implements Initializable {
 
 	@FXML
 	void btnCreateActiveExam(ActionEvent event) {
-		Exam selectedExam = getExistExamDetails(textExamID.getText());
 
-		try {
-			CreateActiveExamController.setActiveExamState(selectedExam);
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
-			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-			teacherController.root.add(newPaneRight, 1, 0);
-		} catch (IOException e) {
-			System.out.println("Couldn't load!");
-			e.printStackTrace();
+		if (!textExamID.getText().isEmpty()) {
+			Exam selectedExam = getExistExamDetails(textExamID.getText());
+
+			try {
+				CreateActiveExamController.setActiveExamState(selectedExam);
+				Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
+				newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+				teacherController.root.add(newPaneRight, 1, 0);
+			} catch (IOException e) {
+				System.out.println("Couldn't load!");
+				e.printStackTrace();
+			}
 		}
 
 	}
 
 	private Exam getExistExamDetails(String examID) {
-		
+
 		Exam selectedExam = new Exam(examID);
 		RequestToServer req = new RequestToServer("getSelectedExamData_byID");
 		req.setRequestData(selectedExam);

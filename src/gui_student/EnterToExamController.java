@@ -168,7 +168,7 @@ public class EnterToExamController implements Initializable {
 		boolean flag=true;
 		
 		StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("Verify:\n ");
+		strBuilder.append("Error:\n ");
 		if (examCode.length() == 0 || studentID.length() == 0 || examCode.length() != 4) {
 			strBuilder.append("One or more of the parameters which insert are incorrect.\n");
 			flag= false;

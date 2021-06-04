@@ -1,16 +1,24 @@
 package gui_teacher;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeoutException;
+
+import com.sun.tools.javac.parser.ReferenceParser.ParseException;
 
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
 import entity.Exam;
 import entity.Teacher;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,68 +38,63 @@ import logic.RequestToServer;
 
 public class CreateActiveExamController implements Initializable {
 
-    @FXML
-    private Button btnSaveActiveExam;
+	@FXML
+	private Button btnSaveActiveExam;
 
-    @FXML
-    private TextField textExamCode;
+	@FXML
+	private TextField textExamCode;
 
-    @FXML
-    private ComboBox<String> selectTime;
+	@FXML
+	private ComboBox<String> selectTime;
 
-    @FXML
-    private ImageView imgClock;
+	@FXML
+	private ImageView imgClock;
 
-    @FXML
-    private TextField textExamID;
+	@FXML
+	private TextField textExamID;
 
-    @FXML
-    private TextField textCourse;
+	@FXML
+	private TextField textCourse;
 
-    @FXML
-    private TextField textProfession;
+	@FXML
+	private TextField textProfession;
 
-    @FXML
-    private RadioButton selectManual;
+	@FXML
+	private RadioButton selectManual;
 
-    @FXML
-    private RadioButton selectComputerized;
+	@FXML
+	private RadioButton selectComputerized;
 
 	// private static TeacherController teacherController; // check if not needed.
-	private static ExamBankController examBankController;
 	private static Exam exam;
 	private Teacher teacher;
+	private static String activeExamType;
 
-	private static HashMap<String, Time> startTimeForNewActiveExamtMap = new HashMap<String, Time>();
-	private static ArrayList<Time> startTimeList = new ArrayList<Time>();
-	private ArrayList<String> examIdList = new ArrayList<String>();
+//	private static HashMap<String, Time> startTimeForNewActiveExamtMap = new HashMap<String, Time>();
+//	private static ArrayList<Time> startTimeList = new ArrayList<Time>();
+//	private ArrayList<String> examIdList = new ArrayList<String>();
 
+	private String[] startTimeArr = { "08:00:00", "08:30:00", "09:00:00", "09:30:00", "10:00:00", "10:30:00",
+			"11:00:00", "11:30:00", "12:00:00", "12:30:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00", "15:00:00",
+			"15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00" };
+
+	private static boolean toggleFlag = false;
 	// private Date date = null; //we need to add to table the date of the exam
-	private Time selectedTime = null;
+	private Time selectedTime;
 
 	@FXML
 	void btnSaveActiveExam(ActionEvent event) {
 		String examCode = textExamCode.getText().trim();
-		// Checks filed conditions
-		if (textExamCode.getText().isEmpty()) {
-			popUp("Code field is empty");
-		} else if (examCode.length() != 4) {
-			popUp("Exam code must include 4 characters/ digits");
-		} else if (examCode.matches("[a-zA-Z]+") || examCode.matches("[0-9]+")) {
-			popUp("Exam code must include letters and digits");
-		}
 
-		if (selectedTime == null) {
-			popUp("Please choose your exam.");
-		} else {
-
-			// TODO: crate radio button to choose examType and insert into new line 85 !!
+		if (checkConditionToSaveActiveExam(examCode)) {
 
 			// exam.setAuthor(teacher); // TODO: think with team if need to delete from DB
-			// or not.
-			ActiveExam newActiveExam = new ActiveExam(selectedTime, exam, examCode/* , activeExamType */);
+			exam.setAuthor(teacher);
+			ActiveExam newActiveExam = new ActiveExam(selectedTime, exam, examCode , activeExamType);
+
 			// before we create new active exam, Request from server to check that
 			// the same examID at the same time not already exist.
+
 			boolean isAllowed = isActiveExamExist(newActiveExam);
 
 			if (isAllowed) {
@@ -118,6 +121,42 @@ public class CreateActiveExamController implements Initializable {
 
 	}
 
+	/**
+	 * @param examCode
+	 * @return Returns true if all editable and selectable details are correct.
+	 *         Otherwise, displays a message and returns a false.
+	 */
+	private boolean checkConditionToSaveActiveExam(String examCode) {
+		boolean selectCompExam = selectComputerized.isSelected();
+		boolean selectManualExam = selectManual.isSelected();
+
+		boolean flag = true;
+		StringBuilder strBuilder = new StringBuilder();
+
+		strBuilder.append("Error:\n");
+		if (examCode.length() != 4 || textExamCode.getText().isEmpty()) {
+			strBuilder.append("Exam code must include 4 characters and digits.\n");
+			flag = false;
+		}
+		if (examCode.matches("[a-zA-Z]+") || examCode.matches("[0-9]+")) {
+			strBuilder.append("Exam code must include letters and digits.\n");
+			flag = false;
+		}
+		if (selectedTime == null) {
+			strBuilder.append("Please choose start time for this exam.\n");
+			flag = false;
+		}
+		if (!selectCompExam && !selectManualExam) {
+			strBuilder.append("You need to select exam type.\n");
+			flag = false;
+		}
+
+		if (!flag) {
+			popUp(strBuilder.toString());
+		}
+		return flag;
+	}
+
 	// in order to avoid from create the same Active Exam in the same time!!
 	private boolean isActiveExamExist(ActiveExam activeExam) {
 		RequestToServer req = new RequestToServer("CheckIfActiveExamAlreadyExists");
@@ -134,21 +173,37 @@ public class CreateActiveExamController implements Initializable {
 		}
 		return false;
 	}
-	
-	
-    @FXML
-    void selectComputerized(MouseEvent event) {
 
-    }
-
-    @FXML
-    void selectManual(MouseEvent event) {
-
-    }
-
+	/**
+	 * @param event that occurs when the teacher chooses an exam type.
+	 */
 	@FXML
-	void selectTime(ActionEvent event) {
-		// TODO: מחר !!
+	void selectComputerized(MouseEvent event) {
+		activeExamType= "computerized";
+		selectManual.setDisable(toggleFlagStatus());
+
+	}
+
+	/**
+	 * @param event that occurs when the teacher chooses an exam type.
+	 */
+	@FXML
+	void selectManual(MouseEvent event) {
+		activeExamType="manual";
+		selectComputerized.setDisable(toggleFlagStatus());
+
+	}
+
+	/**
+	 * //Allows you to select a single type of exam
+	 * 
+	 * @return Returns the opposite value of the boolean variable that was.
+	 */
+	private boolean toggleFlagStatus() {
+		if (toggleFlag == false)
+			return toggleFlag = true;
+		else
+			return toggleFlag = false;
 	}
 
 	/**
@@ -157,27 +212,35 @@ public class CreateActiveExamController implements Initializable {
 	 * @param selectedExam
 	 */
 	public static void setActiveExamState(Exam selectedExam) {
-		//TODOl ask nadav or yadin about the athoter
 		exam = selectedExam;
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		teacher = (Teacher) ClientUI.loggedInUser.getUser();
-		//TODO: get proffe..Name and set into examID label teacher.getProfessions()
-		//TODO: the same for Course.
-		//textExamID.setText(exam.getExamID() +"- " + proffestionName);
+		selectedTime = null;
+		// TODO: get proffe..Name and set into examID label teacher.getProfessions()
+		// the same for Course.
 		textExamID.setText(exam.getExamID());
 		textCourse.setText(exam.getCourse().getCourseID());
 		textProfession.setText(exam.getProfession().getProfessionID());
+		selectTime.setItems(FXCollections.observableArrayList(startTimeArr)); //load time to combo Box.
 
-		// ..
-		loadExamStartTimeToCombobox();
 	}
 
-	private void loadExamStartTimeToCombobox() {
-		// TODO מחר!!
 
+	@FXML
+	void selectTime(ActionEvent event) {
+			
+		selectedTime=  java.sql.Time.valueOf(selectTime.getValue());
+		
+//		String strTime=selectTime.getValue();
+//		DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+//	    try {
+//			Date d = dateFormat.parse(strTime);
+//		} catch (java.text.ParseException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	/**

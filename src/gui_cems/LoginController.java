@@ -360,7 +360,6 @@ public class LoginController {
 	void pressQuit(ActionEvent event) {
 		System.exit(0);
 	}
-
 	/**
 	 * listen for close events on a JavaFX Stage, notified when the user clicks the
 	 * button with the X on, in the upper right corner of the Stage
