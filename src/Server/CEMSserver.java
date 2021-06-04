@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -150,8 +152,8 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "getAllActiveExamBeforEnter2Exam": {
-			getAllActiveExamBeforEnter2Exam(client);
+		case "getAllActiveExamBeforEnterToExam": {
+			getAllActiveExamBeforEnterToExam(client);
 		}
 			break;
 
@@ -159,15 +161,15 @@ public class CEMSserver extends AbstractServer {
 			approvalTimeExtention((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-			
+
 		case "gradesAverageCalc": {
 			gradesAverageCalc((String) req.getRequestData(), client);
+
 		}
 			break;
-			
-		case "declineTimeExtention": {
-			declineTimeExtention((ActiveExam)req.getRequestData(), client);
 
+		case "declineTimeExtention": {
+			declineTimeExtention((ActiveExam) req.getRequestData(), client);
 		}
 			break;
 
@@ -197,27 +199,6 @@ public class CEMSserver extends AbstractServer {
 			}
 
 		}
-
-		case "getEditExamData": {
-			// TODO: new Exam object Exam exam=null;
-			// TODO: prepared the array list of question of this exam & HashMap and
-			// others....
-			dbController.editExam((Exam) req.getRequestData());
-			// exam= dbController.editExam(exam);
-			// exam= dbController.funName(exam);
-			// each one ot then returns an object of exam and give to the other until we
-			// have everything for the counstr..
-
-			// TODO: create a ResponseFromServer
-			// TODO: after Exam obj ready need to client.sendToClient(....)
-
-		}
-			break;
-
-		case "SaveEditExam": {
-			// TODO: "UPDATE #### FROM exam blabla...;"
-		}
-			break;
 
 		case "ClientDisconected": {
 			clientDisconected(req.getRequestData(), client);
@@ -280,13 +261,13 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
-			
+
 		case "chechExamExist": {
-			chechExamExist((String)req.getRequestData(),client);
+			chechExamExist((String) req.getRequestData(), client);
 
 		}
 			break;
-			
+
 		case "Update Grade": {
 			try {
 
@@ -301,27 +282,41 @@ public class CEMSserver extends AbstractServer {
 		}
 
 			break;
-			
+
 		case "getManualExam": {
-			getManualExam((ExamOfStudent)req.getRequestData(),client);
+			getManualExam((ExamOfStudent) req.getRequestData(), client);
 
 		}
 			break;
-			
+
+		case "getSelectedExamData_byID": {
+			/*--logic for createActive Exam && Edit exam--*/
+			getSelectedExamData_byID((Exam) req.getRequestData(), client);
+
+		}
+			break;
+
+		case "CheckIfActiveExamAlreadyExists": {
+			CheckIfActiveExamAlreadyExists((ActiveExam) req.getRequestData(), client);
+		}
+			break;
+
+		case "createNewActiveExam": {
+			createNewActiveExam((ActiveExam) req.getRequestData(), client);
+		}
+			break;
+
 		case "submitManualExam": {//
-			submitManualExam((MyFile)req.getRequestData(),client);
+			submitManualExam((MyFile) req.getRequestData(), client);
 
 		}
 			break;
-			
-			
-		}
 
+		}
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
-	
 	private void gradesAverageCalc(String ExamID, ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Calculate Grades Average");
@@ -330,7 +325,7 @@ public class CEMSserver extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/**
@@ -380,8 +375,8 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
-	
-	private void chechExamExist(String ExamID,ConnectionToClient client) {
+
+	private void chechExamExist(String ExamID, ConnectionToClient client) {
 
 		ResponseFromServer response = new ResponseFromServer("CHECK EXAM EXIST");
 		response.setResponseData(dbController.chechExamExist(ExamID));
@@ -395,7 +390,7 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
-	private void getAllActiveExamBeforEnter2Exam(ConnectionToClient client) {
+	private void getAllActiveExamBeforEnterToExam(ConnectionToClient client) {
 		// logic for 'EnterToExam'
 		ResponseFromServer response = null;
 		response = dbController.getAllActiveExam();
@@ -704,31 +699,31 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
-	
+
 	private void getManualExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
-	
+
 		String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_exam.docx";
 		MyFile exam = new MyFile(fileName);
-		String LocalfilePath = "/CEMS/files/" + fileName; //I thing without fileName
-		try{
-		     File newFile = new File (LocalfilePath);
-		     byte [] mybytearray  = new byte [(int)newFile.length()];
-		     FileInputStream fis = new FileInputStream(newFile);
-		     BufferedInputStream bis = new BufferedInputStream(fis);			  
-		      
-		     exam.initArray(mybytearray.length);
-		     exam.setSize(mybytearray.length);
-		      
-		     bis.read(exam.getMybytearray(),0,mybytearray.length);
-		     
-		     client.sendToClient(exam);
-		   }
-		catch (Exception ex) {
-			ex.printStackTrace();		
-			}
-		//printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+		String LocalfilePath = "/CEMS/files/" + fileName; // I think without fileName
+		try {
+			File newFile = new File(LocalfilePath);
+			byte[] mybytearray = new byte[(int) newFile.length()];
+			FileInputStream fis = new FileInputStream(newFile);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+
+			exam.initArray(mybytearray.length);
+			exam.setSize(mybytearray.length);
+
+			bis.read(exam.getMybytearray(), 0, mybytearray.length);
+
+			client.sendToClient(exam);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		// printMessageInLogFramServer("Message to Client:", respon);// print to server
+		// log.
 	}
-	
+
 	private void submitManualExam(MyFile msg, ConnectionToClient client) {
 		int fileSize = ((MyFile) msg).getSize();
 		System.out.println("Message received: " + msg + " from " + client);
@@ -746,6 +741,62 @@ public class CEMSserver extends AbstractServer {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+
+	}
+
+	private void getSelectedExamData_byID(Exam exam, ConnectionToClient client) {
+		ResponseFromServer response = null;
+		response = dbController.getSelectedExamData_byID(exam);
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+	}
+
+	private void CheckIfActiveExamAlreadyExists(ActiveExam activeExam, ConnectionToClient client) {
+		// logic for 'createNewActiveExam'
+		ActiveExam actExam = activeExam;
+		ResponseFromServer response = null;
+		actExam = dbController.isActiveExamAlreadyExists(actExam);
+		
+		if (actExam!= null) {
+			response = new ResponseFromServer("ACTIVE EXAM EXIST: " + activeExam.getExam().getExamID()
+					+ ", start time: " + activeExam.getStartTime());
+			
+			// check if they have the same start time AND code.
+			if (actExam.getStartTime().equals(activeExam.getStartTime())
+					&& actExam.getExamCode().equals(activeExam.getExamCode())) {
+				
+				response = new ResponseFromServer("ACTIVE EXAM NOT ALLOWES");
+				response.setResponseData(null);	
+			}
+			else {	
+				//we allowed to perform different exams at the same time.
+				//we allowed to perform the same exam but NOT in the same time
+				response.getStatusMsg().setStatus("Create action is allowed");
+				response.setResponseData(activeExam);
+			}
+		}
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+		
+	}
+
+	private void createNewActiveExam(ActiveExam newActiveExam, ConnectionToClient client) {
+		ResponseFromServer response = dbController.createNewActiveExam(newActiveExam);
+		response.getStatusMsg().setStatus("New active exam created successfully");
+		try {
+			client.sendToClient(response);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 		
 	}
 

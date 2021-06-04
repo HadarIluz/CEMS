@@ -23,6 +23,10 @@ public class Profession implements Serializable {
 		return professionID;
 	}
 	
+	public void setProfessionID(String professionID) {
+		this.professionID = professionID;
+	}
+	
 	public String getProfessionName() {
 		return professionName;
 	}

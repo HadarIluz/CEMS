@@ -811,6 +811,79 @@ public class DBController {
 		}
 		return grades;
 	}
+	
+	public ResponseFromServer getSelectedExamData_byID(Exam exam) {
+		ResponseFromServer response= null;		
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE examID=?");
+			pstmt.setInt(1,Integer.parseInt(exam.getExamID()));
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				
+				Profession profession = new Profession(null);
+				profession.setProfessionID(rs.getString(2));
+				exam.setProfession(profession);
+				
+				Course course = new Course(null);
+				course.setCourseID(rs.getString(3));
+				exam.setCourse(course);
+				
+				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
+				exam.setCommentForTeacher(rs.getString(5));
+				exam.setCommentForStudents(rs.getString(6));
+				rs.close();
+			}
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		
+		response = new ResponseFromServer("EXAM DATA");	
+		response.setResponseData(exam);
+		return response;		
+	}
+	
+	public ActiveExam isActiveExamAlreadyExists(ActiveExam activeExam) {
+		/***CheckBeforeCreateNewActiveExam***/
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT examCode FROM active_exam WHERE exam=? and startTime=?;");
+			pstmt.setString(1, activeExam.getExam().getExamID());
+			pstmt.setTime(2, activeExam.getStartTime());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				activeExam.setExamCode(rs.getString(1));
+				activeExam.setStartTime(rs.getTime(2));
+				rs.close();
+			}
+			
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return activeExam;
+	}
+	
+	public ResponseFromServer createNewActiveExam(ActiveExam newActiveExam) {
+		ResponseFromServer response = null;
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("INSERT INTO active_exam VALUES(?, ?, ?, ?, ?);");
+			pstmt.setString(1, newActiveExam.getExam().getExamID());
+			pstmt.setTime(2, newActiveExam.getStartTime());
+			pstmt.setInt(3, newActiveExam.getTimeAllotedForTest());
+			pstmt.setString(4, newActiveExam.getExamCode());
+			pstmt.setString(5, newActiveExam.getActiveExamType());
+			if (pstmt.executeUpdate() !=0) {
+				response = new ResponseFromServer("NEW ACTIVE EXAM CREATED");
+			}
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return response;
+		
+		
+	}
+
 
 
 //public static void main(String[] args) {
