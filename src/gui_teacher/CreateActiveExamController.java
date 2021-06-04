@@ -77,7 +77,7 @@ public class CreateActiveExamController implements Initializable {
 			popUp("Code field is empty");
 		} else if (examCode.length() != 4) {
 			popUp("Exam code must include 4 characters/ digits");
-		} else if (!examCode.matches("[a-zA-Z]+") || !examCode.matches("[0-9]+")) {
+		} else if (examCode.matches("[a-zA-Z]+") || examCode.matches("[0-9]+")) {
 			popUp("Exam code must include letters and digits");
 		}
 
