@@ -128,7 +128,7 @@ public class LoginController {
 			req.setRequestData(user);
 			ClientUI.cems.accept(req); // send server pk(id) to DB in order to checks if user exist or not.
 
-			if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("USER FOUND") == false) {
+			if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("USER NOT FOUND")) {
 				System.out.println("press on login button and server returns: -->USER NOT FOUND");
 				popUp("This user doesn`t exist in CEMS system.");
 			}
@@ -227,6 +227,8 @@ public class LoginController {
 				}
 
 			}
+			return;
+			
 		}
 
 		// handle case that one of the parameters is invalid.
