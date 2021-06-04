@@ -173,11 +173,12 @@ public class TeacherController extends Application implements Initializable {
 
 		alert.getButtonTypes().setAll(okButton, noButton);
 		alert.showAndWait().ifPresent(type -> {
-			if (type == okButton) {				
+			if (type == okButton) {		
 				loginController = new LoginController();
 				((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 				try {
 					loginController.start(new Stage());
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

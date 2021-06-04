@@ -330,6 +330,7 @@ public class LoginController {
 			reqLoged.setRequestData(teacher);
 		}
 		ClientUI.cems.accept(reqLoged);
+		ClientUI.loggedInUser.logOff();
 	}
 
 	/**

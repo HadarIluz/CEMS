@@ -24,4 +24,8 @@ public class LoggedInUser {
 		return null;
 	}
 	
+	public void logOff() {
+		instance = null;
+	}
+	
 }
