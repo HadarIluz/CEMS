@@ -9,7 +9,6 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.Course;
 import entity.Exam;
-import gui_student.SolveExamController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -66,7 +65,6 @@ public class ExamBankController implements Initializable {
 	@FXML
 	private Button btnCreateActiveExam;
 	private static TeacherController teacherController;
-	private CreateActiveExamController createActiveExamController;
 
 	@FXML
 	void selectExamFromTable(MouseEvent event) {
@@ -131,7 +129,7 @@ public class ExamBankController implements Initializable {
 
 		Exam selectedExam = getExistExamDetails(textExamID.getText());
 		try {
-			createActiveExamController.setActiveExamState(selectedExam);
+			EditExamController.setActiveExamState(selectedExam);
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
 			teacherController.root.add(newPaneRight, 1, 0);
 
@@ -194,14 +192,12 @@ public class ExamBankController implements Initializable {
 		dialog.show();
 	}
 
-	// TODO: btnCreateActiveExam open new fxml (HADAR)
 	@FXML
 	void btnCreateActiveExam(ActionEvent event) {
-
 		Exam selectedExam = getExistExamDetails(textExamID.getText());
 
 		try {
-			createActiveExamController.setActiveExamState(selectedExam);
+			CreateActiveExamController.setActiveExamState(selectedExam);
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			teacherController.root.add(newPaneRight, 1, 0);
@@ -213,7 +209,7 @@ public class ExamBankController implements Initializable {
 	}
 
 	private Exam getExistExamDetails(String examID) {
-
+		
 		Exam selectedExam = new Exam(examID);
 		RequestToServer req = new RequestToServer("getSelectedExamData_byID");
 		req.setRequestData(selectedExam);

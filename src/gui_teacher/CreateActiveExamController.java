@@ -3,7 +3,6 @@ package gui_teacher;
 import java.net.URL;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -12,7 +11,6 @@ import client.ClientUI;
 import entity.ActiveExam;
 import entity.Exam;
 import entity.Teacher;
-import entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,34 +20,42 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
 public class CreateActiveExamController implements Initializable {
 
-	@FXML
-	private Button btnSaveActiveExam;
+    @FXML
+    private Button btnSaveActiveExam;
 
-	@FXML
-	private TextField textExamCode;
+    @FXML
+    private TextField textExamCode;
 
-	@FXML
-	private ComboBox<Time> selectTime;
+    @FXML
+    private ComboBox<String> selectTime;
 
-	@FXML
-	private ImageView imgClock;
+    @FXML
+    private ImageView imgClock;
 
-	@FXML
-	private TextField textExamID;
+    @FXML
+    private TextField textExamID;
 
-	@FXML
-	private TextField textCourse;
+    @FXML
+    private TextField textCourse;
 
-	@FXML
-	private TextField textProfession;
+    @FXML
+    private TextField textProfession;
+
+    @FXML
+    private RadioButton selectManual;
+
+    @FXML
+    private RadioButton selectComputerized;
 
 	// private static TeacherController teacherController; // check if not needed.
 	private static ExamBankController examBankController;
@@ -128,6 +134,17 @@ public class CreateActiveExamController implements Initializable {
 		}
 		return false;
 	}
+	
+	
+    @FXML
+    void selectComputerized(MouseEvent event) {
+
+    }
+
+    @FXML
+    void selectManual(MouseEvent event) {
+
+    }
 
 	@FXML
 	void selectTime(ActionEvent event) {
@@ -139,13 +156,17 @@ public class CreateActiveExamController implements Initializable {
 	 * 
 	 * @param selectedExam
 	 */
-	public void setActiveExamState(Exam selectedExam) {
+	public static void setActiveExamState(Exam selectedExam) {
+		//TODOl ask nadav or yadin about the athoter
 		exam = selectedExam;
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		teacher = (Teacher) ClientUI.loggedInUser.getUser();
+		//TODO: get proffe..Name and set into examID label teacher.getProfessions()
+		//TODO: the same for Course.
+		//textExamID.setText(exam.getExamID() +"- " + proffestionName);
 		textExamID.setText(exam.getExamID());
 		textCourse.setText(exam.getCourse().getCourseID());
 		textProfession.setText(exam.getProfession().getProfessionID());

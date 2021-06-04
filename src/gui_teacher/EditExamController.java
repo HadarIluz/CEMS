@@ -9,6 +9,7 @@ import client.ClientUI;
 import entity.Exam;
 import entity.Profession;
 import entity.Question;
+import entity.Teacher;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -75,6 +76,7 @@ public class EditExamController implements Initializable{
     public static Exam editedExam;
     private static HashMap<String, Question> questionsMap = null;
     private Question selectedQuestion;
+    private Teacher teacher;
     
     
     private static TeacherController teacherController; //we will use it for load the prev/next screen ! (using root).
@@ -148,10 +150,11 @@ public class EditExamController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedQuestion = null;
+		teacher = (Teacher) ClientUI.loggedInUser.getUser();
 		//TODO:1. req from server data of the specific exam according to examID.
 		//2. response(  return Exam)  RequestToServer req = new RequestToServer("getEditExamData");
 		//3. insert data to test filed by setText from object.
-		loadQuestionsToCombobox();
+		//loadQuestionsToCombobox();
 		
 		//ClientUI.loggedInUser..... המורה מחזירה את רשימתה קורסים שלה ואת השם.
 	}
@@ -196,6 +199,11 @@ public class EditExamController implements Initializable{
  			System.out.println("isOnlyDigits returns:" + onlyDigits); // message to console
  			return onlyDigits;
  		}
+
+		public static void setActiveExamState(Exam selectedExam) {
+			editedExam =selectedExam;
+			
+		}
  		
  		//TODO: לחשוב על מקרה שבו המורה מוחקת שאלה , לשאלה הזאת יש ניקוד והציון של המבחן ישתנה. אנחנו רוצים לשמור ציון אפס
  		// לחשוב אם מספיק להקפיץ למורה הודעה 
