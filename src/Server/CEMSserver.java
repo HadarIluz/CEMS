@@ -704,7 +704,9 @@ public class CEMSserver extends AbstractServer {
 
 		String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_exam.docx";
 		MyFile exam = new MyFile(fileName);
-		String LocalfilePath = "/CEMS/files/" + fileName; // I think without fileName
+		//String LocalfilePath = "/CEMS/files/" + fileName; // I think without fileName
+		String LocalfilePath = fileName ;
+		
 		try {
 			File newFile = new File(LocalfilePath);
 			byte[] mybytearray = new byte[(int) newFile.length()];
