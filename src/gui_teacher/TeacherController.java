@@ -22,10 +22,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -39,7 +38,6 @@ import logic.RequestToServer;
  *
  */
 public class TeacherController extends Application implements Initializable {
-
 
     @FXML
     private ImageView imgPrincipal;
@@ -209,11 +207,6 @@ public class TeacherController extends Application implements Initializable {
 		teacher=ClientUI.loggedInUser.getUser();
 		textTeacherName.setText(teacher.getFirstName()+" " +teacher.getLastName());
 		setProfessionMap(((Teacher)ClientUI.loggedInUser.getUser()).getProfessions());
-		Image flag = new Image("file:src/images/teacher_userImg.png");
-
-		// private Image flag = new Image("file:src/resources/flag.png");
-
-		imgPrincipal = new ImageView(flag);
 	}
 	
 
@@ -227,6 +220,8 @@ public class TeacherController extends Application implements Initializable {
 	public static HashMap<String, Profession> getProfessionsMap() {
 		return professionsMap;
 	}
+	
+	
 	/**
 	 * listen for close events on a JavaFX Stage, notified when the user clicks the
 	 * button with the X on, in the upper right corner of the Stage

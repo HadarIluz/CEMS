@@ -23,7 +23,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TableView fx:id="tableExam" layoutX="192.0" layoutY="104.0" onMouseClicked="#MouseC" prefHeight="298.0" prefWidth="372.0">
+      <TableView fx:id="tableExam" layoutX="192.0" layoutY="104.0" onMouseClicked="#selectExamFromTable" prefHeight="298.0" prefWidth="372.0">
         <columns>
           <TableColumn fx:id="ExamID" prefWidth="75.0" text="Exam ID" />
           <TableColumn fx:id="Proffesion" prefWidth="75.0" text="Proffesion" />
@@ -53,6 +53,6 @@
             <Font name="System Italic" size="14.0" />
          </font>
       </Text>
-      <Button fx:id="btnCreateActiveExam" layoutX="518.0" layoutY="500.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnCreateActiveExam" prefHeight="25.0" prefWidth="124.0" text="CreateActiveExam" />
+      <Button fx:id="btnCreateActiveExam" layoutX="520.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnCreateActiveExam" prefHeight="25.0" prefWidth="124.0" text="CreateActiveExam" />
    </children>
 </AnchorPane>

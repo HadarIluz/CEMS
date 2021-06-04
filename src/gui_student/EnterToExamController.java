@@ -35,28 +35,28 @@ import logic.RequestToServer;
  */
 public class EnterToExamController implements Initializable {
 
-    @FXML
-    private Button btnStart;
+	@FXML
+	private Button btnStart;
 
-    @FXML
-    private TextField textExamCode;
+	@FXML
+	private TextField textExamCode;
 
-    @FXML
-    private TextField textStudentID;
+	@FXML
+	private TextField textStudentID;
 
-    @FXML
-    private CheckBox ApprovalInsrtuctions;
+	@FXML
+	private CheckBox ApprovalInsrtuctions;
 
-    @FXML
-    private CheckBox CommitPreformByMyself;
+	@FXML
+	private CheckBox CommitPreformByMyself;
 
-    @FXML
-    private Label textConfirm;
+	@FXML
+	private Label textConfirm;
 
-    @FXML
-    private ComboBox<String> selectActiveExamFromCB;
+	@FXML
+	private ComboBox<String> selectActiveExamFromCB;
 
-    private static StudentController studentController;
+	private static StudentController studentController;
 	private static HashMap<String, ActiveExam> activeExamtMap = new HashMap<String, ActiveExam>();
 	private static ArrayList<ActiveExam> activeExamtList = new ArrayList<ActiveExam>();
 	private ArrayList<String> examIdList = new ArrayList<String>();
@@ -81,9 +81,7 @@ public class EnterToExamController implements Initializable {
 
 			if (activeExam_selection == null) {
 				popUp("Please choose your exam.");
-			} 
-			else 
-			{
+			} else {
 //TODO: Should this activeExam be "assigned" to a student somehow? (new table or something else?)..
 //TODO:ASK TEAM.-->do i need to do insert row into table of exam of student?? 
 
@@ -122,10 +120,11 @@ public class EnterToExamController implements Initializable {
 					case "manual": {
 						// load manual start exam fxml
 						try {
+							SolveExamController.setActiveExamState(activeExam);
 							Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
 							newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 							studentController.root.add(newPaneRight, 1, 0);
-							SolveExamController.setActiveExamState(activeExam);
+
 						} catch (IOException e) {
 							System.out.println("Couldn't load!");
 							e.printStackTrace();
@@ -135,10 +134,10 @@ public class EnterToExamController implements Initializable {
 					case "computerized": {
 						// load computerized start exam fxml
 						try {
+							SolveExamController.setActiveExamState(activeExam);
 							Pane newPaneRight = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
 							newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 							studentController.root.add(newPaneRight, 1, 0);
-							SolveExamController.setActiveExamState(activeExam);
 						} catch (IOException e) {
 							System.out.println("Couldn't load!");
 							e.printStackTrace();
@@ -172,7 +171,10 @@ public class EnterToExamController implements Initializable {
 		if (examCode.length() == 0 || studentID.length() == 0 || examCode.length() != 4) {
 			popUp("One or more of the parameters which insert are incorrect. Please try again.");
 			return false;
-		} else if (!checkStudentID(studentID)) {
+		} 
+		else if(!examCode.matches("[a-zA-Z]+") || !examCode.matches("[0-9]+") ){
+			popUp("Exam code must include letters and digits");
+		}else if (!checkStudentID(studentID)) {
 			return false;
 		} else if (!approve1 || !approve2) {
 			textConfirm.setVisible(true);
@@ -256,14 +258,12 @@ public class EnterToExamController implements Initializable {
 		selectActiveExamFromCB.setItems(FXCollections.observableArrayList(examIdList));
 		selectActiveExamFromCB.setDisable(false);
 	}
-	
-	
+
 	public static void setActiveExamtMap(ArrayList<ActiveExam> activeExamtList) {
-		 for (ActiveExam ae : activeExamtList) {
-			 activeExamtMap.put(ae.getExam().getExamID(), ae);
+		for (ActiveExam ae : activeExamtList) {
+			activeExamtMap.put(ae.getExam().getExamID(), ae);
 		}
 	}
-
 
 	/**
 	 * @param event that occurs when a student selects a test from the comboBox.
@@ -272,15 +272,17 @@ public class EnterToExamController implements Initializable {
 	void selectActiveExam(ActionEvent event) {
 		if (activeExamtMap.containsKey(selectActiveExamFromCB.getValue())) {
 			activeExam_selection = activeExamtMap.get(selectActiveExamFromCB.getValue());
-			System.out.println(activeExam_selection.getExam().getExamID()); //DEBUG
+			System.out.println(activeExam_selection.getExam().getExamID()); // DEBUG
 		}
 
 	}
 
-	/**Gets the list of active tests from the previous screen.
+	/**
+	 * Receive the list of active tests from the previous screen.
+	 * 
 	 * @param activeExamListFromDB
 	 */
-	public static void setAllActiveExamBeforEnter2Exam(ArrayList<ActiveExam> activeExamListFromDB) {
+	public static void setAllActiveExamBeforEnterToExam(ArrayList<ActiveExam> activeExamListFromDB) {
 		activeExamtList = activeExamListFromDB;
 	}
 

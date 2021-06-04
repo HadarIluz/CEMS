@@ -25,6 +25,13 @@ public class ActiveExam implements Serializable {
 		this.exam = exam;
 		this.examCode = examCode;
 	}
+	
+	public ActiveExam(Time startTime, Exam exam, String examCode, String activeExamType ) {
+		this.startTime = startTime;
+		this.exam = exam;
+		this.examCode = examCode;
+		this.activeExamType=activeExamType;
+	}
 
 	public ActiveExam(Time time, Time endTimeToTakeExam, String examCode) {
 		this.startTime = time;
