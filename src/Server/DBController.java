@@ -86,25 +86,18 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		//in case not found any user match ..
-		if (existUser.getPassword() == null) {
-			response = new ResponseFromServer("USER NOT FOUND");
-		} else {
-			response = new ResponseFromServer("USER FOUND");
-		}
 		
-		
-		
-//		if (existUser.getPassword() ==null) {
-//			response = new ResponseFromServer("USER NOT FOUND IN THE SYSTEM");
-//			response.getStatusMsg().setStatus("USER NOT FOUND");
-//		}
-//		else {
-//			response = new ResponseFromServer("USER FOUND");
-//		}
-		// ResponseFromServer class ready to client with StatusMsg and
+		//in case not found any user match,
+		// response ready to client with StatusMsg and
 		// 'Object responseData', in case user found existUser include all data,
-		// otherwise null.
+		// otherwise null.	
+		if (existUser.getPassword() != null) {
+			response = new ResponseFromServer("USER FOUND IN CEMS SYSTEM");
+			response.getStatusMsg().setStatus("USER FOUND");
+		} else {
+			response = new ResponseFromServer("USER NOT FOUND IN CEMS SYSTEM");
+			response.getStatusMsg().setStatus("USER NOT FOUND");
+		}
 		response.setResponseData(existUser);
 		return response;
 	}
