@@ -124,22 +124,21 @@ public class StartManualExamController implements Initializable{
     }
 
     @FXML
-    void checkBoxShowTime(MouseEvent event) {
+    void checkBoxShowTime(ActionEvent event) {
     	//show time left
     	if(checkBoxShowTime.isSelected()) {
     		textTimeLeft.setDisable(false);
-    		textTimeLeft.setOpacity(1);
+    		textTimeLeft.setOpacity(1.0);
     	} else { // Do not show time left
     		textTimeLeft.setDisable(true);
-    		textTimeLeft.setOpacity(0);
+    		textTimeLeft.setOpacity(0.0);
     	}
     }
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		examOfStudent.setActiveExam(newActiveExam);
 		student = (Student) ClientUI.loggedInUser.getUser();
-		examOfStudent.setStudent(student);		
+		examOfStudent = new ExamOfStudent(newActiveExam,student);		
 	}
 	
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {

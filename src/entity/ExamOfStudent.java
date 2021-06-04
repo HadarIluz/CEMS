@@ -15,6 +15,13 @@ public class ExamOfStudent implements Serializable {
 		this.score=score;
 	}
 	
+	public ExamOfStudent(ActiveExam activeExam,Student student) {
+		this.activeExam=activeExam;
+		this.student=student;
+	}
+	
+	
+	
 	public ActiveExam getActiveExam() {
 		return activeExam;
 	}

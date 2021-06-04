@@ -69,12 +69,7 @@
       </ImageView>
       <Label fx:id="textTeacherName" layoutX="610.0" layoutY="79.0" prefHeight="18.0" prefWidth="100.0" text=" Jennifer Aniston" visible="false" />
       <Label fx:id="textNotificationMsg" layoutX="525.0" layoutY="90.0" prefHeight="50.0" prefWidth="155.0" text="Please note, the exam time was extended by 20 minutes." visible="false" wrapText="true" />
-      <CheckBox fx:id="checkBoxShowTime" layoutX="633.0" layoutY="499.0" mnemonicParsing="false" onAction="#checkBoxShowTime" onMouseClicked="#checkBoxShowTime" selected="true" text="Show Time Left">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </CheckBox>
-      <Label fx:id="textTimeLeft" layoutX="633.0" layoutY="533.0" prefHeight="20.0" prefWidth="109.0" text="Time left: 25:20" textFill="#e40909">
+      <Label fx:id="textTimeLeft" layoutX="612.0" layoutY="531.0" prefHeight="20.0" prefWidth="109.0" text="Time left: 25:20" textFill="#e40909">
          <font>
             <Font size="14.0" />
          </font>
@@ -91,5 +86,10 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
+      <CheckBox fx:id="checkBoxShowTime" layoutX="611.0" layoutY="494.0" mnemonicParsing="false" onAction="#checkBoxShowTime" prefHeight="23.0" prefWidth="137.0" selected="true" text="Show Time Left">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </CheckBox>
    </children>
 </AnchorPane>
