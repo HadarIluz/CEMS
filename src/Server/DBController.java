@@ -803,24 +803,26 @@ public class DBController {
 
 	public ActiveExam isActiveExamAlreadyExists(ActiveExam activeExam) {
 		/***CheckBeforeCreateNewActiveExam***/
+		ActiveExam acExam= new ActiveExam(activeExam.getExam(), activeExam.getStartTime());
+		//FIXME: time problem with SQL.
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT examCode FROM active_exam WHERE exam=? and startTime=?;");
+			pstmt = conn.prepareStatement("SELECT examCode, timeAllotedForTest FROM active_exam WHERE exam=? and startTime=?;");
 			pstmt.setString(1, activeExam.getExam().getExamID());
 			pstmt.setTime(2, activeExam.getStartTime());
 
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				activeExam.setExamCode(rs.getString(1));
-				activeExam.setStartTime(rs.getTime(2));
+				acExam.setExamCode(rs.getString(1));
+				acExam.setTimeAllotedForTest(rs.getString(2));
 				rs.close();
 			}
 			
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-
-		return activeExam;
+		
+		return acExam;
 	}
 
 	public ResponseFromServer createNewActiveExam(ActiveExam newActiveExam) {

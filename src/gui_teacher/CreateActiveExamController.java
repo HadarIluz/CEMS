@@ -89,12 +89,11 @@ public class CreateActiveExamController implements Initializable {
 		if (checkConditionToSaveActiveExam(examCode)) {
 
 			// exam.setAuthor(teacher); // TODO: think with team if need to delete from DB
-			exam.setAuthor(teacher);
+			
+			
 			ActiveExam newActiveExam = new ActiveExam(selectedTime, exam, examCode , activeExamType);
-
 			// before we create new active exam, Request from server to check that
 			// the same examID at the same time not already exist.
-
 			boolean isAllowed = isActiveExamExist(newActiveExam);
 
 			if (isAllowed) {
@@ -112,8 +111,7 @@ public class CreateActiveExamController implements Initializable {
 
 			} else {
 				popUp("This exam: " + newActiveExam.getExam().getExamID()
-						+ " was created as active in the same start time.\n" + "This exam can be set to active again "
-						+ newActiveExam.getTimeAllotedForTest() + " after " + newActiveExam.getStartTime());
+						+ " already created as active in the same start time.\n This exam can be created as new active only after finished.");
 
 			}
 
@@ -163,12 +161,12 @@ public class CreateActiveExamController implements Initializable {
 		req.setRequestData(activeExam);
 		ClientUI.cems.accept(req);
 
-		ActiveExam isActiveExamExists = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
+		
 
-		System.out.println(isActiveExamExists.toString());// DEBUG !!
-
-		if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("Create action is allowed")
-				&& isActiveExamExists != null) {
+		if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("Create action is allowed")){
+				//&& isActiveExamExists != null) {
+			ActiveExam isActiveExamExists = (ActiveExam) CEMSClient.responseFromServer.getResponseData(); //FOR DEBUG ONLY.
+			
 			return true;
 		}
 		return false;
@@ -229,18 +227,12 @@ public class CreateActiveExamController implements Initializable {
 	}
 
 
+	/**
+	 * @param event that occurs when the teacher chooses start time from combo box.
+	 */
 	@FXML
-	void selectTime(ActionEvent event) {
-			
+	void selectTime(ActionEvent event) {			
 		selectedTime=  java.sql.Time.valueOf(selectTime.getValue());
-		
-//		String strTime=selectTime.getValue();
-//		DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-//	    try {
-//			Date d = dateFormat.parse(strTime);
-//		} catch (java.text.ParseException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	/**
