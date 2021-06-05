@@ -549,7 +549,7 @@ public class DBController {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 
-		if (activeExam.getExam() == null) {
+		if (activeExam.getActiveExamType() == null) {
 			response = new ResponseFromServer("ACTIVE EXAM_NOT_EXIST");
 
 		} else {
