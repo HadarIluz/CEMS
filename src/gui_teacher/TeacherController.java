@@ -73,7 +73,7 @@ public class TeacherController extends Application implements Initializable {
     private Label pressLogout;
 	
 	public LoginController loginController;
-	protected static GridPane root;
+	public static GridPane root;
 	public Scene scene;
 	protected User teacher;
 	private static HashMap<String, Profession> professionsMap = null;

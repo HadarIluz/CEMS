@@ -65,7 +65,7 @@ public class PrincipalController extends Application implements Initializable {
 
 	public LoginController loginController;
 	protected User principal;
-	protected static GridPane root;
+	public static GridPane root;
 	public Scene scene;
 
 	@Override

@@ -9,29 +9,25 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.Course;
 import entity.Exam;
+import entity.Teacher;
+import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class ExamBankController implements Initializable {
+public class ExamBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	private Button btnEditExam;
@@ -65,6 +61,8 @@ public class ExamBankController implements Initializable {
 	@FXML
 	private Button btnCreateActiveExam;
 	private static TeacherController teacherController;
+	private static Teacher teacher;
+
 
 	@FXML
 	void selectExamFromTable(MouseEvent event) {
@@ -130,15 +128,18 @@ public class ExamBankController implements Initializable {
 	void btnEditExam(ActionEvent event) {
 		if (!textExamID.getText().isEmpty()) {
 			Exam selectedExam = getExistExamDetails(textExamID.getText());
-			try {
-				EditExamController.setActiveExamState(selectedExam);
-				Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
-				teacherController.root.add(newPaneRight, 1, 0);
-
-			} catch (IOException e) {
-				System.out.println("Couldn't load!");
-				e.printStackTrace();
-			}
+			EditExamController.setActiveExamState(selectedExam, super.teacherStatusScreen );
+			displayNextScreen(teacher, "EditExam.fxml");
+			
+//			try {
+//				EditExamController.setActiveExamState(selectedExam, super.teacherStatusScreen );
+//				Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
+//				teacherController.root.add(newPaneRight, 1, 0);
+//
+//			} catch (IOException e) {
+//				System.out.println("Couldn't load!");
+//				e.printStackTrace();
+//			}
 		}
 	}
 
@@ -160,6 +161,7 @@ public class ExamBankController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		tableExam.setEditable(true);
 		initTableRows();
+		teacher = (Teacher) ClientUI.loggedInUser.getUser();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -181,40 +183,20 @@ public class ExamBankController implements Initializable {
 
 	}
 
-	private void popUp(String msg) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(msg);
-		lbl.setPadding(new Insets(15));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
-	}
-
+	@SuppressWarnings("static-access")
 	@FXML
 	void btnCreateActiveExam(ActionEvent event) {
 
 		if (!textExamID.getText().isEmpty()) {
 			Exam selectedExam = getExistExamDetails(textExamID.getText());
-
-			try {
-				CreateActiveExamController.setActiveExamState(selectedExam);
-				Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
-				newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-				teacherController.root.add(newPaneRight, 1, 0);
-			} catch (IOException e) {
-				System.out.println("Couldn't load!");
-				e.printStackTrace();
-			}
+			CreateActiveExamController.setActiveExamState(selectedExam);
+			displayNextScreen(teacher, "CreateActiveExam.fxml");
 		}
 
 	}
 
 	private Exam getExistExamDetails(String examID) {
-
+		
 		Exam selectedExam = new Exam(examID);
 		RequestToServer req = new RequestToServer("getSelectedExamData_byID");
 		req.setRequestData(selectedExam);
