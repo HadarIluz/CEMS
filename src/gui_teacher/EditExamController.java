@@ -37,7 +37,7 @@ public class EditExamController implements Initializable{
 	    private TextField textExamID;
 
 	    @FXML
-	    private Button btnShowQuestion;
+	    private Button btnBrowseExamQuestions;
 
 	    @FXML
 	    private Label textTimeForExam;
@@ -71,11 +71,8 @@ public class EditExamController implements Initializable{
     private static TeacherController teacherController; //we will use it for load the prev/next screen ! (using root).
  
 
- 
-   
-    //TODO: principal
     @FXML
-    void btnBack(ActionEvent event) {
+    void btnBack(ActionEvent event) { //return screen of exam bank
 
     }
 
@@ -94,25 +91,37 @@ public class EditExamController implements Initializable{
      		} else if (textTimeForExam.getText().trim().isEmpty()) {
      			popUp("Please fill the Time Allocated For Exam Field");
      			} else {
+     				//check that examID and Time for exam is legal values
      				if (examID.length() == 6 && isOnlyDigits(examID)&& isOnlyDigits(TimeAllocatedToExam))
-     					editedExam=new Exam(examID); 
-     				//editedExam.setTeacher(currentTeacher);
-     	    		RequestToServer req = new RequestToServer("SaveEditExam");
-     	    		req.setRequestData(editedExam);
-     	    		ClientUI.cems.accept(req);
-     				
+     					//pass request to server to save the exam
+     				{   RequestToServer req = new RequestToServer("SaveEditExam");
+     	    	       	req.setRequestData(editedExam);
+     	    	    	ClientUI.cems.accept(req);
+     				}
      			}
     }
 
+    @FXML
+    void btnBrowseExamQuestions(ActionEvent event) { //go to yuval screen
 
+    }
+
+    
+    
+    
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		teacher = (Teacher) ClientUI.loggedInUser.getUser();
+		//fill fields in screen with values of exam:
+		textExamID.setText(editedExam.getExamID());
+		textTimeAllocateForExam.setText(Integer.toString(editedExam.getTimeOfExam()));
+		textTeacherComment.setText(editedExam.getCommentForTeacher());
+		textStudentComment.setText(editedExam.getCommentForStudents());
 		
 	}
     
- 
+
   // create a popUp with a message
  		public void popUp(String txt) {
  			final Stage dialog = new Stage();
@@ -147,8 +156,7 @@ public class EditExamController implements Initializable{
  		}
 
 		public static void setActiveExamState(Exam selectedExam) {
-			editedExam =selectedExam;
-			
+			editedExam =selectedExam;	
 		}
  		
  		

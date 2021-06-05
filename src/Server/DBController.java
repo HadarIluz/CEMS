@@ -845,6 +845,30 @@ public class DBController {
 		
 		
 	}
+	
+	
+	/**
+	 * @param 
+	 * @return true if succeed to save edit exam values, return false if not. 
+	 *         
+	 */
+	public boolean editExamSave(Exam exam) {
+		PreparedStatement pstmt;
+
+		try {
+			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE id=?");
+			pstmt.setString(1, exam.getExamID()); //set exam id
+			pstmt.setString(5, exam.getCommentForTeacher()); //set comments for teacher
+			pstmt.setString(6, exam.getCommentForStudents());//set comments for students
+			pstmt.setLong(7, exam.getAuthor().getId());//set teacher id
+			pstmt.executeUpdate();
+			
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			return false;
+		}
+		return true;
+	}
 
 
 

@@ -127,7 +127,7 @@ public class ExamBankController implements Initializable {
 	}
 
 	@FXML
-	void btnEditExam(ActionEvent event) {
+    void btnEditExam(ActionEvent event) {
 		if (!textExamID.getText().isEmpty()) {
 			Exam selectedExam = getExistExamDetails(textExamID.getText());
 			try {
@@ -141,6 +141,8 @@ public class ExamBankController implements Initializable {
 			}
 		}
 	}
+	
+	
 
 	@FXML
 	void CreateNewExam(ActionEvent event) {

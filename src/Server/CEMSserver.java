@@ -292,6 +292,12 @@ public class CEMSserver extends AbstractServer {
 			createNewActiveExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
+			
+		case "SaveEditExam": {
+			dbController.editExamSave((Exam) req.getRequestData());
+
+		}
+			break;
 
 		}
 
