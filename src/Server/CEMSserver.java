@@ -705,9 +705,9 @@ public class CEMSserver extends AbstractServer {
 		//ResponseFromServer respon = new ResponseFromServer("DOWNLOAD EXAM"); //????
 		String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_exam.docx";
 		MyFile exam = new MyFile(fileName);
-		//String LocalfilePath = "/CEMS/files/" + fileName; // I think without fileName
-		String LocalfilePath = fileName ; //need to be in file
 		try {
+			String path = new File("").getCanonicalPath();
+			String LocalfilePath = path + "/files/" + fileName; // I think without fileName
 			File newFile = new File(LocalfilePath);
 			byte[] mybytearray = new byte[(int) newFile.length()];
 			FileInputStream fis = new FileInputStream(newFile);
@@ -732,7 +732,9 @@ public class CEMSserver extends AbstractServer {
 		System.out.println("Message received: " + msg + " from " + client);
 		System.out.println("length " + fileSize);
 		try {
-			FileOutputStream fos = new FileOutputStream(submitExam.getFileName()); //WILL BE LOCALPATH. NEED TO BE IN FILE
+			String path = new File("").getCanonicalPath();
+			String LocalfilePath = path + "/files/" + submitExam.getFileName(); // I think without fileName			
+			FileOutputStream fos = new FileOutputStream(LocalfilePath); //WILL BE LOCALPATH. NEED TO BE IN FILE
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			bos.write(submitExam.getMybytearray(), 0, fileSize);
 			bos.flush();
