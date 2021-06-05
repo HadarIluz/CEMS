@@ -15,11 +15,20 @@ public class Exam implements Serializable{
 	private HashMap<String,Integer> questionScores; // mapping the questionID(string) to score(integer)
 	private String commentForTeacher;
 	private String commentForStudents;
-	private Teacher author; // is this relevant or to delete?
+	private Teacher author; 
 	private String ProfessionName;
+	private ArrayList<QuestionInExam> examQuestionsWithScores;
 
 	
 	
+	public ArrayList<QuestionInExam> getExamQuestionsWithScores() {
+		return examQuestionsWithScores;
+	}
+
+	public void setExamQuestionsWithScores(ArrayList<QuestionInExam> examQuestionsWithScores) {
+		this.examQuestionsWithScores = examQuestionsWithScores;
+	}
+
 	public Exam(String examID) {
 		super();
 		this.examID = examID;
@@ -39,6 +48,7 @@ public class Exam implements Serializable{
 		this.examID = "";
 		this.profession = profession;
 		this.timeOfExam = timeOfExam;
+		this.course = course;
 	}
 
 		

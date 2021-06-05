@@ -70,7 +70,7 @@ public class CreateExam_step1Controller implements Initializable{
     private ArrayList<Course> courseList;
     private Course selectedCourse = null;
     private HashMap<String, Course> courseMap = null;
-
+    private static Exam newExam = null;
 
 
     @FXML
@@ -88,12 +88,15 @@ public class CreateExam_step1Controller implements Initializable{
         		popUp("Exam time too short");
     		}
     		else {
-    			Exam newExam = new Exam(selectedProfession, selectedCourse, time);
+    			if (newExam == null) {
+        			newExam = new Exam(selectedProfession, selectedCourse, time);
+
+    			}
     			if (textLecturers_Instructions.getText().trim().length() > 0) {
     				newExam.setCommentForTeacher(textLecturers_Instructions.getText().trim());
     			}
     			if (textStudent_Instructions.getText().trim().length() > 0) {
-    				newExam.setCommentForTeacher(textStudent_Instructions.getText().trim());
+    				newExam.setCommentForStudents(textStudent_Instructions.getText().trim());
     			}
     			startNextScreen(newExam);
     		}
@@ -174,6 +177,23 @@ public class CreateExam_step1Controller implements Initializable{
 		
 		professionsMap = TeacherController.getProfessionsMap();
 		loadProfessionsToCombobox();
+		
+		if (newExam != null) {
+			selectedProfession = newExam.getProfession();
+			selectProffessionList.getSelectionModel().select(selectedProfession.getProfessionName());
+			selectedCourse = newExam.getCourse();
+			selectCourseList.getSelectionModel().select(selectedCourse.getCourseName());
+			selectCourseList.setDisable(false);
+			textExamDuration.setText(String.valueOf(newExam.getTimeOfExam()));
+			if (newExam.getCommentForTeacher() != null) {
+				textLecturers_Instructions.setText(String.valueOf(newExam.getCommentForTeacher()));
+			}
+			
+			if (newExam.getCommentForStudents() != null) {
+				textStudent_Instructions.setText(String.valueOf(newExam.getCommentForStudents()));
+			}
+			
+		}
 
 
 	}
@@ -184,17 +204,21 @@ public class CreateExam_step1Controller implements Initializable{
     }
 	
 	// create a popup with a message
-			public void popUp(String txt) {
-				final Stage dialog = new Stage();
-				VBox dialogVbox = new VBox(20);
-				Label lbl = new Label(txt);
-				lbl.setPadding(new Insets(5));
-				lbl.setAlignment(Pos.CENTER);
-				lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-				dialogVbox.getChildren().add(lbl);
-				Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-				dialog.setScene(dialogScene);
-				dialog.show();
-			}
+	public void popUp(String txt) {
+		final Stage dialog = new Stage();
+		VBox dialogVbox = new VBox(20);
+		Label lbl = new Label(txt);
+		lbl.setPadding(new Insets(5));
+		lbl.setAlignment(Pos.CENTER);
+		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		dialogVbox.getChildren().add(lbl);
+		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
+		dialog.setScene(dialogScene);
+		dialog.show();
+	}
+
+	public static void setExamState(Exam newExam2) {
+		newExam = newExam2;
+	}
 
 }

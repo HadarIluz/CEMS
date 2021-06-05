@@ -33,11 +33,6 @@
             <Image url="@../../images/teacher-Principal_img/desktop.png" />
          </image>
       </ImageView>
-      <Label fx:id="text100" layoutX="315.0" layoutY="478.0" prefHeight="21.0" prefWidth="48.0" text="&lt;100" textFill="#fc7143">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
       <ImageView fx:id="imgStep1" fitHeight="59.0" fitWidth="74.0" layoutX="234.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/cems_img/step1.png" />
@@ -60,7 +55,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Label fx:id="textErrorMsg" layoutX="359.0" layoutY="480.0" text="Exam score not equal to 100 !" textFill="#f45050">
+      <Label fx:id="textErrorMsg" layoutX="305.0" layoutY="477.0" text="Exam score not equal to 100 !" textFill="#f45050">
          <font>
             <Font size="14.0" />
          </font>

@@ -42,9 +42,9 @@ public class BrowseQuestionController implements Initializable{
     @FXML
     private Text textMsg1;
     
-    QuestionInExam selectedQ = null;
+    private QuestionInExam selectedQ = null;
     private static ArrayList<Question> availableQuestions;
-    ObservableList<Question> Qlist;
+    private ObservableList<Question> Qlist;
 
 
     @FXML
@@ -80,7 +80,7 @@ public class BrowseQuestionController implements Initializable{
 		tableQuestion.setItems(FXCollections.observableArrayList(availableQuestions));
 
 		tableQuestion.getColumns().addAll(QuestionID, Question);
-		
+				
 	}
 	
 	public static void setAvailableQuestions(ArrayList<Question> availableQ) {
