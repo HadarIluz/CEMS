@@ -116,7 +116,6 @@ public class StartManualExamController implements Initializable{
     		    RequestToServer req = new RequestToServer("submitManualExam");
     			req.setRequestData(submitExam);
     	    	ClientUI.cems.accept(req);
-    		    //ClientUI.cems.accept(submitExam);
     		} catch (Exception ex) {
     			ex.printStackTrace();
     		}
