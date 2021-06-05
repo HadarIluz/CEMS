@@ -65,8 +65,6 @@ public class EditExamController implements Initializable{
     private String examID;
     private String TimeAllocatedToExam;
     public static Exam editedExam;
-    private static HashMap<String, Question> questionsMap = null;
-    private Question selectedQuestion;
     private Teacher teacher;
     
     
@@ -81,10 +79,6 @@ public class EditExamController implements Initializable{
 
     }
 
-    @FXML
-    void btnRemoveQuestion(MouseEvent event) {
-    	questionsMap.remove(selectedQuestion);
-    }
 
     @FXML
     void btnSaveEditeExam(ActionEvent event) {
@@ -101,7 +95,7 @@ public class EditExamController implements Initializable{
      			popUp("Please fill the Time Allocated For Exam Field");
      			} else {
      				if (examID.length() == 6 && isOnlyDigits(examID)&& isOnlyDigits(TimeAllocatedToExam))
-     					editedExam=new Exam(examID); //TODO:need more pk(?)
+     					editedExam=new Exam(examID); 
      				//editedExam.setTeacher(currentTeacher);
      	    		RequestToServer req = new RequestToServer("SaveEditExam");
      	    		req.setRequestData(editedExam);
@@ -110,55 +104,14 @@ public class EditExamController implements Initializable{
      			}
     }
 
-    @FXML
-    void btnShowQuestion(ActionEvent event) {
-    	//TODO: load screen of edit question
-    	popUp(selectedQuestion.getQuestion());
-    }
 
-    @FXML
-    void btnUpdate_studentComment(MouseEvent event) {
-    	commentForStudent=textStudentComment.getText();
-    	
-    }
-
-//    @FXML
-//    void btnUpdate_teacherComment(MouseEvent event) {
-//    	commentForTeacher=textTeacherComment.getText();
-//    }
-
-//    @FXML
-//    void selectQuestion(MouseEvent event) {
-//    	if (questionsMap.containsKey(selectQuestion.getValue())) {
-//    		selectedQuestion = questionsMap.get(selectQuestion.getValue());
-//    	}
-//
-//    }
-//    
-//    //load questions from hashMap to combobox. In combobox we will see questionID
-//    public void loadQuestionsToCombobox() {
-//    	selectQuestion.setItems(FXCollections.observableArrayList(questionsMap.keySet()));
-//    }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		selectedQuestion = null;
 		teacher = (Teacher) ClientUI.loggedInUser.getUser();
-		//TODO:1. req from server data of the specific exam according to examID.
-		//2. response(  return Exam)  RequestToServer req = new RequestToServer("getEditExamData");
-		//3. insert data to test filed by setText from object.
-		//loadQuestionsToCombobox();
 		
-		//ClientUI.loggedInUser..... המורה מחזירה את רשימתה קורסים שלה ואת השם.
 	}
     
-	//set hashMap of questions 
-    public static void setQestionArrayList(ArrayList<Question> questionsList) {
-    	questionsMap = new HashMap<>();
-		for (Question q:questionsList) {
-			questionsMap.put(q.getQuestionID(), q);
-		}
-	}
  
   // create a popUp with a message
  		public void popUp(String txt) {
@@ -198,9 +151,5 @@ public class EditExamController implements Initializable{
 			
 		}
  		
- 		//TODO: לחשוב על מקרה שבו המורה מוחקת שאלה , לשאלה הזאת יש ניקוד והציון של המבחן ישתנה. אנחנו רוצים לשמור ציון אפס
- 		// לחשוב אם מספיק להקפיץ למורה הודעה 
- 		//או
- 		//להכריח אותה לבצע פעולה מסויימת לאיזון הציון.
-
+ 		
 }
