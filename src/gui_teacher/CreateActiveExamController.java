@@ -1,5 +1,6 @@
 package gui_teacher;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -21,6 +22,7 @@ import entity.Teacher;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -32,6 +34,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.RequestToServer;
@@ -65,15 +68,10 @@ public class CreateActiveExamController implements Initializable {
 	@FXML
 	private RadioButton selectComputerized;
 
-	// private static TeacherController teacherController; // check if not needed.
+	private static TeacherController teacherController; 
 	private static Exam exam;
-	private Teacher teacher;
+	//private static Teacher teacher;
 	private static String activeExamType;
-
-//	private static HashMap<String, Time> startTimeForNewActiveExamtMap = new HashMap<String, Time>();
-//	private static ArrayList<Time> startTimeList = new ArrayList<Time>();
-//	private ArrayList<String> examIdList = new ArrayList<String>();
-
 	private String[] startTimeArr = { "08:00:00", "08:30:00", "09:00:00", "09:30:00", "10:00:00", "10:30:00",
 			"11:00:00", "11:30:00", "12:00:00", "12:30:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00", "15:00:00",
 			"15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00" };
@@ -89,9 +87,9 @@ public class CreateActiveExamController implements Initializable {
 		if (checkConditionToSaveActiveExam(examCode)) {
 
 			// exam.setAuthor(teacher); // TODO: think with team if need to delete from DB
-			
-			
-			ActiveExam newActiveExam = new ActiveExam(selectedTime, exam, examCode , activeExamType);
+
+			ActiveExam newActiveExam = new ActiveExam(selectedTime, exam, examCode, activeExamType,
+					exam.getTimeOfExam());
 			// before we create new active exam, Request from server to check that
 			// the same examID at the same time not already exist.
 			boolean isAllowed = isActiveExamExist(newActiveExam);
@@ -104,9 +102,10 @@ public class CreateActiveExamController implements Initializable {
 				// TODO: check SQL in DB for this :)
 
 				if (CEMSClient.responseFromServer.getStatusMsg().getStatus()
-						.equals("New active exam created successfully")) {
-					popUp("New active exam:" + newActiveExam.getExam().getExamID()
-							+ " has been successfully created in the system.");
+						.equals("NEW ACTIVE EXAM CREATED")) {
+					popUp("New active exam has been successfully created in the system.");
+
+					displayExamBankScreen();
 				}
 
 			} else {
@@ -115,6 +114,19 @@ public class CreateActiveExamController implements Initializable {
 
 			}
 
+		}
+
+	}
+
+	@SuppressWarnings("static-access")
+	private void displayExamBankScreen() {
+		try {
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ExamBank.fxml"));
+			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+			teacherController.root.add(newPaneRight, 1, 0);
+		} catch (IOException e) {
+			System.out.println("Couldn't load!");
+			e.printStackTrace();
 		}
 
 	}
@@ -156,17 +168,17 @@ public class CreateActiveExamController implements Initializable {
 	}
 
 	// in order to avoid from create the same Active Exam in the same time!!
+
+	/**
+	 * @param activeExam
+	 * @return true if active create action this exam as new active exam is allowed
+	 */
 	private boolean isActiveExamExist(ActiveExam activeExam) {
 		RequestToServer req = new RequestToServer("CheckIfActiveExamAlreadyExists");
 		req.setRequestData(activeExam);
 		ClientUI.cems.accept(req);
 
-		
-
-		if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("Create action is allowed")){
-				//&& isActiveExamExists != null) {
-			ActiveExam isActiveExamExists = (ActiveExam) CEMSClient.responseFromServer.getResponseData(); //FOR DEBUG ONLY.
-			
+		if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("CREATE ACTION ALLOWED")) {
 			return true;
 		}
 		return false;
@@ -177,7 +189,7 @@ public class CreateActiveExamController implements Initializable {
 	 */
 	@FXML
 	void selectComputerized(MouseEvent event) {
-		activeExamType= "computerized";
+		activeExamType = "computerized";
 		selectManual.setDisable(toggleFlagStatus());
 
 	}
@@ -187,7 +199,7 @@ public class CreateActiveExamController implements Initializable {
 	 */
 	@FXML
 	void selectManual(MouseEvent event) {
-		activeExamType="manual";
+		activeExamType = "manual";
 		selectComputerized.setDisable(toggleFlagStatus());
 
 	}
@@ -215,24 +227,23 @@ public class CreateActiveExamController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		teacher = (Teacher) ClientUI.loggedInUser.getUser();
+		//teacher = (Teacher) ClientUI.loggedInUser.getUser();
 		selectedTime = null;
 		// TODO: get proffe..Name and set into examID label teacher.getProfessions()
 		// the same for Course.
 		textExamID.setText(exam.getExamID());
 		textCourse.setText(exam.getCourse().getCourseID());
 		textProfession.setText(exam.getProfession().getProfessionID());
-		selectTime.setItems(FXCollections.observableArrayList(startTimeArr)); //load time to combo Box.
+		selectTime.setItems(FXCollections.observableArrayList(startTimeArr)); // load time to combo Box.
 
 	}
-
 
 	/**
 	 * @param event that occurs when the teacher chooses start time from combo box.
 	 */
 	@FXML
-	void selectTime(ActionEvent event) {			
-		selectedTime=  java.sql.Time.valueOf(selectTime.getValue());
+	void selectTime(ActionEvent event) {
+		selectedTime = java.sql.Time.valueOf(selectTime.getValue());
 	}
 
 	/**

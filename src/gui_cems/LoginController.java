@@ -99,9 +99,9 @@ public class LoginController {
 	public static User user;
 	private static boolean press = false; // for AboutCEMS text.
 
-	private StudentController studentController;
-	private PrincipalController principalController;
-	private TeacherController teacherController;
+	private static StudentController studentController;
+	private static PrincipalController principalController;
+	private static TeacherController teacherController;
 
 	/**
 	 * @param event that occurs when clicking on 'login' button

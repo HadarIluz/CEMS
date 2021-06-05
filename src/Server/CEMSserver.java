@@ -697,13 +697,13 @@ public class CEMSserver extends AbstractServer {
 	private void CheckIfActiveExamAlreadyExists(ActiveExam activeExam, ConnectionToClient client) {
 		// logic for 'createNewActiveExam'
 		ActiveExam actExam = null;
-		ResponseFromServer response = null;
+		ResponseFromServer res = null;
 		actExam = dbController.isActiveExamAlreadyExists(activeExam);
 
 		// in case ExamCode is null the same examID not found, so create this active
 		// exam is allowed.
 		if (actExam.getExamCode() == null) {
-			response = createResponse("CREATE ACTION ALLOWED", "Create action is allowed");
+			res = createResponse("CREATE ACTION ALLOWED", "Create action is allowed");
 		}
 
 		else {
@@ -713,11 +713,11 @@ public class CEMSserver extends AbstractServer {
 			// check if they have the same start time AND code.
 			/*actExam.getStartTime().equals(activeExam.getStartTime())&& */
 			if (actExam.getExamCode().equals(activeExam.getExamCode())) {
-				response = createResponse(str, "ACTIVE EXAM NOT ALLOWED");
+				res = createResponse(str, "ACTIVE EXAM NOT ALLOWED");
 			} else {
 				// we allowed to perform different exams at the same time.
 				// we allowed to perform the same exam but NOT in the same time
-				response = createResponse(str, "Create action is allowed");
+				res = createResponse(str, "Create action is allowed");
 			}
 
 		}
@@ -725,51 +725,23 @@ public class CEMSserver extends AbstractServer {
 		// ----------------------
 
 		try {
-			client.sendToClient(response);
+			client.sendToClient(res);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", response);
+		printMessageInLogFramServer("Message to Client:", res);
 
 	}
-
-//		if (actExam.getExamCode() == null) {
-//			response = new ResponseFromServer("ACTIVE EXAM EXIST: " + activeExam.getExam().getExamID()
-//					+ ", start time: " + activeExam.getStartTime() + " Code: " + actExam.getExamCode());
-//
-//			// check if they have the same start time AND code.
-//			if (actExam.getStartTime().equals(activeExam.getStartTime())
-//					&& actExam.getExamCode().equals(activeExam.getExamCode())) {
-//
-//				response = new ResponseFromServer("ACTIVE EXAM NOT ALLOWES");
-//				response.setResponseData(null);
-//			} else {
-//				// we allowed to perform different exams at the same time.
-//				// we allowed to perform the same exam but NOT in the same time
-//				response.getStatusMsg().setStatus("Create action is allowed");
-//				response.setResponseData(activeExam);
-//			}
-//		} else {
-//			response = new ResponseFromServer("ACTIVE EXAM NOT ALLOWES");
-//			response.setResponseData(null);
-//		}
-//
-//		try {
-//			client.sendToClient(response);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		printMessageInLogFramServer("Message to Client:", response);
 
 	/**
 	 * @param responseType
 	 * @param Status
 	 * @return Returns an answer according to inputs function.
 	 */
-	private ResponseFromServer createResponse(String responseType, String Status) {
+	private ResponseFromServer createResponse(String responseType, String status) {
 		ResponseFromServer response = null;
 		response = new ResponseFromServer(responseType);
-		response.getStatusMsg().setStatus(Status);
+		response.getStatusMsg().setStatus(status);
 		return response;
 	}
 
