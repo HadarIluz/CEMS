@@ -8,7 +8,6 @@ import ocsf.client.*
 ;
 import common.CemsIF;
 import common.MyFile;
-import gui_teacher.CreateQuestionController;
 import logic.ResponseFromServer;
 import logic.StatusMsg;
 import java.io.*;
@@ -76,33 +75,28 @@ public class CEMSClient extends AbstractClient {
 			responseFromServer.getStatusMsg().setStatus(responseFromServer.getResponseType());
 			clientUI.display(responseFromServer.toString());
 			awaitResponse = false;
-			
 		}
 		
 		if(msg instanceof MyFile) {
 			int fileSize = ((MyFile) msg).getSize();
-			clientUI.display("Message received: " + msg + " from server");
-			clientUI.display("length " + fileSize);
-			MyFile exam = (MyFile) msg;
-			String LocalfilePath = "C:\\" + exam.getFileName();
+			MyFile downloadExam = (MyFile) msg;
+			String LocalfilePath = "C:\\" + downloadExam.getFileName();
 			try {
 				File newFile = new File(LocalfilePath);
-				byte[] mybytearray = new byte[(int) newFile.length()];
-				//FileInputStream fis = new FileInputStream(newFile); //????
-				//BufferedInputStream bis = new BufferedInputStream(fis);//????
-
-				exam.initArray(mybytearray.length);
-				exam.setSize(mybytearray.length);
-
-				//bis.read(exam.getMybytearray(), 0, mybytearray.length);//????
-				
+			/////////////////////////////FROM HERE
+			//	FileOutputStream fos = new FileOutputStream(newFile);
+			//	BufferedOutputStream bos = new BufferedOutputStream(fos);
+			//	bos.write(downloadExam.getMybytearray(), 0, fileSize);
+			//	bos.flush();
+			//	fos.flush();
 			} catch (Exception e) {
 				clientUI.display("Error send (Files)msg) to Client");
 			}
 			awaitResponse = false;
 		}
 	}
-
+	
+	
 	/**
 	 * This method handles all data coming from the UI
 	 *

@@ -103,20 +103,15 @@ public class StartManualExamController implements Initializable{
     		LocalfilePath= textLocalFilePath.getText();
     		try {
     			File newFile = new File (LocalfilePath);
-      		      
     		    byte [] mybytearray  = new byte [(int)newFile.length()];
     		    FileInputStream fis = new FileInputStream(newFile);
-    		    BufferedInputStream bis = new BufferedInputStream(fis);			  
-    		      
+    		    BufferedInputStream bis = new BufferedInputStream(fis);			   
     		    submitExam.initArray(mybytearray.length);
     		    submitExam.setSize(mybytearray.length);
-    		      
-    		    bis.read(submitExam.getMybytearray(),0,mybytearray.length);
-    		    
-    		    
+    		    bis.read(submitExam.getMybytearray(),0,mybytearray.length);   
     		    RequestToServer req = new RequestToServer("submitManualExam");
     			req.setRequestData(submitExam);
-    	    	ClientUI.cems.accept(req);
+    	    	ClientUI.cems.accept(req); //need??
     		} catch (Exception ex) {
     			ex.printStackTrace();
     		}

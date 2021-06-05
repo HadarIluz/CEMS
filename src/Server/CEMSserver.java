@@ -701,28 +701,21 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void getManualExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
-		ResponseFromServer respon = new ResponseFromServer("DOWNLOAD EXAM");
+		//ResponseFromServer respon = new ResponseFromServer("DOWNLOAD EXAM"); //????
 		String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_exam.docx";
 		MyFile exam = new MyFile(fileName);
 		//String LocalfilePath = "/CEMS/files/" + fileName; // I think without fileName
 		String LocalfilePath = fileName ;
-		
 		try {
 			File newFile = new File(LocalfilePath);
-			int fileSize = ((MyFile) exam).getSize();
-
 			byte[] mybytearray = new byte[(int) newFile.length()];
 			FileInputStream fis = new FileInputStream(newFile);
 			BufferedInputStream bis = new BufferedInputStream(fis);
-
 			exam.initArray(mybytearray.length);
 			exam.setSize(mybytearray.length);
-
 			bis.read(exam.getMybytearray(), 0, mybytearray.length);
-			
 			client.sendToClient(exam); //matar : not good
-		  //client.sendToClient(respon);//matar: need to check
-
+		   // client.sendToClient(respon);//matar: need to check // ????
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
