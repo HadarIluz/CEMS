@@ -82,7 +82,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="ChosenQuestionID" layoutX="200.0" layoutY="444.0" onInputMethodTextChanged="#textTotalScore" strokeType="OUTSIDE" strokeWidth="0.0" text="000000">
+      <Text fx:id="ChosenQuestionID" layoutX="200.0" layoutY="444.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000000">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
