@@ -27,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import logic.LoggedInUser;
 import logic.RequestToServer;
 
 /**
@@ -64,7 +65,7 @@ public class PrincipalController extends Application implements Initializable {
 
 	public LoginController loginController;
 	protected User principal;
-	protected static GridPane root;
+	public static GridPane root;
 	public Scene scene;
 
 	@Override
@@ -111,19 +112,6 @@ public class PrincipalController extends Application implements Initializable {
 
 	}
 
-	// -----pic-----//
-
-//		// <ImageView fx:id="person" fitHeight="111.0" fitWidth="112.0" layoutX="58.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
-//	      //creating the image object
-//	      InputStream stream = new FileInputStream("@../../images/teacher-Principal_img/PrincipalUserImg.png");
-//	      Image image = new Image(stream);
-//	      //Setting image to the image view
-//	      imgPrincipal.setImage(image);
-//	      //Setting the image view parameters
-//	      imgPrincipal.setX(58);
-//	      imgPrincipal.setY(56);
-//	      imgPrincipal.setPreserveRatio(true);
-
 	@SuppressWarnings("unchecked")
 	/**
 	 * @param event that loading the principal right screen after pressing a button.
@@ -169,6 +157,7 @@ public class PrincipalController extends Application implements Initializable {
 	 */
 	@FXML
 	void btnViewExamBanckinfo(ActionEvent event) {
+		
 		try {
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_teacher/ExamBank.fxml"));
 			root.add(newPaneRight, 1, 0);

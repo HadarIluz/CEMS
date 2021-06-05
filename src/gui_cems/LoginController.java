@@ -99,9 +99,9 @@ public class LoginController {
 	public static User user;
 	private static boolean press = false; // for AboutCEMS text.
 
-	private StudentController studentController;
-	private PrincipalController principalController;
-	private TeacherController teacherController;
+	private static StudentController studentController;
+	private static PrincipalController principalController;
+	private static TeacherController teacherController;
 
 	/**
 	 * @param event that occurs when clicking on 'login' button
@@ -135,14 +135,12 @@ public class LoginController {
 
 			// handle case that user found and checks password
 			else {
-				user = (User)CEMSClient.responseFromServer.getResponseData();
-				if (userPassword.equals(user.getPassword()) == false ) {
+				user = (User) CEMSClient.responseFromServer.getResponseData();
+				if (userPassword.equals(user.getPassword()) == false) {
 					popUp("The password insert is incorrect. Please try again.");
-				} 
-				else if(userID.equals(String.valueOf(user.getId()))==false) {
+				} else if (userID.equals(String.valueOf(user.getId())) == false) {
 					popUp("The id insert is incorrect. Please try again.");
-				}
-				else {
+				} else {
 
 					user.setLogged(1);
 
@@ -229,14 +227,18 @@ public class LoginController {
 				}
 
 			}
+			return;
+			
 		}
 
 		// handle case that one of the parameters is invalid.
 		else {
 			popUp("One or more of the parameters which insert are incorrect.\n Please try again.");
-			reqFieldUserName.setText("");;
+			reqFieldUserName.setText("");
 			reqFieldPassword.setText("");
 		}
+		txtUserName.clear();
+		txtPassword.clear();
 
 	}
 
@@ -287,7 +289,7 @@ public class LoginController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		listenToCloseWindow(primaryStage);
 	}
 
@@ -316,20 +318,20 @@ public class LoginController {
 	public void performLogout(User user) {
 		// sent to server pk(id) in order to change the login status of this user.
 		RequestToServer reqLoged = new RequestToServer("UpdateUserLoggedOut");
-		if(user instanceof User) {
+		if (user instanceof User) {
 			reqLoged.setRequestData(user);
 		}
-		if(user instanceof Student) {
+		if (user instanceof Student) {
 			User student = new User(user.getId(), user.getUserType());
 			reqLoged.setRequestData(student);
 		}
-		if(user instanceof Teacher) {
+		if (user instanceof Teacher) {
 			User teacher = new User(user.getId(), user.getUserType());
 			reqLoged.setRequestData(teacher);
 		}
 		ClientUI.cems.accept(reqLoged);
+		ClientUI.loggedInUser.logOff();
 	}
-	
 
 	/**
 	 * @param event that displays and uploads a message when clicked on "AboutCEMS"
@@ -359,7 +361,6 @@ public class LoginController {
 	void pressQuit(ActionEvent event) {
 		System.exit(0);
 	}
-	
 	/**
 	 * listen for close events on a JavaFX Stage, notified when the user clicks the
 	 * button with the X on, in the upper right corner of the Stage
@@ -374,12 +375,11 @@ public class LoginController {
 			reqLogged.setRequestData("ClientDisconected_from_login_fram");
 			ClientUI.cems.accept(reqLogged);
 			if (CEMSClient.responseFromServer.getResponseType().equals("USER LOGOUT")) {
-				
+
 			}
 
 		});
 
 	}
-	
 
 }

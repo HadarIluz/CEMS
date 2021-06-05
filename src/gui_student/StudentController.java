@@ -66,7 +66,7 @@ public class StudentController extends Application implements Initializable {
 
 	private static LoginController loginController;
 	protected Student student;
-	protected static GridPane root;
+	public static GridPane root;
 	public Scene scene;
 
 	/**
@@ -157,7 +157,7 @@ public class StudentController extends Application implements Initializable {
 
 		alert.getButtonTypes().setAll(okButton, noButton);
 		alert.showAndWait().ifPresent(type -> {
-			if (type == okButton) {				
+			if (type == okButton) {	
 				loginController = new LoginController();
 				((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 				try {

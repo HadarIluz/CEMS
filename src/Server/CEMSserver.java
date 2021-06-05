@@ -212,8 +212,7 @@ public class CEMSserver extends AbstractServer {
 			try {
 
 				ResponseFromServer respond = new ResponseFromServer("TEACHER EXAMS");
-				respond.setResponseData(dbController.GetTeacherExams((Integer) req.getRequestData()));
-
+				respond.setResponseData((ArrayList<Exam>) dbController.GetTeacherExams((Integer) req.getRequestData()));
 				client.sendToClient(respond);
 
 			} catch (IOException e) {
@@ -313,7 +312,18 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
+		case "SaveEditExam": {
+			dbController.editExamSave((Exam) req.getRequestData());
+
 		}
+			break;
+
+		case "getAllExamsStoredInSystem": {
+			getAllExamsStoredInSystem(client);
+
+		}
+		}
+
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
@@ -444,15 +454,15 @@ public class CEMSserver extends AbstractServer {
 	 */
 	private void getUser(User user, ConnectionToClient client) {
 		// logic of login
-		User userInSystem = null;
-		ResponseFromServer respon = dbController.verifyLoginUser(user);
-
-		userInSystem = (User) respon.getResponseData();
-		boolean exist = loggedInUsers.containsValue(userInSystem.getId()); // check if hashMap contains this user id
-		// in case this user exist in 'loggedInUsers' update isLogged to 1.
-		if (exist) {
-			user.setLogged(1); // set isLogged to 1.
-		}
+		ResponseFromServer respon = null;
+		respon = dbController.verifyLoginUser(user);
+//FIXME:		//TODO: thing again if the following lines are needed- for testing project...	
+//		User userInSystem = (User) respon.getResponseData();
+//		boolean exist = loggedInUsers.containsValue(userInSystem.getId()); // check if hashMap contains this user id,
+//		// in case this user exist in 'loggedInUsers' update isLogged to 1.
+//		if (exist) {
+//			user.setLogged(1); // set isLogged to 1.
+//		}
 		try {
 			client.sendToClient(respon);
 		} catch (IOException e) {
@@ -706,7 +716,7 @@ public class CEMSserver extends AbstractServer {
 		MyFile exam = new MyFile(fileName);
 		try {
 			String path = new File("").getCanonicalPath();
-			String LocalfilePath = path + "/files/" + fileName; 
+			String LocalfilePath = path + "/files/" + fileName;
 			File newFile = new File(LocalfilePath);
 			byte[] mybytearray = new byte[(int) newFile.length()];
 			FileInputStream fis = new FileInputStream(newFile);
@@ -728,8 +738,8 @@ public class CEMSserver extends AbstractServer {
 		System.out.println("length " + fileSize);
 		try {
 			String path = new File("").getCanonicalPath();
-			String LocalfilePath = path + "/files/" + submitExam.getFileName(); 		
-			FileOutputStream fos = new FileOutputStream(LocalfilePath); 
+			String LocalfilePath = path + "/files/" + submitExam.getFileName();
+			FileOutputStream fos = new FileOutputStream(LocalfilePath);
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			bos.write(submitExam.getMybytearray(), 0, fileSize);
 			bos.flush();
@@ -752,39 +762,58 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
+
 	}
 
 	private void CheckIfActiveExamAlreadyExists(ActiveExam activeExam, ConnectionToClient client) {
 		// logic for 'createNewActiveExam'
-		ActiveExam actExam = activeExam;
-		ResponseFromServer response = null;
-		actExam = dbController.isActiveExamAlreadyExists(actExam);
-		
-		if (actExam!= null) {
-			response = new ResponseFromServer("ACTIVE EXAM EXIST: " + activeExam.getExam().getExamID()
-					+ ", start time: " + activeExam.getStartTime());
-			
-			// check if they have the same start time AND code.
-			if (actExam.getStartTime().equals(activeExam.getStartTime())
-					&& actExam.getExamCode().equals(activeExam.getExamCode())) {
-				
-				response = new ResponseFromServer("ACTIVE EXAM NOT ALLOWES");
-				response.setResponseData(null);	
-			}
-			else {	
-				//we allowed to perform different exams at the same time.
-				//we allowed to perform the same exam but NOT in the same time
-				response.getStatusMsg().setStatus("Create action is allowed");
-				response.setResponseData(activeExam);
-			}
+		ActiveExam actExam = null;
+		ResponseFromServer res = null;
+		actExam = dbController.isActiveExamAlreadyExists(activeExam);
+
+		// in case ExamCode is null the same examID not found, so create this active
+		// exam is allowed.
+		if (actExam.getExamCode() == null) {
+			res = createResponse("CREATE ACTION ALLOWED", "Create action is allowed");
 		}
+
+		else {
+			String str = "ACTIVE EXAM EXIST: " + activeExam.getExam().getExamID() + ", start time: "
+					+ activeExam.getStartTime() + " Code: " + actExam.getExamCode();
+
+			// check if they have the same start time AND code.
+			/* actExam.getStartTime().equals(activeExam.getStartTime())&& */
+			if (actExam.getExamCode().equals(activeExam.getExamCode())) {
+				res = createResponse(str, "ACTIVE EXAM NOT ALLOWED");
+			} else {
+				// we allowed to perform different exams at the same time.
+				// we allowed to perform the same exam but NOT in the same time
+				res = createResponse(str, "Create action is allowed");
+			}
+
+		}
+
+		// ----------------------
+
 		try {
-			client.sendToClient(response);
+			client.sendToClient(res);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", response);
-		
+		printMessageInLogFramServer("Message to Client:", res);
+
+	}
+
+	/**
+	 * @param responseType
+	 * @param Status
+	 * @return Returns an answer according to inputs function.
+	 */
+	private ResponseFromServer createResponse(String responseType, String status) {
+		ResponseFromServer response = null;
+		response = new ResponseFromServer(responseType);
+		response.getStatusMsg().setStatus(status);
+		return response;
 	}
 
 	private void createNewActiveExam(ActiveExam newActiveExam, ConnectionToClient client) {
@@ -796,7 +825,17 @@ public class CEMSserver extends AbstractServer {
 			ex.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
-		
+
+	}
+
+	private void getAllExamsStoredInSystem(ConnectionToClient client) {
+		ResponseFromServer respond = new ResponseFromServer("ALL EXAMS");
+		respond.setResponseData((ArrayList<Exam>) dbController.GetAllExams());
+		try {
+			client.sendToClient(respond);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
