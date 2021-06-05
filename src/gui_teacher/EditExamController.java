@@ -23,8 +23,8 @@ public class EditExamController extends GuiCommon implements Initializable {
 	@FXML
 	private Text texTtitleScreen;
 
-	@FXML
-	private TextField textExamID;
+    @FXML
+    private TextField textExamID;
 
 	@FXML
 	private Button btnShowQuestion;
@@ -56,7 +56,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private static String screenStatus;
 
 	@FXML
-	void btnBackPrincipal(ActionEvent event) {
+	void btnBack(ActionEvent event) {
 		displayNextScreen(teacher, "/gui_teacher/ExamBank.fxml");
 	}
 
@@ -65,28 +65,70 @@ public class EditExamController extends GuiCommon implements Initializable {
 	// need to save changes in screen that open with btn browse question
 	@FXML
 	void btnSaveEditeExam(ActionEvent event) {
-		String examID = textExamID.getText();
-		// Check that all fields that must be filled are filled.
-		if (textExamID.getText().trim().isEmpty()) {
-			popUp("Please fill the ExamID Field");
-		} else if (textTimeForExam.getText().trim().isEmpty()) {
-			popUp("Please fill the Time Allocated For Exam Field");
-		} else {
+		String teacherComment= textTeacherComment.getText().trim();
+		String studentComment= textStudentComment.getText().trim();
+		String timeAllocateForExam = textTimeAllocateForExam.getText().trim();
+		// Check that all fields that must be filled are filled correctly.
+		boolean condition = checkConditionToStart(teacherComment, studentComment, timeAllocateForExam);
+		if (condition) {
+			
 			RequestToServer req = new RequestToServer("SaveEditExam");
 			req.setRequestData(exam);
 			ClientUI.cems.accept(req);
 
 		}
 	}
+	
+	private boolean checkConditionToStart( String teacherComment, String StudentComment, String timeAllocateForExam) {
+		StringBuilder strBuilder = new StringBuilder();
+		boolean flag= true;
+		if(teacherComment.length()==0 || StudentComment.length()==0 ) {
+			strBuilder.append("All fields must be filled !\n");
+			flag= true;
+		}
+		//return true if the String contains only digits.
+		if(isOnlyDigits(timeAllocateForExam)) {
+			strBuilder.append("Exam time must contains only digits.\n");
+			flag= true;
+		}
+		if(timeAllocateForExam.matches("[0-9]+")) {
+			int t=Integer.valueOf(timeAllocateForExam);
+//			if(! (t instanceof Integer)) {
+//				strBuilder.append("Time allocate for exam must set in minuse.\n");
+//				flag= true;
+//			}
+		}
+		
+		if (!flag) {
+			popUp(strBuilder.toString());
+		}
+		
+		return flag;
 
-	@FXML
-	void btnBrowseQuestions(ActionEvent event) {
-		displayNextScreen(teacher, "/gui_teacher/CreateQuestion.fxml");
 	}
 
+	/**
+	 * TODO:
+	 * 
+	 * @param event that occurs when the teacher clicks on a BrowseQuestions button,
+	 *              she transfer the next screen, that shows her all the questions of
+	 *              the specific exam she select.
+	 */
+	@FXML
+	void btnBrowseQuestions(ActionEvent event) {
+		if (!checkForLegalID(textExamID.getText()) || textExamID.getText().isEmpty()) {
+			return;
+		}
+		displayNextScreen(teacher, "/gui_teacher/QuestionBank.fxml");
+	}
+
+	/**
+	 * @param event that occurs when pressing on back button, the user return to
+	 *              'examBank' screen.
+	 */
 	@FXML
 	void btnShowQuestion(ActionEvent event) {
-
+		displayNextScreen(teacher, "/gui_teacher/ExamBank.fxml");
 	}
 
 	@Override
@@ -119,5 +161,22 @@ public class EditExamController extends GuiCommon implements Initializable {
 		screenStatus = status;
 		exam = selectedExam;
 	}
+	
+	
+	private boolean checkForLegalID(String ExamID) {
+		if (ExamID.length() != 6) {
+			popUp("Exam ID Must be 6 digits.");
+			return false;
+		}
+		for (int i = 0; i < ExamID.length(); i++)
+			if (!Character.isDigit(ExamID.charAt(i))) {
+				popUp("Exam ID Must Contains only digits.");
+				return false;
+			}
+		return true;
+	}
+	
+	
+	
 
 }

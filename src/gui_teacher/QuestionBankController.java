@@ -10,6 +10,8 @@ import client.ClientUI;
 import entity.Question;
 import entity.QuestionRow;
 import entity.Teacher;
+import entity.User;
+import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,7 +35,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class QuestionBankController implements Initializable {
+public class QuestionBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	private Button btnEditQuestion;
@@ -72,8 +74,9 @@ public class QuestionBankController implements Initializable {
 	private TableColumn<QuestionRow, String> Question;
 
 	private ObservableList<QuestionRow> data;
-	
-	private static TeacherController teacherController;
+
+	private static Teacher teacher;
+	private static User principal;
 
 	@FXML
 	void MouseC(MouseEvent event) {
@@ -84,25 +87,21 @@ public class QuestionBankController implements Initializable {
 
 	}
 
+	/**
+	 * @param event 
+	 */
 	@FXML
 	void btnCreateNewQuestion(ActionEvent event) {
-
-		try {
-			AnchorPane newPaneRight = FXMLLoader.load(getClass().getResource("CreateQuestion.fxml"));
-			teacherController.root.add(newPaneRight, 1, 0);
-
-		} catch (IOException e) {
-			System.out.println("Couldn't load!");
-			e.printStackTrace();
-		}
-
+		if (!checkForLegalID(textQuestionID.getText()))
+			return;
+		displayNextScreen(teacher, "CreateQuestion.fxml");
 	}
 
 	@FXML
 	void btnDeleteQuestion(ActionEvent event) {
-		if (!checkForLegalID(textQuestionID.getText())) 
+		if (!checkForLegalID(textQuestionID.getText()))
 			return;
-		
+
 		ObservableList<QuestionRow> Qlist;
 		Question questionToDelete = new Question();
 		questionToDelete.setQuestionID(textQuestionID.getText());
@@ -124,22 +123,33 @@ public class QuestionBankController implements Initializable {
 	void btnEditQuestion(ActionEvent event) {
 		if (!checkForLegalID(textQuestionID.getText()))
 			return;
+		displayNextScreen(teacher, "EditQuestion.fxml");
 
-		try {
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditQuestion.fxml"));
-			teacherController.root.add(newPaneRight, 1, 0);
-
-		} catch (IOException e) {
-			System.out.println("Couldn't load!");
-			e.printStackTrace();
-		}
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		initTableRows();
+		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
+			teacher = (Teacher) ClientUI.loggedInUser.getUser();
+			initTableRows();
+		}
+		else if (ClientUI.loggedInUser.getUser() instanceof User) {
+			//setUp before load screen.
+			principal = (User) ClientUI.loggedInUser.getUser();
+			btnEditQuestion.setDisable(false);
+			btnEditQuestion.setVisible(false);
+			btnCreateNewQuestion.setDisable(false);
+			btnCreateNewQuestion.setVisible(false);
+			btnDeleteQuestion.setDisable(false);
+			btnDeleteQuestion.setVisible(false);
+			textNavigation.setVisible(true);
+			textMsg1.setVisible(false);
+			textMsg2.setVisible(false);
+			initTableRowsForPrincipalView();
+		}
 
 	}
+
 
 	@SuppressWarnings("unchecked")
 	public void initTableRows() {
@@ -167,9 +177,36 @@ public class QuestionBankController implements Initializable {
 		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);
 
 	}
+	
+	private void initTableRowsForPrincipalView() {
+		textQuestionID.setEditable(true);
+		RequestToServer req = new RequestToServer("getQuestions_ofSpecificExam");
+
+		req.setRequestData(ClientUI.loggedInUser.getUser().getId());
+
+		ArrayList<QuestionRow> examsOfTeacher = new ArrayList<QuestionRow>();
+
+		ClientUI.cems.accept(req);
+
+		examsOfTeacher = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
+
+		data = FXCollections.observableArrayList(examsOfTeacher);
+
+		tableQuestion.getColumns().clear();
+		QuestionID.setCellValueFactory(new PropertyValueFactory<>("QuestionID"));
+		Proffesion.setCellValueFactory(new PropertyValueFactory<>("profession"));
+		Question.setCellValueFactory(new PropertyValueFactory<>("Question"));
+
+		tableQuestion.setItems(data);
+
+		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);
+		
+		
+	}
+	
+	
 
 	public boolean checkForLegalID(String QuestionID) {
-
 		if (QuestionID.length() != 5) {
 			popUp("Question ID Must be 5 digits.");
 			return false;
@@ -181,18 +218,13 @@ public class QuestionBankController implements Initializable {
 			}
 		return true;
 	}
-
-	private void popUp(String msg) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(msg);
-		lbl.setPadding(new Insets(15));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
-	}
+	
+	
+	//TODO: open window to see the question.
+    @FXML
+    void btnOpenQuestionInfo(ActionEvent event) {
+    	
+    }
+	
 
 }

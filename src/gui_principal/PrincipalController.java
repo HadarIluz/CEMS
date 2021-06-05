@@ -27,14 +27,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import logic.LoggedInUser;
 import logic.RequestToServer;
 
 /**
  * @author Hadar_Iluz
  *
  */
-public class PrincipalController extends Application implements Initializable {
+public class PrincipalController extends Application  implements Initializable {
 
 	@FXML
 	private ImageView person;
@@ -97,7 +96,6 @@ public class PrincipalController extends Application implements Initializable {
 	 * @param primaryStage
 	 */
 	private void listenToCloseWindow(Stage primaryStage) {
-
 		primaryStage.setOnCloseRequest((event) -> {
 			System.out.println("Closing Stage");
 			RequestToServer reqLogged = new RequestToServer("ClientDisconected");
