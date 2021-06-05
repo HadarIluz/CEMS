@@ -87,6 +87,7 @@ public class StartManualExamController implements Initializable{
     	RequestToServer req = new RequestToServer("getManualExam");
 		req.setRequestData(examOfStudent);
     	ClientUI.cems.accept(req);
+    	btnSubmit.setDisable(false);
     }
 
     @FXML
