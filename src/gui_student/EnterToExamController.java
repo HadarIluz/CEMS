@@ -103,7 +103,7 @@ public class EnterToExamController implements Initializable {
 			req.setRequestData(activeExam);
 			ClientUI.cems.accept(req);
 
-			if ((CEMSClient.responseFromServer.getResponseType()).equals("ACTIVE EXAM EXIST")) {
+			if ((CEMSClient.responseFromServer.getResponseType()).equals("ACTIVE EXAM_NOT_EXIST")) {
 				// At this point we found exam so we can be sure an object has arrived in this
 				// response.
 				activeExam = (ActiveExam) CEMSClient.responseFromServer.getResponseData();
