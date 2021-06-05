@@ -846,13 +846,25 @@ public class DBController {
 			pstmt = conn.prepareStatement("SELECT * FROM exam");
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Exam exam = new Exam(rs.getString(1));
-				exam.setProfession(new Profession(rs.getString(2)));
-				Course course = new Course(rs.getString(3));
-				exam.setCourse(course);
-				//exam.setCourse(new Course(rs.getString(3)));
-				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
-				examsList.add(exam);
+				Profession profession = new Profession(null);
+				profession.setProfessionID(rs.getString(2));
+				
+//				Course course = new Course(null);
+//				course.setCourseID(rs.getString(3));
+				//exam.setCourse(new Course(rs.getString(3)));// addition
+				
+				Exam exam = new Exam(rs.getString(1), profession, new Course(rs.getString(3)), Integer.parseInt(rs.getString(4)));
+				examsList.add(exam);		
+				//--------------------
+				
+//				Exam exam = new Exam();
+//				exam.setExamID(rs.getString(1));
+//				Profession profession= new Profession(rs.getString(2));
+//				exam.setProfession(profession);
+//				Course course = new Course(rs.getString(3));
+//				exam.setCourse(course);
+//				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));		
+//				examsList.add(exam);
 			}
 			rs.close();
 

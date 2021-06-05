@@ -53,10 +53,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	private TableColumn<Exam, Integer> Time;
-	
-//    @FXML
-//    private TableColumn<Exam, Integer> Course;
-
+		
 	@FXML
 	private Button btnExamInfoPrincipal;
 
@@ -70,9 +67,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private Text textMsg2;
 
 	private ObservableList<Exam> data;
-	//private static TeacherController teacherController;
 	private static Teacher teacher;
 	private static User principal;
+	private boolean displayCourseColumn=false;
 
 	@FXML
 	void selectExamFromTable(MouseEvent event) {
@@ -87,7 +84,6 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			if (e.getExamID().equals(ExamID)) {
 				exam = new Exam(ExamID);
 				exam.setCourse(new Course(e.getCourse().getCourseName()));
-				exam.setProfession(e.getProfession());
 				exam.setProfession(e.getProfession());
 				return exam;
 			}
@@ -111,7 +107,8 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	@FXML
 	void btnDeleteExam(ActionEvent event) {
 		// we need to insert case of letters of not 5 digits //TODO: ??
-
+		
+		//FIXME: when delete exam it is not delete from table
 		if (!textExamID.getText().isEmpty()) {
 			if (!checkForLegalID(textExamID.getText()))
 				return;
@@ -129,6 +126,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			else
 				data.removeAll(Qlist);
 			initTableRows();
+			textExamID.clear();
 		}
 
 	}
@@ -154,6 +152,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	void CreateNewExam(ActionEvent event) {
+		textExamID.clear();
 		displayNextScreen(teacher, "CreateExam_step1.fxml");
 //		try {
 //			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_step1.fxml"));
@@ -176,6 +175,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		}
 
 		else if (ClientUI.loggedInUser.getUser() instanceof User) {
+			//setUp before load screen.
 			principal = (User) ClientUI.loggedInUser.getUser();
 			btnCreateNewExam.setDisable(false);
 			btnCreateNewExam.setVisible(false);
@@ -188,7 +188,8 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			textMsg1.setVisible(false);
 			textMsg2.setVisible(false);
 			textNavigation.setVisible(true);
-			
+			btnExamInfoPrincipal.setVisible(true);
+			displayCourseColumn=true;
 			fillTableForPrincipalALLexamsInSystem(); //set all exams in cems system into the table
 		}
 	}
@@ -255,16 +256,17 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ArrayList<Exam> examsList = new ArrayList<Exam>();
 		ClientUI.cems.accept(req);
 		examsList= (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
+		TableColumn<Exam, String> course = new TableColumn<>("course");
+		//PropertyValueFactory<Exam, String> factory = new PropertyValueFactory<>();
+		
 		data = FXCollections.observableArrayList(examsList);
-		TableColumn<Exam, String> Course = new TableColumn<Exam, String>("Course");
 		tableExam.getColumns().clear();
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
-		
-		Course.setCellValueFactory(new PropertyValueFactory<Exam, String>("Course"));
+		course.setCellValueFactory(new PropertyValueFactory<>("course"));
 		tableExam.setItems(data);
-		tableExam.getColumns().addAll(ExamID, Proffesion, Time, Course);
+		tableExam.getColumns().addAll(ExamID, Proffesion, Time, course);
 	}
 
 }
