@@ -145,7 +145,7 @@ public class EnterToExamController implements Initializable {
 				}
 
 			} else {
-				popUp("There is no active exam for exam code number: " + examCode);
+				popUp("There is no active exam for the exam you selected.");
 			}
 
 		}
