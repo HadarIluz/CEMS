@@ -1,5 +1,6 @@
 package gui_teacher;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -8,12 +9,15 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.Exam;
 import entity.Question;
+import entity.QuestionInExam;
 import entity.QuestionInExamRow;
 import entity.QuestionRow;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -23,6 +27,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import logic.RequestToServer;
 
 public class CreateExam_addQ_step2Controller implements Initializable{
@@ -87,7 +92,8 @@ public class CreateExam_addQ_step2Controller implements Initializable{
     private static Exam newExam;
     
     private static ArrayList<Question> availableQuestions;
-    private ArrayList<QuestionInExamRow> selectedQuestions;
+    private ArrayList<QuestionInExamRow> selectedQuestionsRows;
+    private ArrayList<QuestionInExam> selectedQuestions;
 
     @FXML
     void DeleteFromExam(ActionEvent event) {
@@ -106,7 +112,24 @@ public class CreateExam_addQ_step2Controller implements Initializable{
 
     @FXML
     void btnBrowseQuestions(ActionEvent event) {
+    	BrowseQuestionController.setAvailableQuestions(availableQuestions);
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("BrowseQuestions.fxml"));
+        Scene newScene;
+        try {
+            newScene = new Scene(loader.load());
+        } catch (IOException ex) {
+            // TODO: handle error
+            return;
+        }
 
+        Stage inputStage = new Stage();
+        inputStage.initOwner(TeacherController.root.getScene().getWindow());
+        inputStage.setScene(newScene);
+        inputStage.showAndWait();
+
+        QuestionInExam q = loader.<BrowseQuestionController>getController().getSelectedQuestion();
+        selectedQuestions.add(q);
+        selectedQuestionsRows.add(new QuestionInExamRow(q.getQuestion().getQuestionID(), q.getScore(), q.getQuestion().getQuestion()));
     }
 
     @FXML
@@ -140,14 +163,12 @@ public class CreateExam_addQ_step2Controller implements Initializable{
 	
 	public void initTableRows() {
 
-		
-
 		tableAddedQuestions.getColumns().clear();
 		questionID.setCellValueFactory(new PropertyValueFactory<>("questionID"));
 		questionScore.setCellValueFactory(new PropertyValueFactory<>("score"));
 		question.setCellValueFactory(new PropertyValueFactory<>("question"));
 
-		tableAddedQuestions.setItems(FXCollections.observableArrayList(selectedQuestions));
+		tableAddedQuestions.setItems(FXCollections.observableArrayList(selectedQuestionsRows));
 
 		tableAddedQuestions.getColumns().addAll(questionID, questionScore, question);
 

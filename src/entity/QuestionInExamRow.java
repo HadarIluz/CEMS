@@ -1,30 +1,37 @@
 package entity;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class QuestionInExamRow {
 
-	private String questionID;
-	private Integer score;
-	private String question;
+	private final StringProperty questionID = new SimpleStringProperty();
+	private final IntegerProperty score = new SimpleIntegerProperty();
+	private final StringProperty question = new SimpleStringProperty();
+
 	
 	
-	public String getQuestionID() {
-		return questionID;
+	
+	public QuestionInExamRow(String questionID, Integer score, String question) {
+		this.questionID.set(questionID);
+		this.question.set(question);
+		this.score.set(score);
 	}
-	public void setQuestionID(String questionID) {
-		this.questionID = questionID;
-	}
-	public Integer getScore() {
-		return score;
-	}
-	public void setScore(Integer score) {
-		this.score = score;
-	}
-	public String getQuestion() {
-		return question;
-	}
-	public void setQuestion(String question) {
-		this.question = question;
-	}
+	
+	
+    public StringProperty questionIDProperty() { return questionID; }
+    public final String getQuestionID() { return questionID.get(); }
+    public final void setQuestionID(String id) { questionID.set(id); }
+    
+    public StringProperty questionProperty() { return question; }
+    public final String getQuestion() { return question.get(); }
+    public final void setQuestion(String q) { question.set(q); }
+    
+    public IntegerProperty scoreProperty() { return score; }
+    public final Integer getScore() { return score.get(); }
+    public final void setScore(Integer s) { score.set(s); }
 	
 	
 }
