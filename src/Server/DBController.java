@@ -21,7 +21,6 @@ import entity.Question;
 import entity.QuestionRow;
 import entity.Student;
 import entity.Teacher;
-import entity.TestRow;
 import entity.UpdateScoreRequest;
 import entity.User;
 import entity.UserType;

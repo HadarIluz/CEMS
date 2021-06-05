@@ -54,8 +54,8 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	@FXML
 	private TableColumn<Exam, Integer> Time;
 		
-	@FXML
-	private Button btnExamInfoPrincipal;
+    @FXML
+    private Button btnExamInfoPrincipal;
 
 	@FXML
 	private Button btnCreateActiveExam;
@@ -137,16 +137,6 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			Exam selectedExam = getExistExamDetails(textExamID.getText());
 			EditExamController.setActiveExamState(selectedExam, super.teacherStatusScreen);
 			displayNextScreen(teacher, "EditExam.fxml");
-
-//			try {
-//				EditExamController.setActiveExamState(selectedExam, super.teacherStatusScreen );
-//				Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
-//				teacherController.root.add(newPaneRight, 1, 0);
-//
-//			} catch (IOException e) {
-//				System.out.println("Couldn't load!");
-//				e.printStackTrace();
-//			}
 		}
 	}
 

@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.EditExamController">
    <children>
-      <Text layoutX="79.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Allocated For Exam :">
+      <Text layoutX="79.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Allocated For Exam :">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -30,7 +30,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="textExamID" layoutX="279.0" layoutY="138.0" prefHeight="25.0" prefWidth="122.0" />
+      <TextField fx:id="textExamID" layoutX="286.0" layoutY="138.0" prefHeight="25.0" prefWidth="122.0" />
       <Label fx:id="textTimeForExam" layoutX="281.0" layoutY="175.0" prefHeight="30.0" prefWidth="135.0" text="120 minutes" textFill="#6a6868" visible="false">
          <font>
             <Font name="System Bold" size="20.0" />
@@ -43,7 +43,7 @@
          </font>
       </Text>
       <TextArea fx:id="textStudentComment" layoutX="284.0" layoutY="339.0" prefHeight="91.0" prefWidth="333.0" />
-      <Button fx:id="btnSaveEditeExam" layoutX="347.0" layoutY="534.0" mnemonicParsing="false" onAction="#btnSaveEditeExam" prefHeight="30.0" prefWidth="122.0" text="Save Changes">
+      <Button fx:id="btnSaveEditeExam" layoutX="588.0" layoutY="509.0" mnemonicParsing="false" onAction="#btnSaveEditeExam" prefHeight="40.0" prefWidth="122.0" text="Save Changes">
          <font>
             <Font size="14.0" />
          </font>
@@ -58,7 +58,7 @@
             <Font name="System Italic" size="14.0" />
          </font>
       </Text>
-      <TextField fx:id="textTimeAllocateForExam" layoutX="279.0" layoutY="178.0" prefHeight="25.0" prefWidth="122.0" />
-      <Button fx:id="btnBrowseQuestions" layoutX="328.0" layoutY="474.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="159.0" text="Browse Exam Questions" />
+      <TextField fx:id="textTimeAllocateForExam" layoutX="286.0" layoutY="181.0" prefHeight="25.0" prefWidth="122.0" />
+      <Button fx:id="btnBrowseQuestions" layoutX="284.0" layoutY="449.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="159.0" text="Browse Exam Questions" />
    </children>
 </AnchorPane>
