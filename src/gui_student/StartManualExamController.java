@@ -84,7 +84,7 @@ public class StartManualExamController implements Initializable{
     @FXML
     void btnDownload(ActionEvent event) {
     	//Download the exam from the database to the student's computer
-    	RequestToServer req = new RequestToServer("getManualExam");
+    	RequestToServer req = new RequestToServer("downloadManualExam");
 		req.setRequestData(examOfStudent);
     	ClientUI.cems.accept(req);
     	btnSubmit.setDisable(false);
@@ -111,7 +111,7 @@ public class StartManualExamController implements Initializable{
     		    bis.read(submitExam.getMybytearray(),0,mybytearray.length);   
     		    RequestToServer req = new RequestToServer("submitManualExam");
     			req.setRequestData(submitExam);
-    	    	ClientUI.cems.accept(req); //need??
+    	    	ClientUI.cems.accept(req); 
     		} catch (Exception ex) {
     			ex.printStackTrace();
     		}

@@ -74,7 +74,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="textLocalFilePath" layoutX="68.0" layoutY="445.0" prefHeight="25.0" prefWidth="311.0" promptText="C:\\Users\\UserName\\Downloads" />
+      <TextField fx:id="textLocalFilePath" layoutX="68.0" layoutY="445.0" prefHeight="25.0" prefWidth="311.0" promptText="C:\Users\UserName\Downloads" />
       <TextField fx:id="textFileName" layoutX="68.0" layoutY="381.0" promptText="fileName.docx" />
       <Text fill="#5e87c0" layoutX="68.0" layoutY="367.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter file name:" wrappingWidth="120.0">
          <font>

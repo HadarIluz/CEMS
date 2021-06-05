@@ -284,8 +284,8 @@ public class CEMSserver extends AbstractServer {
 
 			break;
 
-		case "getManualExam": {
-			getManualExam((ExamOfStudent) req.getRequestData(), client);
+		case "downloadManualExam": {
+			downloadManualExam((ExamOfStudent) req.getRequestData(), client);
 
 		}
 			break;
@@ -701,13 +701,12 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
 
-	private void getManualExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
-		//ResponseFromServer respon = new ResponseFromServer("DOWNLOAD EXAM"); //????
+	private void downloadManualExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
 		String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_exam.docx";
 		MyFile exam = new MyFile(fileName);
 		try {
 			String path = new File("").getCanonicalPath();
-			String LocalfilePath = path + "/files/" + fileName; // I think without fileName
+			String LocalfilePath = path + "/files/" + fileName; 
 			File newFile = new File(LocalfilePath);
 			byte[] mybytearray = new byte[(int) newFile.length()];
 			FileInputStream fis = new FileInputStream(newFile);
@@ -715,14 +714,10 @@ public class CEMSserver extends AbstractServer {
 			exam.initArray(mybytearray.length);
 			exam.setSize(mybytearray.length);
 			bis.read(exam.getMybytearray(), 0, mybytearray.length);
-			
-			client.sendToClient(exam); //matar : not good
-		   // client.sendToClient(respon);//matar: need to check // ????
+			client.sendToClient(exam);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		// printMessageInLogFramServer("Message to Client:", respon);// print to server
-		// log.
 	}
 
 	private void submitManualExam(MyFile msg, ConnectionToClient client) {
@@ -733,8 +728,8 @@ public class CEMSserver extends AbstractServer {
 		System.out.println("length " + fileSize);
 		try {
 			String path = new File("").getCanonicalPath();
-			String LocalfilePath = path + "/files/" + submitExam.getFileName(); // I think without fileName			
-			FileOutputStream fos = new FileOutputStream(LocalfilePath); //WILL BE LOCALPATH. NEED TO BE IN FILE
+			String LocalfilePath = path + "/files/" + submitExam.getFileName(); 		
+			FileOutputStream fos = new FileOutputStream(LocalfilePath); 
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			bos.write(submitExam.getMybytearray(), 0, fileSize);
 			bos.flush();
