@@ -31,11 +31,6 @@
          </font>
       </Text>
       <TextField fx:id="textExamID" layoutX="279.0" layoutY="138.0" prefHeight="25.0" prefWidth="122.0" />
-      <Button fx:id="btnShowQuestion" layoutX="320.0" layoutY="452.0" mnemonicParsing="false" onAction="#btnShowQuestion" prefHeight="40.0" prefWidth="192.0" text="Browse Exam Questions">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
       <Label fx:id="textTimeForExam" layoutX="281.0" layoutY="175.0" prefHeight="30.0" prefWidth="135.0" text="120 minutes" textFill="#6a6868" visible="false">
          <font>
             <Font name="System Bold" size="20.0" />
@@ -64,5 +59,6 @@
          </font>
       </Text>
       <TextField fx:id="textTimeAllocateForExam" layoutX="279.0" layoutY="178.0" prefHeight="25.0" prefWidth="122.0" />
+      <Button fx:id="btnBrowseExamQuestions" layoutX="331.0" layoutY="473.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="153.0" text="Browse Exam Questions" />
    </children>
 </AnchorPane>
