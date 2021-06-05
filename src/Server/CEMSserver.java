@@ -306,7 +306,7 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "submitManualExam": {//
+		case "submitManualExam": {
 			submitManualExam((MyFile) req.getRequestData(), client);
 
 		}
@@ -709,6 +709,8 @@ public class CEMSserver extends AbstractServer {
 		
 		try {
 			File newFile = new File(LocalfilePath);
+			int fileSize = ((MyFile) exam).getSize();
+
 			byte[] mybytearray = new byte[(int) newFile.length()];
 			FileInputStream fis = new FileInputStream(newFile);
 			BufferedInputStream bis = new BufferedInputStream(fis);
@@ -717,8 +719,8 @@ public class CEMSserver extends AbstractServer {
 			exam.setSize(mybytearray.length);
 
 			bis.read(exam.getMybytearray(), 0, mybytearray.length);
-
-			client.sendToClient(exam);
+			
+			client.sendToClient(exam); //matar : not good
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

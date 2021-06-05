@@ -84,14 +84,18 @@ public class CEMSClient extends AbstractClient {
 			clientUI.display("Message received: " + msg + " from server");
 			clientUI.display("length " + fileSize);
 			MyFile exam = (MyFile) msg;
-			String LocalfilePath = "C:\\Users" + exam.getFileName();
+			String LocalfilePath = "C:\\" + exam.getFileName();
 			try {
 				File newFile = new File(LocalfilePath);
-				FileOutputStream fos = new FileOutputStream(newFile);
-				BufferedOutputStream bos = new BufferedOutputStream(fos);
-				bos.write(exam.getMybytearray(), 0, fileSize);
-				bos.flush();
-				fos.flush();
+				byte[] mybytearray = new byte[(int) newFile.length()];
+				//FileInputStream fis = new FileInputStream(newFile); //????
+				//BufferedInputStream bis = new BufferedInputStream(fis);//????
+
+				exam.initArray(mybytearray.length);
+				exam.setSize(mybytearray.length);
+
+				//bis.read(exam.getMybytearray(), 0, mybytearray.length);//????
+				
 			} catch (Exception e) {
 				clientUI.display("Error send (Files)msg) to Client");
 			}
