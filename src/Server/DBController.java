@@ -86,11 +86,11 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		
-		//in case not found any user match,
+
+		// in case not found any user match,
 		// response ready to client with StatusMsg and
 		// 'Object responseData', in case user found existUser include all data,
-		// otherwise null.	
+		// otherwise null.
 		if (existUser.getPassword() != null) {
 			response = new ResponseFromServer("USER FOUND IN CEMS SYSTEM");
 			response.getStatusMsg().setStatus("USER FOUND");
@@ -413,8 +413,8 @@ public class DBController {
 			while (rs.next()) {
 				Exam exam = new Exam(rs.getString(1));
 				exam.setProfession(new Profession(rs.getString(2)));
-				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
 				exam.setCourse(new Course(rs.getString(3)));// addition
+				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
 				examsOfTeacher.add(exam);
 
 			}
@@ -422,11 +422,8 @@ public class DBController {
 
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			// teacher.setStatus("ERROR"); //message from Hadar: need to use
-			// ResponseFromServer class not?
-			// i put this as a note because it marks an error now.
 		}
-		return examsOfTeacher;// return null if no exsiting tests
+		return examsOfTeacher;
 
 	}
 
@@ -444,7 +441,6 @@ public class DBController {
 		return true;
 
 	}
-
 
 	public ArrayList<QuestionRow> GetTeacherQuestions(Object obj) {
 
@@ -523,7 +519,7 @@ public class DBController {
 	 *                   Query.
 	 */
 	public ResponseFromServer verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
-		Exam exam = new Exam();//TODO:i remove null-  need to check
+		Exam exam = new Exam();// TODO:i remove null- need to check
 		ResponseFromServer response = null;
 		/*** EnterToExam ***/
 		try {
@@ -564,7 +560,7 @@ public class DBController {
 		Profession p = new Profession(id);
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT professionName FROM profession WHERE professionID=?;"); 
+			pstmt = conn.prepareStatement("SELECT professionName FROM profession WHERE professionID=?;");
 			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -589,7 +585,7 @@ public class DBController {
 			pstmt = conn.prepareStatement("SELECT * FROM extension_request ;");
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Exam exam = new Exam(); //i remove null-  need to check
+				Exam exam = new Exam(); // i remove null- need to check
 				ActiveExam activeExam = new ActiveExam(exam);
 				ExtensionRequest extensionRequest = new ExtensionRequest(activeExam);
 				exam.setExamID(rs.getString(1));
@@ -667,7 +663,7 @@ public class DBController {
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Exam exam = new Exam();//TODO:i remove null-  need to check
+				Exam exam = new Exam();
 				exam.setExamID(rs.getString(1));
 				ActiveExam activeExam = new ActiveExam(exam);
 				activeExam.setExam(exam);
@@ -687,7 +683,6 @@ public class DBController {
 
 		return response;
 	}
-
 
 	public HashMap<String, String> getProfNames() {
 		HashMap<String, String> profName = new HashMap<String, String>();
@@ -737,14 +732,14 @@ public class DBController {
 	}
 
 	public String chechExamExist(String ExamID) {
-		String answer=null;
+		String answer = null;
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE examID=?;");
 			pstmt.setString(1, ExamID);
 			ResultSet rs = pstmt.executeQuery();
 			rs.next();
-			if(rs.first()==false)
+			if (rs.first() == false)
 				return "FALSE";
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -753,13 +748,13 @@ public class DBController {
 	}
 
 	public ArrayList<Integer> gradesAverageCalc(String examID) {
-		ArrayList<Integer> grades=new ArrayList<Integer>();
+		ArrayList<Integer> grades = new ArrayList<Integer>();
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("SELECT score FROM exam_of_student WHERE exam=?;");
 			pstmt.setString(1, examID);
 			ResultSet rs = pstmt.executeQuery();
-			while(rs.next())
+			while (rs.next())
 				grades.add(rs.getInt(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -767,24 +762,23 @@ public class DBController {
 		return grades;
 	}
 
-	
 	public ResponseFromServer getSelectedExamData_byID(Exam exam) {
-		ResponseFromServer response= null;		
+		ResponseFromServer response = null;
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE examID=?");
-			pstmt.setInt(1,Integer.parseInt(exam.getExamID()));
+			pstmt.setInt(1, Integer.parseInt(exam.getExamID()));
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				
+
 				Profession profession = new Profession(null);
 				profession.setProfessionID(rs.getString(2));
 				exam.setProfession(profession);
-				
+
 				Course course = new Course(null);
 				course.setCourseID(rs.getString(3));
 				exam.setCourse(course);
-				
+
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
 				exam.setCommentForTeacher(rs.getString(5));
 				exam.setCommentForStudents(rs.getString(6));
@@ -793,21 +787,21 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		
-		response = new ResponseFromServer("EXAM DATA");	
+
+		response = new ResponseFromServer("EXAM DATA");
 		response.setResponseData(exam);
 
-
-		return response;		
+		return response;
 	}
 
 	public ActiveExam isActiveExamAlreadyExists(ActiveExam activeExam) {
-		/***CheckBeforeCreateNewActiveExam***/
-		ActiveExam acExam= new ActiveExam(activeExam.getExam(), activeExam.getStartTime());
-		//FIXME: time problem with SQL.
+		/*** CheckBeforeCreateNewActiveExam ***/
+		ActiveExam acExam = new ActiveExam(activeExam.getExam(), activeExam.getStartTime());
+		// FIXME: time problem with SQL.
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT examCode, timeAllotedForTest FROM active_exam WHERE exam=? and startTime=?;");
+			pstmt = conn.prepareStatement(
+					"SELECT examCode, timeAllotedForTest FROM active_exam WHERE exam=? and startTime=?;");
 			pstmt.setString(1, activeExam.getExam().getExamID());
 			pstmt.setTime(2, activeExam.getStartTime());
 
@@ -817,11 +811,11 @@ public class DBController {
 				acExam.setTimeAllotedForTest(rs.getString(2));
 				rs.close();
 			}
-			
+
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		
+
 		return acExam;
 	}
 
@@ -835,44 +829,80 @@ public class DBController {
 			pstmt.setInt(3, newActiveExam.getTimeAllotedForTest());
 			pstmt.setString(4, newActiveExam.getExamCode());
 			pstmt.setString(5, newActiveExam.getActiveExamType());
-			if (pstmt.executeUpdate() !=0) {
+			if (pstmt.executeUpdate() != 0) {
 				response = new ResponseFromServer("NEW ACTIVE EXAM CREATED");
 			}
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 		return response;
-		
-		
+
 	}
-	
 
-/**
-	 * @param 
-	 * @return true if succeed to save edit exam values, return false if not. 
-	 *         
-	 */
-	//still not working & need to understand if need to save changes in questions ( that delete in the next screen)
-	public boolean editExamSave(Exam exam) {
-		PreparedStatement pstmt;
-
+	public ArrayList<Exam> GetAllExams() {
+		ArrayList<Exam> examsList = new ArrayList<Exam>();
 		try {
-			pstmt = conn.prepareStatement("UPDATE exam SET timeAllotedForTest=?, commentForTeacher=?, commentForStudents=?, author=? WHERE examID=?");
-			pstmt.setString(1, Integer.toString(exam.getTimeOfExam())); //set exam time 
-			pstmt.setString(2, exam.getCommentForTeacher()); //set comments for teacher
-			pstmt.setString(3, exam.getCommentForStudents());//set comments for students
-			pstmt.setLong(4, exam.getAuthor().getId());//set teacher id
-			pstmt.setString(5, exam.getExamID()); //set exam id
-			if (pstmt.executeUpdate() == 1)
-				{
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM exam");
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Profession profession = new Profession(null);
+				profession.setProfessionID(rs.getString(2));
+
+//				Course course = new Course(null);
+//				course.setCourseID(rs.getString(3));
+				// exam.setCourse(new Course(rs.getString(3)));// addition
+
+				Exam exam = new Exam(rs.getString(1), profession, new Course(rs.getString(3)),
+						Integer.parseInt(rs.getString(4)));
+				examsList.add(exam);
+				// --------------------
+
+//				Exam exam = new Exam();
+//				exam.setExamID(rs.getString(1));
+//				Profession profession= new Profession(rs.getString(2));
+//				exam.setProfession(profession);
+//				Course course = new Course(rs.getString(3));
+//				exam.setCourse(course);
+//				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));		
+//				examsList.add(exam);
+			}
+			rs.close();
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return examsList;
+
+	}
+
+	/**
+	 * @param
+	 * @return true if succeed to save edit exam values, return false if not.
+	 * 
+	 */
+	public boolean editExamSave(Exam exam) {
+		// Message from Lior: still not working & need to understand if need to save changes in questions (
+		// that delete in the next screen)
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement(
+					"UPDATE exam SET timeAllotedForTest=?, commentForTeacher=?, commentForStudents=?, author=? WHERE examID=?");
+			pstmt.setString(1, Integer.toString(exam.getTimeOfExam())); // set exam time
+			pstmt.setString(2, exam.getCommentForTeacher()); // set comments for teacher
+			pstmt.setString(3, exam.getCommentForStudents());// set comments for students
+			pstmt.setLong(4, exam.getAuthor().getId());// set teacher id
+			pstmt.setString(5, exam.getExamID()); // set exam id
+			if (pstmt.executeUpdate() == 1) {
 				System.out.println("Saved");
 				return true;
-				
-				}
+			}
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 		return false;
 	}
+
+	
+	
 	
 }

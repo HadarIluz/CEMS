@@ -66,7 +66,7 @@ public class StudentController extends Application implements Initializable {
 
 	private static LoginController loginController;
 	protected Student student;
-	protected static GridPane root;
+	public static GridPane root;
 	public Scene scene;
 
 	/**

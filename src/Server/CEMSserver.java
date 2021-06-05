@@ -204,8 +204,7 @@ public class CEMSserver extends AbstractServer {
 			try {
 
 				ResponseFromServer respond = new ResponseFromServer("TEACHER EXAMS");
-				respond.setResponseData(dbController.GetTeacherExams((Integer) req.getRequestData()));
-
+				respond.setResponseData((ArrayList<Exam>)dbController.GetTeacherExams((Integer) req.getRequestData()));
 				client.sendToClient(respond);
 
 			} catch (IOException e) {
@@ -303,11 +302,18 @@ public class CEMSserver extends AbstractServer {
 
 
 
+		
+		case "getAllExamsStoredInSystem":{
+			getAllExamsStoredInSystem(client);
+			
+		}
+		
 		}
 
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
 
 	private void gradesAverageCalc(String ExamID, ConnectionToClient client) {
 		try {
@@ -767,6 +773,28 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	private void getAllExamsStoredInSystem(ConnectionToClient client) {
+		ResponseFromServer respond = new ResponseFromServer("ALL EXAMS");
+		respond.setResponseData((ArrayList<Exam>)dbController.GetAllExams());
+		try {
+			client.sendToClient(respond);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//
 
 }

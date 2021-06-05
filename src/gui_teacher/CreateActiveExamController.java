@@ -1,45 +1,28 @@
 package gui_teacher;
 
-import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.sql.Time;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeoutException;
-
-import com.sun.tools.javac.parser.ReferenceParser.ParseException;
 
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
 import entity.Exam;
 import entity.Teacher;
+import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class CreateActiveExamController implements Initializable {
+public class CreateActiveExamController extends GuiCommon implements Initializable {
 
 	@FXML
 	private Button btnSaveActiveExam;
@@ -68,18 +51,19 @@ public class CreateActiveExamController implements Initializable {
 	@FXML
 	private RadioButton selectComputerized;
 
-	private static TeacherController teacherController; 
 	private static Exam exam;
-	//private static Teacher teacher;
 	private static String activeExamType;
 	private String[] startTimeArr = { "08:00:00", "08:30:00", "09:00:00", "09:30:00", "10:00:00", "10:30:00",
 			"11:00:00", "11:30:00", "12:00:00", "12:30:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00", "15:00:00",
 			"15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00" };
 
 	private static boolean toggleFlag = false;
-	// private Date date = null; //we need to add to table the date of the exam
+	// TODO: private Date date = null; //we need to add to table the date of the exam ??
 	private Time selectedTime;
 
+	/**
+	 * @param event that occurs when the teacher press on create active exam button
+	 */
 	@FXML
 	void btnSaveActiveExam(ActionEvent event) {
 		String examCode = textExamCode.getText().trim();
@@ -99,13 +83,11 @@ public class CreateActiveExamController implements Initializable {
 				req.setRequestData(newActiveExam);
 				ClientUI.cems.accept(req);
 
-				// TODO: check SQL in DB for this :)
-
 				if (CEMSClient.responseFromServer.getStatusMsg().getStatus()
 						.equals("NEW ACTIVE EXAM CREATED")) {
 					popUp("New active exam has been successfully created in the system.");
 
-					displayExamBankScreen();
+					displayNextScreen((Teacher) ClientUI.loggedInUser.getUser(), "ExamBank.fxml"); //call function from GuiCommon class
 				}
 
 			} else {
@@ -114,19 +96,6 @@ public class CreateActiveExamController implements Initializable {
 
 			}
 
-		}
-
-	}
-
-	@SuppressWarnings("static-access")
-	private void displayExamBankScreen() {
-		try {
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ExamBank.fxml"));
-			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-			teacherController.root.add(newPaneRight, 1, 0);
-		} catch (IOException e) {
-			System.out.println("Couldn't load!");
-			e.printStackTrace();
 		}
 
 	}
@@ -225,6 +194,9 @@ public class CreateActiveExamController implements Initializable {
 		exam = selectedExam;
 	}
 
+	/**
+	 *The function initializes the relevant fields at the moment the screen loads.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		//teacher = (Teacher) ClientUI.loggedInUser.getUser();
@@ -246,22 +218,5 @@ public class CreateActiveExamController implements Initializable {
 		selectedTime = java.sql.Time.valueOf(selectTime.getValue());
 	}
 
-	/**
-	 * create a popUp with a given message.
-	 * 
-	 * @param msg
-	 */
-	private void popUp(String msg) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(msg);
-		lbl.setPadding(new Insets(15));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
-	}
 
 }
