@@ -1,6 +1,5 @@
 package gui_teacher;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -10,12 +9,12 @@ import client.ClientUI;
 import entity.Course;
 import entity.Exam;
 import entity.Teacher;
+import entity.User;
 import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -23,7 +22,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
@@ -55,14 +53,26 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	private TableColumn<Exam, Integer> Time;
+	
+//    @FXML
+//    private TableColumn<Exam, Integer> Course;
 
-	private ObservableList<Exam> data;
+	@FXML
+	private Button btnExamInfoPrincipal;
 
 	@FXML
 	private Button btnCreateActiveExam;
-	private static TeacherController teacherController;
-	private static Teacher teacher;
 
+	@FXML
+	private Text textMsg1;
+
+	@FXML
+	private Text textMsg2;
+
+	private ObservableList<Exam> data;
+	//private static TeacherController teacherController;
+	private static Teacher teacher;
+	private static User principal;
 
 	@FXML
 	void selectExamFromTable(MouseEvent event) {
@@ -107,7 +117,6 @@ public class ExamBankController extends GuiCommon implements Initializable {
 				return;
 
 			ObservableList<Exam> Qlist;
-
 			Exam ExamToDelete = GetTableDetails(textExamID.getText());
 
 			Qlist = tableExam.getSelectionModel().getSelectedItems();
@@ -128,9 +137,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	void btnEditExam(ActionEvent event) {
 		if (!textExamID.getText().isEmpty()) {
 			Exam selectedExam = getExistExamDetails(textExamID.getText());
-			EditExamController.setActiveExamState(selectedExam, super.teacherStatusScreen );
+			EditExamController.setActiveExamState(selectedExam, super.teacherStatusScreen);
 			displayNextScreen(teacher, "EditExam.fxml");
-			
+
 //			try {
 //				EditExamController.setActiveExamState(selectedExam, super.teacherStatusScreen );
 //				Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
@@ -145,31 +154,64 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	void CreateNewExam(ActionEvent event) {
-		try {
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_step1.fxml"));
-			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-			teacherController.root.add(newPaneRight, 1, 0);
-
-		} catch (IOException e) {
-			System.out.println("Couldn't load!");
-			e.printStackTrace();
-		}
+		displayNextScreen(teacher, "CreateExam_step1.fxml");
+//		try {
+//			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_step1.fxml"));
+//			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+//			teacherController.root.add(newPaneRight, 1, 0);
+//
+//		} catch (IOException e) {
+//			System.out.println("Couldn't load!");
+//			e.printStackTrace();
+//		}
 
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		tableExam.setEditable(true);
-		initTableRows();
-		teacher = (Teacher) ClientUI.loggedInUser.getUser();
+		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
+			teacher = (Teacher) ClientUI.loggedInUser.getUser();
+			initTableRows();
+		}
+
+		else if (ClientUI.loggedInUser.getUser() instanceof User) {
+			principal = (User) ClientUI.loggedInUser.getUser();
+			btnCreateNewExam.setDisable(false);
+			btnCreateNewExam.setVisible(false);
+			btnEditExam.setDisable(true);
+			btnEditExam.setVisible(false);
+			btnDeleteExam.setDisable(true);
+			btnDeleteExam.setVisible(false);
+			btnCreateActiveExam.setDisable(true);
+			btnCreateActiveExam.setVisible(false);
+			textMsg1.setVisible(false);
+			textMsg2.setVisible(false);
+			textNavigation.setVisible(true);
+			
+			fillTableForPrincipalALLexamsInSystem(); //set all exams in cems system into the table
+		}
 	}
 
+	@FXML
+	void btnExamInfoPrincipal(ActionEvent event) {
+		if (!textExamID.getText().isEmpty()) {
+			Exam selectedExam = getExistExamDetails(textExamID.getText());
+			EditExamController.setActiveExamState(selectedExam, super.principalStatusScreen);
+			displayNextScreen(principal, "/gui_teacher/EditExam.fxml");
+		}
+
+	}
+
+
+	/**
+	 * The function get from server all exams of the logged teacher and insert into the table.
+	 */
 	@SuppressWarnings("unchecked")
 	private void initTableRows() {
 		textExamID.setEditable(true);
-
 		RequestToServer req = new RequestToServer("getExams");
-		req.setRequestData(ClientUI.loggedInUser.getUser().getId());
+		req.setRequestData(teacher.getId());
 		ArrayList<Exam> ExamsOfTeacher = new ArrayList<Exam>();
 		ClientUI.cems.accept(req);
 		ExamsOfTeacher = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
@@ -183,7 +225,6 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	}
 
-	@SuppressWarnings("static-access")
 	@FXML
 	void btnCreateActiveExam(ActionEvent event) {
 
@@ -192,16 +233,38 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			CreateActiveExamController.setActiveExamState(selectedExam);
 			displayNextScreen(teacher, "CreateActiveExam.fxml");
 		}
-
 	}
 
 	private Exam getExistExamDetails(String examID) {
-		
+
 		Exam selectedExam = new Exam(examID);
 		RequestToServer req = new RequestToServer("getSelectedExamData_byID");
 		req.setRequestData(selectedExam);
 		ClientUI.cems.accept(req);
 		return selectedExam = (Exam) CEMSClient.responseFromServer.getResponseData();
+	}
+	
+	
+	
+	/**
+	 * The function get from server all exams stored in the system and insert into the table.
+	 */
+	@SuppressWarnings("unchecked")
+	private void fillTableForPrincipalALLexamsInSystem() {
+		RequestToServer req = new RequestToServer("getAllExamsStoredInSystem");
+		ArrayList<Exam> examsList = new ArrayList<Exam>();
+		ClientUI.cems.accept(req);
+		examsList= (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
+		data = FXCollections.observableArrayList(examsList);
+		TableColumn<Exam, String> Course = new TableColumn<Exam, String>("Course");
+		tableExam.getColumns().clear();
+		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
+		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
+		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
+		
+		Course.setCellValueFactory(new PropertyValueFactory<Exam, String>("Course"));
+		tableExam.setItems(data);
+		tableExam.getColumns().addAll(ExamID, Proffesion, Time, Course);
 	}
 
 }

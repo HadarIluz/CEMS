@@ -1,12 +1,12 @@
 package gui_teacher;
 
 import java.net.URL;
-import java.security.Principal;
 import java.util.ResourceBundle;
 
 import client.ClientUI;
 import entity.Exam;
 import entity.Teacher;
+import entity.User;
 import gui_cems.GuiCommon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -49,10 +49,9 @@ public class EditExamController extends GuiCommon implements Initializable {
 	@FXML
 	private TextField textTimeAllocateForExam;
 
-	public static Exam editedExam;
-	private Teacher teacher;
-	private Principal principal;
-	private static TeacherController teacherController; // we will use it for load the prev/next screen ! (using root).
+	public static Exam exam;
+	private static Teacher teacher;
+	private static User principal;
 	private static String screenStatus;
 
 	@FXML
@@ -72,14 +71,28 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		teacher = (Teacher) ClientUI.loggedInUser.getUser();
-
+		//tack user data according to screen status from the prev action.
+		if (screenStatus.equals(super.teacherStatusScreen)) {
+			teacher = (Teacher) ClientUI.loggedInUser.getUser();
+		}
+		
+		if (screenStatus.equals(super.principalStatusScreen)) {
+			principal = (User) ClientUI.loggedInUser.getUser();
+			//load data of the selected exam for view.
+			textExamID.setText(exam.getExamID());
+			//textTimeAllocateForExam.setText(!!!!SQL);
+			textTeacherComment.setText(exam.getCommentForTeacher());
+			textStudentComment.setText(exam.getCommentForStudents());
+			
+			btnSaveEditeExam.setDisable(false);
+			btnSaveEditeExam.setVisible(false);
+		}
+		
 	}
 
 	public static void setActiveExamState(Exam selectedExam, String status) {
 		screenStatus = status;
-		editedExam = selectedExam;
+		exam = selectedExam;
 	}
 
 }

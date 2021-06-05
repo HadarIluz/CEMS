@@ -40,6 +40,14 @@ public class Exam implements Serializable {
 		this.timeOfExam = timeOfExam;
 	}
 	
+	public Exam(String examID, Profession profession, Course course, int timeOfExam) {
+		this.examID = examID;
+		this.profession = profession;
+		this.course = course;
+		this.timeOfExam = timeOfExam;
+		
+	}
+	
 	public Exam(Course course) {
 		this.course = course;
 	}
