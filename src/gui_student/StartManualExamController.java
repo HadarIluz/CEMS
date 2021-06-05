@@ -22,7 +22,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -92,15 +91,10 @@ public class StartManualExamController implements Initializable{
 
     @FXML
     void btnSubmit(ActionEvent event) {
-    	MyFile submitExam;
-    	String LocalfilePath;
-    	if (textFileName.getText().trim().isEmpty()) 
-			popUp("Please enter file name.");
-    	else if (textLocalFilePath.getText().trim().isEmpty()) 
-			popUp("Please enter local file path");
-    	else {
-    		submitExam =  new MyFile(textFileName.getText());
-    		LocalfilePath= textLocalFilePath.getText();
+    	String fileName = examOfStudent.getActiveExam().getExam().getExamID()+ "_" + examOfStudent.getStudent().getId() + ".docx";
+		String home = System.getProperty("user.home");
+    	String LocalfilePath = home + "/Downloads/" + examOfStudent.getActiveExam().getExam().getExamID() + "_exam.docx";
+    	MyFile submitExam =  new MyFile(fileName);  		
     		try {
     			File newFile = new File (LocalfilePath);
     		    byte [] mybytearray  = new byte [(int)newFile.length()];
@@ -115,7 +109,6 @@ public class StartManualExamController implements Initializable{
     		} catch (Exception ex) {
     			ex.printStackTrace();
     		}
-		}
     }
 
     @FXML
