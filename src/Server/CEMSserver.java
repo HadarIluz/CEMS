@@ -155,14 +155,14 @@ public class CEMSserver extends AbstractServer {
 			approvalTimeExtention((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-			
+
 		case "gradesAverageCalc": {
 			gradesAverageCalc((String) req.getRequestData(), client);
 
 		}
 			break;
 		case "declineTimeExtention": {
-			declineTimeExtention((ActiveExam)req.getRequestData(), client);
+			declineTimeExtention((ActiveExam) req.getRequestData(), client);
 		}
 			break;
 
@@ -256,7 +256,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "chechExamExist": {
-			chechExamExist((String)req.getRequestData(),client);
+			chechExamExist((String) req.getRequestData(), client);
 
 		}
 			break;
@@ -286,12 +286,12 @@ public class CEMSserver extends AbstractServer {
 		case "CheckIfActiveExamAlreadyExists": {
 			CheckIfActiveExamAlreadyExists((ActiveExam) req.getRequestData(), client);
 		}
-		break;
-		
+			break;
+
 		case "createNewActiveExam": {
 			createNewActiveExam((ActiveExam) req.getRequestData(), client);
 		}
-		break;
+			break;
 
 		}
 
@@ -307,7 +307,7 @@ public class CEMSserver extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/**
@@ -329,7 +329,6 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
-
 
 	private void getProfNames(ConnectionToClient client) {
 
@@ -358,8 +357,8 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
-	
-	private void chechExamExist(String ExamID,ConnectionToClient client) {
+
+	private void chechExamExist(String ExamID, ConnectionToClient client) {
 
 		ResponseFromServer response = new ResponseFromServer("CHECK EXAM EXIST");
 		response.setResponseData(dbController.chechExamExist(ExamID));
@@ -372,7 +371,6 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
-
 
 	private void getAllActiveExamBeforEnterToExam(ConnectionToClient client) {
 		// logic for 'EnterToExam'
@@ -427,8 +425,8 @@ public class CEMSserver extends AbstractServer {
 	 */
 	private void getUser(User user, ConnectionToClient client) {
 		// logic of login
-		ResponseFromServer respon =null;
-		respon = dbController.verifyLoginUser(user);	
+		ResponseFromServer respon = null;
+		respon = dbController.verifyLoginUser(user);
 //FIXME:		//TODO: thing again if the following lines are needed- for testing project...	
 //		User userInSystem = (User) respon.getResponseData();
 //		boolean exist = loggedInUsers.containsValue(userInSystem.getId()); // check if hashMap contains this user id,
@@ -673,7 +671,6 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
 
-
 	private void declineTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("EXTENSION DECLINED");
 		try {
@@ -699,39 +696,55 @@ public class CEMSserver extends AbstractServer {
 
 	private void CheckIfActiveExamAlreadyExists(ActiveExam activeExam, ConnectionToClient client) {
 		// logic for 'createNewActiveExam'
-		ActiveExam actExam = activeExam;
-		ResponseFromServer response = null;
-		actExam = dbController.isActiveExamAlreadyExists(actExam);
-		
-		if (actExam!= null) {
-			response = new ResponseFromServer("ACTIVE EXAM EXIST: " + activeExam.getExam().getExamID()
-					+ ", start time: " + activeExam.getStartTime());
-			
-			// check if they have the same start time AND code.
-			if (actExam.getStartTime().equals(activeExam.getStartTime())
-					&& actExam.getExamCode().equals(activeExam.getExamCode())) {
-				
-				response = new ResponseFromServer("ACTIVE EXAM NOT ALLOWES");
-				response.setResponseData(null);	
-			}
-			else {	
-				//we allowed to perform different exams at the same time.
-				//we allowed to perform the same exam but NOT in the same time
-				response.getStatusMsg().setStatus("Create action is allowed");
-				response.setResponseData(activeExam);
-			}
+		ActiveExam actExam = null;
+		ResponseFromServer res = null;
+		actExam = dbController.isActiveExamAlreadyExists(activeExam);
+
+		// in case ExamCode is null the same examID not found, so create this active
+		// exam is allowed.
+		if (actExam.getExamCode() == null) {
+			res = createResponse("CREATE ACTION ALLOWED", "Create action is allowed");
 		}
 
+		else {
+			String str = "ACTIVE EXAM EXIST: " + activeExam.getExam().getExamID() + ", start time: "
+					+ activeExam.getStartTime() + " Code: " + actExam.getExamCode();
+
+			// check if they have the same start time AND code.
+			/*actExam.getStartTime().equals(activeExam.getStartTime())&& */
+			if (actExam.getExamCode().equals(activeExam.getExamCode())) {
+				res = createResponse(str, "ACTIVE EXAM NOT ALLOWED");
+			} else {
+				// we allowed to perform different exams at the same time.
+				// we allowed to perform the same exam but NOT in the same time
+				res = createResponse(str, "Create action is allowed");
+			}
+
+		}
+
+		// ----------------------
+
 		try {
-			client.sendToClient(response);
+			client.sendToClient(res);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", response);
-		
+		printMessageInLogFramServer("Message to Client:", res);
+
 	}
-	
-	
+
+	/**
+	 * @param responseType
+	 * @param Status
+	 * @return Returns an answer according to inputs function.
+	 */
+	private ResponseFromServer createResponse(String responseType, String status) {
+		ResponseFromServer response = null;
+		response = new ResponseFromServer(responseType);
+		response.getStatusMsg().setStatus(status);
+		return response;
+	}
+
 	private void createNewActiveExam(ActiveExam newActiveExam, ConnectionToClient client) {
 		ResponseFromServer response = dbController.createNewActiveExam(newActiveExam);
 		response.getStatusMsg().setStatus("New active exam created successfully");
@@ -741,20 +754,9 @@ public class CEMSserver extends AbstractServer {
 			ex.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
-		
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	//
-	
 
 }
