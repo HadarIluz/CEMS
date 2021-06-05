@@ -806,6 +806,11 @@ public class DBController {
 		}
 		return grades;
 	}
+	
+	
+	public boolean getPrincipalReports(){
+		return false;
+	}
 
 //public static void main(String[] args) {
 //

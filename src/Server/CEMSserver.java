@@ -95,6 +95,12 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
+			
+		case "getPrincipalReports": {
+			getPrincipalReports(client);
+
+		}
+			break;
 
 		case "getTeacherData_Login": {
 			getTeacherData_Login((Teacher) req.getRequestData(), client);
@@ -298,6 +304,8 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	
+
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
 	private void gradesAverageCalc(String ExamID, ConnectionToClient client) {
@@ -328,6 +336,12 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
+
+	}
+	
+	private void getPrincipalReports(ConnectionToClient client) {
+		ResponseFromServer response = new ResponseFromServer("getPrincipalReports");
+		response.setResponseData(dbController.getPrincipalReports());
 
 	}
 
