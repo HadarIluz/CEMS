@@ -78,23 +78,26 @@ public class CEMSClient extends AbstractClient {
 		}
 		
 		if(msg instanceof MyFile) {
+			MyFile downloadExam = (MyFile) msg;
 			int fileSize = ((MyFile) msg).getSize();
 			System.out.println("Message received: " + msg + " from server");
 			System.out.println("length " + fileSize);
-			MyFile downloadExam = (MyFile) msg;
-			String LocalfilePath = "C:\\" + downloadExam.getFileName();
+			awaitResponse = false;
+			//String LocalfilePath = "C:\\" + downloadExam.getFileName();
 			try {
-				File newFile = new File(LocalfilePath);
+				//File newFile = new File(LocalfilePath);
 			/////////////////////////////FROM HERE
 			//	FileOutputStream fos = new FileOutputStream(newFile);
-			//	BufferedOutputStream bos = new BufferedOutputStream(fos);
-			//	bos.write(downloadExam.getMybytearray(), 0, fileSize);
-			//	bos.flush();
-			//	fos.flush();
-			} catch (Exception e) {
-				clientUI.display("Error send (Files)msg) to Client");
+				FileOutputStream fos = new FileOutputStream("C:\\Users\\Matar\\Downloads\\" + downloadExam.getFileName());//NEED TO BE PATH
+				BufferedOutputStream bos = new BufferedOutputStream(fos);
+				bos.write(downloadExam.getMybytearray(), 0, fileSize);
+				bos.flush();
+				fos.flush();
+			} catch (FileNotFoundException ex) {
+				ex.printStackTrace();
+			} catch (IOException ex) {
+				ex.printStackTrace();
 			}
-			awaitResponse = false;
 		}
 	}
 	

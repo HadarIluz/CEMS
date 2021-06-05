@@ -7,6 +7,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -705,7 +706,7 @@ public class CEMSserver extends AbstractServer {
 		String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_exam.docx";
 		MyFile exam = new MyFile(fileName);
 		//String LocalfilePath = "/CEMS/files/" + fileName; // I think without fileName
-		String LocalfilePath = fileName ;
+		String LocalfilePath = fileName ; //NEED TO BE IN FILE
 		try {
 			File newFile = new File(LocalfilePath);
 			byte[] mybytearray = new byte[(int) newFile.length()];
@@ -726,22 +727,20 @@ public class CEMSserver extends AbstractServer {
 
 	private void submitManualExam(MyFile msg, ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("SUBMIT EXAM");
+		MyFile submitExam = (MyFile) msg;
 		int fileSize = ((MyFile) msg).getSize();
 		System.out.println("Message received: " + msg + " from " + client);
 		System.out.println("length " + fileSize);
-
-		MyFile submitExam = (MyFile) msg;
-		String LocalfilePath = submitExam.getFileName();
-
 		try {
-			File newFile = new File(LocalfilePath);
-			FileOutputStream fos = new FileOutputStream(newFile);
+			FileOutputStream fos = new FileOutputStream(submitExam.getFileName()); //WILL BE LOCALPATH. NEED TO BE IN FILE
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			bos.write(submitExam.getMybytearray(), 0, fileSize);
 			bos.flush();
 			fos.flush();
 			client.sendToClient(respon);
-		} catch (Exception ex) {
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
 
