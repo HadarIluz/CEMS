@@ -79,6 +79,8 @@ public class CEMSClient extends AbstractClient {
 		
 		if(msg instanceof MyFile) {
 			int fileSize = ((MyFile) msg).getSize();
+			System.out.println("Message received: " + msg + " from server");
+			System.out.println("length " + fileSize);
 			MyFile downloadExam = (MyFile) msg;
 			String LocalfilePath = "C:\\" + downloadExam.getFileName();
 			try {

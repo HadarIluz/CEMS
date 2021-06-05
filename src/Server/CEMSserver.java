@@ -714,6 +714,7 @@ public class CEMSserver extends AbstractServer {
 			exam.initArray(mybytearray.length);
 			exam.setSize(mybytearray.length);
 			bis.read(exam.getMybytearray(), 0, mybytearray.length);
+			
 			client.sendToClient(exam); //matar : not good
 		   // client.sendToClient(respon);//matar: need to check // ????
 		} catch (Exception ex) {
