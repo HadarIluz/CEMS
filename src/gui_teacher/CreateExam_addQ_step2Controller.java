@@ -13,6 +13,7 @@ import entity.QuestionInExam;
 import entity.QuestionInExamRow;
 import entity.QuestionRow;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -92,7 +93,8 @@ public class CreateExam_addQ_step2Controller implements Initializable{
     private static Exam newExam;
     
     private static ArrayList<Question> availableQuestions;
-    private ArrayList<QuestionInExamRow> selectedQuestionsRows;
+    //private ArrayList<QuestionInExamRow> selectedQuestionsRows;
+    private ObservableList<QuestionInExamRow> selectedQuestionsRows = FXCollections.observableArrayList();
     private ArrayList<QuestionInExam> selectedQuestions;
 
     @FXML
@@ -130,6 +132,7 @@ public class CreateExam_addQ_step2Controller implements Initializable{
         QuestionInExam q = loader.<BrowseQuestionController>getController().getSelectedQuestion();
         selectedQuestions.add(q);
         selectedQuestionsRows.add(new QuestionInExamRow(q.getQuestion().getQuestionID(), q.getScore(), q.getQuestion().getQuestion()));
+        tableAddedQuestions.refresh();
     }
 
     @FXML
@@ -154,6 +157,7 @@ public class CreateExam_addQ_step2Controller implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedQuestions = new ArrayList<>();
+		initTableCols();
 		
 	}
 	
@@ -161,15 +165,14 @@ public class CreateExam_addQ_step2Controller implements Initializable{
 		availableQuestions = questionBank;
 	}
 	
-	public void initTableRows() {
+	public void initTableCols() {
 
 		tableAddedQuestions.getColumns().clear();
 		questionID.setCellValueFactory(new PropertyValueFactory<>("questionID"));
 		questionScore.setCellValueFactory(new PropertyValueFactory<>("score"));
 		question.setCellValueFactory(new PropertyValueFactory<>("question"));
 
-		tableAddedQuestions.setItems(FXCollections.observableArrayList(selectedQuestionsRows));
-
+		tableAddedQuestions.setItems(selectedQuestionsRows);
 		tableAddedQuestions.getColumns().addAll(questionID, questionScore, question);
 
 	}
