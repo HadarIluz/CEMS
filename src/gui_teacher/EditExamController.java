@@ -1,5 +1,6 @@
 package gui_teacher;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import entity.Teacher;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -37,7 +40,7 @@ public class EditExamController implements Initializable{
 	    private TextField textExamID;
 
 	    @FXML
-	    private Button btnBrowseExamQuestions;
+	    private Button btnBrowseQuestions;
 
 	    @FXML
 	    private Label textTimeForExam;
@@ -70,14 +73,25 @@ public class EditExamController implements Initializable{
     
     private static TeacherController teacherController; //we will use it for load the prev/next screen ! (using root).
  
+    //go back to screen of ExamBank
     @FXML
     void btnBack(ActionEvent event) {
+    	try {
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ExamBank.fxml"));
+			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+			teacherController.root.add(newPaneRight, 1, 0);
 
+		} catch (IOException e) {
+			System.out.println("Couldn't load!");
+			e.printStackTrace();
+		}
     }
 
-
+  //still not working.
+  //need to understand how to save it- method in DB controller is not good & if i need to save changes in screen that open with btn browse question
     @FXML
-    void btnSaveEditeExam(ActionEvent event) {
+    void btnSaveEditeExam(ActionEvent event) { 
+
 
     	commentForTeacher=textTeacherComment.getText();
         commentForStudent=textStudentComment.getText();;
@@ -100,7 +114,18 @@ public class EditExamController implements Initializable{
     }
 
     @FXML
-    void btnBrowseExamQuestions(ActionEvent event) {
+    void btnBrowseQuestions(ActionEvent event) { //go back to screen that yuval works on it 
+    	
+    	try {
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("????.fxml"));
+			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+			teacherController.root.add(newPaneRight, 1, 0);
+
+		} catch (IOException e) {
+			System.out.println("Couldn't load!");
+			e.printStackTrace();
+		}
+    
     
     }
 
@@ -108,6 +133,11 @@ public class EditExamController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		teacher = (Teacher) ClientUI.loggedInUser.getUser();
+		//fill fields in screen with values of exam:
+		textExamID.setText(editedExam.getExamID());
+		textTimeAllocateForExam.setText(Integer.toString(editedExam.getTimeOfExam()));
+		textTeacherComment.setText(editedExam.getCommentForTeacher());
+		textStudentComment.setText(editedExam.getCommentForStudents());
 		
 	}
  
@@ -149,9 +179,5 @@ public class EditExamController implements Initializable{
 			
 		}
  		
- 		//TODO: לחשוב על מקרה שבו המורה מוחקת שאלה , לשאלה הזאת יש ניקוד והציון של המבחן ישתנה. אנחנו רוצים לשמור ציון אפס
- 		// לחשוב אם מספיק להקפיץ למורה הודעה 
- 		//או
- 		//להכריח אותה לבצע פעולה מסויימת לאיזון הציון.
-
+ 		
 }

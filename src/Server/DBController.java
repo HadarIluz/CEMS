@@ -845,7 +845,34 @@ public class DBController {
 		
 		
 	}
+	
 
+/**
+	 * @param 
+	 * @return true if succeed to save edit exam values, return false if not. 
+	 *         
+	 */
+	//still not working & need to understand if need to save changes in questions ( that delete in the next screen)
+	public boolean editExamSave(Exam exam) {
+		PreparedStatement pstmt;
 
-
+		try {
+			pstmt = conn.prepareStatement("UPDATE exam SET timeAllotedForTest=?, commentForTeacher=?, commentForStudents=?, author=? WHERE examID=?");
+			pstmt.setString(1, Integer.toString(exam.getTimeOfExam())); //set exam time 
+			pstmt.setString(2, exam.getCommentForTeacher()); //set comments for teacher
+			pstmt.setString(3, exam.getCommentForStudents());//set comments for students
+			pstmt.setLong(4, exam.getAuthor().getId());//set teacher id
+			pstmt.setString(5, exam.getExamID()); //set exam id
+			if (pstmt.executeUpdate() == 1)
+				{
+				System.out.println("Saved");
+				return true;
+				
+				}
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return false;
+	}
+	
 }
