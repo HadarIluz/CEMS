@@ -7,7 +7,7 @@ package client;
 import ocsf.client.*
 ;
 import common.CemsIF;
-import gui_teacher.CreateQuestionController;
+import common.MyFile;
 import logic.ResponseFromServer;
 import logic.StatusMsg;
 import java.io.*;
@@ -34,6 +34,8 @@ public class CEMSClient extends AbstractClient {
 	public static ResponseFromServer responseFromServer = new ResponseFromServer(null);
 	public static StatusMsg statusMsg = new StatusMsg();
 	public static boolean awaitResponse = false;
+	//public static MyFile exam; //matar ????
+
 
 	// Constructors ****************************************************
 
@@ -73,10 +75,30 @@ public class CEMSClient extends AbstractClient {
 			responseFromServer.getStatusMsg().setStatus(responseFromServer.getResponseType());
 			clientUI.display(responseFromServer.toString());
 			awaitResponse = false;
-			
+		}
+		
+		if(msg instanceof MyFile) {
+			MyFile downloadExam = (MyFile) msg;
+			int fileSize = ((MyFile) msg).getSize();
+			System.out.println("Message received: " + msg + " from server");
+			System.out.println("length " + fileSize);
+			String home = System.getProperty("user.home");
+			awaitResponse = false;
+			try {
+				FileOutputStream fos = new FileOutputStream(home + "/Downloads/" + downloadExam.getFileName());//NEED TO BE PATH
+				BufferedOutputStream bos = new BufferedOutputStream(fos);
+				bos.write(downloadExam.getMybytearray(), 0, fileSize);
+				bos.flush();
+				fos.flush();
+			} catch (FileNotFoundException ex) {
+				ex.printStackTrace();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
-
+	
+	
 	/**
 	 * This method handles all data coming from the UI
 	 *

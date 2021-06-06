@@ -7,7 +7,6 @@ public class ExamOfStudent implements Serializable {
 	private ActiveExam activeExam;
 	private Student student;
 	private int score;
-	//we talked that we don't need "score" but it is written on Class diagram ? 
 	
 	public ExamOfStudent(ActiveExam activeExam,Student student, int score ) {
 		super();
@@ -15,6 +14,13 @@ public class ExamOfStudent implements Serializable {
 		this.student=student;
 		this.score=score;
 	}
+	
+	public ExamOfStudent(ActiveExam activeExam,Student student) {
+		this.activeExam=activeExam;
+		this.student=student;
+	}
+	
+	
 	
 	public ActiveExam getActiveExam() {
 		return activeExam;
@@ -33,7 +39,7 @@ public class ExamOfStudent implements Serializable {
 		this.activeExam=activeExam;
 	}
 	
-	public void Student(Student student) {
+	public void setStudent(Student student) {
 		this.student=student;
 		
 	}
