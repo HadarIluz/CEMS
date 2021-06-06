@@ -1,18 +1,24 @@
 package gui_teacher;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ProfessionCourseName;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -33,7 +39,7 @@ public class TeacherStatisticsController {
 	private Label textCourse;
 
 	@FXML
-	private BarChart<?, ?> StudentsHisto;
+	private BarChart<String, Number> ExamHisto;
 
 	@FXML
 	private Button btnShowStatistic;
@@ -46,9 +52,13 @@ public class TeacherStatisticsController {
 
 	@FXML
 	private Label textAverage;
+	
+	boolean flag=true; //true when we need to initialize the histogram with chart and false when we already did that.
+
+	XYChart.Series chart = new XYChart.Series();// table of x and y
 
 	private TeacherController teacherController; // we will use it for load the next screen ! (using root).
-	
+
 	ArrayList<Integer> grades;
 
 	HashMap<String, String> ProfName = new HashMap<String, String>();
@@ -73,52 +83,70 @@ public class TeacherStatisticsController {
 		textAverage.setText(String.valueOf(gradesAverageCalc(ExamID)));
 		setGradesInHistogram(ExamID);
 	}
-	
-	
-	public void setGradesInHistogram(String ExamID)
-	{
-		
-		
-		/*
-		 * CourseHisto.setTitle("HEY"); ca = new CategoryAxis(); na = new NumberAxis();
-		 * // CourseHisto = new BarChart<String, Number>(ca, na); XYChart.Series<String,
-		 * Number> chart = new XYChart.Series<String, Number>();// table of x and y
-		 * 
-		 * CourseHisto.setBarGap(10); chart.setName("check"); chart.getData().add(new
-		 * XYChart.Data<>("100280", 70)); chart.getData().add(new
-		 * XYChart.Data<>("213123", 55)); chart.getData().add(new
-		 * XYChart.Data<>("102930", 80));
-		 * 
-		 * CourseHisto.getData().add(chart);
-		 * 
-		 * 
-		 */
-		
-	}
-	
-	
-	
-	
-	
-	
-	public void medianCalc(ArrayList<Integer> grades) {
-		
-		Collections.sort(grades);
-		
-		if(grades.size()%2==0) {
-			int first,second;
-			first=grades.size()/2-1;
-			second=(grades.size()+2)/2-1;
-			textMedian.setText(String.valueOf(((float)grades.get(first)+grades.get(second))/2));    
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void setGradesInHistogram(String ExamID) {
+		chart.getData().clear();
+		int[] amountOfstudents = new int[10];
+		for (Integer curr : grades) {
+			if (curr >= 0 && curr <= 10)
+				amountOfstudents[0]++;
+			else if (curr >= 11 && curr <= 20)
+				amountOfstudents[1]++;
+			else if (curr >= 21 && curr <= 30)
+				amountOfstudents[2]++;
+			else if (curr >= 31 && curr <= 40)
+				amountOfstudents[3]++;
+			else if (curr >= 41 && curr <= 50)
+				amountOfstudents[4]++;
+			else if (curr >= 51 && curr <= 60)
+				amountOfstudents[5]++;
+			else if (curr >= 61 && curr <= 70)
+				amountOfstudents[6]++;
+			else if (curr >= 71 && curr <= 80)
+				amountOfstudents[7]++;
+			else if (curr >= 81 && curr <= 90)
+				amountOfstudents[8]++;
+			else if (curr >= 91 && curr <= 100)
+				amountOfstudents[9]++;
 		}
-		else 
-			textMedian.setText(String.valueOf((float)grades.get((grades.size()+1)/2-1)));
-		
+
+		chart.getData().add(new XYChart.Data("0-10", amountOfstudents[0]));
+		chart.getData().add(new XYChart.Data("11-20", amountOfstudents[1]));
+		chart.getData().add(new XYChart.Data("21-30", amountOfstudents[2]));
+		chart.getData().add(new XYChart.Data("31-40", amountOfstudents[3]));
+		chart.getData().add(new XYChart.Data("41-50", amountOfstudents[4]));
+		chart.getData().add(new XYChart.Data("51-60", amountOfstudents[5]));
+		chart.getData().add(new XYChart.Data("61-70", amountOfstudents[6]));
+		chart.getData().add(new XYChart.Data("71-80", amountOfstudents[7]));
+		chart.getData().add(new XYChart.Data("81-90", amountOfstudents[8]));
+		chart.getData().add(new XYChart.Data("91-100", amountOfstudents[9]));
+
+		if (flag==true) {
+			flag=false;
+			chart.setName("Amount of student");
+			ExamHisto.getData().add(chart);
+		}
+
+	}
+
+	public void medianCalc(ArrayList<Integer> grades) {
+
+		Collections.sort(grades);
+
+		if (grades.size() % 2 == 0) {
+			int first, second;
+			first = grades.size() / 2 - 1;
+			second = (grades.size() + 2) / 2 - 1;
+			textMedian.setText(String.valueOf(((float) grades.get(first) + grades.get(second)) / 2));
+		} else
+			textMedian.setText(String.valueOf((float) grades.get((grades.size() + 1) / 2 - 1)));
+
 	}
 
 	@SuppressWarnings("unchecked")
 	public float gradesAverageCalc(String ExamID) {
-		
+
 		float sum = 0;
 		RequestToServer req = new RequestToServer("gradesAverageCalc");
 		req.setRequestData(ExamID);
@@ -126,7 +154,7 @@ public class TeacherStatisticsController {
 		grades = (ArrayList<Integer>) CEMSClient.responseFromServer.getResponseData();
 		for (Integer a : grades)
 			sum += a;
-		sum/=grades.size();
+		sum /= grades.size();
 		medianCalc(grades);
 		return sum;
 	}
@@ -172,12 +200,6 @@ public class TeacherStatisticsController {
 
 	}
 
-	
-	
-	
-	
-	
-	
 	private void popUp(String msg) {
 		final Stage dialog = new Stage();
 		VBox dialogVbox = new VBox(20);
