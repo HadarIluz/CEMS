@@ -63,7 +63,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="textExamDuration" editable="false" layoutX="236.0" layoutY="287.0" promptText="In minutes" />
+      <TextField fx:id="textExamDuration" layoutX="236.0" layoutY="287.0" promptText="In minutes" />
       <Text fill="#4672ae" layoutX="256.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create New Exam" wrappingWidth="256.150390625">
          <font>
             <Font name="System Bold" size="30.0" />

@@ -122,6 +122,7 @@ public class StartManualExamController implements Initializable {
 				submitExam.initArray(mybytearray.length);
 				submitExam.setSize(mybytearray.length);
 				bis.read(submitExam.getMybytearray(), 0, mybytearray.length);
+				fis.close();
 				RequestToServer req = new RequestToServer("submitManualExam");
 				req.setRequestData(submitExam);
 				ClientUI.cems.accept(req);

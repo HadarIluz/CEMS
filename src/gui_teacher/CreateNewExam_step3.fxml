@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.CreateNewExam_step3Controller">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.CreateNewExam_step3Controller">
    <children>
       <Text fx:id="textMsg_newExam" layoutX="96.0" layoutY="394.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New ExamID had beed created:">
          <font>
@@ -20,11 +20,6 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Text fx:id="textMsg_totalScore" layoutX="96.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Exam Score : ">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </Text>
       <Text fill="#4672ae" layoutX="256.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create New Exam" wrappingWidth="256.150390625">
          <font>
             <Font name="System Bold" size="30.0" />
@@ -51,17 +46,12 @@
          </font>
       </Text>
       <Separator layoutX="9.0" layoutY="241.0" prefHeight="3.0" prefWidth="750.0" />
-      <Text fx:id="textTotalExamScore" fill="#408d05" layoutX="255.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </Text>
       <Text fx:id="textExamID" fill="#408d05" layoutX="346.0" layoutY="395.0" strokeType="OUTSIDE" strokeWidth="0.0" text="010203">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Button fx:id="btnBack" disable="true" layoutX="84.0" layoutY="527.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnBack" prefHeight="25.0" prefWidth="122.0" text=" &lt; Back" />
+      <Button fx:id="btnBack" layoutX="84.0" layoutY="527.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnBack" prefHeight="25.0" prefWidth="122.0" text=" &lt; Back" />
       <ImageView fx:id="imgComputer" fitHeight="137.0" fitWidth="135.0" layoutX="578.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/teacher-Principal_img/desktop.png" />

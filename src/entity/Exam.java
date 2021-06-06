@@ -15,14 +15,26 @@ public class Exam implements Serializable {
 	private HashMap<String, Integer> questionScores; // mapping the questionID(string) to score(integer)
 	private String commentForTeacher;
 	private String commentForStudents;
-	private Teacher author; // is this relevant or to delete?
+	private Teacher author; 
 	private String ProfessionName;
+	private ArrayList<QuestionInExam> examQuestionsWithScores;
+
 	private String CourseName;
+	public enum Status{inActive,active} //matar
+	Status status;
 	
 	public Exam() {
 		super();
 	}
 	
+	public ArrayList<QuestionInExam> getExamQuestionsWithScores() {
+		return examQuestionsWithScores;
+	}
+
+	public void setExamQuestionsWithScores(ArrayList<QuestionInExam> examQuestionsWithScores) {
+		this.examQuestionsWithScores = examQuestionsWithScores;
+	}
+
 	public Exam(String examID) {
 		this.examID = examID;
 	}
@@ -39,6 +51,7 @@ public class Exam implements Serializable {
 		this.examID = "";
 		this.profession = profession;
 		this.timeOfExam = timeOfExam;
+		this.course = course;
 	}
 	
 	public Exam(String examID, Profession profession, Course course, int timeOfExam) {
@@ -47,6 +60,7 @@ public class Exam implements Serializable {
 		this.profession = profession;
 		this.course = course;
 		this.timeOfExam = timeOfExam;
+		this.course = course;
 	}
 	
 	public Exam(Course course) {
@@ -145,6 +159,14 @@ public class Exam implements Serializable {
 
 	public void setExamID(String examID) {
 		this.examID = examID;
+	}
+	
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 }
