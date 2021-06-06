@@ -48,7 +48,7 @@ public class CreateExam_step1Controller implements Initializable{
     private ComboBox<String> selectProffessionList;
 
     @FXML
-    private ComboBox<Course> selectCourseList;
+    private ComboBox<String> selectCourseList;
 
     @FXML
     private TextField textExamDuration;
@@ -67,8 +67,10 @@ public class CreateExam_step1Controller implements Initializable{
     
     private HashMap<String, Profession> professionsMap = null;
     private Profession selectedProfession;
-    private Course courseList;
+    private ArrayList<Course> courseList;
     private Course selectedCourse = null;
+    private HashMap<String, Course> courseMap = null;
+    private static Exam newExam = null;
 
 
     @FXML
@@ -86,13 +88,17 @@ public class CreateExam_step1Controller implements Initializable{
         		popUp("Exam time too short");
     		}
     		else {
-    			Exam newExam = new Exam(selectedProfession, selectedCourse, time);
+    			if (newExam == null) {
+        			newExam = new Exam(selectedProfession, selectedCourse, time);
+
+    			}
     			if (textLecturers_Instructions.getText().trim().length() > 0) {
     				newExam.setCommentForTeacher(textLecturers_Instructions.getText().trim());
     			}
     			if (textStudent_Instructions.getText().trim().length() > 0) {
-    				newExam.setCommentForTeacher(textStudent_Instructions.getText().trim());
+    				newExam.setCommentForStudents(textStudent_Instructions.getText().trim());
     			}
+    			newExam.setAuthor((Teacher)ClientUI.loggedInUser.getUser());
     			startNextScreen(newExam);
     		}
     	}
@@ -100,11 +106,10 @@ public class CreateExam_step1Controller implements Initializable{
 
     private void startNextScreen(Exam newExam) {
     	try {
-
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_addQ_step2.fxml.fxml"));
+			CreateExam_addQ_step2Controller.setExamState(newExam);
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_addQ_step2.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			TeacherController.root.add(newPaneRight, 1, 0);
-			CreateExam_addQ_step2Controller.setExamState(newExam);
 
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");
@@ -116,7 +121,9 @@ public class CreateExam_step1Controller implements Initializable{
 
 	@FXML
     void selectCourseList(ActionEvent event) {
-    	selectedCourse = selectCourseList.getValue();
+		if (courseMap.containsKey(selectCourseList.getValue())) {
+			selectedCourse = courseMap.get(selectCourseList.getValue());
+		}
     }
 
     @FXML
@@ -127,10 +134,13 @@ public class CreateExam_step1Controller implements Initializable{
     		selectedProfession = professionsMap.get(selectProffessionList.getValue());
     		
     		RequestToServer req = new RequestToServer("getQuestionBank");
-    		req.setRequestData(selectedProfession);
+    		Question q = new Question();
+    		q.setTeacher((Teacher)ClientUI.loggedInUser.getUser());
+    		q.setProfession(selectedProfession);
+    		req.setRequestData(q);
     		ClientUI.cems.accept(req);
     		
-    		if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("No Question Bank")) {
+    		if (CEMSClient.responseFromServer.getResponseType().equals("No Question Bank")) {
     			noQbankError.setText("No question bank was found for this profession");
     			noQbankError.setVisible(true);
     		}
@@ -140,12 +150,12 @@ public class CreateExam_step1Controller implements Initializable{
     			req.setRequestData(selectedProfession);
         		ClientUI.cems.accept(req);
         		
-        		if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("No Courses")) {
+        		if (CEMSClient.responseFromServer.getResponseType().equals("No Courses")) {
         			noQbankError.setText("There are no courses available for this profession");
         			noQbankError.setVisible(true);
         		}
         		else {
-        			courseList = (Course)CEMSClient.responseFromServer.getResponseData();
+        			courseList = (ArrayList<Course>)CEMSClient.responseFromServer.getResponseData();
         			loadCourseListIntoComboBox();
         		}
     		}
@@ -153,7 +163,11 @@ public class CreateExam_step1Controller implements Initializable{
     }
 
 	private void loadCourseListIntoComboBox() {
-		selectCourseList.setItems(FXCollections.observableArrayList(courseList));
+		courseMap = new HashMap<>();
+		for (Course c: courseList) {
+			courseMap.put(c.getCourseName(), c);
+		}
+		selectCourseList.setItems(FXCollections.observableArrayList(courseMap.keySet()));
 		selectCourseList.setDisable(false);
 	}
 
@@ -164,6 +178,23 @@ public class CreateExam_step1Controller implements Initializable{
 		
 		professionsMap = TeacherController.getProfessionsMap();
 		loadProfessionsToCombobox();
+		
+		if (newExam != null) {
+			selectedProfession = newExam.getProfession();
+			selectProffessionList.getSelectionModel().select(selectedProfession.getProfessionName());
+			selectedCourse = newExam.getCourse();
+			selectCourseList.getSelectionModel().select(selectedCourse.getCourseName());
+			selectCourseList.setDisable(false);
+			textExamDuration.setText(String.valueOf(newExam.getTimeOfExam()));
+			if (newExam.getCommentForTeacher() != null) {
+				textLecturers_Instructions.setText(String.valueOf(newExam.getCommentForTeacher()));
+			}
+			
+			if (newExam.getCommentForStudents() != null) {
+				textStudent_Instructions.setText(String.valueOf(newExam.getCommentForStudents()));
+			}
+			
+		}
 
 
 	}
@@ -174,17 +205,21 @@ public class CreateExam_step1Controller implements Initializable{
     }
 	
 	// create a popup with a message
-			public void popUp(String txt) {
-				final Stage dialog = new Stage();
-				VBox dialogVbox = new VBox(20);
-				Label lbl = new Label(txt);
-				lbl.setPadding(new Insets(5));
-				lbl.setAlignment(Pos.CENTER);
-				lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-				dialogVbox.getChildren().add(lbl);
-				Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-				dialog.setScene(dialogScene);
-				dialog.show();
-			}
+	public void popUp(String txt) {
+		final Stage dialog = new Stage();
+		VBox dialogVbox = new VBox(20);
+		Label lbl = new Label(txt);
+		lbl.setPadding(new Insets(5));
+		lbl.setAlignment(Pos.CENTER);
+		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		dialogVbox.getChildren().add(lbl);
+		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
+		dialog.setScene(dialogScene);
+		dialog.show();
+	}
+
+	public static void setExamState(Exam newExam2) {
+		newExam = newExam2;
+	}
 
 }

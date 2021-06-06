@@ -1,28 +1,30 @@
 package gui_teacher;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
+import client.CEMSClient;
 import client.ClientUI;
 import entity.Exam;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
-public class CreateNewExam_step3Controller {
+public class CreateNewExam_step3Controller implements Initializable{
 
-    @FXML
+	@FXML
     private Text textMsg_newExam;
 
     @FXML
     private Button btnCreateNewExam;
-
-    @FXML
-    private Text textMsg_totalScore;
 
     @FXML
     private ImageView imgStep1;
@@ -32,9 +34,6 @@ public class CreateNewExam_step3Controller {
 
     @FXML
     private ImageView imgStep3;
-
-    @FXML
-    private Text textTotalExamScore;
 
     @FXML
     private Text textExamID;
@@ -66,16 +65,28 @@ public class CreateNewExam_step3Controller {
 
     @FXML
     void btnCreateNewExam(ActionEvent event) {
-    	btnBack.setDisable(true);
     	RequestToServer req = new RequestToServer("createNewExam");
     	req.setRequestData(newExam);
 		ClientUI.cems.accept(req);
-
+		if (CEMSClient.responseFromServer.getResponseType().equals("Success Create New Exam")) {
+			textExamID.setText((String)CEMSClient.responseFromServer.getResponseData());
+	    	btnBack.setDisable(true);
+		}
+		else {
+			textExamID.setText("There was a problem. please try again later");
+			textExamID.setFill(javafx.scene.paint.Color.RED);
+		}
 
     }
     
     public static void setExamState(Exam newExamInProgress) {
 		newExam = newExamInProgress;
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		textExamID.setText("");
+		
 	}
 
 }
