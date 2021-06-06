@@ -17,6 +17,7 @@ import entity.Exam;
 import entity.ExtensionRequest;
 import entity.Profession;
 import entity.Question;
+import entity.QuestionInExam;
 import entity.QuestionRow;
 import entity.Student;
 import entity.Teacher;
@@ -280,11 +281,16 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 			pstmt = conn.prepareStatement("SELECT SUM(course=?) as sum FROM exam;");
 			pstmt.setString(1, courseID);
 			ResultSet rs = pstmt.executeQuery();
-			return rs.getInt(1);
+			if (rs.next()) {
+				int x =  rs.getInt(1);
+				return x;
+			}
+			return 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return 0;
 		}
-		return 0;
+		
 	}
 
 	/**
@@ -316,17 +322,17 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 
 	/**
 	 * @param examID
-	 * @param questionScores
+	 * @param arrayList
 	 * @return true/false if inserting all questions and scores of exam with examID
 	 *         into table question_in_exam succeeded
 	 */
-	public boolean addQuestionsInExam(String examID, HashMap<String, Integer> questionScores) {
+	public boolean addQuestionsInExam(String examID, ArrayList<QuestionInExam> examQuestionsWithScores) {
 		PreparedStatement pstmt;
 		try {
-			for (String questionID : questionScores.keySet()) {
+			for (QuestionInExam q : examQuestionsWithScores) {
 				pstmt = conn.prepareStatement("INSERT INTO question_in_exam VALUES(?, ?, ?);");
-				pstmt.setString(1, questionID);
-				pstmt.setInt(2, questionScores.get(questionID));
+				pstmt.setString(1, q.getQuestion().getQuestionID());
+				pstmt.setInt(2, q.getScore());
 				pstmt.setString(3, examID);
 				if (pstmt.executeUpdate() != 1) {
 					return false;
@@ -789,9 +795,8 @@ public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Course c = new Course(rs.getString(1));
-				c.setCourseName(rs.getString(2));
-				
+				Course c = new Course(rs.getString(2));
+				c.setCourseID(rs.getString(1));
 				cList.add(c);
 			}
 			rs.close();

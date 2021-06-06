@@ -98,6 +98,7 @@ public class CreateExam_step1Controller implements Initializable{
     			if (textStudent_Instructions.getText().trim().length() > 0) {
     				newExam.setCommentForStudents(textStudent_Instructions.getText().trim());
     			}
+    			newExam.setAuthor((Teacher)ClientUI.loggedInUser.getUser());
     			startNextScreen(newExam);
     		}
     	}

@@ -177,7 +177,7 @@ public class CreateExam_addQ_step2Controller implements Initializable{
     	setQuestionsInNewExam();
     	CreateNewExam_step3Controller.setExamState(newExam);
     	try {
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateNewExam_step3Controller.fxml"));
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateNewExam_step3.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			TeacherController.root.add(newPaneRight, 1, 0);
 

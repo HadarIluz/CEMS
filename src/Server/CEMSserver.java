@@ -561,7 +561,7 @@ public class CEMSserver extends AbstractServer {
 			res.setStatusMsg(stat);
 		}
 		// add questions and scores to DB
-		if (!dbController.addQuestionsInExam(examID, examData.getQuestionScores())) {
+		if (!dbController.addQuestionsInExam(examID, examData.getExamQuestionsWithScores())) {
 			// return error
 			ResponseFromServer res = new ResponseFromServer("Error creating new Exam");
 			StatusMsg stat = new StatusMsg();
