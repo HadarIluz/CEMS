@@ -3,6 +3,10 @@ package gui_student;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -12,7 +16,9 @@ import entity.ActiveExam;
 import entity.ExamOfStudent;
 import entity.Student;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,6 +29,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
@@ -86,15 +99,20 @@ public class StartManualExamController implements Initializable{
     	RequestToServer req = new RequestToServer("downloadManualExam");
 		req.setRequestData(examOfStudent);
     	ClientUI.cems.accept(req);
+    	btnDownload.setDisable(true);
     	btnSubmit.setDisable(false);
+    
     }
 
     @FXML
-    void btnSubmit(ActionEvent event) {
+    
+    void btnSubmit(ActionEvent event) throws IOException {
     	String fileName = examOfStudent.getActiveExam().getExam().getExamID()+ "_" + examOfStudent.getStudent().getId() + ".docx";
 		String home = System.getProperty("user.home");
     	String LocalfilePath = home + "/Downloads/" + examOfStudent.getActiveExam().getExam().getExamID() + "_exam.docx";
-    	MyFile submitExam =  new MyFile(fileName);  		
+    	MyFile submitExam =  new MyFile(fileName); 
+    	//////////////////////////////////////////
+		
     		try {
     			File newFile = new File (LocalfilePath);
     		    byte [] mybytearray  = new byte [(int)newFile.length()];
@@ -150,5 +168,4 @@ public class StartManualExamController implements Initializable{
 		dialog.setScene(dialogScene);
 		dialog.show();
 	}
-
 }
