@@ -31,5 +31,5 @@ public class ClientUI extends Application {
 		LogInHomeScreen.start(primaryStage);
 
 	}
-
+	
 }

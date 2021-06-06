@@ -64,9 +64,9 @@ public class StudentController extends Application implements Initializable {
     @FXML
     private Button btnStartComputerizedExam;
 
-	LoginController loginController;
+	private static LoginController loginController;
 	protected Student student;
-	protected static GridPane root;
+	public static GridPane root;
 	public Scene scene;
 
 	/**
@@ -102,7 +102,7 @@ public class StudentController extends Application implements Initializable {
 	void btnStartComputerizedExam(ActionEvent event) {
 
 		try {
-			EnterToExamController.setAllActiveExamBeforEnter2Exam(getAllActiveExamBeforEnter2Exam());
+			EnterToExamController.setAllActiveExamBeforEnterToExam(getAllActiveExamBeforEnterToExam());
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 
@@ -118,7 +118,7 @@ public class StudentController extends Application implements Initializable {
 	void btnStartManualExam(ActionEvent event) {
 		
 		try {
-			EnterToExamController.setAllActiveExamBeforEnter2Exam(getAllActiveExamBeforEnter2Exam());
+			EnterToExamController.setAllActiveExamBeforEnterToExam(getAllActiveExamBeforEnterToExam());
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 
@@ -133,7 +133,7 @@ public class StudentController extends Application implements Initializable {
 	@FXML
 	void btnViewExamInfo(ActionEvent event) {
 		try {
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_student/ViewExam.fxml"));
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ViewExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
@@ -157,7 +157,7 @@ public class StudentController extends Application implements Initializable {
 
 		alert.getButtonTypes().setAll(okButton, noButton);
 		alert.showAndWait().ifPresent(type -> {
-			if (type == okButton) {				
+			if (type == okButton) {	
 				loginController = new LoginController();
 				((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 				try {
@@ -198,10 +198,10 @@ public class StudentController extends Application implements Initializable {
 	 * @return List of all active tests received as answer from server.
 	 */
 	@SuppressWarnings("unchecked")
-	private ArrayList<ActiveExam> getAllActiveExamBeforEnter2Exam() {
+	private ArrayList<ActiveExam> getAllActiveExamBeforEnterToExam() {
 		
 		ArrayList<ActiveExam> activeExamList= new ArrayList<ActiveExam>();
-		RequestToServer req = new RequestToServer("getAllActiveExamBeforEnter2Exam");
+		RequestToServer req = new RequestToServer("getAllActiveExamBeforEnterToExam");
 		ClientUI.cems.accept(req);
 		//DEBUG:
 		activeExamList= (ArrayList<ActiveExam>) CEMSClient.responseFromServer.getResponseData();

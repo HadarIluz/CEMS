@@ -22,10 +22,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -40,48 +39,50 @@ import logic.RequestToServer;
  */
 public class TeacherController extends Application implements Initializable {
 
-	@FXML
-	private ImageView imgPrincipal;
+    @FXML
+    private ImageView imgPrincipal;
 
-	@FXML
-	private ImageView imgLogo;
+    @FXML
+    private ImageView imgLogo;
 
-	@FXML
-	public Label textTeacherName;
+    @FXML
+    private Label textTeacherName;
 
-	@FXML
-	private Button brnManageQuestionsBank;
+    @FXML
+    private Button brnManageQuestionsBank;
 
-	@FXML
-	private ImageView imgPhone;
+    @FXML
+    private ImageView imgPhone;
 
-	@FXML
-	private ImageView imgEmail;
+    @FXML
+    private ImageView imgEmail;
 
-	@FXML
-	private Button btnCreateActiveExam;
+    @FXML
+    private Button btnManageExamsBank;
 
-	@FXML
-	private Button btnManageExamsBank;
+    @FXML
+    private Button btnGetStatistics;
 
-	@FXML
-	private Button btnGetStatistics;
+    @FXML
+    private Button btnScoreApproval;
 
-	@FXML
-	private Button btnScoreApproval;
+    @FXML
+    private Button btnChangeExamTime;
 
-	@FXML
-	private Button btnChangeExamTime;
+    @FXML
+    private Label pressLogout;
 	
 	public LoginController loginController;
-	protected static GridPane root;
+	public static GridPane root;
 	public Scene scene;
 	protected User teacher;
-	LoginController login;
-	 private static HashMap<String, Profession> professionsMap = null;
+	private static HashMap<String, Profession> professionsMap = null;
 
+	/**TODO: add comment
+	 * @param event
+	 */
 	@FXML
-	void brnManageQuestionsBank(ActionEvent event) {
+	void btnManageQuestionsBank(ActionEvent event) {
 		try {
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("QuestionBank.fxml"));
@@ -94,6 +95,9 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
+	/*TODO: add comment
+	 * @param event
+	 */
 	@FXML
 	void btnChangeExamTime(ActionEvent event) {
 		try {
@@ -108,24 +112,12 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
-	@FXML
-	void btnCreateActiveExam(ActionEvent event) {
-		try {
-
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateActiveExam.fxml"));
-			root.add(newPaneRight, 1, 0);
-
-		} catch (IOException e) {
-			System.out.println("Couldn't load!");
-			e.printStackTrace();
-		}
-
-	}
-
+	/**TODO: add comment
+	 * @param event
+	 */
 	@FXML
 	void btnGetStatistics(ActionEvent event) {
 		try {
-
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("DemoStatistics.fxml"));
 			root.add(newPaneRight, 1, 0);
 
@@ -136,10 +128,12 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
+	/** TODO: add comment
+	 * @param event
+	 */
 	@FXML
 	void btnManageExamsBank(ActionEvent event) {
 		try {
-
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ExamBank.fxml"));
 			root.add(newPaneRight, 1, 0);
 		} catch (IOException e) {
@@ -149,10 +143,12 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
+	/** TODO: add comment
+	 * @param event
+	 */
 	@FXML
 	void btnScoreApproval(ActionEvent event) {
 		try {
-
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ScoreApproval.fxml"));
 			root.add(newPaneRight, 1, 0);
 
@@ -177,11 +173,12 @@ public class TeacherController extends Application implements Initializable {
 
 		alert.getButtonTypes().setAll(okButton, noButton);
 		alert.showAndWait().ifPresent(type -> {
-			if (type == okButton) {				
+			if (type == okButton) {		
 				loginController = new LoginController();
 				((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 				try {
 					loginController.start(new Stage());
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -211,11 +208,6 @@ public class TeacherController extends Application implements Initializable {
 		teacher=ClientUI.loggedInUser.getUser();
 		textTeacherName.setText(teacher.getFirstName()+" " +teacher.getLastName());
 		setProfessionMap(((Teacher)ClientUI.loggedInUser.getUser()).getProfessions());
-		Image flag = new Image("file:src/images/teacher_userImg.png");
-
-		// private Image flag = new Image("file:src/resources/flag.png");
-
-		imgPrincipal = new ImageView(flag);
 	}
 	
 
@@ -229,6 +221,8 @@ public class TeacherController extends Application implements Initializable {
 	public static HashMap<String, Profession> getProfessionsMap() {
 		return professionsMap;
 	}
+	
+	
 	/**
 	 * listen for close events on a JavaFX Stage, notified when the user clicks the
 	 * button with the X on, in the upper right corner of the Stage
