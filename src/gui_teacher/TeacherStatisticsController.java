@@ -1,6 +1,8 @@
 package gui_teacher;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 import client.CEMSClient;
@@ -46,6 +48,8 @@ public class TeacherStatisticsController {
 	private Label textAverage;
 
 	private TeacherController teacherController; // we will use it for load the next screen ! (using root).
+	
+	ArrayList<Integer> grades;
 
 	HashMap<String, String> ProfName = new HashMap<String, String>();
 	// profID,profName
@@ -67,9 +71,39 @@ public class TeacherStatisticsController {
 		textProfession.setText(ProfName.get(ProfID) + "(" + ProfID + ")");
 		textCourse.setText(ProfCourseName.get(ProfID).getCourses().get(CourseID) + "(" + CourseID + ")");
 		textAverage.setText(String.valueOf(gradesAverageCalc(ExamID)));
+		setGradesInHistogram(ExamID);
 	}
 	
+	
+	public void setGradesInHistogram(String ExamID)
+	{
+		
+		
+		/*
+		 * CourseHisto.setTitle("HEY"); ca = new CategoryAxis(); na = new NumberAxis();
+		 * // CourseHisto = new BarChart<String, Number>(ca, na); XYChart.Series<String,
+		 * Number> chart = new XYChart.Series<String, Number>();// table of x and y
+		 * 
+		 * CourseHisto.setBarGap(10); chart.setName("check"); chart.getData().add(new
+		 * XYChart.Data<>("100280", 70)); chart.getData().add(new
+		 * XYChart.Data<>("213123", 55)); chart.getData().add(new
+		 * XYChart.Data<>("102930", 80));
+		 * 
+		 * CourseHisto.getData().add(chart);
+		 * 
+		 * 
+		 */
+		
+	}
+	
+	
+	
+	
+	
+	
 	public void medianCalc(ArrayList<Integer> grades) {
+		
+		Collections.sort(grades);
 		
 		if(grades.size()%2==0) {
 			int first,second;
@@ -84,7 +118,7 @@ public class TeacherStatisticsController {
 
 	@SuppressWarnings("unchecked")
 	public float gradesAverageCalc(String ExamID) {
-		ArrayList<Integer> grades;
+		
 		float sum = 0;
 		RequestToServer req = new RequestToServer("gradesAverageCalc");
 		req.setRequestData(ExamID);
@@ -138,6 +172,12 @@ public class TeacherStatisticsController {
 
 	}
 
+	
+	
+	
+	
+	
+	
 	private void popUp(String msg) {
 		final Stage dialog = new Stage();
 		VBox dialogVbox = new VBox(20);
