@@ -643,8 +643,8 @@ public class DBController {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("DELETE FROM exam WHERE examID=? AND profession=? AND course=?");
 			pstmt.setString(1, exam.getExamID());
-			pstmt.setString(2, exam.getProfName());
-			pstmt.setString(3, exam.getCourse().getCourseName());// need to be courseID
+			pstmt.setString(2, exam.getProfession().getProfessionID());
+			pstmt.setString(3, exam.getCourse().getCourseID());// need to be courseID
 			pstmt.executeUpdate();
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
@@ -739,7 +739,7 @@ public class DBController {
 		String answer = null;
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("SELECT * FROM exam WHERE examID=?;");
+			pstmt = conn.prepareStatement("SELECT * FROM exam_of_student WHERE exam=?;");
 			pstmt.setString(1, ExamID);
 			ResultSet rs = pstmt.executeQuery();
 			rs.next();

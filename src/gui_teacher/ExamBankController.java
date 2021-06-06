@@ -83,7 +83,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		for (Exam e : data) {
 			if (e.getExamID().equals(ExamID)) {
 				exam = new Exam(ExamID);
-				exam.setCourse(new Course(e.getCourse().getCourseName()));
+				exam.setCourse(new Course(e.getCourse().getCourseID()));
 				exam.setProfession(e.getProfession());
 				return exam;
 			}
@@ -114,6 +114,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 				return;
 
 			ObservableList<Exam> Qlist;
+			
 			Exam ExamToDelete = GetTableDetails(textExamID.getText());
 
 			Qlist = tableExam.getSelectionModel().getSelectedItems();

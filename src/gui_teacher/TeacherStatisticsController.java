@@ -131,7 +131,7 @@ public class TeacherStatisticsController {
 		req.setRequestData(ExamID);
 		ClientUI.cems.accept(req);
 		if (CEMSClient.responseFromServer.getResponseData().equals("FALSE")) {
-			popUp("Exam does not exist.");
+			popUp("No detail for that exam!");
 			isExsit = false;
 		}
 		return isExsit;
