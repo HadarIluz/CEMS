@@ -3,6 +3,7 @@ package gui_student;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -82,6 +83,9 @@ public class StartManualExamController implements Initializable {
 
 	@FXML
 	private TextField textFileName;
+	
+    @FXML
+    private Text txtDownloadSucceed;
 
 	private static StudentController studentController; // why ??
 	private static ActiveExam newActiveExam;
@@ -98,21 +102,22 @@ public class StartManualExamController implements Initializable {
 		ClientUI.cems.accept(req);
 		btnDownload.setDisable(true);
 		btnSubmit.setDisable(false);
+		txtDownloadSucceed.setOpacity(1.0);
 	}
 
 	@FXML
 	void btnSubmit(ActionEvent event) {
-		
+
 		Object[] options = { " Cancel ", " Submit " };
 		JFrame frame = new JFrame("Submit Exam");
 		int dialogResult = JOptionPane.showOptionDialog(frame,
-				"Please Note!\nOnce you click Submit you can't edit exam egain.", null,
-				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, // do not use a custom Icon
+				"Please Note!\nOnce you click Submit you can't edit exam egain.", null, JOptionPane.YES_NO_OPTION,
+				JOptionPane.WARNING_MESSAGE, null, // do not use a custom Icon
 				options, // the titles of buttons
 				null); // default button title
 		if (dialogResult == 1) {
-			String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_" + examOfStudent.getStudent().getId()
-					+ ".docx";
+			String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_"
+					+ examOfStudent.getStudent().getId() + ".docx";
 			String home = System.getProperty("user.home");
 			String LocalfilePath = home + "/Downloads/" + examOfStudent.getActiveExam().getExam().getExamID()
 					+ "_exam.docx";
@@ -129,10 +134,19 @@ public class StartManualExamController implements Initializable {
 				RequestToServer req = new RequestToServer("submitManualExam");
 				req.setRequestData(submitExam);
 				ClientUI.cems.accept(req);
+				btnSubmit.setDisable(true);
+				txtUploadSucceed.setOpacity(1.0);
+			} catch (FileNotFoundException ex) {
+				txtError1.setOpacity(1.0);
+				txtError2.setOpacity(1.0);
+				txtError3.setOpacity(1.0);
+				ex.printStackTrace();
 			} catch (Exception ex) {
+				txtError1.setOpacity(1.0);
+				txtError2.setOpacity(1.0);
+				txtError3.setOpacity(1.0);
 				ex.printStackTrace();
 			}
-			btnSubmit.setDisable(true);
 		}
 	}
 
@@ -175,14 +189,15 @@ public class StartManualExamController implements Initializable {
 		dialog.setScene(dialogScene);
 		dialog.show();
 	}
-	
+
 	public static void lockExam(Exam exam) {
-		if(exam.getExamID().equals(newActiveExam.getExam().getExamID())) {
-			status = Status.inActive; //need ??
-			//stop timer
-			//btnDownload.setDisable(true);// to think
-			//btnSubmit.setDisable(true);// to think
-			//popUp("The test is locked.\nIt cannot be downloaded or submitted.");// to think
+		if (exam.getExamID().equals(newActiveExam.getExam().getExamID())) {
+			status = Status.inActive; // need ??
+			// stop timer
+			// btnDownload.setDisable(true);// to think
+			// btnSubmit.setDisable(true);// to think
+			// popUp("The test is locked.\nIt cannot be downloaded or submitted.");// to
+			// think
 		}
 	}
 }

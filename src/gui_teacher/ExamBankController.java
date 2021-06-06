@@ -57,7 +57,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private TableColumn<Exam, Integer> Time;
 
 	@FXML
-	private TableColumn<Exam, Status> StatusC; //matar
+	private TableColumn<Exam, Status> StatusC; 
 
 	@FXML
 	private Button btnExamInfoPrincipal;
@@ -66,7 +66,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private Button btnCreateActiveExam;
 
 	@FXML
-	private Button btnLockExam; //matar
+	private Button btnLockExam;
 
 	@FXML
 	private Text textMsg1;
@@ -84,6 +84,15 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ObservableList<Exam> Qlist;
 		Qlist = tableExam.getSelectionModel().getSelectedItems();
 		textExamID.setText(Qlist.get(0).getExamID());
+		if(Qlist.get(0).getStatus().equals(Status.active)) {
+			btnLockExam.setDisable(false);
+			btnDeleteExam.setDisable(true);
+
+		}
+		else {
+			btnLockExam.setDisable(true);
+			btnDeleteExam.setDisable(false);
+		}		
 	}
 
 	private Exam GetTableDetails(String ExamID) {
@@ -219,7 +228,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
-		StatusC.setCellValueFactory(new PropertyValueFactory<>("status")); //matar
+		StatusC.setCellValueFactory(new PropertyValueFactory<>("status")); 
 		tableExam.setItems(data);
 		tableExam.getColumns().addAll(ExamID, Proffesion, Time,StatusC);
 
@@ -241,10 +250,6 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		RequestToServer req = new RequestToServer("getSelectedExamData_byID");
 		req.setRequestData(selectedExam);
 		ClientUI.cems.accept(req);
-		//if(selectedExam.getStatus() == Status.active) //matar
-		//	btnLockExam.setDisable(false); //matar
-		//else //matar
-		//	btnLockExam.setDisable(true); //matar
 		return selectedExam = (Exam) CEMSClient.responseFromServer.getResponseData();
 	}
 
@@ -266,7 +271,6 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
-		//StatusC.setCellValueFactory(new PropertyValueFactory<>("status")); //matar
 		course.setCellValueFactory(new PropertyValueFactory<>("course"));
 		tableExam.setItems(data);
 		tableExam.getColumns().addAll(ExamID, Proffesion, Time, course);  

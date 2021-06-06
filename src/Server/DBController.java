@@ -862,7 +862,7 @@ public class DBController {
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
 				exam.setCommentForTeacher(rs.getString(5));
 				exam.setCommentForStudents(rs.getString(6));
-				exam.setStatus((Status) rs.getObject(8));
+				exam.setStatus( Status.valueOf(rs.getString(8)));
 				rs.close();
 			}
 		} catch (SQLException ex) {

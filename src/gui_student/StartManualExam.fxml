@@ -83,5 +83,10 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
+      <Text fx:id="txtDownloadSucceed" disable="true" fill="#18a116" layoutX="436.0" layoutY="300.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The file was download successfully." wrappingWidth="294.3999732732773">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
