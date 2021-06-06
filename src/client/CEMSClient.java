@@ -90,6 +90,7 @@ public class CEMSClient extends AbstractClient {
 				bos.write(downloadExam.getMybytearray(), 0, fileSize);
 				bos.flush();
 				fos.flush();
+				fos.close();
 			} catch (FileNotFoundException ex) {
 				ex.printStackTrace();
 			} catch (IOException ex) {

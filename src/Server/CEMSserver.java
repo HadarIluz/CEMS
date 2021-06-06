@@ -724,6 +724,7 @@ public class CEMSserver extends AbstractServer {
 			exam.initArray(mybytearray.length);
 			exam.setSize(mybytearray.length);
 			bis.read(exam.getMybytearray(), 0, mybytearray.length);
+			fis.close();
 			client.sendToClient(exam);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -744,6 +745,7 @@ public class CEMSserver extends AbstractServer {
 			bos.write(submitExam.getMybytearray(), 0, fileSize);
 			bos.flush();
 			fos.flush();
+			fos.close();
 			client.sendToClient(respon);
 		} catch (FileNotFoundException ex) {
 			ex.printStackTrace();
