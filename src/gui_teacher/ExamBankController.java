@@ -56,7 +56,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private TableColumn<Exam, Integer> Time;
 
 	@FXML
-	private TableColumn<Exam, Status> StatusC;
+	private TableColumn<Exam, Status> StatusC; //matar
 
 	@FXML
 	private Button btnExamInfoPrincipal;
@@ -65,7 +65,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private Button btnCreateActiveExam;
 
 	@FXML
-	private Button btnLockExam;
+	private Button btnLockExam; //matar
 
 	@FXML
 	private Text textMsg1;
@@ -220,7 +220,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
 		//StatusC.setCellValueFactory(new PropertyValueFactory<>("status")); //matar
 		tableExam.setItems(data);
-		tableExam.getColumns().addAll(ExamID, Proffesion, Time, StatusC);
+		tableExam.getColumns().addAll(ExamID, Proffesion, Time);
 
 	}
 
