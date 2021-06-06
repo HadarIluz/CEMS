@@ -219,9 +219,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
-		//StatusC.setCellValueFactory(new PropertyValueFactory<>("status")); //matar
+		StatusC.setCellValueFactory(new PropertyValueFactory<>("status")); //matar
 		tableExam.setItems(data);
-		tableExam.getColumns().addAll(ExamID, Proffesion, Time);
+		tableExam.getColumns().addAll(ExamID, Proffesion, Time,StatusC);
 
 	}
 
