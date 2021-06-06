@@ -76,14 +76,9 @@
                   </Pane>
                   <ImageView fitHeight="116.0" fitWidth="116.0" layoutX="45.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../images/cems_img/NewLogo.png" />
+                        <Image url="@NewLogo.png" />
                      </image>
                   </ImageView>
-            <Label layoutX="11.0" layoutY="2.0" minWidth="60.0" prefHeight="42.0" prefWidth="62.0" text="Menu" textAlignment="CENTER" textFill="WHITE">
-              <font>
-                <Font size="18.0" fx:id="x1" />
-              </font>
-            </Label>
           </children>
         </AnchorPane>
       <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="669.0" style="-fx-background-color: #FFFFE0;">

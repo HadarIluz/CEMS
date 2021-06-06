@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.CreateQuestionController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.CreateQuestionController">
    <children>
       <TextField fx:id="textTheQuestion" layoutX="236.0" layoutY="134.0" prefHeight="25.0" prefWidth="383.0" promptText="Enter Question" />
       <Text layoutX="59.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Question:">
@@ -98,7 +98,7 @@
       </Text>
       <ImageView fx:id="imgQuestionHead" fitHeight="150.0" fitWidth="200.0" layoutX="607.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/question.png" />
+            <Image url="@question.png" />
          </image>
       </ImageView>
       <Text layoutX="56.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct Answer:">

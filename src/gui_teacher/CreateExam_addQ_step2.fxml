@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.CreateExam_addQ_step2Controller">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.CreateExam_addQ_step2Controller">
    <children>
       <Button fx:id="btnCreateNewQuestion" layoutX="330.0" layoutY="515.0" mnemonicParsing="false" onAction="#btnCreateNewQuestion" text="Create new question">
          <font>
@@ -30,22 +30,22 @@
       </Text>
       <ImageView fx:id="imgComputer" fitHeight="137.0" fitWidth="135.0" layoutX="568.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/teacher-Principal_img/desktop.png" />
+            <Image url="@desktop.png" />
          </image>
       </ImageView>
       <ImageView fx:id="imgStep1" fitHeight="59.0" fitWidth="74.0" layoutX="234.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/cems_img/step1.png" />
+            <Image url="@step1.png" />
          </image>
       </ImageView>
       <ImageView fx:id="imgStep2" fitHeight="59.0" fitWidth="74.0" layoutX="338.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/cems_img/step2color.png" />
+            <Image url="@step2color.png" />
          </image>
       </ImageView>
       <ImageView fx:id="imgStep3" fitHeight="59.0" fitWidth="74.0" layoutX="442.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/cems_img/step3.png" />
+            <Image url="@step3.png" />
          </image>
       </ImageView>
       <Button fx:id="btnBack" layoutX="74.0" layoutY="517.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnBack" prefHeight="25.0" prefWidth="122.0" text="Back" />
