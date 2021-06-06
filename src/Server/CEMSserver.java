@@ -141,6 +141,7 @@ public class CEMSserver extends AbstractServer {
 			addTimeToExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
+			
 		case "getQuestionBank": {
 			getQuestionBank((Question) req.getRequestData(), client);
 		}
@@ -225,6 +226,7 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
+			
 		case "DeleteQuestion": {
 			try {
 
@@ -333,17 +335,11 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "deleteActiveExam": {
-			deleteActiveExam((Exam) req.getRequestData(), client);
-
+		case "lockActiveExam": {
+			lockActiveExam((Exam) req.getRequestData(), client);
 		}
+		
 			break;
-
-		case "updateExamStatus": {
-			updateExamStatus((ActiveExam) req.getRequestData(), client);
-
-		}
-		break;
 		}
 
 	}
@@ -709,17 +705,21 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {
-		ResponseFromServer respon = dbController.createNewExtensionRequest((ExtensionRequest) extensionRequest);
+		ResponseFromServer res;
+		if(!dbController.checkIfExtensionRequestExists(extensionRequest))
+			 res = dbController.createNewExtensionRequest(extensionRequest);	
+		else 
+			 res = new ResponseFromServer("EXTENSION REQUEST DIDN'T CREATED");	
 		try {
-			client.sendToClient(respon);
+			client.sendToClient(res);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+		printMessageInLogFramServer("Message to Client:", res);// print to server log.
 	}
 
 	private void getExtensionRequests(ConnectionToClient client) {
-		ResponseFromServer respon = new ResponseFromServer("EXTENSION REQUESTS");
+		ResponseFromServer respon = new ResponseFromServer("EXTENSION REQUEST");
 		try {
 			respon.setResponseData(dbController.getExtensionsRequests());
 			client.sendToClient(respon);
@@ -734,7 +734,7 @@ public class CEMSserver extends AbstractServer {
 		// request.
 		ResponseFromServer respon = new ResponseFromServer("EXTENSION APPROVED");
 		try {
-			if (dbController.setTimeForActiveTest(activeExam)) {// succed
+			if (dbController.setTimeForActiveTest(activeExam)) {
 				if (dbController.deleteExtenxtionRequest(activeExam))
 					respon.setResponseData((Boolean) true);
 				else
@@ -868,6 +868,7 @@ public class CEMSserver extends AbstractServer {
 
 	private void createNewActiveExam(ActiveExam newActiveExam, ConnectionToClient client) {
 		ResponseFromServer response = dbController.createNewActiveExam(newActiveExam);
+		dbController.updateExamStatus(newActiveExam.getExam());
 		response.getStatusMsg().setStatus("New active exam created successfully");
 		try {
 			client.sendToClient(response);
@@ -888,33 +889,19 @@ public class CEMSserver extends AbstractServer {
 		}
 	}
 
-	private void deleteActiveExam(Exam exam, ConnectionToClient client) {
-		ResponseFromServer respond = new ResponseFromServer("DELETE ACTIVE EXAM");
+	private void lockActiveExam(Exam exam, ConnectionToClient client) {
+		ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
 		try {
-			if (dbController.deleteActiveExam(exam))
-				respond.setResponseData("TRUE");
-			else
-				respond.setResponseData("FALSE");
-
-			client.sendToClient(respond);
-
+			if (dbController.deleteActiveExam(exam)) {
+				if(dbController.updateExamStatus(exam))
+					respon.setResponseData((Boolean) true);
+				else
+					respon.setResponseData((Boolean) false);
+			} else
+				respon.setResponseData((Boolean) false);
+			client.sendToClient(respon);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
-
-	private void updateExamStatus(ActiveExam activeExam, ConnectionToClient client) {
-		ResponseFromServer respond = new ResponseFromServer("UPDATE EXAM STATUS");
-		try {
-			if (dbController.updateExamStatus(activeExam))
-				respond.setResponseData("TRUE");
-
-			client.sendToClient(respond);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		printMessageInLogFramServer("Message to Client:", respond);
-	}
-
 }
