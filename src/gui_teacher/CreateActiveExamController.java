@@ -8,6 +8,7 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
 import entity.Exam;
+import entity.Exam.Status;
 import entity.Teacher;
 import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
@@ -85,6 +86,9 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 
 				if (CEMSClient.responseFromServer.getStatusMsg().getStatus()
 						.equals("NEW ACTIVE EXAM CREATED")) {
+					newActiveExam.getExam().setStatus(Status.active);
+					RequestToServer request = new RequestToServer("updateExamStatus");
+					req.setRequestData(newActiveExam);
 					popUp("New active exam has been successfully created in the system.");
 
 					displayNextScreen((Teacher) ClientUI.loggedInUser.getUser(), "ExamBank.fxml"); //call function from GuiCommon class

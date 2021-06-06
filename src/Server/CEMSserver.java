@@ -322,11 +322,25 @@ public class CEMSserver extends AbstractServer {
 			getAllExamsStoredInSystem(client);
 
 		}
+			break;
+
+		case "deleteActiveExam": {
+			deleteActiveExam((Exam) req.getRequestData(), client);
+
+		}
+			break;
+
+		case "updateExamStatus": {
+			updateExamStatus((ActiveExam) req.getRequestData(), client);
+
+		}
 		}
 
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
+	
 
 	private void gradesAverageCalc(String ExamID, ConnectionToClient client) {
 		try {
@@ -838,6 +852,35 @@ public class CEMSserver extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void deleteActiveExam(Exam exam, ConnectionToClient client) {
+		ResponseFromServer respond = new ResponseFromServer("DELETE ACTIVE EXAM");
+		try {
+			if (dbController.deleteActiveExam(exam))
+				respond.setResponseData("TRUE");
+			else
+				respond.setResponseData("FALSE");
+
+			client.sendToClient(respond);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void updateExamStatus(ActiveExam activeExam, ConnectionToClient client) {
+		ResponseFromServer respond = new ResponseFromServer("UPDATE EXAM STATUS");
+		try {
+			if(dbController.updateExamStatus(activeExam))
+				respond.setResponseData("TRUE");
+
+			client.sendToClient(respond);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respond);		
 	}
 
 }
