@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_student.StartManualExamController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_student.StartManualExamController">
    <children>
       <Text fill="RED" layoutX="72.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Attention! You must solve the test in the same file that was downloaded to your computer when you clicked &quot;Download&quot;. " wrappingWidth="311.3999732732773">
          <font>
