@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import client.ClientUI;
 import common.MyFile;
 import entity.ActiveExam;
+import entity.Exam;
+import entity.Exam.Status;
 import entity.ExamOfStudent;
 import entity.Student;
 import javafx.event.ActionEvent;
@@ -83,6 +85,7 @@ public class StartManualExamController implements Initializable {
 
 	private static StudentController studentController; // why ??
 	private static ActiveExam newActiveExam;
+	private static Status status;
 
 	private Student student; // MAYBE NOT NEED BECAUSE STUDENTCONTROLLER ??
 	private ExamOfStudent examOfStudent;
@@ -171,5 +174,15 @@ public class StartManualExamController implements Initializable {
 		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
 		dialog.setScene(dialogScene);
 		dialog.show();
+	}
+	
+	public static void lockExam(Exam exam) {
+		if(exam.getExamID().equals(newActiveExam.getExam().getExamID())) {
+			status = Status.inActive; //need ??
+			//stop timer
+			//btnDownload.setDisable(true);// to think
+			//btnSubmit.setDisable(true);// to think
+			//popUp("The test is locked.\nIt cannot be downloaded or submitted.");// to think
+		}
 	}
 }

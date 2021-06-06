@@ -427,6 +427,7 @@ public class DBController {
 				exam.setProfession(new Profession(rs.getString(2)));
 				exam.setCourse(new Course(rs.getString(3)));// addition
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
+				exam.setStatus( Status.valueOf(rs.getString(8)));
 				examsOfTeacher.add(exam);
 
 			}

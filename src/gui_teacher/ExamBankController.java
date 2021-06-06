@@ -12,6 +12,7 @@ import entity.Teacher;
 import entity.User;
 import entity.Exam.Status;
 import gui_cems.GuiCommon;
+import gui_student.StartManualExamController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -218,9 +219,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
-		//StatusC.setCellValueFactory(new PropertyValueFactory<>("status")); //matar
+		StatusC.setCellValueFactory(new PropertyValueFactory<>("status")); //matar
 		tableExam.setItems(data);
-		tableExam.getColumns().addAll(ExamID, Proffesion, Time);
+		tableExam.getColumns().addAll(ExamID, Proffesion, Time,StatusC);
 
 	}
 
@@ -273,9 +274,14 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnLockExam(ActionEvent event) {
-			// ExamToLock.setStatus(Status.inActive); //matar
-			//RequestToServer req = new RequestToServer("deleteActiveExam");//matar
-			// req.setRequestData(ExamToLock);//matar
+			//examToLock.setStatus(Status.inActive); //matar
+		 Exam exam = new Exam("040101"); // temp
+		 exam.setStatus(Status.active); // temp
+		 exam.setStatus(Status.inActive);
+	     RequestToServer req = new RequestToServer("lockActiveExam");//matar
+	     req.setRequestData(exam);
+	     StartManualExamController.lockExam(exam);   
+	     //req.setRequestData(examToLock);//matar
 	}
 
 }
