@@ -746,8 +746,8 @@ public class DBController {
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Course c = new Course(rs.getString(2));
-				c.setCourseID(rs.getString(1));
+				Course c = new Course(rs.getString(1));
+				c.setCourseName(rs.getString(2));
 				cList.add(c);
 			}
 			rs.close();
