@@ -1,28 +1,27 @@
 package gui_principal;
 
-import java.net.URL;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ResourceBundle;
-
 import client.CEMSClient;
 import client.ClientUI;
 import entity.Course;
 import entity.Profession;
 import entity.Student;
 import entity.Teacher;
+import entity.User;
+import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.layout.Pane;
 import logic.RequestToServer;
-import logic.ResponseFromServer;
 
-public class PrincipalGetReportsController {
+public class PrincipalGetReportsController extends GuiCommon {
 
 	@FXML
 	private Button btnGenarateReport;
@@ -49,13 +48,62 @@ public class PrincipalGetReportsController {
 	private ComboBox<String> selectProfession;
 
 	private static PrincipalController principalController;
-
+	private static User principal = (User) ClientUI.loggedInUser.getUser();
 	HashMap<String, String> professions;
+	ArrayList<Course> courses;
+	ArrayList<Teacher> teachers;
+	ArrayList<Student> students;
+
+	static String selctedValue;
+	static int Id, pId;
 
 	@FXML
 	void btnGenarateReport(ActionEvent event) {
+		String value;
+		if (radioBtnTeacher.isSelected()) {
+			value = selectTeacher.getSelectionModel().getSelectedItem();
+			if(value==null) {
+				popUp("Please select a Teacher from the list.");
+				return;
+			}
+			for (Teacher curr : teachers) {
+				if (value.equals(curr.getLastName() + " " + curr.getFirstName())) {
+					Id = curr.getId();
+					displayNextScreen(principal, "ReportByTeacher.fxml");
+				}
 
+			}
+
+		} else if (radioBtnStudent.isSelected()) {
+			value = selectStudent.getSelectionModel().getSelectedItem();
+			if(value==null) {
+				popUp("Please select a Student from the list.");
+				return;
+			}
+			for (Student curr : students) {
+				if (value.equals(curr.getLastName() + " " + curr.getFirstName())) {
+					Id = curr.getId();
+				displayNextScreen(principal, "ReportByStudent.fxml");
+				}
+
+			}
+
+		} else if (radioBtnCourse.isSelected()) {
+			value = selectCourse.getSelectionModel().getSelectedItem();
+			if(value==null) {
+				popUp("Please select a Course from the list.");
+				return;
+			}
+			for (Course curr : courses)
+				if (curr.getCourseName().equals(value)) {
+					Id = Integer.valueOf(curr.getCourseID());
+			displayNextScreen(principal, "PrincipalDisplayReporBy.fxml");
+				}
+
+		}
 	}
+
+
 
 	@SuppressWarnings("unchecked")
 	@FXML
@@ -82,12 +130,13 @@ public class PrincipalGetReportsController {
 			if (professions.get(key).equals(profName))
 				id = key;
 		}
+		pId = Integer.valueOf(id);
 		Profession prof = new Profession(id);
 		RequestToServer req = new RequestToServer("getCoursesByProfession");
 		req.setRequestData(prof);
 		ClientUI.cems.accept(req);
-		ArrayList<Course> courses = (ArrayList<Course>) CEMSClient.responseFromServer.getResponseData();
-		
+		courses = (ArrayList<Course>) CEMSClient.responseFromServer.getResponseData();
+
 		HashMap<String, String> Qlist = new HashMap<String, String>();
 		for (Course curr : courses)
 			Qlist.put(curr.getCourseID(), curr.getCourseName());
@@ -106,11 +155,12 @@ public class PrincipalGetReportsController {
 		radioBtnTeacher.setSelected(false);
 		RequestToServer req = new RequestToServer("getStudents");
 		ClientUI.cems.accept(req);
-		ArrayList<Student> students = (ArrayList<Student>) CEMSClient.responseFromServer.getResponseData();
-		
+		students = (ArrayList<Student>) CEMSClient.responseFromServer.getResponseData();
+
 		HashMap<Integer, String> Qlist = new HashMap<Integer, String>();
 		for (Student curr : students)
 			Qlist.put(curr.getId(), curr.getLastName() + " " + curr.getFirstName());
+
 		selectStudent.setItems(FXCollections.observableArrayList(Qlist.values()));
 	}
 
@@ -122,8 +172,7 @@ public class PrincipalGetReportsController {
 		selectStudent.setDisable(true);
 		radioBtnStudent.setSelected(false);
 		radioBtnCourse.setSelected(false);
-		
-		ArrayList<Teacher> teachers;
+
 		RequestToServer req = new RequestToServer("getTeachers");
 		ClientUI.cems.accept(req);
 		teachers = (ArrayList<Teacher>) CEMSClient.responseFromServer.getResponseData();
