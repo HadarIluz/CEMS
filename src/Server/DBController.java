@@ -1076,4 +1076,27 @@ public class DBController {
 		return ExamGrades;
 	}
 
+	//TODO:CHECK
+	public ResponseFromServer InsertExamOfStudent(ExamOfStudent examOfStudent) {
+		ResponseFromServer response = null;
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("INSERT INTO active_exam VALUES(?, ?, ?, ?, null,null,null);");
+			pstmt.setTime(1, examOfStudent.getActiveExam().getStartTime() );
+			pstmt.setInt(2, examOfStudent.getStudent().getId());
+			pstmt.setString(3, examOfStudent.getActiveExam().getExam().getExamID());
+			pstmt.setString(4, examOfStudent.getActiveExam().getActiveExamType() );
+//			pstmt.setString(5, null);
+//			pstmt.setString(6, null);
+//			pstmt.setString(7, null);
+			if (pstmt.executeUpdate() != 0) {
+				response = new ResponseFromServer("NEW EXAM OF STUDENT");
+			}
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return response;
+		
+	}
+
 }

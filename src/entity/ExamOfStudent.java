@@ -29,7 +29,7 @@ public class ExamOfStudent implements Serializable {
 		this.score=score;
 	}
 	
-	public ExamOfStudent(ActiveExam exam,entity.Student student) {
+	public ExamOfStudent(ActiveExam exam,Student student) {
 		this.activeExam=exam;
 		this.student=student;
 	}

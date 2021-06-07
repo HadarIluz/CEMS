@@ -360,11 +360,21 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
+		
+		
+		case "InsertExamOfStudent":{
+			InsertExamOfStudent((ExamOfStudent) req.getRequestData(), client);
+			
+		}
+		break;
+		
 		}
 
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
+
 
 	/**
 	 * @param requestData
@@ -963,5 +973,18 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 	}
 
+
+	private void InsertExamOfStudent(ExamOfStudent examOfStudent, ConnectionToClient client) {
+		/*logic for EnterToExam*/
+		ResponseFromServer response= null;
+		response = dbController.InsertExamOfStudent(examOfStudent);
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//printMessageInLogFramServer("Message to Client:", response);
+		
+	}
 
 }
