@@ -1,9 +1,14 @@
 package gui_teacher;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+import entity.Question;
+import entity.QuestionInExam;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -13,14 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-
-import entity.Question;
-import entity.QuestionInExam;
-import entity.QuestionRow;
 
 public class BrowseQuestionController implements Initializable{
 

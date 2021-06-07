@@ -5,27 +5,20 @@ import java.util.HashMap;
 import client.CEMSClient;
 import client.ClientUI;
 import entity.UpdateScoreRequest;
+import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
 //
-public class ScoreApprovalController {
+public class ScoreApprovalController extends GuiCommon {
 
 	@FXML
 	private ComboBox<String> selectStudent;
@@ -87,15 +80,15 @@ public class ScoreApprovalController {
 
 		String changeReason = textGradeChangeReason.getText();
 		String newGrade = textnewGradeField.getText();
-		//check if student selected
-		
-		if(selectStudent.getSelectionModel().getSelectedItem()==null) {
+		// check if student selected
+
+		if (selectStudent.getSelectionModel().getSelectedItem() == null) {
 			textNewGradeReqField.setTextFill(Color.RED);
 			textNewGradeReqField.setText("Must choose student to update");
 			textNewGradeReqField.setVisible(true);
 			return;
 		}
-		//check if fields are empty
+		// check if fields are empty
 		if (changeReason.isEmpty() || newGrade.trim().isEmpty()) {
 			textNewGradeReqField.setTextFill(Color.RED);
 			textNewGradeReqField.setText("Must add grade and reason to update");
@@ -104,24 +97,24 @@ public class ScoreApprovalController {
 		} else {
 			if (!isLegalScore(newGrade))
 				return;
-			
-		RequestToServer req = new RequestToServer("Update Grade");
-		UpdateScoreRequest upReq=new UpdateScoreRequest();
-		upReq.setExamID(textExamID.getText());
-		upReq.setReasonOfUpdate(changeReason);
-		upReq.setStudentID(selectStudent.getSelectionModel().getSelectedItem());
-		upReq.setUpdatedScore(Integer.parseInt(newGrade));
-		req.setRequestData(upReq);
-		ClientUI.cems.accept(req);
-		if(CEMSClient.responseFromServer.getResponseType().equals("FALSE")) {
-			popUp("Update Grade has failed.");
-			return;
+
+			RequestToServer req = new RequestToServer("Update Grade");
+			UpdateScoreRequest upReq = new UpdateScoreRequest();
+			upReq.setExamID(textExamID.getText());
+			upReq.setReasonOfUpdate(changeReason);
+			upReq.setStudentID(selectStudent.getSelectionModel().getSelectedItem());
+			upReq.setUpdatedScore(Integer.parseInt(newGrade));
+			req.setRequestData(upReq);
+			ClientUI.cems.accept(req);
+			if (CEMSClient.responseFromServer.getResponseType().equals("FALSE")) {
+				popUp("Update Grade has failed.");
+				return;
+			}
+			textNewGradeReqField.setText("Grade Updated Successfuly");
+			textNewGradeReqField.setTextFill(Color.GREEN);
+			textNewGradeReqField.setVisible(true);
+
 		}
-		textNewGradeReqField.setText("Grade Updated Successfuly");
-		textNewGradeReqField.setTextFill(Color.GREEN);
-		textNewGradeReqField.setVisible(true);
-		
-	}
 	}
 
 	@FXML
@@ -167,19 +160,6 @@ public class ScoreApprovalController {
 				return false;
 			}
 		return true;
-	}
-
-	private void popUp(String msg) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(msg);
-		lbl.setPadding(new Insets(15));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
 	}
 
 }

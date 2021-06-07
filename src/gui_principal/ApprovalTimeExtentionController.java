@@ -5,8 +5,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+
 import client.ClientUI;
 import entity.ExtensionRequest;
+import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,7 +29,7 @@ import logic.RequestToServer;
  *
  */
 
-public class ApprovalTimeExtentionController implements Initializable {
+public class ApprovalTimeExtentionController extends GuiCommon implements Initializable {
 
 	@FXML
 	private ComboBox<String> selectExamExtension;
@@ -44,7 +46,7 @@ public class ApprovalTimeExtentionController implements Initializable {
 	@FXML
 	private Button btnApprove;
 
-	private static PrincipalController principalController;
+	//private static PrincipalController principalController;
 	private static HashMap<String, ExtensionRequest> extensionRequestMap = new HashMap<String, ExtensionRequest>();
     private static ArrayList<ExtensionRequest> extensionRequestList = new ArrayList<ExtensionRequest>();
     private ArrayList<String> examIdList = new ArrayList<String>();
@@ -133,23 +135,6 @@ public class ApprovalTimeExtentionController implements Initializable {
 		}
 	}
 
-	/**
-	 * this method create a popup with a message.
-	 * 
-	 * @param str
-	 */
-	public void popUp(String str) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(str);
-		lbl.setPadding(new Insets(5));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
-	}
 
 	public static void setExtensionRequestList(ArrayList<ExtensionRequest> extensionRequest) {
 		extensionRequestList = extensionRequest;

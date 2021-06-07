@@ -1,33 +1,23 @@
 package gui_teacher;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ProfessionCourseName;
+import gui_cems.GuiCommon;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class TeacherStatisticsController {
+public class TeacherStatisticsController extends GuiCommon {
 
 	@FXML
 	private TextField textExamID;
@@ -52,8 +42,9 @@ public class TeacherStatisticsController {
 
 	@FXML
 	private Label textAverage;
-	
-	boolean flag=true; //true when we need to initialize the histogram with chart and false when we already did that.
+
+	boolean flag = true; // true when we need to initialize the histogram with chart and false when we
+							// already did that.
 
 	XYChart.Series chart = new XYChart.Series();// table of x and y
 
@@ -122,8 +113,8 @@ public class TeacherStatisticsController {
 		chart.getData().add(new XYChart.Data("81-90", amountOfstudents[8]));
 		chart.getData().add(new XYChart.Data("91-100", amountOfstudents[9]));
 
-		if (flag==true) {
-			flag=false;
+		if (flag == true) {
+			flag = false;
 			chart.setName("Amount of student");
 			ExamHisto.getData().add(chart);
 		}
@@ -198,19 +189,6 @@ public class TeacherStatisticsController {
 		}
 		return isExsit;
 
-	}
-
-	private void popUp(String msg) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(msg);
-		lbl.setPadding(new Insets(15));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
 	}
 
 }

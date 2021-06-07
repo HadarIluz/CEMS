@@ -7,19 +7,15 @@ import client.ClientUI;
 import entity.ActiveExam;
 import entity.Exam;
 import entity.ExtensionRequest;
+import gui_cems.GuiCommon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class AddTimeToExamController {
+public class AddTimeToExamController extends GuiCommon{
 
 	@FXML
 	private Button btnSubmitTimeExtentionRequest;
@@ -109,41 +105,7 @@ public class AddTimeToExamController {
 		}
 	}
 
-	/**
-	 * this method create a popup with a message.
-	 * 
-	 * @param str
-	 */
-	public void popUp(String str) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(str);
-		lbl.setPadding(new Insets(5));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
-	}
 
-	/**
-	 * this method checks if the given string includes letters.
-	 * 
-	 * @param str
-	 * @return true if the String contains only digits.
-	 */
-	private boolean isOnlyDigits(String str) {
-		boolean onlyDigits = true;
-		for (char ch : str.toCharArray()) {
-			if (!Character.isDigit(ch)) {
-				onlyDigits = false;
-				System.out.println("The string contains a character that he does not digit");
-				break;
-			}
-		}
-		System.out.println("isOnlyDigits returns:" + onlyDigits); // message to console
-		return onlyDigits;
-	}
+
 
 }

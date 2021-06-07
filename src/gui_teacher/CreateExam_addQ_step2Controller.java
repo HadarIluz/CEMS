@@ -6,13 +6,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import client.CEMSClient;
-import client.ClientUI;
 import entity.Exam;
 import entity.Question;
 import entity.QuestionInExam;
 import entity.QuestionInExamRow;
-import entity.QuestionRow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,7 +28,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import logic.RequestToServer;
 
 public class CreateExam_addQ_step2Controller implements Initializable{
 

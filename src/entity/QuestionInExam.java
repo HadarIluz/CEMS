@@ -29,6 +29,7 @@ public class QuestionInExam implements Serializable {
 	
 	public void setScore(int score) { 
 		this.score=score;
+	//TODO:
 	/* We need to set score in ArryList in exam?
 	if we do- we need to change two array list from private to protected in Exam class.
 	the code:

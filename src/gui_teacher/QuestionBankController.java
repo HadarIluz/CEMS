@@ -10,17 +10,14 @@ import client.ClientUI;
 import entity.Question;
 import entity.QuestionRow;
 import entity.Teacher;
+import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -28,19 +25,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
  * 
- * @author Nadav Dery 
+ * @author Nadav Dery
  * @author Yadin Amsalem
  * @version 1.0 build 07/07/2021
  * 
  */
-public class QuestionBankController implements Initializable {
+public class QuestionBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	private Button btnEditQuestion;
@@ -79,14 +74,15 @@ public class QuestionBankController implements Initializable {
 	private TableColumn<QuestionRow, String> Question;
 
 	private ObservableList<QuestionRow> data;
-	
+
 	private static TeacherController teacherController;
 
 	/**
 	 * method set text of questionID when user select a question row fron table
+	 * 
 	 * @param event occurs when User press on a selected row from table
 	 */
-	
+
 	@FXML
 	void MouseC(MouseEvent event) {
 
@@ -95,11 +91,12 @@ public class QuestionBankController implements Initializable {
 		textQuestionID.setText(Qlist.get(0).getQuestionID());
 
 	}
+
 	/**
-	 * method move user to Create new Question screnn 
+	 * method move user to Create new Question screen
+	 * 
 	 * @param event occurs when User press "Create new Question"
 	 */
-	
 
 	@FXML
 	void btnCreateNewQuestion(ActionEvent event) {
@@ -117,13 +114,14 @@ public class QuestionBankController implements Initializable {
 
 	/**
 	 * Method use to delete data of question from the teacher's question bank
-	 * @param event occurs when User press On Delete 
-	  */
+	 * 
+	 * @param event occurs when User press On Delete
+	 */
 	@FXML
 	void btnDeleteQuestion(ActionEvent event) {
-		if (!checkForLegalID(textQuestionID.getText())) 
+		if (!checkForLegalID(textQuestionID.getText()))
 			return;
-		
+
 		ObservableList<QuestionRow> Qlist;
 		Question questionToDelete = new Question();
 		questionToDelete.setQuestionID(textQuestionID.getText());
@@ -140,12 +138,13 @@ public class QuestionBankController implements Initializable {
 		initTableRows();
 
 	}
+
 	/**
 	 * Method use to edit data of question from the teacher's question bank
-	 * @param event occurs when User press On Edit 
 	 * 
-		 */
-
+	 * @param event occurs when User press On Edit
+	 * 
+	 */
 
 	@FXML
 	void btnEditQuestion(ActionEvent event) {
@@ -161,10 +160,11 @@ public class QuestionBankController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * Method initalize for user screen of question bank 
-	 * @param location for Url location
+	 * Method initialize for user screen of question bank
+	 * 
+	 * @param location  for Url location
 	 * @param resources of type ResourceBundle
 	 * 
 	 */
@@ -174,11 +174,11 @@ public class QuestionBankController implements Initializable {
 		initTableRows();
 
 	}
+
 	/**
-	 *initTableRows get from server all exams of the logged teacher and insert into
+	 * initTableRows get from server all exams of the logged teacher and insert into
 	 * the table.
 	 */
-
 
 	@SuppressWarnings("unchecked")
 	public void initTableRows() {
@@ -206,12 +206,14 @@ public class QuestionBankController implements Initializable {
 		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);
 
 	}
+
 	/**
 	 * Method that check if the givenQuestion ID is legal
-	 * @param QuestionID  send to method to check if legal
+	 * 
+	 * @param QuestionID send to method to check if legal
 	 * @return true if legal, else false
 	 */
-	
+
 	public boolean checkForLegalID(String QuestionID) {
 
 		if (QuestionID.length() != 5) {
@@ -225,23 +227,7 @@ public class QuestionBankController implements Initializable {
 			}
 		return true;
 	}
-	
-	/**
-	 * open a small screen with a warning of misake by user
-	 * @param msg massage to display on popUp screen
-	 */
 
-	private void popUp(String msg) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(msg);
-		lbl.setPadding(new Insets(15));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
-	}
+
 
 }

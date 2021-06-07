@@ -10,30 +10,27 @@ import java.util.ResourceBundle;
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
+import entity.ExamOfStudent;
 import entity.Student;
+import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
  * @author Hadar Iluz
  *
  */
-public class EnterToExamController implements Initializable {
+public class EnterToExamController extends GuiCommon implements Initializable {
 
 	@FXML
 	private Button btnStart;
@@ -62,7 +59,6 @@ public class EnterToExamController implements Initializable {
 	private ArrayList<String> examIdList = new ArrayList<String>();
 	private ActiveExam activeExam_selection;
 	private Student student;
-	private static int errorCount = 0;
 
 	/**
 	 * The method checks that all the conditions for starting the exam have been
@@ -79,9 +75,6 @@ public class EnterToExamController implements Initializable {
 
 		boolean condition = checkConditionToStart(examCode, studentID);
 		if (condition) {
-
-//TODO: Should this activeExam be "assigned" to a student somehow? (new table or something else?)..
-//TODO:ASK TEAM.-->do i need to do insert row into table of exam of student?? 
 
 			/*
 			 * Gets current time that student try to insert into his active exam The student
@@ -110,15 +103,22 @@ public class EnterToExamController implements Initializable {
 				String existExamID = activeExam.getExam().getExamID();
 				String ActiveExamType = activeExam.getActiveExamType();
 				// message in console
-				System.out.println("Respont: there is active examID: " + existExamID + " type: " + ActiveExamType); // PRINT
+				System.out.println("Respont: there is active examID: " + existExamID + " type: " + ActiveExamType);
 
+				//-------Request from server to insert new row to student of exam.--------//
+				RequestToServer reqStusentInExam = new RequestToServer("InsertExamOfStudent");
+				ExamOfStudent examOfStudent= new ExamOfStudent(activeExam, student);
+				reqStusentInExam.setRequestData(examOfStudent);
+				ClientUI.cems.accept(reqStusentInExam);
+				
+				
+				
 				// The student has entered all the given details and transfer to exam screen
 				// - computerized or manual
 				switch (ActiveExamType) {
 				case "manual": {
 					// load manual start exam fxml
 					try {
-						SolveExamController.setActiveExamState(activeExam);
 						StartManualExamController.setActiveExamState(activeExam);
 						Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
 						newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -198,41 +198,7 @@ public class EnterToExamController implements Initializable {
 		return flag;
 	}
 
-	/**
-	 * this method checks if the given string includes letters.
-	 * 
-	 * @param str
-	 * @return true only if the String contains something that isn't a digit.
-	 */
-	private boolean isOnlyDigits(String str) {
-		boolean containsLetter = true;
-		for (char ch : str.toCharArray()) {
-			if (!Character.isDigit(ch)) {
-				containsLetter = false;
-				System.out.println("id include letter");
-				break;
-			}
-		}
-		return containsLetter;
-	}
 
-	/**
-	 * create a popUp with a given message.
-	 * 
-	 * @param msg
-	 */
-	private void popUp(String msg) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(msg);
-		lbl.setPadding(new Insets(15));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
-	}
 
 	/**
 	 * initialize function to prepare the screen after it is loaded.
