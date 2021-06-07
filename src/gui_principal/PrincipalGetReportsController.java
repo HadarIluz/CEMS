@@ -171,6 +171,7 @@ public class PrincipalGetReportsController extends GuiCommon {
 	@SuppressWarnings("unchecked")
 	@FXML
 	void reportByTeacher(ActionEvent event) {
+		selectTeacher.setDisable(false);
 		selectCourse.setDisable(true);
 		selectProfession.setDisable(true);
 		selectStudent.setDisable(true);
