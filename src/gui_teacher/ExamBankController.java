@@ -8,9 +8,9 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.Course;
 import entity.Exam;
+import entity.ExamStatus;
 import entity.Teacher;
 import entity.User;
-import entity.Exam.Status;
 import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,7 +56,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private TableColumn<Exam, Integer> Time;
 
 	@FXML
-	private TableColumn<Exam, Status> StatusC; //matar
+	private TableColumn<Exam, ExamStatus> StatusC; //matar
 
 	@FXML
 	private Button btnExamInfoPrincipal;
@@ -152,15 +152,6 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	void CreateNewExam(ActionEvent event) {
 		textExamID.clear();
 		displayNextScreen(teacher, "CreateExam_step1.fxml");
-//		try {
-//			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_step1.fxml"));
-//			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-//			teacherController.root.add(newPaneRight, 1, 0);
-//
-//		} catch (IOException e) {
-//			System.out.println("Couldn't load!");
-//			e.printStackTrace();
-//		}
 
 	}
 
@@ -219,7 +210,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
-		StatusC.setCellValueFactory(new PropertyValueFactory<>("status")); //matar
+		StatusC.setCellValueFactory(new PropertyValueFactory<>("examStatus")); //HADAR
 		tableExam.setItems(data);
 		tableExam.getColumns().addAll(ExamID, Proffesion, Time,StatusC);
 
@@ -228,11 +219,12 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	@FXML
 	void btnCreateActiveExam(ActionEvent event) {
 
-		if (!textExamID.getText().isEmpty()) {
+		if (!(textExamID.getText().isEmpty())) {
 			Exam selectedExam = getExistExamDetails(textExamID.getText());
 			CreateActiveExamController.setActiveExamState(selectedExam);
 			displayNextScreen(teacher, "CreateActiveExam.fxml");
 		}
+		
 	}
 
 	private Exam getExistExamDetails(String examID) {

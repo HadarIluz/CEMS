@@ -80,9 +80,6 @@ public class EnterToExamController implements Initializable {
 		boolean condition = checkConditionToStart(examCode, studentID);
 		if (condition) {
 
-//TODO: Should this activeExam be "assigned" to a student somehow? (new table or something else?)..
-//TODO:ASK TEAM.-->do i need to do insert row into table of exam of student?? 
-
 			/*
 			 * Gets current time that student try to insert into his active exam The student
 			 * has a half-hour range in which he can enter and begin construction from the
