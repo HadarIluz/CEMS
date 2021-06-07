@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_student.SolveExamController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_student.SolveExamController">
    <children>
       <Button fx:id="btnSubmitExam" layoutX="517.0" layoutY="495.0" mnemonicParsing="false" onAction="#btnSubmitExam" prefHeight="40.0" prefWidth="100.0" text="Submit">
          <font>
@@ -24,16 +24,6 @@
             <Font size="14.0" />
          </font>
       </CheckBox>
-      <ImageView fx:id="imgNext" fitHeight="50.0" fitWidth="50.0" layoutX="688.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@nextIcon.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="imgPrev" fitHeight="50.0" fitWidth="50.0" layoutX="23.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@prevIcon.png" />
-         </image>
-      </ImageView>
       <Label fx:id="lblTimeLeft" layoutX="517.0" layoutY="465.0" prefHeight="20.0" prefWidth="109.0" text="Time left: 25:20" textFill="#e40909">
          <font>
             <Font size="14.0" />
@@ -101,5 +91,15 @@
          </font>
       </Text>
       <Label fx:id="lblnotificationMsg" disable="true" layoutX="515.0" layoutY="80.0" opacity="0.0" prefHeight="50.0" prefWidth="155.0" text="Please note, the exam time was extended by 20 minutes." wrapText="true" />
+      <Button fx:id="btnNext" layoutX="566.0" layoutY="17.0" mnemonicParsing="false" onAction="#btnNext" prefHeight="40.0" prefWidth="142.0" text="Next Question">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnPrev" layoutX="46.0" layoutY="17.0" mnemonicParsing="false" onAction="#btnPrev" prefHeight="40.0" prefWidth="142.0" text="Prev Question">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

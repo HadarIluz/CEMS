@@ -23,7 +23,7 @@ public class GuiCommon {
 	public final String principalStatusScreen = "PRINCIPAL";
 	public final String teacherStatusScreen = "TEACHER";
 
-	public void popUp(String msg) {
+	public static void popUp(String msg) {
 		final Stage dialog = new Stage();
 		VBox dialogVbox = new VBox(20);
 		Label lbl = new Label(msg);
