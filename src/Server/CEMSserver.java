@@ -340,7 +340,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "updateExamStatus": {
-			updateExamStatus((ActiveExam) req.getRequestData(), client);
+			updateExamStatus((String) req.getRequestData(), client);
 
 		}
 		break;
@@ -349,6 +349,7 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
 
 	/**
 	 * @param requestData
@@ -903,18 +904,25 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
-
-	private void updateExamStatus(ActiveExam activeExam, ConnectionToClient client) {
-		ResponseFromServer respond = new ResponseFromServer("UPDATE EXAM STATUS");
-		try {
-			if (dbController.updateExamStatus(activeExam))
-				respond.setResponseData("TRUE");
-
-			client.sendToClient(respond);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		printMessageInLogFramServer("Message to Client:", respond);
+	
+	//TODO:
+	private void updateExamStatus(String requestData, ConnectionToClient client) {
+		// TODO Auto-generated method stub
+		
 	}
+	
+
+//	private void updateExamStatus(ActiveExam activeExam, ConnectionToClient client) {
+//		ResponseFromServer respond = new ResponseFromServer("UPDATE EXAM STATUS");
+//		try {
+//			if (dbController.updateExamStatus(activeExam))
+//				respond.setResponseData("TRUE");
+//
+//			client.sendToClient(respond);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		printMessageInLogFramServer("Message to Client:", respond);
+//	}
 
 }

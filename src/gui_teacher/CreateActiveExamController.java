@@ -8,7 +8,7 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
 import entity.Exam;
-import entity.Exam.Status;
+import entity.ExamStatus;
 import entity.Teacher;
 import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
@@ -59,7 +59,8 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 			"15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00" };
 
 	private static boolean toggleFlag = false;
-	// TODO: private Date date = null; //we need to add to table the date of the exam ??
+	// TODO: private Date date = null; //we need to add to table the date of the
+	// exam ??
 	private Time selectedTime;
 
 	/**
@@ -80,18 +81,24 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 			boolean isAllowed = isActiveExamExist(newActiveExam);
 
 			if (isAllowed) {
-				RequestToServer req = new RequestToServer("createNewActiveExam");
-				req.setRequestData(newActiveExam);
-				ClientUI.cems.accept(req);
+				// Request from server to insert new active exam into DB.
+				RequestToServer reqCreateExam = new RequestToServer("createNewActiveExam");
+				reqCreateExam.setRequestData(newActiveExam);
+				ClientUI.cems.accept(reqCreateExam);
+				
+				if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("NEW ACTIVE EXAM CREATED")) {
+					// Request from server to update status filed for this exam: [ENUM('active')].
+					RequestToServer reqUpdate = new RequestToServer("updateExamStatus");
+					reqUpdate.setRequestData(ExamStatus.active);
+					ClientUI.cems.accept(reqUpdate); // send back status message.
 
-				if (CEMSClient.responseFromServer.getStatusMsg().getStatus()
-						.equals("NEW ACTIVE EXAM CREATED")) {
-					newActiveExam.getExam().setStatus(Status.active);
-					RequestToServer request = new RequestToServer("updateExamStatus");
-					req.setRequestData(newActiveExam);
-					popUp("New active exam has been successfully created in the system.");
+					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("STATUS UPDATED")) {
 
-					displayNextScreen((Teacher) ClientUI.loggedInUser.getUser(), "ExamBank.fxml"); //call function from GuiCommon class
+						newActiveExam.getExam().setExamStatus(ExamStatus.active); //update status in entity.
+						popUp("New active exam has been successfully created in the system.");
+
+						displayNextScreen((Teacher) ClientUI.loggedInUser.getUser(), "ExamBank.fxml"); 
+					}
 				}
 
 			} else {
@@ -199,11 +206,11 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 	}
 
 	/**
-	 *The function initializes the relevant fields at the moment the screen loads.
+	 * The function initializes the relevant fields at the moment the screen loads.
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		//teacher = (Teacher) ClientUI.loggedInUser.getUser();
+		// teacher = (Teacher) ClientUI.loggedInUser.getUser();
 		selectedTime = null;
 		// TODO: get proffe..Name and set into examID label teacher.getProfessions()
 		// the same for Course.
@@ -221,6 +228,5 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 	void selectTime(ActionEvent event) {
 		selectedTime = java.sql.Time.valueOf(selectTime.getValue());
 	}
-
 
 }

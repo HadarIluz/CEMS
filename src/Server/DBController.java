@@ -18,8 +18,8 @@ import common.MyFile;
 import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
-import entity.Exam.Status;
 import entity.ExamOfStudent;
+import entity.ExamStatus;
 import entity.ExtensionRequest;
 import entity.Profession;
 import entity.ProfessionCourseName;
@@ -300,7 +300,7 @@ public class DBController {
 	public boolean createNewExam(Exam exam) {
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("INSERT INTO exam VALUES(?, ?, ?, ?, ?, ?, ?,?);");//matar
+			pstmt = conn.prepareStatement("INSERT INTO exam VALUES(?, ?, ?, ?, ?, ?, ?);");
 			pstmt.setString(1, exam.getExamID());
 			pstmt.setString(2, exam.getProfession().getProfessionID());
 			pstmt.setString(3, exam.getCourse().getCourseID());
@@ -308,7 +308,6 @@ public class DBController {
 			pstmt.setString(5, exam.getCommentForTeacher());
 			pstmt.setString(6, exam.getCommentForStudents());
 			pstmt.setInt(7, exam.getAuthor().getId());
-			pstmt.setObject(8, Status.inActive); //matar
 
 			if (pstmt.executeUpdate() == 1) {
 				return true;
@@ -865,7 +864,9 @@ public class DBController {
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
 				exam.setCommentForTeacher(rs.getString(5));
 				exam.setCommentForStudents(rs.getString(6));
-				exam.setStatus((Status) rs.getObject(8));
+				exam.setExamStatus((ExamStatus) rs.getObject(8));
+				
+				
 				rs.close();
 			}
 		} catch (SQLException ex) {
@@ -1001,18 +1002,18 @@ public class DBController {
 		return false;
 	}
 
-	public boolean updateExamStatus(ActiveExam activeExam) {
-		PreparedStatement pstmt;
-		try {
-			pstmt = conn.prepareStatement("UPDATE exam SET status=? WHERE exam=?");
-			pstmt.setObject(1, activeExam.getExam().getStatus());
-			pstmt.setString(2, activeExam.getExam().getExamID());
-			if (pstmt.executeUpdate() == 1)
-				return true;
-		} catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-		}
-		return false;
-	}
+//	public boolean updateExamStatus(ActiveExam activeExam) {
+//		PreparedStatement pstmt;
+//		try {
+//			pstmt = conn.prepareStatement("UPDATE exam SET status=? WHERE exam=?");
+//			pstmt.setObject(1, activeExam.getExam().getStatus());
+//			pstmt.setString(2, activeExam.getExam().getExamID());
+//			if (pstmt.executeUpdate() == 1)
+//				return true;
+//		} catch (SQLException ex) {
+//			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+//		}
+//		return false;
+//	}
 
 }

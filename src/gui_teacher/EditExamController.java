@@ -55,28 +55,73 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private static User principal;
 	private static String screenStatus;
 
+	/**
+	 * @param event that occurs when the teacher presses on back button, the
+	 *              screen that will be display for them is the previous screen: 'ExamBank'.
+	 */
 	@FXML
 	void btnBackPrincipal(ActionEvent event) {
 		displayNextScreen(teacher, "/gui_teacher/ExamBank.fxml");
 	}
 
-	// message of lior: still not working.
-	// need to understand how to save it- method in DB controller is not good & if i
-	// need to save changes in screen that open with btn browse question
 	@FXML
 	void btnSaveEditeExam(ActionEvent event) {
-		String examID = textExamID.getText();
-		// Check that all fields that must be filled are filled.
-		if (textExamID.getText().trim().isEmpty()) {
-			popUp("Please fill the ExamID Field");
-		} else if (textTimeForExam.getText().trim().isEmpty()) {
-			popUp("Please fill the Time Allocated For Exam Field");
-		} else {
+//		String examID = textExamID.getText();
+//		// Check that all fields that must be filled are filled.
+//		if (textExamID.getText().trim().isEmpty()) {
+//			popUp("Please fill the ExamID Field");
+//		} else if (textTimeForExam.getText().trim().isEmpty()) {
+//			popUp("Please fill the Time Allocated For Exam Field");
+//		} else {
+//			RequestToServer req = new RequestToServer("SaveEditExam");
+//			req.setRequestData(exam);
+//			ClientUI.cems.accept(req);
+//
+//		}
+		
+		String teacherComment= textTeacherComment.getText().trim();
+		String studentComment= textStudentComment.getText().trim();
+		String timeAllocateForExam = textTimeAllocateForExam.getText().trim();
+		// Check that all fields that must be filled are filled correctly.
+		boolean condition = checkConditionToStart(teacherComment, studentComment, timeAllocateForExam);
+		if (condition) {
+			
 			RequestToServer req = new RequestToServer("SaveEditExam");
 			req.setRequestData(exam);
 			ClientUI.cems.accept(req);
 
 		}
+		
+		
+	}
+	
+	
+	private boolean checkConditionToStart( String teacherComment, String StudentComment, String timeAllocateForExam) {
+		StringBuilder strBuilder = new StringBuilder();
+		boolean flag= true;
+		if(teacherComment.length()==0 || StudentComment.length()==0 ) {
+			strBuilder.append("All fields must be filled !\n");
+			flag= true;
+		}
+		//return true if the String contains only digits.
+		if(isOnlyDigits(timeAllocateForExam)) {
+			strBuilder.append("Exam time must contains only digits.\n");
+			flag= true;
+		}
+		if(timeAllocateForExam.matches("[0-9]+")) {
+			int t=Integer.valueOf(timeAllocateForExam);
+//			if(! (t instanceof Integer)) {
+//				strBuilder.append("Time allocate for exam must set in minuse.\n");
+//				flag= true;
+//			}
+		}
+
+		if (!flag) {
+			popUp(strBuilder.toString());
+		}
+
+		return flag;
+
 	}
 
 	@FXML
@@ -105,7 +150,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 			principal = (User) ClientUI.loggedInUser.getUser();
 			// load data of the selected exam for view.
 			textExamID.setText(exam.getExamID());
-			// textTimeAllocateForExam.setText(!!!!SQL);
+			// TODO: textTimeAllocateForExam.setText(!!!!SQL);
 			textTeacherComment.setText(exam.getCommentForTeacher());
 			textStudentComment.setText(exam.getCommentForStudents());
 
