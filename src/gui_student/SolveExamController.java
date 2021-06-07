@@ -136,6 +136,8 @@ public class SolveExamController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
+		//TODO: bring all exam details (also questions and scores)
+		
 		// set the timer
 		AtomicInteger timeForTimer = new AtomicInteger(newActiveExam.getExam().getTimeOfExam()*60);
 		 timer = new Timer();
