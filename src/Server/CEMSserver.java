@@ -360,14 +360,26 @@ public class CEMSserver extends AbstractServer {
 			getFullExamDetails((Exam)req.getRequestData(), client);
 		}
 		break;
+		case "StudentFinishExam": {
+			StudentFinishExam((ExamOfStudent)req.getRequestData(), client);
+		}
+		break;
 		}
 
 	}
 
 
 
+
+
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
+	private void StudentFinishExam(ExamOfStudent studentExam, ConnectionToClient client) {
+		if (dbController.insertNewStudentExam(studentExam)) {
+			dbController.insertStudentQuestions(studentExam);
+		}
+		
+	}
 
 	/**
 	 * @param exam

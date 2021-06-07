@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.mysql.cj.xdevapi.SqlDataResult;
+
 import client.CEMSClient;
 import client.ClientUI;
 import common.MyFile;
@@ -1156,6 +1158,62 @@ public class DBController {
 		}
 		
 		return q;
+	}
+
+	/**
+	 * @param studentExam
+	 * @return true or false if success in inserting the new exam of student to the DB
+	 */
+	public boolean insertNewStudentExam(ExamOfStudent studentExam) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("INSERT INTO exam_of_student VALUES(?, ?, ?, ?, ?, ?);");
+			pstmt.setInt(1, studentExam.getStudent().getId());
+			pstmt.setString(2, studentExam.getActiveExam().getExam().getExamID());
+			pstmt.setString(3, studentExam.getExamType());
+			pstmt.setNull(4, java.sql.Types.INTEGER);
+			pstmt.setNull(5, java.sql.Types.VARCHAR);
+			pstmt.setInt(6, studentExam.getTotalTime());
+			
+
+			if (pstmt.executeUpdate() != 0) {
+				return true;
+			}
+			// to do something with status
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return false;
+		
+	}
+
+	public boolean insertStudentQuestions(ExamOfStudent studentExam) {
+		PreparedStatement pstmt;
+		
+		for (QuestionInExam q : studentExam.getQuestionsAndAnswers().keySet() ) {
+			try {
+				pstmt = conn.prepareStatement("INSERT INTO exam_of_student VALUES(?, ?, ?, ?, ?);");
+				pstmt.setInt(1, studentExam.getStudent().getId());
+				pstmt.setString(2, studentExam.getActiveExam().getExam().getExamID());
+				pstmt.setString(3, q.getQuestion().getQuestionID());
+				pstmt.setInt(4, studentExam.getQuestionsAndAnswers().get(q));
+				pstmt.setInt(5, studentExam.getQuestionsAndAnswers().get(q) == q.getQuestion().getCorrectAnswerIndex() ? 1 : 0);
+				
+
+				if (pstmt.executeUpdate() != 0) {
+					return true;
+				}
+				// to do something with status
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		
+		return false;
+
 	}
 	
 	

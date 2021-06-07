@@ -1,6 +1,7 @@
 package gui_student;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,7 +11,9 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
 import entity.Exam;
+import entity.ExamOfStudent;
 import entity.QuestionInExam;
+import entity.Student;
 import gui_cems.GuiCommon;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -86,6 +89,7 @@ public class SolveExamController implements Initializable{
     private Timer timer;
     private int currentQuestion;
     private int[] studentAnswers;
+    private AtomicInteger timeForTimer;
 
     
 	@FXML
@@ -111,16 +115,32 @@ public class SolveExamController implements Initializable{
 
 	@FXML
 	void btnSubmitExam(ActionEvent event) {
-		timer.cancel();
 		submitExam();
 	}
 	
 	private void submitExam() {
 		btnSubmitExam.setDisable(true);
 		timer.cancel();
+		btnAnswer1.setDisable(true);
+		btnAnswer2.setDisable(true);
+		btnAnswer3.setDisable(true);
+		btnAnswer4.setDisable(true);
+		btnNext.setDisable(true);
+		btnPrev.setDisable(true);
 		
+		HashMap<QuestionInExam, Integer> studentQuestions = new HashMap<>();
+		for (int i = 0; i<studentAnswers.length; i++) {
+			studentQuestions.put(newActiveExam.getExam().getExamQuestionsWithScores().get(i), studentAnswers[i]);
+		}
+
+		ExamOfStudent examOfStudent = new ExamOfStudent(newActiveExam, (Student)ClientUI.loggedInUser.getUser());
+		examOfStudent.setQuestionsAndAnswers(studentQuestions);
+		examOfStudent.setTotalTime((newActiveExam.getTimeAllotedForTest()*60 - timeForTimer.get())/60);
+		examOfStudent.setExamType("computerized");
 		
-		
+		RequestToServer req = new RequestToServer("StudentFinishExam");
+		req.setRequestData(examOfStudent);
+		ClientUI.cems.accept(req);
 	}
 
 	@FXML
@@ -179,7 +199,7 @@ public class SolveExamController implements Initializable{
 		newActiveExam.setExam((Exam)CEMSClient.responseFromServer.getResponseData());
 		
 		// set the timer
-		AtomicInteger timeForTimer = new AtomicInteger(newActiveExam.getTimeAllotedForTest()*60);
+		timeForTimer = new AtomicInteger(newActiveExam.getTimeAllotedForTest()*60);
 		 timer = new Timer();
 		    timer.scheduleAtFixedRate(new TimerTask(){
 		        @Override
