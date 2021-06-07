@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.CreateNewExam_step3Controller">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.CreateNewExam_step3Controller">
    <children>
       <Text fx:id="textMsg_newExam" layoutX="96.0" layoutY="394.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New ExamID had beed created:">
          <font>
@@ -27,17 +27,17 @@
       </Text>
       <ImageView fx:id="imgStep1" fitHeight="59.0" fitWidth="74.0" layoutX="244.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/cems_img/step1.png" />
+            <Image url="@step1.png" />
          </image>
       </ImageView>
       <ImageView fx:id="imgStep2" fitHeight="59.0" fitWidth="74.0" layoutX="348.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/cems_img/step2.png" />
+            <Image url="@step2.png" />
          </image>
       </ImageView>
       <ImageView fx:id="imgStep3" fitHeight="59.0" fitWidth="74.0" layoutX="452.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/cems_img/step3color.png" />
+            <Image url="@step3color.png" />
          </image>
       </ImageView>
       <Text layoutX="101.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Are you sure you want to create the exam?">
@@ -54,7 +54,7 @@
       <Button fx:id="btnBack" layoutX="84.0" layoutY="527.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnBack" prefHeight="25.0" prefWidth="122.0" text=" &lt; Back" />
       <ImageView fx:id="imgComputer" fitHeight="137.0" fitWidth="135.0" layoutX="578.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/teacher-Principal_img/desktop.png" />
+            <Image url="@desktop.png" />
          </image>
       </ImageView>
    </children>
