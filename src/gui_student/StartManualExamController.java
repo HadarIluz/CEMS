@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import client.CEMSClient;
 import client.ClientUI;
 import common.MyFile;
 import entity.ActiveExam;
@@ -101,6 +102,7 @@ public class StartManualExamController implements Initializable {
 		txtDownloadSucceed.setVisible(true);
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@FXML
 	void btnSubmit(ActionEvent event) {
 		Object[] options = { " Cancel ", " Submit " };
@@ -129,8 +131,11 @@ public class StartManualExamController implements Initializable {
 				RequestToServer req = new RequestToServer("submitManualExam");
 				req.setRequestData(submitExam);
 				ClientUI.cems.accept(req);
-				btnSubmit.setDisable(true);
-				txtUploadSucceed.setVisible(true);
+				if(CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) { //????
+					timer.cancel();
+					btnSubmit.setDisable(true);
+					txtUploadSucceed.setVisible(true);
+				}
 			} catch (Exception ex) {
 				txtError1.setVisible(true);
 				txtError2.setVisible(true);
@@ -166,10 +171,16 @@ public class StartManualExamController implements Initializable {
 	}
 	
 	private void lockExam() {
+		//to add update status and delete from  active_exam.
+		//maybe the update in delete ? at the same time ??
+		RequestToServer extReq = new RequestToServer("lockActiveExam");
+		extReq.setRequestData(newActiveExam);
+		ClientUI.cems.accept(extReq);
+		///////////////////////////////////////////////////
+		
 		btnSubmit.setDisable(true);
 		btnDownload.setDisable(true);
 		GuiCommon.popUp("The exam is locked!");
-		btnSubmit.setDisable(true);
 	}
 
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {

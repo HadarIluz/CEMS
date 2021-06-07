@@ -119,7 +119,7 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
-			
+
 		case "getTeachers": {
 			getTeachers(client);
 
@@ -147,7 +147,7 @@ public class CEMSserver extends AbstractServer {
 			addTimeToExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-			
+
 		case "getQuestionBank": {
 			getQuestionBank((Question) req.getRequestData(), client);
 		}
@@ -184,7 +184,7 @@ public class CEMSserver extends AbstractServer {
 			declineTimeExtention((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-			
+
 		case "getStudents": {
 			getStudents(client);
 		}
@@ -237,7 +237,7 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
-			
+
 		case "DeleteQuestion": {
 			try {
 
@@ -299,7 +299,7 @@ public class CEMSserver extends AbstractServer {
 		}
 
 			break;
-		
+
 		case "getCoursesByProfession": {
 			getCoursesByProfession((Profession) req.getRequestData(), client);
 		}
@@ -347,9 +347,13 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "lockActiveExam": {
-			lockActiveExam((Exam) req.getRequestData(), client);
+			lockActiveExam((ActiveExam) req.getRequestData(), client);
 		}
-		
+			break;
+			
+		case "getStudentsInActiveExam": {
+			getStudentsInActiveExam((ActiveExam) req.getRequestData(), client);
+		}
 			break;
 		}
 
@@ -357,15 +361,13 @@ public class CEMSserver extends AbstractServer {
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
-
-
-
 	/**
 	 * @param requestData
 	 * @param client
 	 * 
-	 * gets from the client question with teacher and profession. 
-	 * gets from the DB all relevant questions and sends it back to the client
+	 *                    gets from the client question with teacher and profession.
+	 *                    gets from the DB all relevant questions and sends it back
+	 *                    to the client
 	 */
 	private void getQuestionBank(Question requestData, ConnectionToClient client) {
 		try {
@@ -374,9 +376,9 @@ public class CEMSserver extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private void getTeachers(ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Calculate Grades Average");
@@ -385,10 +387,8 @@ public class CEMSserver extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	
 
 	private void getStudents(ConnectionToClient client) {
 		try {
@@ -399,7 +399,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void getCoursesByProfession(Profession requestData, ConnectionToClient client) {
 		try {
 			client.sendToClient(dbController.getCoursesByProfession(requestData));
@@ -407,7 +407,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void gradesAverageCalc(String ExamID, ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Calculate Grades Average");
@@ -742,10 +742,10 @@ public class CEMSserver extends AbstractServer {
 
 	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {
 		ResponseFromServer res;
-		if(!dbController.checkIfExtensionRequestExists(extensionRequest))
-			 res = dbController.createNewExtensionRequest(extensionRequest);	
-		else 
-			 res = new ResponseFromServer("EXTENSION REQUEST DIDN'T CREATED");	
+		if (!dbController.checkIfExtensionRequestExists(extensionRequest))
+			res = dbController.createNewExtensionRequest(extensionRequest);
+		else
+			res = new ResponseFromServer("EXTENSION REQUEST DIDN'T CREATED");
 		try {
 			client.sendToClient(res);
 		} catch (IOException ex) {
@@ -831,12 +831,10 @@ public class CEMSserver extends AbstractServer {
 			fos.flush();
 			fos.close();
 			client.sendToClient(respon);
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
 		} catch (IOException ex) {
+			respon = new ResponseFromServer("DIDNT SUBMIT EXAM");
 			ex.printStackTrace();
 		}
-
 	}
 
 	private void getSelectedExamData_byID(Exam exam, ConnectionToClient client) {
@@ -904,7 +902,7 @@ public class CEMSserver extends AbstractServer {
 
 	private void createNewActiveExam(ActiveExam newActiveExam, ConnectionToClient client) {
 		ResponseFromServer response = dbController.createNewActiveExam(newActiveExam);
-		dbController.updateExamStatus(newActiveExam.getExam());
+		//dbController.updateExamStatus(newActiveExam.getExam());
 		response.getStatusMsg().setStatus("New active exam created successfully");
 		try {
 			client.sendToClient(response);
@@ -925,19 +923,28 @@ public class CEMSserver extends AbstractServer {
 		}
 	}
 
-	private void lockActiveExam(Exam exam, ConnectionToClient client) {
+	private void lockActiveExam(ActiveExam examToLock, ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
 		try {
-			if (dbController.deleteActiveExam(exam)) {
-				if(dbController.updateExamStatus(exam))
+			respon.setResponseData((Boolean) false);
+			if (dbController.deleteActiveExam(examToLock))
+				if (dbController.updateExamStatus(examToLock))
 					respon.setResponseData((Boolean) true);
-				else
-					respon.setResponseData((Boolean) false);
-			} else
-				respon.setResponseData((Boolean) false);
 			client.sendToClient(respon);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	private void getStudentsInActiveExam(ActiveExam activeExam, ConnectionToClient client) {
+		ResponseFromServer respon = new ResponseFromServer("STUDENT IN ACTIVE EXAM");
+		try {
+			respon.setResponseData(dbController.getStudentsInActiveExam(activeExam));
+			client.sendToClient(respon);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+	}
+	
 }

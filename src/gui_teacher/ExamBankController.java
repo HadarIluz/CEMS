@@ -12,7 +12,6 @@ import entity.Teacher;
 import entity.User;
 import entity.Exam.Status;
 import gui_cems.GuiCommon;
-import gui_student.StartManualExamController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -278,11 +277,20 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnLockExam(ActionEvent event) {
-		//examToLock.setStatus(Status.inActive); //matar
-	    // RequestToServer req = new RequestToServer("lockActiveExam");//matar
-	   //  req.setRequestData(exam);
-	    // StartManualExamController.lockExam(exam);   
-	     //req.setRequestData(examToLock);//matar
+
+		ObservableList<Exam> Qlist;
+		Exam examToLock = GetTableDetails(textExamID.getText());
+		Qlist = tableExam.getSelectionModel().getSelectedItems();
+		examToLock.setStatus(Status.inActive);
+		RequestToServer req = new RequestToServer("lockActiveExam");
+		req.setRequestData(examToLock);
+		ClientUI.cems.accept(req);
+		
+		if (CEMSClient.responseFromServer.getResponseData().equals(false)) // ????
+			System.out.println("lock exam failed");
+		//else
+			//need to delete. to check with yadin.
+		//send lock to all students
 	}
 
 }
