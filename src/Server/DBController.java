@@ -1001,12 +1001,12 @@ public class DBController {
 		ResponseFromServer res = null;
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("UPDATE exam SET status=? WHERE exam=?");
+			pstmt = conn.prepareStatement("UPDATE exam SET status=? WHERE examID=?");
 			
 			pstmt.setString(1, String.valueOf( newActiveExam.getExam().getExamStatus()));
 			pstmt.setString(2, newActiveExam.getExam().getExamID());
 			if (pstmt.executeUpdate() !=0) {
-				res = new ResponseFromServer("EXAM STATUS UPDATED"); //FIXME: ENUM nor change in table.
+				res = new ResponseFromServer("EXAM STATUS UPDATED"); //FIXME: ENUM not change in table.
 			}
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
