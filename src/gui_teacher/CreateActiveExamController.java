@@ -100,7 +100,7 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 						displayNextScreen((Teacher) ClientUI.loggedInUser.getUser(), "ExamBank.fxml"); 
 						
 					}
-				}
+				}//Problem
 
 			} else {
 				popUp("This exam: " + newActiveExam.getExam().getExamID()
