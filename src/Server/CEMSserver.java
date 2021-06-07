@@ -381,7 +381,7 @@ public class CEMSserver extends AbstractServer {
 		for (QuestionInExam q: questionsList) {
 			q.setQuestion(dbController.getFullQuestion(q.getQuestion().getQuestionID()));
 		}
-		
+		exam.setExamQuestionsWithScores(questionsList);
 		ResponseFromServer res = new ResponseFromServer("FullExam");
 		res.setResponseData(exam);
 		

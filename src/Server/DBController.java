@@ -1109,7 +1109,7 @@ public class DBController {
 		PreparedStatement pstmt;
 		try {
 			
-			pstmt = conn.prepareStatement("SELECT question, score FROM question_in_exam WHERE examID=?;");
+			pstmt = conn.prepareStatement("SELECT question, score FROM question_in_exam WHERE exam=?;");
 			pstmt.setString(1, examID);
 			
 			ResultSet rs=pstmt.executeQuery();

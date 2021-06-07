@@ -29,22 +29,22 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <RadioButton fx:id="btnAnswer1" layoutX="232.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnAnswer1" onMouseClicked="#btnAnswer1" prefHeight="17.0" prefWidth="127.0" text="2">
+      <RadioButton fx:id="btnAnswer1" layoutX="232.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnAnswer1" prefHeight="17.0" prefWidth="127.0" text="2">
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="btnAnswer2" layoutX="232.0" layoutY="375.0" mnemonicParsing="false" onAction="#btnAnswer2" onMouseClicked="#btnAnswer2" prefHeight="17.0" prefWidth="127.0" text="3">
+      <RadioButton fx:id="btnAnswer2" layoutX="232.0" layoutY="375.0" mnemonicParsing="false" onAction="#btnAnswer2" prefHeight="17.0" prefWidth="127.0" text="3">
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="btnAnswer3" layoutX="232.0" layoutY="415.0" mnemonicParsing="false" onAction="#btnAnswer3" onMouseClicked="#btnAnswer3" prefHeight="17.0" prefWidth="127.0" text="4">
+      <RadioButton fx:id="btnAnswer3" layoutX="232.0" layoutY="415.0" mnemonicParsing="false" onAction="#btnAnswer3" prefHeight="17.0" prefWidth="127.0" text="4">
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="btnAnswer4" layoutX="232.0" layoutY="455.0" mnemonicParsing="false" onAction="#btnAnswer4" onMouseClicked="#btnAnswer4" prefHeight="17.0" prefWidth="127.0" text="6">
+      <RadioButton fx:id="btnAnswer4" layoutX="232.0" layoutY="455.0" mnemonicParsing="false" onAction="#btnAnswer4" prefHeight="17.0" prefWidth="127.0" text="6">
          <font>
             <Font size="14.0" />
          </font>

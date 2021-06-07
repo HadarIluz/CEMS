@@ -89,22 +89,23 @@ public class SolveExamController implements Initializable{
 
     
 	@FXML
-	void btnAnswer1(MouseEvent event) {
+	void btnAnswer1(ActionEvent event) {
 		studentAnswers[currentQuestion] = 1;
+		
 	}
 
 	@FXML
-	void btnAnswer2(MouseEvent event) {
+	void btnAnswer2(ActionEvent event) {
 		studentAnswers[currentQuestion] = 2;
 	}
 
 	@FXML
-	void btnAnswer3(MouseEvent event) {
+	void btnAnswer3(ActionEvent event) {
 		studentAnswers[currentQuestion] = 3;
 	}
 
 	@FXML
-	void btnAnswer4(MouseEvent event) {
+	void btnAnswer4(ActionEvent event) {
 		studentAnswers[currentQuestion] = 4;
 	}
 
@@ -116,6 +117,9 @@ public class SolveExamController implements Initializable{
 	
 	private void submitExam() {
 		btnSubmitExam.setDisable(true);
+		timer.cancel();
+		
+		
 		
 	}
 
@@ -123,12 +127,39 @@ public class SolveExamController implements Initializable{
     void btnNext(ActionEvent event) {
 		currentQuestion++;
 		loadQuestion(currentQuestion);
+		unselectRadioButton();
     }
 
     @FXML
     void btnPrev(ActionEvent event) {
-    	currentQuestion++;
+    	currentQuestion--;
     	loadQuestion(currentQuestion);
+    	unselectRadioButton();
+    }
+    
+    private void unselectRadioButton() {
+    	btnAnswer1.setSelected(false);
+    	btnAnswer2.setSelected(false);
+    	btnAnswer3.setSelected(false);
+    	btnAnswer4.setSelected(false);
+    	
+    	if (studentAnswers[currentQuestion] != 0) {
+    		switch(studentAnswers[currentQuestion]) {
+    		case 1:
+    			btnAnswer1.setSelected(true);
+        		break;
+    		case 2:
+    			btnAnswer2.setSelected(true);
+        		break;
+    		case 3:
+    			btnAnswer3.setSelected(true);
+        		break;
+    		case 4:
+    			btnAnswer4.setSelected(true);
+        		break;
+    		}
+    		
+    	}
     }
 
 
@@ -140,7 +171,7 @@ public class SolveExamController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		//TODO: bring all exam details (also questions and scores)
+		//bring all exam details (also questions and scores)
 		RequestToServer req = new RequestToServer("getFullExamDetails");
 		req.setRequestData(newActiveExam.getExam());
 		ClientUI.cems.accept(req);
@@ -148,7 +179,7 @@ public class SolveExamController implements Initializable{
 		newActiveExam.setExam((Exam)CEMSClient.responseFromServer.getResponseData());
 		
 		// set the timer
-		AtomicInteger timeForTimer = new AtomicInteger(newActiveExam.getExam().getTimeOfExam()*60);
+		AtomicInteger timeForTimer = new AtomicInteger(newActiveExam.getTimeAllotedForTest()*60);
 		 timer = new Timer();
 		    timer.scheduleAtFixedRate(new TimerTask(){
 		        @Override
@@ -156,8 +187,6 @@ public class SolveExamController implements Initializable{
 		          Platform.runLater(() -> lblTimeLeft.setText(timeForTimer.toString()));
 		          timeForTimer.decrementAndGet();
 		          if (timeForTimer.get() == 0) {
-		        	  // cancel the timer
-		        	  timer.cancel();
 			          Platform.runLater(() -> stopExam());
 		          }
 		        }
@@ -176,7 +205,8 @@ public class SolveExamController implements Initializable{
 	}
 	
 	private void loadQuestion(int i) {
-		lblQuestionNumber.setText("Question Number" + i+1 + " / 10");
+		int qNum = i+1;
+		lblQuestionNumber.setText("Question " + qNum + " / 10");
 		QuestionInExam q = newActiveExam.getExam().getExamQuestionsWithScores().get(i);
 		lblPoints.setText("<" + q.getScore() + "> Points");
 		txtQuestionDescription.setText(q.getQuestion().getDescription());
@@ -189,7 +219,7 @@ public class SolveExamController implements Initializable{
 		if (currentQuestion == 0) {
 			btnPrev.setVisible(false);
 		}
-		else if (currentQuestion == studentAnswers.length) {
+		else if (currentQuestion == studentAnswers.length-1) {
 			btnNext.setVisible(false);
 		}
 		else {
@@ -201,7 +231,6 @@ public class SolveExamController implements Initializable{
 	private void stopExam() {
 		GuiCommon.popUp("Time for exam is over!");
 		submitExam();
-		
 	}
 	
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
