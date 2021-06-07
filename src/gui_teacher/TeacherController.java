@@ -34,8 +34,8 @@ import logic.RequestToServer;
 
 
 /**
- * @author Yadin and Nadav
- *
+ * @author Yadin 
+@author Nadav Dery
  */
 public class TeacherController extends Application implements Initializable {
 
@@ -78,8 +78,8 @@ public class TeacherController extends Application implements Initializable {
 	protected User teacher;
 	private static HashMap<String, Profession> professionsMap = null;
 
-	/**TODO: add comment
-	 * @param event
+	/** method open the screnn for manage question bank of teacher
+	 * @param event occurs when User press  Manage Questions Bank 
 	 */
 	@FXML
 	void btnManageQuestionsBank(ActionEvent event) {
@@ -95,8 +95,8 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
-	/*TODO: add comment
-	 * @param event
+	/** method open the screnn for Change Exam Time of teacher that sent after to principal
+	 * @param event occurs when User press "Change Exam Time" 
 	 */
 	@FXML
 	void btnChangeExamTime(ActionEvent event) {
@@ -112,8 +112,8 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
-	/**TODO: add comment
-	 * @param event
+	/**method open the screnn of Statistics for teacher 
+	 * @param event occurs when User press "Change Get Statistics"
 	 */
 	@FXML
 	void btnGetStatistics(ActionEvent event) {
@@ -128,8 +128,8 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
-	/** TODO: add comment
-	 * @param event
+	/** method open the screen of Manage Exams Bank for teacher
+	 * @param event occurs when User press "Manage Exams Bank"
 	 */
 	@FXML
 	void btnManageExamsBank(ActionEvent event) {
@@ -143,8 +143,8 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
-	/** TODO: add comment
-	 * @param event
+	/**  method open the screen scorec approval of teacher
+	 * @param event when User press "Score Approval"
 	 */
 	@FXML
 	void btnScoreApproval(ActionEvent event) {
@@ -202,6 +202,12 @@ public class TeacherController extends Application implements Initializable {
 		listenToCloseWindow(primaryStage);
 
 	}
+	/**
+	 * Method initalize for user screen of teacher manu
+	 * @param location for Url location
+	 * @param resources of type ResourceBundle
+	 * 
+	 */
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -209,6 +215,10 @@ public class TeacherController extends Application implements Initializable {
 		textTeacherName.setText(teacher.getFirstName()+" " +teacher.getLastName());
 		setProfessionMap(((Teacher)ClientUI.loggedInUser.getUser()).getProfessions());
 	}
+	/**
+	 * method insert proffessions of teacher to his Proffession Mapp
+	 * @param professionsList for proffession input
+	 */
 	
 
 	public void setProfessionMap(ArrayList<Profession> professionsList) {
@@ -217,6 +227,11 @@ public class TeacherController extends Application implements Initializable {
 			professionsMap.put(p.getProfessionName(), p);
 		}
 	}
+	
+	/**
+	 * method return the proffession map
+	 * @return hashMap of proffession with a key of proffession ID
+	 */
 	
 	public static HashMap<String, Profession> getProfessionsMap() {
 		return professionsMap;
