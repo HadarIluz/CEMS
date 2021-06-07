@@ -119,6 +119,12 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
+			
+		case "getTeachers": {
+			getTeachers(client);
+
+		}
+			break;
 		case "getProfNames": {
 			getProfNames(client);
 		}
@@ -175,6 +181,11 @@ public class CEMSserver extends AbstractServer {
 
 		case "declineTimeExtention": {
 			declineTimeExtention((ActiveExam) req.getRequestData(), client);
+		}
+			break;
+			
+		case "getStudents": {
+			getStudents(client);
 		}
 			break;
 
@@ -350,6 +361,9 @@ public class CEMSserver extends AbstractServer {
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
+
+
+
 	/**
 	 * @param requestData
 	 * @param client
@@ -367,11 +381,33 @@ public class CEMSserver extends AbstractServer {
 		
 	}
 	
+	private void getTeachers(ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Calculate Grades Average");
+			Res.setResponseData(dbController.getTeachers());
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+
+	private void getStudents(ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Get All Students");
+			Res.setResponseData(dbController.getStudents());
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void getCoursesByProfession(Profession requestData, ConnectionToClient client) {
 		try {
 			client.sendToClient(dbController.getCoursesByProfession(requestData));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

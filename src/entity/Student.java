@@ -26,6 +26,10 @@ public class Student extends User implements Serializable {
 		this.courses = courses;
 	}
 	
+	public Student(int id,UserType user) {
+		super(id,user);
+	}
+	
 	public float getStudentAvg() {
 		return studentAvg;
 	}
