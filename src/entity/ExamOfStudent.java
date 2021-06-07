@@ -1,27 +1,57 @@
 package entity;
 
 import java.io.Serializable;
+import java.sql.Time;
+import java.util.HashMap;
+import entity.Student;;
 
 public class ExamOfStudent implements Serializable {
 	
 	private ActiveExam activeExam;
 	private Student student;
 	private int score;
+	private int totalTime;
+	private HashMap<QuestionInExam, Integer> questionsAndAnswers;
+	private String examType;
 	
-	public ExamOfStudent(ActiveExam activeExam,Student student, int score ) {
+	public String getExamType() {
+		return examType;
+	}
+
+	public void setExamType(String examType) {
+		this.examType = examType;
+	}
+
+	public ExamOfStudent(ActiveExam exam,Student student, int score ) {
 		super();
-		this.activeExam=activeExam;
+		this.activeExam=exam;
 		this.student=student;
 		this.score=score;
 	}
 	
-	public ExamOfStudent(ActiveExam activeExam,Student student) {
-		this.activeExam=activeExam;
+	public ExamOfStudent(ActiveExam exam,entity.Student student) {
+		this.activeExam=exam;
 		this.student=student;
 	}
 	
 	
 	
+	public int getTotalTime() {
+		return totalTime;
+	}
+
+	public void setTotalTime(int totalTime) {
+		this.totalTime = totalTime;
+	}
+
+	public HashMap<QuestionInExam, Integer> getQuestionsAndAnswers() {
+		return questionsAndAnswers;
+	}
+
+	public void setQuestionsAndAnswers(HashMap<QuestionInExam, Integer> questionsAndAnswers) {
+		this.questionsAndAnswers = questionsAndAnswers;
+	}
+
 	public ActiveExam getActiveExam() {
 		return activeExam;
 	}
@@ -35,8 +65,8 @@ public class ExamOfStudent implements Serializable {
 	}
 	
 
-	public void setActiveExam( ActiveExam activeExam) {
-		this.activeExam=activeExam;
+	public void setActiveExam(ActiveExam exam) {
+		this.activeExam=exam;
 	}
 	
 	public void setStudent(Student student) {

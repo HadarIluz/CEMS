@@ -121,6 +121,7 @@ public class LoginController {
 		// in case fields not empty checks if exist in DB
 		if (!userID.trim().isEmpty() && !userPassword.trim().isEmpty() && userID.length() == 9
 				&& isOnlyDigits(userID)) {
+			
 			int id = Integer.parseInt(txtUserName.getText().trim());
 			user = new User(id, userPassword);
 			// create in 'Serializable' class my request from server.

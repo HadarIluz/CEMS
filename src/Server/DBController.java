@@ -18,8 +18,8 @@ import common.MyFile;
 import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
-import entity.Exam.Status;
 import entity.ExamOfStudent;
+import entity.ExamStatus;
 import entity.ExtensionRequest;
 import entity.Profession;
 import entity.ProfessionCourseName;
@@ -308,7 +308,6 @@ public class DBController {
 			pstmt.setString(5, exam.getCommentForTeacher());
 			pstmt.setString(6, exam.getCommentForStudents());
 			pstmt.setInt(7, exam.getAuthor().getId());
-			pstmt.setObject(8, Status.inActive); // matar
 
 			if (pstmt.executeUpdate() == 1) {
 				return true;
@@ -427,7 +426,7 @@ public class DBController {
 				exam.setProfession(new Profession(rs.getString(2)));
 				exam.setCourse(new Course(rs.getString(3)));// addition
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
-				exam.setStatus(Status.valueOf(rs.getString(8)));
+				exam.setExamStatus(ExamStatus.valueOf(rs.getString(8))); // FIXME: enum
 				examsOfTeacher.add(exam);
 
 			}
@@ -862,7 +861,7 @@ public class DBController {
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
 				exam.setCommentForTeacher(rs.getString(5));
 				exam.setCommentForStudents(rs.getString(6));
-				exam.setStatus(Status.valueOf(rs.getString(8)));
+				exam.setExamStatus(ExamStatus.valueOf((String) rs.getObject(8)) );
 				rs.close();
 			}
 		} catch (SQLException ex) {
@@ -998,18 +997,22 @@ public class DBController {
 		return false;
 	}
 
-	public boolean updateExamStatus(ActiveExam exam) {
-		PreparedStatement pstmt;
+	public ResponseFromServer updateExamStatus(ActiveExam newActiveExam) {
+		/* createNewActiveExam */
+		ResponseFromServer res = null;
 		try {
+			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("UPDATE exam SET status=? WHERE exam=?");
-			pstmt.setObject(1, (Status) exam.getExam().getStatus());
-			pstmt.setString(2, exam.getExam().getExamID());
-			if (pstmt.executeUpdate() == 1)
-				return true;
+	
+			pstmt.setString(1, String.valueOf( newActiveExam.getExam().getExamStatus()));
+			pstmt.setString(2, newActiveExam.getExam().getExamID());
+			if (pstmt.executeUpdate() !=0) {
+				res = new ResponseFromServer("EXAM STATUS UPDATED"); //FIXME: ENUM nor change in table.
+			}
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		return false;
+		return res;
 	}
 
 	public boolean checkIfExtensionRequestExists(ExtensionRequest extensionRequest) {
@@ -1070,6 +1073,25 @@ public class DBController {
 		}
 		return students;
 	}
+	
+	public HashMap<String, Integer> getStudentGrades(int id) {
+		HashMap<String, Integer> ExamGrades = new HashMap<String, Integer>();
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT exam,score FROM cems.exam_of_student where student=?;");
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				ExamGrades.put(rs.getString(1), rs.getInt(2));
+			}
+			rs.close();
+
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return ExamGrades;
+	}
+
 
 	public ArrayList<Integer> getStudentsInActiveExam(ActiveExam activeExam) {
 		ArrayList<Integer> students = new ArrayList<Integer>();

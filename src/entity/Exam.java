@@ -18,10 +18,10 @@ public class Exam implements Serializable {
 	private Teacher author; 
 	private String ProfessionName;
 	private ArrayList<QuestionInExam> examQuestionsWithScores;
-
-	private String CourseName;
-	public enum Status{inActive,active} //matar
-	Status status;
+	
+	private ExamStatus examStatus;
+	//private String CourseName;
+	
 	
 	public Exam() {
 		super();
@@ -161,12 +161,13 @@ public class Exam implements Serializable {
 		this.examID = examID;
 	}
 	
-	public Status getStatus() {
-		return status;
+	public ExamStatus getExamStatus() {
+		return examStatus;
 	}
 
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setExamStatus(ExamStatus examStatus) {
+		this.examStatus = examStatus;
 	}
+
 
 }

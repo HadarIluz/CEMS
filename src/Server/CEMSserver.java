@@ -110,6 +110,11 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
+		case "getStudentGrades": {
+			getStudentGrades((int) req.getRequestData(), client);
+		}
+			break;
+
 		case "createNewQuestion": {
 			createNewQuestion((Question) req.getRequestData(), client);
 		}
@@ -350,7 +355,7 @@ public class CEMSserver extends AbstractServer {
 			lockActiveExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-			
+
 		case "getStudentsInActiveExam": {
 			getStudentsInActiveExam((ActiveExam) req.getRequestData(), client);
 		}
@@ -376,7 +381,16 @@ public class CEMSserver extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
 
+	private void getStudentGrades(int studentID, ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Student Grades");
+			Res.setResponseData(dbController.getStudentGrades(studentID));
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void getTeachers(ConnectionToClient client) {
@@ -835,6 +849,7 @@ public class CEMSserver extends AbstractServer {
 			respon = new ResponseFromServer("DIDNT SUBMIT EXAM");
 			ex.printStackTrace();
 		}
+
 	}
 
 	private void getSelectedExamData_byID(Exam exam, ConnectionToClient client) {
@@ -902,7 +917,7 @@ public class CEMSserver extends AbstractServer {
 
 	private void createNewActiveExam(ActiveExam newActiveExam, ConnectionToClient client) {
 		ResponseFromServer response = dbController.createNewActiveExam(newActiveExam);
-		//dbController.updateExamStatus(newActiveExam.getExam());
+		// dbController.updateExamStatus(newActiveExam.getExam());
 		response.getStatusMsg().setStatus("New active exam created successfully");
 		try {
 			client.sendToClient(response);
@@ -924,18 +939,21 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void lockActiveExam(ActiveExam examToLock, ConnectionToClient client) {
-		ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
+		//ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
+		ResponseFromServer respon = null;
 		try {
-			respon.setResponseData((Boolean) false);
-			if (dbController.deleteActiveExam(examToLock))
-				if (dbController.updateExamStatus(examToLock))
+			if (dbController.deleteActiveExam(examToLock)) {
+				respon = dbController.updateExamStatus(examToLock);
+				respon.setResponseData((Boolean) false);
+				if (respon.getStatusMsg().getStatus().equals("EXAM STATUS UPDATED"))
 					respon.setResponseData((Boolean) true);
+			}
 			client.sendToClient(respon);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void getStudentsInActiveExam(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("STUDENT IN ACTIVE EXAM");
 		try {
