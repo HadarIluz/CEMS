@@ -33,6 +33,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
+/**
+ * 
+ * @author Nadav Dery 
+ * @author Yadin Amsalem
+ * @version 1.0 build 07/07/2021
+ * 
+ */
 public class QuestionBankController implements Initializable {
 
 	@FXML
@@ -75,6 +82,11 @@ public class QuestionBankController implements Initializable {
 	
 	private static TeacherController teacherController;
 
+	/**
+	 * method set text of questionID when user select a question row fron table
+	 * @param event occurs when User press on a selected row from table
+	 */
+	
 	@FXML
 	void MouseC(MouseEvent event) {
 
@@ -83,6 +95,11 @@ public class QuestionBankController implements Initializable {
 		textQuestionID.setText(Qlist.get(0).getQuestionID());
 
 	}
+	/**
+	 * method move user to Create new Question screnn 
+	 * @param event occurs when User press "Create new Question"
+	 */
+	
 
 	@FXML
 	void btnCreateNewQuestion(ActionEvent event) {
@@ -98,6 +115,10 @@ public class QuestionBankController implements Initializable {
 
 	}
 
+	/**
+	 * Method use to delete data of question from the teacher's question bank
+	 * @param event occurs when User press On Delete 
+	  */
 	@FXML
 	void btnDeleteQuestion(ActionEvent event) {
 		if (!checkForLegalID(textQuestionID.getText())) 
@@ -119,6 +140,12 @@ public class QuestionBankController implements Initializable {
 		initTableRows();
 
 	}
+	/**
+	 * Method use to edit data of question from the teacher's question bank
+	 * @param event occurs when User press On Edit 
+	 * 
+		 */
+
 
 	@FXML
 	void btnEditQuestion(ActionEvent event) {
@@ -134,12 +161,24 @@ public class QuestionBankController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Method initalize for user screen of question bank 
+	 * @param location for Url location
+	 * @param resources of type ResourceBundle
+	 * 
+	 */
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initTableRows();
 
 	}
+	/**
+	 *initTableRows get from server all exams of the logged teacher and insert into
+	 * the table.
+	 */
+
 
 	@SuppressWarnings("unchecked")
 	public void initTableRows() {
@@ -167,7 +206,12 @@ public class QuestionBankController implements Initializable {
 		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);
 
 	}
-
+	/**
+	 * Method that check if the givenQuestion ID is legal
+	 * @param QuestionID  send to method to check if legal
+	 * @return true if legal, else false
+	 */
+	
 	public boolean checkForLegalID(String QuestionID) {
 
 		if (QuestionID.length() != 5) {
@@ -181,6 +225,11 @@ public class QuestionBankController implements Initializable {
 			}
 		return true;
 	}
+	
+	/**
+	 * open a small screen with a warning of misake by user
+	 * @param msg massage to display on popUp screen
+	 */
 
 	private void popUp(String msg) {
 		final Stage dialog = new Stage();
