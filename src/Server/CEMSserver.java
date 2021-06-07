@@ -374,11 +374,27 @@ public class CEMSserver extends AbstractServer {
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
+	/**
+	 * @param studentExam
+	 * @param client
+	 * inserts all student exam data to DB
+	 */
 	private void StudentFinishExam(ExamOfStudent studentExam, ConnectionToClient client) {
+		ResponseFromServer res = null;
 		if (dbController.insertNewStudentExam(studentExam)) {
-			dbController.insertStudentQuestions(studentExam);
+			if (dbController.insertStudentQuestions(studentExam)) {
+				res = new ResponseFromServer("Sucees student finish exam");
+			}
 		}
-		
+		else {
+			res = new ResponseFromServer("Fail student finish exam");
+		}
+		try {
+			client.sendToClient(res);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

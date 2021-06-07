@@ -1189,6 +1189,10 @@ public class DBController {
 		
 	}
 
+	/**
+	 * @param studentExam
+	 * @return true if sucees inserting all students questions with answers from exam
+	 */
 	public boolean insertStudentQuestions(ExamOfStudent studentExam) {
 		PreparedStatement pstmt;
 		
