@@ -1060,4 +1060,22 @@ public class DBController {
 		return students;
 	}
 
+	public HashMap<String,Integer> getStudentGrades(int id) {
+		HashMap<String,Integer> ExamGrades= new HashMap<String,Integer>();
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT exam,score FROM cems.exam_of_student where student=?;");
+			pstmt.setInt(1,id);
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
+				ExamGrades.put(rs.getString(1), rs.getInt(2));
+			}
+			rs.close();
+				
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}	
+		return ExamGrades;
+	}
+
 }

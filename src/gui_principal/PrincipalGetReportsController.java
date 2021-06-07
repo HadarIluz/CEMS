@@ -54,7 +54,7 @@ public class PrincipalGetReportsController extends GuiCommon {
 	ArrayList<Teacher> teachers;
 	ArrayList<Student> students;
 
-	static String selctedValue;
+	static String selctedValue,UserName,Pname,Cname;
 	static int Id, pId;
 
 	@FXML
@@ -62,6 +62,7 @@ public class PrincipalGetReportsController extends GuiCommon {
 		String value;
 		if (radioBtnTeacher.isSelected()) {
 			value = selectTeacher.getSelectionModel().getSelectedItem();
+			UserName=value;
 			if(value==null) {
 				popUp("Please select a Teacher from the list.");
 				return;
@@ -76,6 +77,7 @@ public class PrincipalGetReportsController extends GuiCommon {
 
 		} else if (radioBtnStudent.isSelected()) {
 			value = selectStudent.getSelectionModel().getSelectedItem();
+			UserName=value;
 			if(value==null) {
 				popUp("Please select a Student from the list.");
 				return;
@@ -90,6 +92,8 @@ public class PrincipalGetReportsController extends GuiCommon {
 
 		} else if (radioBtnCourse.isSelected()) {
 			value = selectCourse.getSelectionModel().getSelectedItem();
+			Cname=value;
+			Pname=selectProfession.getSelectionModel().getSelectedItem();
 			if(value==null) {
 				popUp("Please select a Course from the list.");
 				return;

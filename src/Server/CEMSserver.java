@@ -109,6 +109,11 @@ public class CEMSserver extends AbstractServer {
 			getTeacherData_Login((Teacher) req.getRequestData(), client);
 		}
 			break;
+			
+		case "getStudentGrades": {
+			getStudentGrades((int) req.getRequestData(), client);
+		}
+			break;
 
 		case "createNewQuestion": {
 			createNewQuestion((Question) req.getRequestData(), client);
@@ -359,6 +364,8 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	
+
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
 
@@ -379,6 +386,16 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private void getStudentGrades(int studentID, ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Student Grades");
+			Res.setResponseData(dbController.getStudentGrades(studentID));
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void getTeachers(ConnectionToClient client) {
