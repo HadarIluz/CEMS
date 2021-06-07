@@ -24,19 +24,6 @@
             <Font size="14.0" />
          </font>
       </CheckBox>
-<<<<<<< HEAD
-=======
-      <ImageView fx:id="imgNext" fitHeight="50.0" fitWidth="50.0" layoutX="688.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@nextIcon.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="imgPrev" fitHeight="50.0" fitWidth="50.0" layoutX="23.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@prevIcon.png" />
-         </image>
-      </ImageView>
->>>>>>> d69e938699e014d12d5d30f40fc2891cd5c34e6d
       <Label fx:id="lblTimeLeft" layoutX="517.0" layoutY="465.0" prefHeight="20.0" prefWidth="109.0" text="Time left: 25:20" textFill="#e40909">
          <font>
             <Font size="14.0" />
