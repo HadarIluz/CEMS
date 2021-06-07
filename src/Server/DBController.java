@@ -1060,4 +1060,76 @@ public class DBController {
 		return students;
 	}
 
+	public Exam getCommentForStudents(Exam exam) {
+		PreparedStatement pstmt;
+		try {
+			
+			pstmt = conn.prepareStatement("SELECT commentForStudents FROM exam WHERE examID=?;");
+			pstmt.setString(1, exam.getExamID());
+			
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
+				exam.setCommentForStudents(rs.getString(1));
+			}
+			rs.close();
+				
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return exam;
+		
+	}
+
+	public ArrayList<QuestionInExam> getQuestionsOfExam(String examID) {
+		ArrayList<QuestionInExam> list = new ArrayList<>();
+		PreparedStatement pstmt;
+		try {
+			
+			pstmt = conn.prepareStatement("SELECT question, score FROM question_in_exam WHERE examID=?;");
+			pstmt.setString(1, examID);
+			
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
+				QuestionInExam q = new QuestionInExam(rs.getInt(2), new Question(rs.getString(1)), null);
+				list.add(q);
+			}
+			rs.close();
+				
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return list;
+	}
+
+	public Question getFullQuestion(String questionID) {
+		Question q = new Question(questionID);
+		
+		PreparedStatement pstmt;
+		try {
+			
+			pstmt = conn.prepareStatement("SELECT question, answer1, answer2, answer3, answer4, description FROM question WHERE questionID=?;");
+			pstmt.setString(1, questionID);
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
+				q.setQuestion(rs.getString(1));
+				String[] answers = new String[4];
+				answers[0] = rs.getString(2);
+				answers[1] = rs.getString(3);
+				answers[2] = rs.getString(4);
+				answers[3] = rs.getString(5);
+				q.setAnswers(answers);
+				q.setDescription(rs.getString(6));
+
+			}
+			rs.close();
+				
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		
+		return q;
+	}
+	
+	
+
 }

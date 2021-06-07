@@ -6,7 +6,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import client.CEMSClient;
+import client.ClientUI;
 import entity.ActiveExam;
+import entity.Exam;
 import entity.QuestionInExam;
 import gui_cems.GuiCommon;
 import javafx.application.Platform;
@@ -22,6 +25,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import logic.RequestToServer;
 
 public class SolveExamController implements Initializable{
 
@@ -137,6 +141,11 @@ public class SolveExamController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		//TODO: bring all exam details (also questions and scores)
+		RequestToServer req = new RequestToServer("getFullExamDetails");
+		req.setRequestData(newActiveExam.getExam());
+		ClientUI.cems.accept(req);
+		
+		newActiveExam.setExam((Exam)CEMSClient.responseFromServer.getResponseData());
 		
 		// set the timer
 		AtomicInteger timeForTimer = new AtomicInteger(newActiveExam.getExam().getTimeOfExam()*60);

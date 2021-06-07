@@ -23,6 +23,7 @@ import entity.ExamOfStudent;
 import entity.ExtensionRequest;
 import entity.Profession;
 import entity.Question;
+import entity.QuestionInExam;
 import entity.Student;
 import entity.Teacher;
 import entity.UpdateScoreRequest;
@@ -355,14 +356,37 @@ public class CEMSserver extends AbstractServer {
 
 		}
 		break;
+		case "getFullExamDetails": {
+			getFullExamDetails((Exam)req.getRequestData(), client);
+		}
+		break;
 		}
 
 	}
 
+
+
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
 
-
+	private void getFullExamDetails(Exam exam, ConnectionToClient client) {
+		exam = dbController.getCommentForStudents(exam);
+		ArrayList<QuestionInExam> questionsList = dbController.getQuestionsOfExam(exam.getExamID());
+		for (QuestionInExam q: questionsList) {
+			q.setQuestion(dbController.getFullQuestion(q.getQuestion().getQuestionID()));
+		}
+		
+		ResponseFromServer res = new ResponseFromServer("FullExam");
+		res.setResponseData(exam);
+		
+		try {
+			client.sendToClient(res);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 	/**
 	 * @param requestData
