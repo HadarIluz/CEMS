@@ -278,13 +278,10 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnLockExam(ActionEvent event) {
-			//examToLock.setStatus(Status.inActive); //matar
-		 Exam exam = new Exam("040101"); // temp
-		 exam.setStatus(Status.active); // temp
-		 exam.setStatus(Status.inActive);
-	     RequestToServer req = new RequestToServer("lockActiveExam");//matar
-	     req.setRequestData(exam);
-	     StartManualExamController.lockExam(exam);   
+		//examToLock.setStatus(Status.inActive); //matar
+	    // RequestToServer req = new RequestToServer("lockActiveExam");//matar
+	   //  req.setRequestData(exam);
+	    // StartManualExamController.lockExam(exam);   
 	     //req.setRequestData(examToLock);//matar
 	}
 

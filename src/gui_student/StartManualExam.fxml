@@ -35,22 +35,22 @@
       </ImageView>
       <Separator layoutX="3.0" layoutY="263.0" prefHeight="114.0" prefWidth="762.0" />
       <Button fx:id="btnSubmit" disable="true" layoutX="435.0" layoutY="367.0" mnemonicParsing="false" onAction="#btnSubmit" prefHeight="31.0" prefWidth="78.0" text="Submit" underline="true" />
-      <Text fx:id="txtUploadSucceed" fill="#18a116" layoutX="434.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The file was uploaded successfully." visible="false" wrappingWidth="294.3999732732773">
+      <Text fx:id="txtUploadSucceed" fill="#18a116" layoutX="435.0" layoutY="429.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The file was uploaded successfully." visible="false" wrappingWidth="294.3999732732773">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="txtError3" fill="#e04320" layoutX="434.0" layoutY="520.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2. And attach a screenshot of this post." wrappingWidth="294.3999732732773">
+      <Text fx:id="txtError3" fill="#e04320" layoutX="436.0" layoutY="559.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2. And attach a screenshot of this post." visible="false" wrappingWidth="294.3999732732773">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="txtError2" fill="#e04320" layoutX="434.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1. Please submit the test to the course`s official email address/ teacher. (See the exam form)" wrappingWidth="294.3999732732773">
+      <Text fx:id="txtError2" fill="#e04320" layoutX="436.0" layoutY="491.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1. Please submit the test to the course`s official email address/ teacher. (See the exam form)" visible="false" wrappingWidth="294.3999732732773">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="txtError1" fill="#e04320" layoutX="434.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error." wrappingWidth="294.3999732732773">
+      <Text fx:id="txtError1" fill="#e04320" layoutX="436.0" layoutY="469.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error." visible="false" wrappingWidth="294.3999732732773">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -68,12 +68,12 @@
       </ImageView>
       <Label fx:id="textTeacherName" layoutX="610.0" layoutY="79.0" prefHeight="18.0" prefWidth="100.0" text=" Jennifer Aniston" visible="false" />
       <Label fx:id="textNotificationMsg" layoutX="525.0" layoutY="90.0" prefHeight="50.0" prefWidth="155.0" text="Please note, the exam time was extended by 20 minutes." visible="false" wrapText="true" />
-      <Label fx:id="textTimeLeft" layoutX="604.0" layoutY="377.0" prefHeight="20.0" prefWidth="109.0" text="Time left: 25:20" textFill="#e40909">
+      <Label fx:id="textTimeLeft" layoutX="611.0" layoutY="373.0" prefHeight="20.0" prefWidth="109.0" text="Time left: 25:20" textFill="#e40909">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <CheckBox fx:id="checkBoxShowTime" layoutX="603.0" layoutY="340.0" mnemonicParsing="false" onAction="#checkBoxShowTime" prefHeight="23.0" prefWidth="137.0" selected="true" text="Show Time Left">
+      <CheckBox fx:id="checkBoxShowTime" layoutX="611.0" layoutY="332.0" mnemonicParsing="false" onAction="#checkBoxShowTime" prefHeight="23.0" prefWidth="137.0" selected="true" text="Show Time Left">
          <font>
             <Font size="14.0" />
          </font>

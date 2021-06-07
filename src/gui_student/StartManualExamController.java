@@ -3,13 +3,11 @@ package gui_student;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -17,10 +15,10 @@ import javax.swing.JOptionPane;
 import client.ClientUI;
 import common.MyFile;
 import entity.ActiveExam;
-import entity.Exam;
-import entity.Exam.Status;
+import gui_cems.GuiCommon;
 import entity.ExamOfStudent;
 import entity.Student;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -87,12 +85,10 @@ public class StartManualExamController implements Initializable {
 	@FXML
 	private Text txtDownloadSucceed;
 
-	private static StudentController studentController; // why ??
+	private static StudentController studentController;
 	private static ActiveExam newActiveExam;
-	private static Status status;
-
-	private Student student; // MAYBE NOT NEED BECAUSE STUDENTCONTROLLER ??
 	private ExamOfStudent examOfStudent;
+	private Timer timer;
 
 	@FXML
 	void btnDownload(ActionEvent event) {
@@ -107,7 +103,6 @@ public class StartManualExamController implements Initializable {
 
 	@FXML
 	void btnSubmit(ActionEvent event) {
-
 		Object[] options = { " Cancel ", " Submit " };
 		JFrame frame = new JFrame("Submit Exam");
 		int dialogResult = JOptionPane.showOptionDialog(frame,
@@ -147,18 +142,34 @@ public class StartManualExamController implements Initializable {
 
 	@FXML
 	void checkBoxShowTime(ActionEvent event) {
-		// show time left
-		if (checkBoxShowTime.isSelected()) {
-			textTimeLeft.setVisible(true);
-		} else { // Do not show time left
-			textTimeLeft.setVisible(false);
-		}
+		textTimeLeft.setVisible(!textTimeLeft.visibleProperty().get());
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		student = (Student) ClientUI.loggedInUser.getUser();
-		examOfStudent = new ExamOfStudent(newActiveExam, student);
+		examOfStudent = new ExamOfStudent(newActiveExam,  (Student) ClientUI.loggedInUser.getUser());
+		// set the timer
+		AtomicInteger timeForTimer = new AtomicInteger(newActiveExam.getTimeAllotedForTest() * 60);
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				Platform.runLater(() -> textTimeLeft.setText(timeForTimer.toString()));
+				timeForTimer.decrementAndGet();
+				if (timeForTimer.get() == 0) {
+					// cancel the timer
+					timer.cancel();
+					Platform.runLater(() -> lockExam());
+				}
+			}
+		}, 0, 1000);
+	}
+	
+	private void lockExam() {
+		btnSubmit.setDisable(true);
+		btnDownload.setDisable(true);
+		GuiCommon.popUp("The exam is locked!");
+		btnSubmit.setDisable(true);
 	}
 
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
@@ -181,16 +192,5 @@ public class StartManualExamController implements Initializable {
 		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
 		dialog.setScene(dialogScene);
 		dialog.show();
-	}
-
-	public static void lockExam(Exam exam) {
-		if (exam.getExamID().equals(newActiveExam.getExam().getExamID())) {
-			status = Status.inActive; // need ??
-			// stop timer
-			// btnDownload.setDisable(true);// to think
-			// btnSubmit.setDisable(true);// to think
-			// popUp("The test is locked.\nIt cannot be downloaded or submitted.");// to
-			// think
-		}
 	}
 }
