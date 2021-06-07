@@ -71,7 +71,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private Button btnCreateActiveExam;
 
 	@FXML
-	private Button btnLockExam; 
+	private Button btnLockExam;
 
 	@FXML
 	private Text textMsg1;
@@ -150,8 +150,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		if (!textExamID.getText().isEmpty()) {
 			if (!checkForLegalID(textExamID.getText()))
 				return;
-			
+
 			ObservableList<Exam> Qlist;
+
 			Exam ExamToDelete = GetTableDetails(textExamID.getText());
 			Qlist = tableExam.getSelectionModel().getSelectedItems();
 			RequestToServer req = new RequestToServer("DeleteExam");
@@ -340,6 +341,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		//else
 			//need to delete. to check with yadin.
 		//send lock to all students
+		// ExamToLock.setStatus(Status.inActive); //matar
+		// RequestToServer req = new RequestToServer("deleteActiveExam");//matar
+		// req.setRequestData(ExamToLock);//matar
 	}
 
 }

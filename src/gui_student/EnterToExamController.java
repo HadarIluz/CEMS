@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
+import entity.ExamOfStudent;
 import entity.Student;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -62,7 +63,6 @@ public class EnterToExamController implements Initializable {
 	private ArrayList<String> examIdList = new ArrayList<String>();
 	private ActiveExam activeExam_selection;
 	private Student student;
-	private static int errorCount = 0;
 
 	/**
 	 * The method checks that all the conditions for starting the exam have been
@@ -107,15 +107,22 @@ public class EnterToExamController implements Initializable {
 				String existExamID = activeExam.getExam().getExamID();
 				String ActiveExamType = activeExam.getActiveExamType();
 				// message in console
-				System.out.println("Respont: there is active examID: " + existExamID + " type: " + ActiveExamType); // PRINT
+				System.out.println("Respont: there is active examID: " + existExamID + " type: " + ActiveExamType);
 
+				//-------Request from server to insert new row to student of exam.--------//
+				RequestToServer reqStusentInExam = new RequestToServer("InsertExamOfStudent");
+				ExamOfStudent examOfStudent= new ExamOfStudent(activeExam, student);
+				reqStusentInExam.setRequestData(examOfStudent);
+				ClientUI.cems.accept(reqStusentInExam);
+				
+				
+				
 				// The student has entered all the given details and transfer to exam screen
 				// - computerized or manual
 				switch (ActiveExamType) {
 				case "manual": {
 					// load manual start exam fxml
 					try {
-						SolveExamController.setActiveExamState(activeExam);
 						StartManualExamController.setActiveExamState(activeExam);
 						Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
 						newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);

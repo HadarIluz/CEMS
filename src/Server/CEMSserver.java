@@ -360,6 +360,13 @@ public class CEMSserver extends AbstractServer {
 			getStudentsInActiveExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
+
+		case "InsertExamOfStudent": {
+			InsertExamOfStudent((ExamOfStudent) req.getRequestData(), client);
+
+		}
+			break;
+
 		}
 
 	}
@@ -939,7 +946,7 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void lockActiveExam(ActiveExam examToLock, ConnectionToClient client) {
-		//ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
+		// ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
 		ResponseFromServer respon = null;
 		try {
 			if (dbController.deleteActiveExam(examToLock)) {
@@ -962,7 +969,19 @@ public class CEMSserver extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+		printMessageInLogFramServer("Message to Client:", respon); // print to server log.
 	}
-	
+
+	private void InsertExamOfStudent(ExamOfStudent examOfStudent, ConnectionToClient client) {
+		/* logic for EnterToExam */
+		ResponseFromServer response = null;
+		response = dbController.InsertExamOfStudent(examOfStudent);
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+	}
+
 }

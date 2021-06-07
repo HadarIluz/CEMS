@@ -1110,4 +1110,26 @@ public class DBController {
 		}
 		return students;
 	}
+
+	//TODO:CHECK
+	public ResponseFromServer InsertExamOfStudent(ExamOfStudent examOfStudent) {
+		ResponseFromServer response = null;
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("INSERT INTO exam_of_student VALUES(?, ?, ?, ?, ?,?);");
+			pstmt.setInt(1, examOfStudent.getStudent().getId());
+			pstmt.setString(2, examOfStudent.getActiveExam().getExam().getExamID());
+			pstmt.setString(3, examOfStudent.getActiveExam().getActiveExamType());
+			pstmt.setInt(4, 0);
+			pstmt.setString(5, null);
+			pstmt.setInt(6, 0);
+			if (pstmt.executeUpdate() != 0) {
+				response = new ResponseFromServer("NEW EXAM OF STUDENT HAS BEEN INSERT");
+			}
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return response;
+		
+	}
 }
