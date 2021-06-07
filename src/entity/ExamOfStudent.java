@@ -1,9 +1,7 @@
 package entity;
 
 import java.io.Serializable;
-import java.sql.Time;
-import java.util.HashMap;
-import entity.Student;;
+import java.util.HashMap;;
 
 public class ExamOfStudent implements Serializable {
 	
@@ -32,9 +30,7 @@ public class ExamOfStudent implements Serializable {
 	public ExamOfStudent(ActiveExam exam,Student student) {
 		this.activeExam=exam;
 		this.student=student;
-	}
-	
-	
+	}	
 	
 	public int getTotalTime() {
 		return totalTime;
@@ -64,7 +60,6 @@ public class ExamOfStudent implements Serializable {
 		return score;
 	}
 	
-
 	public void setActiveExam(ActiveExam exam) {
 		this.activeExam=exam;
 	}

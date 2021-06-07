@@ -25,9 +25,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
+
 /**
  * 
- * @author Yadin Amsalem 
+ * @author Yadin Amsalem
  * @author Nadav Dery
  * @version 1.0
  *
@@ -62,7 +63,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private TableColumn<Exam, Integer> Time;
 
 	@FXML
-	private TableColumn<Exam, ExamStatus> StatusC; 
+	private TableColumn<Exam, ExamStatus> StatusC;
 
 	@FXML
 	private Button btnExamInfoPrincipal;
@@ -83,31 +84,35 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private static Teacher teacher;
 	private static User principal;
 	private boolean displayCourseColumn = false;
+
 	/**
 	 * method selectExamFromTable return selected exam from combo box.
-	 * @param event  occurs when User press On Exam from his Exam's Table
-	 
-	 * 	 */
+	 * 
+	 * @param event occurs when User press On Exam from his Exam's Table
+	 * 
+	 */
 
 	@FXML
 	void selectExamFromTable(MouseEvent event) {
 		ObservableList<Exam> Qlist;
 		Qlist = tableExam.getSelectionModel().getSelectedItems();
 		textExamID.setText(Qlist.get(0).getExamID());
-		if(Qlist.get(0).getExamStatus().equals(ExamStatus.active)){
+		if (Qlist.get(0).getExamStatus().equals(ExamStatus.active)) {
 			btnLockExam.setDisable(false);
 			btnDeleteExam.setDisable(true);
-		}
-		else {
+		} else {
 			btnLockExam.setDisable(true);
 			btnDeleteExam.setDisable(false);
-		}		
+		}
 	}
-/**
- * Method that search in  data matching Exam ID , if found save Exam's details and return from method
- * @param ExamID  use to compare and found match in data
- * @return exam if found,else null
- */
+
+	/**
+	 * Method that search in data matching Exam ID , if found save Exam's details
+	 * and return from method
+	 * 
+	 * @param ExamID use to compare and found match in data
+	 * @return exam if found,else null
+	 */
 	private Exam GetTableDetails(String ExamID) {
 		Exam exam;
 		for (Exam e : data) {
@@ -120,12 +125,13 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		}
 		return null;
 	}
+
 	/**
 	 * Method that check if the given ExamID is legal
-	 * @param ExamID  send to method to checl if legak
+	 * 
+	 * @param ExamID send to method to checl if legak
 	 * @return true if legal, else false
 	 */
-	
 
 	private boolean checkForLegalID(String ExamID) {
 		if (ExamID.length() != 6) {
@@ -142,11 +148,12 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	/**
 	 * Method use to delete data of exam from the teacher's exam bank
-	 * @param event occurs when User press On Delete 
-	  */
+	 * 
+	 * @param event occurs when User press On Delete
+	 */
 	@FXML
 	void btnDeleteExam(ActionEvent event) {
-		
+
 		if (!textExamID.getText().isEmpty()) {
 			if (!checkForLegalID(textExamID.getText()))
 				return;
@@ -168,10 +175,12 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		}
 
 	}
+
 	/**
 	 * Method use to edit data of exam from the teacher's exam bank
-	 * @param event occurs when User press On Edit 
-		 */
+	 * 
+	 * @param event occurs when User press On Edit
+	 */
 
 	@FXML
 	void btnEditExam(ActionEvent event) {
@@ -181,21 +190,25 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			displayNextScreen(teacher, "EditExam.fxml");
 		}
 	}
+
 	/**
 	 * Method open for user screen of create new exam
+	 * 
 	 * @param event occurs when User press On "Create New Exam"
 	 * 
 	 */
-		
+
 	@FXML
 	void CreateNewExam(ActionEvent event) {
 		textExamID.clear();
 		displayNextScreen(teacher, "CreateExam_step1.fxml");
 
 	}
+
 	/**
-	 * Method initalize for user screen of Exam bank 
-	 * @param location for Url location
+	 * Method initalize for user screen of Exam bank
+	 * 
+	 * @param location  for Url location
 	 * @param resources of type ResourceBundle
 	 * 
 	 */
@@ -227,9 +240,12 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			fillTableForPrincipalALLexamsInSystem(); // set all exams in cems system into the table
 		}
 	}
+
 	/**
-	 * btnExamInfoPrincipal open screen of exam info of teacher with the chosen Exam ID
-	 * @param event occurs when User press On Edit 
+	 * btnExamInfoPrincipal open screen of exam info of teacher with the chosen Exam
+	 * ID
+	 * 
+	 * @param event occurs when User press On Edit
 	 * 
 	 */
 
@@ -244,7 +260,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	}
 
 	/**
-	 *initTableRows get from server all exams of the logged teacher and insert into
+	 * initTableRows get from server all exams of the logged teacher and insert into
 	 * the table.
 	 */
 
@@ -261,15 +277,18 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
-		StatusC.setCellValueFactory(new PropertyValueFactory<>("examStatus")); //HADAR
+		StatusC.setCellValueFactory(new PropertyValueFactory<>("examStatus"));
 		tableExam.setItems(data);
 		tableExam.getColumns().addAll(ExamID, Proffesion, Time, StatusC);
 
 	}
+
 	/**
-	 * btnCreateActiveExam open screen of exam info of teacher with the chosen Exam ID
+	 * btnCreateActiveExam open screen of exam info of teacher with the chosen Exam
+	 * ID
+	 * 
 	 * @param event occurs when User press On "Create Active Exam"
-	 * 	 */
+	 */
 
 	@FXML
 	void btnCreateActiveExam(ActionEvent event) {
@@ -279,15 +298,15 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			CreateActiveExamController.setActiveExamState(selectedExam);
 			displayNextScreen(teacher, "CreateActiveExam.fxml");
 		}
-		
+
 	}
-	
+
 	/**
-	 * method  gets from server all detail of exams with the key exam ID 
+	 * method gets from server all detail of exams with the key exam ID
+	 * 
 	 * @param examID is the key for the specipic exam
 	 * @return exam with details of examId
 	 */
-	 
 
 	private Exam getExistExamDetails(String examID) {
 
@@ -320,6 +339,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		tableExam.setItems(data);
 		tableExam.getColumns().addAll(ExamID, Proffesion, Time, course);
 	}
+
 	/**
 	 * @param event occurs when user press on "Lock"
 	 * 
@@ -335,12 +355,12 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		RequestToServer req = new RequestToServer("lockActiveExam");
 		req.setRequestData(examToLock);
 		ClientUI.cems.accept(req);
-		
+
 		if (CEMSClient.responseFromServer.getResponseData().equals(false)) // ????
 			System.out.println("lock exam failed");
-		//else
-			//need to delete. to check with yadin.
-		//send lock to all students
+		// else
+		// need to delete. to check with yadin.
+		// send lock to all students
 		// ExamToLock.setStatus(Status.inActive); //matar
 		// RequestToServer req = new RequestToServer("deleteActiveExam");//matar
 		// req.setRequestData(ExamToLock);//matar

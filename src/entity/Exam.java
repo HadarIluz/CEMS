@@ -18,10 +18,8 @@ public class Exam implements Serializable {
 	private Teacher author; 
 	private String ProfessionName;
 	private ArrayList<QuestionInExam> examQuestionsWithScores;
-	
 	private ExamStatus examStatus;
-	//private String CourseName;
-	
+	//private String CourseName; //FIXME: display col in examBankController.
 	
 	public Exam() {
 		super();
@@ -71,9 +69,14 @@ public class Exam implements Serializable {
 		return ProfessionName;
 	}
 
+
 	public String getProfessionName() {
 		return profession.getProfessionID();
 	}
+	
+//	public String getCourseName() {
+//		return course.getCourseID();
+//	}
 
 	public Exam(String examID, Profession profession, Course course, int timeOfExam, ArrayList<Question> questions,
 		HashMap<String, Integer> questionScores, String commentForTeacher, String commentForStudents,

@@ -2,17 +2,16 @@ package entity;
 
 import java.io.Serializable;
 import java.sql.Time;
-import java.util.Calendar;
 
 //Entity class - define Active Exam in the CEMS system.
 @SuppressWarnings("serial")
 public class ActiveExam implements Serializable {
 
-	private Calendar date; // including start time
+	//private Calendar date; // including start time
 	private Exam exam;
 	private String examCode;
 	private int timeAllotedForTest;
-	private String activeExamType = null; //{manual / computerized}
+	private String activeExamType; //{manual / computerized}
 	private Time startTime; 	
 	private Time endTimeToTakeExam;
 
@@ -85,31 +84,15 @@ public class ActiveExam implements Serializable {
 		this.activeExamType = activeExamType;
 	}
 
-	// maybe should be moved to controller????
-	// this method calculate the end time by doing: start time + time of exam
-	public Calendar getEndTime() {
-		Calendar endTime = date.getInstance();
-		int hoursOfExam = exam.getTimeOfExam() / 60;
-		int minutesOfExam = exam.getTimeOfExam() % 60;
-		endTime.add(Calendar.HOUR, hoursOfExam);
-		endTime.add(Calendar.MINUTE, minutesOfExam);
-		return endTime;
-	}
-//	//still nor used:
-//	public String getActiveExamStartTime() {
-//		Calendar startTime = date.getInstance();
-//		int startH= date.HOUR;
-//		int startM= this.date.MINUTE;
-//		startTime.add(startH, 0);
-//		startTime.add(startM, 0);
-//		SimpleDateFormat sdf = new SimpleDateFormat("h:mm"); //For example 12:08 
-//		String formattedTime = sdf.format(startTime);
-//		System.out.println(formattedTime);
-//		return formattedTime;
-//	}
-//	//still nor used:
-//	public String getActiveExamStartTimeFORMAT_DB() {
-//		return date.HOUR_OF_DAY + ":" + date.MINUTE + ":" + date.SECOND;
+//	// maybe should be moved to controller????
+//	// this method calculate the end time by doing: start time + time of exam
+//	public Calendar getEndTime() {
+//		Calendar endTime = date.getInstance();
+//		int hoursOfExam = exam.getTimeOfExam() / 60;
+//		int minutesOfExam = exam.getTimeOfExam() % 60;
+//		endTime.add(Calendar.HOUR, hoursOfExam);
+//		endTime.add(Calendar.MINUTE, minutesOfExam);
+//		return endTime;
 //	}
 	
 	public Time getEndTimeToTakeExam() {

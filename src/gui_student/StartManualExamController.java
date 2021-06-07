@@ -36,7 +36,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class StartManualExamController implements Initializable {
+public class StartManualExamController extends GuiCommon implements Initializable {
 
 	@FXML
 	private Button btnDownload;
@@ -187,21 +187,5 @@ public class StartManualExamController implements Initializable {
 		newActiveExam = newActiveExamInProgress;
 	}
 
-	/**
-	 * this method create a popup with a message.
-	 * 
-	 * @param str
-	 */
-	public void popUp(String str) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(str);
-		lbl.setPadding(new Insets(5));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
-	}
+
 }

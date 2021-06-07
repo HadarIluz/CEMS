@@ -91,22 +91,5 @@ public class User implements Serializable {
 	public void setUserType(UserType userType) {
 		this.userType = userType;
 	}
-	
-//	/*equal method in order to checks if users are equal,
-//	and checks if a user already connected to system or not.*/
-//	@Override
-//	public boolean equals(Object obj) {
-//		if (this == obj) return true;
-//		if (obj == null || getClass() != obj.getClass()) return false;
-//		User user=(User) obj;
-//		//return true if all parameters are equals in order to indicate if this user is already logged into CEMS system..
-//		return	id== user.id &&
-//				password== user.password &&
-//				firstName==user.firstName && 
-//				lastName==user.lastName && 
-//				email==user.email &&
-//				isLogged==1;
-//	}
-
-		
+			
 }

@@ -12,29 +12,25 @@ import client.ClientUI;
 import entity.ActiveExam;
 import entity.ExamOfStudent;
 import entity.Student;
+import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
  * @author Hadar Iluz
  *
  */
-public class EnterToExamController implements Initializable {
+public class EnterToExamController extends GuiCommon implements Initializable {
 
 	@FXML
 	private Button btnStart;
@@ -202,41 +198,7 @@ public class EnterToExamController implements Initializable {
 		return flag;
 	}
 
-	/**
-	 * this method checks if the given string includes letters.
-	 * 
-	 * @param str
-	 * @return true only if the String contains something that isn't a digit.
-	 */
-	private boolean isOnlyDigits(String str) {
-		boolean containsLetter = true;
-		for (char ch : str.toCharArray()) {
-			if (!Character.isDigit(ch)) {
-				containsLetter = false;
-				System.out.println("id include letter");
-				break;
-			}
-		}
-		return containsLetter;
-	}
 
-	/**
-	 * create a popUp with a given message.
-	 * 
-	 * @param msg
-	 */
-	private void popUp(String msg) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(msg);
-		lbl.setPadding(new Insets(15));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
-	}
 
 	/**
 	 * initialize function to prepare the screen after it is loaded.
