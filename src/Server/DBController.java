@@ -1162,20 +1162,16 @@ public class DBController {
 
 	/**
 	 * @param studentExam
-	 * @return true or false if success in inserting the new exam of student to the DB
+	 * @return true or false if success in update the new exam of student to the DB
 	 */
 	public boolean insertNewStudentExam(ExamOfStudent studentExam) {
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("INSERT INTO exam_of_student VALUES(?, ?, ?, ?, ?, ?);");
-			pstmt.setInt(1, studentExam.getStudent().getId());
+			pstmt = conn.prepareStatement("UPDATE exam_of_student SET totalTime=? WHERE exam=? AND student=?");
+			pstmt.setInt(3, studentExam.getStudent().getId());
 			pstmt.setString(2, studentExam.getActiveExam().getExam().getExamID());
-			pstmt.setString(3, studentExam.getExamType());
-			pstmt.setNull(4, java.sql.Types.INTEGER);
-			pstmt.setNull(5, java.sql.Types.VARCHAR);
-			pstmt.setInt(6, studentExam.getTotalTime());
+			pstmt.setInt(1, studentExam.getTotalTime());
 			
-
 			if (pstmt.executeUpdate() != 0) {
 				return true;
 			}
@@ -1185,13 +1181,12 @@ public class DBController {
 			return false;
 		}
 		
-		return false;
-		
+		return false;	
 	}
 
 	/**
 	 * @param studentExam
-	 * @return true if sucees inserting all students questions with answers from exam
+	 * @return true if success inserting all students questions with answers from exam
 	 */
 	public boolean insertStudentQuestions(ExamOfStudent studentExam) {
 		PreparedStatement pstmt;
