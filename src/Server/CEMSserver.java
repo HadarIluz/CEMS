@@ -109,7 +109,7 @@ public class CEMSserver extends AbstractServer {
 			getTeacherData_Login((Teacher) req.getRequestData(), client);
 		}
 			break;
-			
+
 		case "getStudentGrades": {
 			getStudentGrades((int) req.getRequestData(), client);
 		}
@@ -124,7 +124,7 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
-			
+
 		case "getTeachers": {
 			getTeachers(client);
 
@@ -188,7 +188,7 @@ public class CEMSserver extends AbstractServer {
 			declineTimeExtention((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-			
+
 		case "getStudents": {
 			getStudents(client);
 		}
@@ -302,7 +302,7 @@ public class CEMSserver extends AbstractServer {
 		}
 
 			break;
-		
+
 		case "getCoursesByProfession": {
 			getCoursesByProfession((Profession) req.getRequestData(), client);
 		}
@@ -359,24 +359,20 @@ public class CEMSserver extends AbstractServer {
 			updateExamStatus((ActiveExam) req.getRequestData(), client);
 
 		}
-		break;
+			break;
 		}
 
 	}
 
-	
-
 	/*------------------------------------Private Methods-------------------------------------------------*/
-
-
-
 
 	/**
 	 * @param requestData
 	 * @param client
 	 * 
-	 * gets from the client question with teacher and profession. 
-	 * gets from the DB all relevant questions and sends it back to the client
+	 *                    gets from the client question with teacher and profession.
+	 *                    gets from the DB all relevant questions and sends it back
+	 *                    to the client
 	 */
 	private void getQuestionBank(Question requestData, ConnectionToClient client) {
 		try {
@@ -385,9 +381,9 @@ public class CEMSserver extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private void getStudentGrades(int studentID, ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Student Grades");
@@ -397,7 +393,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void getTeachers(ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Calculate Grades Average");
@@ -406,10 +402,8 @@ public class CEMSserver extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	
 
 	private void getStudents(ConnectionToClient client) {
 		try {
@@ -420,7 +414,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void getCoursesByProfession(Profession requestData, ConnectionToClient client) {
 		try {
 			client.sendToClient(dbController.getCoursesByProfession(requestData));
@@ -428,7 +422,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void gradesAverageCalc(String ExamID, ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Calculate Grades Average");
@@ -957,17 +951,17 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
-	private void updateExamStatus(ActiveExam activeExam, ConnectionToClient client) {
-		ResponseFromServer respond = new ResponseFromServer("UPDATE EXAM STATUS");
+	private void updateExamStatus(ActiveExam newActiveExam, ConnectionToClient client) {
+		/*logic for - createActiveExam*/
+		ResponseFromServer response= null;
+		response = dbController.updateExamStatus(newActiveExam);
 		try {
-			if (dbController.updateExamStatus(activeExam))
-				respond.setResponseData("TRUE");
-
-			client.sendToClient(respond);
+			client.sendToClient(response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", respond);
+		printMessageInLogFramServer("Message to Client:", response);
 	}
+
 
 }
