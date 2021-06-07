@@ -983,7 +983,7 @@ public class CEMSserver extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//printMessageInLogFramServer("Message to Client:", response);
+		printMessageInLogFramServer("Message to Client:", response);
 		
 	}
 

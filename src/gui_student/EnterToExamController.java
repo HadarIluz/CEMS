@@ -63,7 +63,6 @@ public class EnterToExamController implements Initializable {
 	private ArrayList<String> examIdList = new ArrayList<String>();
 	private ActiveExam activeExam_selection;
 	private Student student;
-	private static int errorCount = 0;
 
 	/**
 	 * The method checks that all the conditions for starting the exam have been
@@ -110,8 +109,7 @@ public class EnterToExamController implements Initializable {
 				// message in console
 				System.out.println("Respont: there is active examID: " + existExamID + " type: " + ActiveExamType);
 
-				//---------------//
-				//Request from server to insert new row to student of exam.
+				//-------Request from server to insert new row to student of exam.--------//
 				RequestToServer reqStusentInExam = new RequestToServer("InsertExamOfStudent");
 				ExamOfStudent examOfStudent= new ExamOfStudent(activeExam, student);
 				reqStusentInExam.setRequestData(examOfStudent);
@@ -125,7 +123,6 @@ public class EnterToExamController implements Initializable {
 				case "manual": {
 					// load manual start exam fxml
 					try {
-						SolveExamController.setActiveExamState(activeExam);
 						StartManualExamController.setActiveExamState(activeExam);
 						Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
 						newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
