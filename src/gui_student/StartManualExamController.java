@@ -83,9 +83,9 @@ public class StartManualExamController implements Initializable {
 
 	@FXML
 	private TextField textFileName;
-	
-    @FXML
-    private Text txtDownloadSucceed;
+
+	@FXML
+	private Text txtDownloadSucceed;
 
 	private static StudentController studentController; // why ??
 	private static ActiveExam newActiveExam;
@@ -102,7 +102,7 @@ public class StartManualExamController implements Initializable {
 		ClientUI.cems.accept(req);
 		btnDownload.setDisable(true);
 		btnSubmit.setDisable(false);
-		txtDownloadSucceed.setOpacity(1.0);
+		txtDownloadSucceed.setVisible(true);
 	}
 
 	@FXML
@@ -135,16 +135,11 @@ public class StartManualExamController implements Initializable {
 				req.setRequestData(submitExam);
 				ClientUI.cems.accept(req);
 				btnSubmit.setDisable(true);
-				txtUploadSucceed.setOpacity(1.0);
-			} catch (FileNotFoundException ex) {
-				txtError1.setOpacity(1.0);
-				txtError2.setOpacity(1.0);
-				txtError3.setOpacity(1.0);
-				ex.printStackTrace();
+				txtUploadSucceed.setVisible(true);
 			} catch (Exception ex) {
-				txtError1.setOpacity(1.0);
-				txtError2.setOpacity(1.0);
-				txtError3.setOpacity(1.0);
+				txtError1.setVisible(true);
+				txtError2.setVisible(true);
+				txtError3.setVisible(true);
 				ex.printStackTrace();
 			}
 		}
@@ -154,11 +149,9 @@ public class StartManualExamController implements Initializable {
 	void checkBoxShowTime(ActionEvent event) {
 		// show time left
 		if (checkBoxShowTime.isSelected()) {
-			textTimeLeft.setDisable(false);
-			textTimeLeft.setOpacity(1.0);
+			textTimeLeft.setVisible(true);
 		} else { // Do not show time left
-			textTimeLeft.setDisable(true);
-			textTimeLeft.setOpacity(0.0);
+			textTimeLeft.setVisible(false);
 		}
 	}
 
