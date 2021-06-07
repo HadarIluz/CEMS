@@ -89,11 +89,11 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 				if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("NEW ACTIVE EXAM CREATED")) {
 					// Request from server to update status filed for this exam: [ENUM('active')].
 					RequestToServer reqUpdate = new RequestToServer("updateExamStatus");
-					reqUpdate.setRequestData(ExamStatus.active);
+					newActiveExam.getExam().setExamStatus(ExamStatus.active);
+					reqUpdate.setRequestData(newActiveExam);
 					ClientUI.cems.accept(reqUpdate); // send back status message.
 
-					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("STATUS UPDATED")) {
-
+					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("EXAM STATUS UPDATED")) {
 						newActiveExam.getExam().setExamStatus(ExamStatus.active); //update status in entity.
 						popUp("New active exam has been successfully created in the system.");
 

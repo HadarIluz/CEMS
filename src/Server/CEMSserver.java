@@ -340,7 +340,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "updateExamStatus": {
-			updateExamStatus((String) req.getRequestData(), client);
+			updateExamStatus((ActiveExam) req.getRequestData(), client);
 
 		}
 		break;
@@ -905,10 +905,16 @@ public class CEMSserver extends AbstractServer {
 
 	}
 	
-	//TODO:
-	private void updateExamStatus(String requestData, ConnectionToClient client) {
-		// TODO Auto-generated method stub
-		
+
+	private void updateExamStatus(ActiveExam newActiveExam, ConnectionToClient client) {
+		ResponseFromServer response= null;
+		response = dbController.updateExamStatus(newActiveExam);
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
 	}
 	
 
