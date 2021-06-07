@@ -10,6 +10,7 @@ import entity.Course;
 import entity.Exam;
 import entity.Teacher;
 import entity.User;
+import entity.Exam.Status;
 import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -53,12 +54,18 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	private TableColumn<Exam, Integer> Time;
-		
-    @FXML
-    private Button btnExamInfoPrincipal;
+
+	@FXML
+	private TableColumn<Exam, Status> StatusC; //matar
+
+	@FXML
+	private Button btnExamInfoPrincipal;
 
 	@FXML
 	private Button btnCreateActiveExam;
+
+	@FXML
+	private Button btnLockExam; //matar
 
 	@FXML
 	private Text textMsg1;
@@ -69,7 +76,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private ObservableList<Exam> data;
 	private static Teacher teacher;
 	private static User principal;
-	private boolean displayCourseColumn=false;
+	private boolean displayCourseColumn = false;
 
 	@FXML
 	void selectExamFromTable(MouseEvent event) {
@@ -83,7 +90,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		for (Exam e : data) {
 			if (e.getExamID().equals(ExamID)) {
 				exam = new Exam(ExamID);
-				exam.setCourse(new Course(e.getCourse().getCourseName()));
+				exam.setCourse(new Course(e.getCourse().getCourseID()));
 				exam.setProfession(e.getProfession());
 				return exam;
 			}
@@ -107,13 +114,14 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	@FXML
 	void btnDeleteExam(ActionEvent event) {
 		// we need to insert case of letters of not 5 digits //TODO: ??
-		
-		//FIXME: when delete exam it is not delete from table
+
+		// FIXME: when delete exam it is not delete from table
 		if (!textExamID.getText().isEmpty()) {
 			if (!checkForLegalID(textExamID.getText()))
 				return;
 
 			ObservableList<Exam> Qlist;
+			
 			Exam ExamToDelete = GetTableDetails(textExamID.getText());
 
 			Qlist = tableExam.getSelectionModel().getSelectedItems();
@@ -165,7 +173,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		}
 
 		else if (ClientUI.loggedInUser.getUser() instanceof User) {
-			//setUp before load screen.
+			// setUp before load screen.
 			principal = (User) ClientUI.loggedInUser.getUser();
 			btnCreateNewExam.setDisable(false);
 			btnCreateNewExam.setVisible(false);
@@ -179,8 +187,8 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			textMsg2.setVisible(false);
 			textNavigation.setVisible(true);
 			btnExamInfoPrincipal.setVisible(true);
-			displayCourseColumn=true;
-			fillTableForPrincipalALLexamsInSystem(); //set all exams in cems system into the table
+			displayCourseColumn = true;
+			fillTableForPrincipalALLexamsInSystem(); // set all exams in cems system into the table
 		}
 	}
 
@@ -194,9 +202,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	}
 
-
 	/**
-	 * The function get from server all exams of the logged teacher and insert into the table.
+	 * The function get from server all exams of the logged teacher and insert into
+	 * the table.
 	 */
 	@SuppressWarnings("unchecked")
 	private void initTableRows() {
@@ -211,8 +219,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
+		StatusC.setCellValueFactory(new PropertyValueFactory<>("status")); //matar
 		tableExam.setItems(data);
-		tableExam.getColumns().addAll(ExamID, Proffesion, Time);
+		tableExam.getColumns().addAll(ExamID, Proffesion, Time,StatusC);
 
 	}
 
@@ -232,31 +241,42 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		RequestToServer req = new RequestToServer("getSelectedExamData_byID");
 		req.setRequestData(selectedExam);
 		ClientUI.cems.accept(req);
+		//if(selectedExam.getStatus() == Status.active) //matar
+		//	btnLockExam.setDisable(false); //matar
+		//else //matar
+		//	btnLockExam.setDisable(true); //matar
 		return selectedExam = (Exam) CEMSClient.responseFromServer.getResponseData();
 	}
-	
-	
-	
+
 	/**
-	 * The function get from server all exams stored in the system and insert into the table.
+	 * The function get from server all exams stored in the system and insert into
+	 * the table.
 	 */
 	@SuppressWarnings("unchecked")
 	private void fillTableForPrincipalALLexamsInSystem() {
 		RequestToServer req = new RequestToServer("getAllExamsStoredInSystem");
 		ArrayList<Exam> examsList = new ArrayList<Exam>();
 		ClientUI.cems.accept(req);
-		examsList= (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
+		examsList = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
 		TableColumn<Exam, String> course = new TableColumn<>("course");
-		//PropertyValueFactory<Exam, String> factory = new PropertyValueFactory<>();
-		
+		// PropertyValueFactory<Exam, String> factory = new PropertyValueFactory<>();
+
 		data = FXCollections.observableArrayList(examsList);
 		tableExam.getColumns().clear();
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
+		//StatusC.setCellValueFactory(new PropertyValueFactory<>("status")); //matar
 		course.setCellValueFactory(new PropertyValueFactory<>("course"));
 		tableExam.setItems(data);
-		tableExam.getColumns().addAll(ExamID, Proffesion, Time, course);
+		tableExam.getColumns().addAll(ExamID, Proffesion, Time, course);  
+	}
+
+	@FXML
+	void btnLockExam(ActionEvent event) {
+			// ExamToLock.setStatus(Status.inActive); //matar
+			//RequestToServer req = new RequestToServer("deleteActiveExam");//matar
+			// req.setRequestData(ExamToLock);//matar
 	}
 
 }

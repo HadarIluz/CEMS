@@ -18,6 +18,10 @@ public class Teacher extends User implements Serializable {
 		professions = new ArrayList<Profession>();
 	}
 	
+	public Teacher(int id,UserType user) {
+		super(id,user);
+	}
+	
 	public Teacher(User userData, ArrayList<Profession> professions) {
 		super(userData.getId(), userData.getPassword(), userData.getFirstName(), userData.getLastName(), userData.getEmail(), userData.getUserType());
 		this.professions = professions;

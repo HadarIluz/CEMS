@@ -20,6 +20,8 @@ public class Exam implements Serializable {
 	private ArrayList<QuestionInExam> examQuestionsWithScores;
 
 	private String CourseName;
+	public enum Status{inActive,active} //matar
+	Status status;
 	
 	public Exam() {
 		super();
@@ -157,6 +159,14 @@ public class Exam implements Serializable {
 
 	public void setExamID(String examID) {
 		this.examID = examID;
+	}
+	
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 }

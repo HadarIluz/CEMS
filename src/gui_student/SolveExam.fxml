@@ -24,6 +24,19 @@
             <Font size="14.0" />
          </font>
       </CheckBox>
+<<<<<<< HEAD
+=======
+      <ImageView fx:id="imgNext" fitHeight="50.0" fitWidth="50.0" layoutX="688.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@nextIcon.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="imgPrev" fitHeight="50.0" fitWidth="50.0" layoutX="23.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@prevIcon.png" />
+         </image>
+      </ImageView>
+>>>>>>> d69e938699e014d12d5d30f40fc2891cd5c34e6d
       <Label fx:id="lblTimeLeft" layoutX="517.0" layoutY="465.0" prefHeight="20.0" prefWidth="109.0" text="Time left: 25:20" textFill="#e40909">
          <font>
             <Font size="14.0" />
@@ -76,7 +89,7 @@
          </font></Text>
       <ImageView fx:id="notificationIcon" disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="573.0" layoutY="13.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/notification.png" />
+            <Image url="@notification.png" />
          </image></ImageView>
       <Separator layoutX="-2.0" layoutY="65.0" prefHeight="9.0" prefWidth="761.0" />
       <Label fx:id="lblnotificationName" disable="true" layoutX="600.0" layoutY="69.0" opacity="0.0" prefHeight="18.0" prefWidth="100.0" text=" Jennifer Aniston" />
