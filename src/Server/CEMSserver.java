@@ -369,6 +369,12 @@ public class CEMSserver extends AbstractServer {
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
 
+	/**
+	 * @param exam
+	 * @param client
+	 * 
+	 * gets from the db details of exam for student to solve: exam comments, all questions and scores
+	 */
 	private void getFullExamDetails(Exam exam, ConnectionToClient client) {
 		exam = dbController.getCommentForStudents(exam);
 		ArrayList<QuestionInExam> questionsList = dbController.getQuestionsOfExam(exam.getExamID());

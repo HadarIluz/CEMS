@@ -40,6 +40,22 @@ import logic.StatusMsg;
  * @author CEMS_Team
  *
  */
+/**
+ * @author yuval
+ *
+ */
+/**
+ * @author yuval
+ *
+ */
+/**
+ * @author yuval
+ *
+ */
+/**
+ * @author yuval
+ *
+ */
 public class DBController {
 	public Connection conn;
 	public ServerFrameController serverFrame;
@@ -1060,6 +1076,10 @@ public class DBController {
 		return students;
 	}
 
+	/**
+	 * @param exam with only ID
+	 * @return exam with comment for students
+	 */
 	public Exam getCommentForStudents(Exam exam) {
 		PreparedStatement pstmt;
 		try {
@@ -1080,6 +1100,10 @@ public class DBController {
 		
 	}
 
+	/**
+	 * @param examID
+	 * @return array list of questions in exam including the question ID and score
+	 */
 	public ArrayList<QuestionInExam> getQuestionsOfExam(String examID) {
 		ArrayList<QuestionInExam> list = new ArrayList<>();
 		PreparedStatement pstmt;
@@ -1101,6 +1125,10 @@ public class DBController {
 		return list;
 	}
 
+	/**
+	 * @param questionID
+	 * @return a question with all the info (description, answers etc)
+	 */
 	public Question getFullQuestion(String questionID) {
 		Question q = new Question(questionID);
 		
