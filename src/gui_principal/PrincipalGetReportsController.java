@@ -50,7 +50,7 @@ public class PrincipalGetReportsController extends GuiCommon {
 	private static PrincipalController principalController;
 	private static User principal = (User) ClientUI.loggedInUser.getUser();
 	HashMap<String, String> professions;
-	ArrayList<Course> courses;
+	static ArrayList<Course> courses;
 	ArrayList<Teacher> teachers;
 	ArrayList<Student> students;
 

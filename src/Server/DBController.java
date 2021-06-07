@@ -1078,4 +1078,32 @@ public class DBController {
 		return ExamGrades;
 	}
 
+	public HashMap<String,ArrayList<Integer>> getAllStudentsExams() {
+		HashMap<String,ArrayList<Integer>> exams = new HashMap<String, ArrayList<Integer>>();
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT exam,score FROM cems.exam_of_student;");
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
+				ArrayList<Integer> scoreList;
+				if(exams.get(rs.getString(1))==null) {
+					scoreList= new ArrayList<Integer>();
+					scoreList.add(rs.getInt(2));
+				exams.put(rs.getString(1), scoreList);
+				}
+				else {
+					scoreList=exams.get(rs.getString(1));
+					scoreList.add(rs.getInt(2));
+					exams.put(rs.getString(1), scoreList);
+				}
+				}
+				
+			rs.close();
+				
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}	
+		return exams;
+	}
+
 }
