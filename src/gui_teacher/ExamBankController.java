@@ -83,7 +83,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private ObservableList<Exam> data;
 	private static Teacher teacher;
 	private static User principal;
-	private boolean displayCourseColumn = false;
+	private boolean displayPrincipalView = false;
 
 	/**
 	 * method selectExamFromTable return selected exam from combo box.
@@ -97,12 +97,14 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ObservableList<Exam> Qlist;
 		Qlist = tableExam.getSelectionModel().getSelectedItems();
 		textExamID.setText(Qlist.get(0).getExamID());
-		if (Qlist.get(0).getExamStatus().equals(ExamStatus.active)) {
-			btnLockExam.setDisable(false);
-			btnDeleteExam.setDisable(true);
-		} else {
-			btnLockExam.setDisable(true);
-			btnDeleteExam.setDisable(false);
+		if (!displayPrincipalView) {
+			if (Qlist.get(0).getExamStatus().equals(ExamStatus.active)) {
+				btnLockExam.setDisable(false);
+				btnDeleteExam.setDisable(true);
+			} else {
+				btnLockExam.setDisable(true);
+				btnDeleteExam.setDisable(false);
+			}
 		}
 	}
 
@@ -224,19 +226,16 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		else if (ClientUI.loggedInUser.getUser() instanceof User) {
 			// setUp before load screen.
 			principal = (User) ClientUI.loggedInUser.getUser();
-			btnCreateNewExam.setDisable(false);
 			btnCreateNewExam.setVisible(false);
-			btnEditExam.setDisable(true);
 			btnEditExam.setVisible(false);
-			btnDeleteExam.setDisable(true);
 			btnDeleteExam.setVisible(false);
-			btnCreateActiveExam.setDisable(true);
 			btnCreateActiveExam.setVisible(false);
+			btnLockExam.setVisible(false);
 			textMsg1.setVisible(false);
 			textMsg2.setVisible(false);
 			textNavigation.setVisible(true);
 			btnExamInfoPrincipal.setVisible(true);
-			displayCourseColumn = true;
+			displayPrincipalView = true;
 			fillTableForPrincipalALLexamsInSystem(); // set all exams in cems system into the table
 		}
 	}
