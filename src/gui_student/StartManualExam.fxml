@@ -68,7 +68,7 @@
       </ImageView>
       <Label fx:id="textTeacherName" layoutX="610.0" layoutY="79.0" prefHeight="18.0" prefWidth="100.0" text=" Jennifer Aniston" visible="false" />
       <Label fx:id="textNotificationMsg" layoutX="525.0" layoutY="90.0" prefHeight="50.0" prefWidth="155.0" text="Please note, the exam time was extended by 20 minutes." visible="false" wrapText="true" />
-      <Label fx:id="textTimeLeft" layoutX="611.0" layoutY="373.0" prefHeight="20.0" prefWidth="109.0" text="Time left: 25:20" textFill="#e40909">
+      <Label fx:id="textTimeLeft" layoutX="611.0" layoutY="373.0" prefHeight="20.0" prefWidth="127.0" textFill="#e40909">
          <font>
             <Font size="14.0" />
          </font>
