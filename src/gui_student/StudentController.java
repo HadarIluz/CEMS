@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
@@ -50,7 +51,7 @@ public class StudentController extends Application implements Initializable {
     private Label textStudentName;
 
     @FXML
-    private Button btnStartManualExam;
+    private Button btnStarExam;
 
     @FXML
     private ImageView imgPhone;
@@ -60,9 +61,6 @@ public class StudentController extends Application implements Initializable {
 
     @FXML
     private Button btnViewExamInfo;
-
-    @FXML
-    private Button btnStartComputerizedExam;
 
 	private static LoginController loginController;
 	protected Student student;
@@ -96,35 +94,21 @@ public class StudentController extends Application implements Initializable {
 	}
 
 	/**
-	 * @param event that loading the student's right screen after pressing a button.
+	 * @param event that loading the student's right screen after pressing a button "Start Exam".
 	 */
 	@FXML
-	void btnStartComputerizedExam(ActionEvent event) {
-
+	void btnStarExam(ActionEvent event) {
 		try {
 			EnterToExamController.setAllActiveExamBeforEnterToExam(getAllActiveExamBeforEnterToExam());
+			btnStarExam.setDisable(true);
+			btnViewExamInfo.setDisable(false);
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * @param event that loading the student's right screen after pressing a button.
-	 */
-	@FXML
-	void btnStartManualExam(ActionEvent event) {
 		
-		try {
-			EnterToExamController.setAllActiveExamBeforEnterToExam(getAllActiveExamBeforEnterToExam());
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EnterToExam.fxml"));
-			root.add(newPaneRight, 1, 0);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -133,6 +117,8 @@ public class StudentController extends Application implements Initializable {
 	@FXML
 	void btnViewExamInfo(ActionEvent event) {
 		try {
+			btnViewExamInfo.setDisable(true);
+			btnStarExam.setDisable(false);
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ViewExam.fxml"));
 			root.add(newPaneRight, 1, 0);
 
@@ -207,6 +193,7 @@ public class StudentController extends Application implements Initializable {
 		activeExamList= (ArrayList<ActiveExam>) CEMSClient.responseFromServer.getResponseData();
 		return activeExamList;
 	}
+		
 
 	// TODO:
 	/*
