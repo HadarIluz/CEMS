@@ -30,7 +30,7 @@ import logic.RequestToServer;
  *
  */
 
-public class ApprovalTimeExtentionController extends GuiCommon implements Initializable {
+public class ApprovalTimeExtensionController extends GuiCommon implements Initializable {
 
 	@FXML
 	private ComboBox<String> selectExamExtension;
@@ -71,7 +71,7 @@ public class ApprovalTimeExtentionController extends GuiCommon implements Initia
 			timeOfExam += Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
 			selectedExtensionRequest.getActiveExam().setTimeAllotedForTest("" + timeOfExam);
 			// Update the exam time and delete the extension Request in the database
-			RequestToServer req = new RequestToServer("approvalTimeExtention");
+			RequestToServer req = new RequestToServer("approvalTimeExtension");
 			req.setRequestData(selectedExtensionRequest.getActiveExam());
 			ClientUI.cems.accept(req);
 			if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("EXTENSION REMOVED")) {
@@ -94,7 +94,7 @@ public class ApprovalTimeExtentionController extends GuiCommon implements Initia
 		}
 		// When a test is selected
 		else {
-			RequestToServer req = new RequestToServer("declineTimeExtention");
+			RequestToServer req = new RequestToServer("declineTimeExtension");
 			req.setRequestData(selectedExtensionRequest.getActiveExam());
 			ClientUI.cems.accept(req);
 			if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("EXTENSION REMOVED")) {

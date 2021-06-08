@@ -179,8 +179,8 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "approvalTimeExtention": {
-			approvalTimeExtention((ActiveExam) req.getRequestData(), client);
+		case "approvalTimeExtension": {
+			approvalTimeExtension((ActiveExam) req.getRequestData(), client);
 		}
 			break;
 
@@ -190,8 +190,8 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "declineTimeExtention": {
-			declineTimeExtention((ActiveExam) req.getRequestData(), client);
+		case "declineTimeExtension": {
+			declineTimeExtension((ActiveExam) req.getRequestData(), client);
 		}
 			break;
 
@@ -803,7 +803,7 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
 
-	private void approvalTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
+	private void approvalTimeExtension(ActiveExam activeExam, ConnectionToClient client) {
 		// update time alloted for test in active exam after the principal approves the
 		// request.
 		ResponseFromServer respon = null;
@@ -816,10 +816,10 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
 
-	private void declineTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
+	private void declineTimeExtension(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer respon = null;
 		try {
-			respon = dbController.deleteExtenxtionRequest(activeExam);
+			respon = dbController.deleteExtensionRequest(activeExam);
 			client.sendToClient(respon);
 		} catch (IOException ex) {
 			ex.printStackTrace();

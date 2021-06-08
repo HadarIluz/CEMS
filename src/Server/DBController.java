@@ -499,7 +499,7 @@ public class DBController {
 			pstmt.setInt(1, activeExam.getTimeAllotedForTest());
 			pstmt.setString(2, activeExam.getExam().getExamID());
 			if (pstmt.executeUpdate() == 1) {
-				response = deleteExtenxtionRequest(activeExam);
+				response = deleteExtensionRequest(activeExam);
 			}
 			else
 				response = new ResponseFromServer("TIME EXAM NOT UPDATED");
@@ -515,7 +515,7 @@ public class DBController {
 	 * @return true if deleting request for activeExam from table active_exam in DB
 	 *         succeeded, else return false
 	 */
-	public ResponseFromServer deleteExtenxtionRequest(ActiveExam activeExam) {
+	public ResponseFromServer deleteExtensionRequest(ActiveExam activeExam) {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
 		try {
@@ -645,7 +645,7 @@ public class DBController {
 
 		// in case not found any active exam match.
 		if (activeExam.getExamCode() == null) {
-			deleteExtenxtionRequest(activeExam);
+			deleteExtensionRequest(activeExam);
 		}
 		return activeExam;
 	}
