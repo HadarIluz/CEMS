@@ -48,6 +48,9 @@ public class ScoreApprovalController extends GuiCommon {
 
 	@FXML
 	private Label txtExamIdError;
+	
+	@FXML
+    private Label lblCheat;
 
 	HashMap<String, Integer> stdScore = new HashMap<>();
 	// <StudentID,Score>
@@ -125,6 +128,12 @@ public class ScoreApprovalController extends GuiCommon {
 	@FXML
 	void selectStudent(ActionEvent event) {
 		textCurrentGrade.setText(String.valueOf(stdScore.get(selectStudent.getSelectionModel().getSelectedItem())));
+		CheatingDetection(selectStudent.getSelectionModel().getSelectedItem());
+	}
+
+	private void CheatingDetection(String selectedStudentID) {
+		// here we would implement query to check if he suspected as cheater
+		
 	}
 
 	@SuppressWarnings("unchecked")
