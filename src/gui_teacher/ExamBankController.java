@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
+import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
 import entity.ExamStatus;
@@ -351,18 +352,28 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		Exam examToLock = GetTableDetails(textExamID.getText());
 		Qlist = tableExam.getSelectionModel().getSelectedItems();
 		examToLock.setExamStatus(ExamStatus.inActive);
+		ActiveExam activeExam = new ActiveExam(examToLock);
 		RequestToServer req = new RequestToServer("lockActiveExam");
-		req.setRequestData(examToLock);
-		ClientUI.cems.accept(req);
-
-		if (CEMSClient.responseFromServer.getResponseData().equals(false)) // ????
-			System.out.println("lock exam failed");
-		// else
-		// need to delete. to check with yadin.
-		// send lock to all students
-		// ExamToLock.setStatus(Status.inActive); //matar
-		// RequestToServer req = new RequestToServer("deleteActiveExam");//matar
-		// req.setRequestData(ExamToLock);//matar
+		req.setRequestData(activeExam);
+		//ClientUI.cems.accept(req);
+		//if (CEMSClient.responseFromServer.getResponseData().equals("EXAM LOCKED")) {
+		//	RequestToServer req2 = new RequestToServer("getStudentsInActiveExam");
+		//	req.setRequestData(activeExam);
+		//	ClientUI.cems.accept(req2);
+			//ArrayList<Integer> students = (ArrayList<Integer>) CEMSClient.responseFromServer.getResponseData();
+			//ArrayList<ConnectionToClient> students = (ArrayList<ConnectionToClient>) CEMSClient.responseFromServer.getResponseData();
+			//if (!students.isEmpty()) {
+				// need to replace status in the table
+				// need to send to all the student in this exam
+				//for (ConnectionToClient client : students) {
+				//	client.sendToClient(students);;
+			//	}
+				
+			//}
+		
+		//}
+		//else
+		//	System.out.println("lock exam failed");
 	}
 
 }

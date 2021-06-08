@@ -62,7 +62,6 @@ public class CEMSserver extends AbstractServer {
 		loogedClients = new HashMap<Integer, ConnectionToClient>();
 	}
 
-
 	/**
 	 * This method handles any messages received from the client.
 	 *
@@ -688,14 +687,14 @@ public class CEMSserver extends AbstractServer {
 			System.out.println(key);
 		}
 		System.out.println("END LIST loggedInUsers\n------\n");
-		
+
 		System.out.println("**********\nPrint loogedClients list:");
-		for (Integer id : loogedClients .keySet()) {
+		for (Integer id : loogedClients.keySet()) {
 			String keyID = loogedClients.toString();
 			System.out.println(keyID);
 		}
 		System.out.println("END LIST loogedClients\n*******\n");
-		
+
 	}
 
 	/**
@@ -964,14 +963,12 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void lockActiveExam(ActiveExam examToLock, ConnectionToClient client) {
-		// ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
 		ResponseFromServer respon = null;
 		try {
 			if (dbController.deleteActiveExam(examToLock)) {
 				respon = dbController.updateExamStatus(examToLock);
-				respon.setResponseData((Boolean) false);
 				if (respon.getStatusMsg().getStatus().equals("EXAM STATUS UPDATED"))
-					respon.setResponseData((Boolean) true);
+					respon = new ResponseFromServer("EXAM LOCKED");
 			}
 			client.sendToClient(respon);
 		} catch (IOException e) {
@@ -980,14 +977,17 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void getStudentsInActiveExam(ActiveExam activeExam, ConnectionToClient client) {
-		ResponseFromServer respon = new ResponseFromServer("STUDENT IN ACTIVE EXAM");
-		try {
-			respon.setResponseData(dbController.getStudentsInActiveExam(activeExam));
-			client.sendToClient(respon);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		ResponseFromServer respon = new ResponseFromServer("EXAM LOCKED BY THE TEACHER");
+		ArrayList<Integer> students = dbController.getStudentsInActiveExam(activeExam);
+		//try {
+		//	for (Integer id : students) {
+				//(loogedClients.get(id)).sendToClient(); // option 1
+		//	}
+		//} catch (IOException e) {
+		//	e.printStackTrace();
+		//}
 		printMessageInLogFramServer("Message to Client:", respon); // print to server log.
+
 	}
 
 	private void InsertExamOfStudent(ExamOfStudent examOfStudent, ConnectionToClient client) {

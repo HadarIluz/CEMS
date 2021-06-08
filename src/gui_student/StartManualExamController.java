@@ -169,13 +169,9 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	}
 	
 	private void lockExam() {
-		//to add update status and delete from  active_exam.
-		//maybe the update in delete ? at the same time ??
 		RequestToServer extReq = new RequestToServer("lockActiveExam");
 		extReq.setRequestData(newActiveExam);
 		ClientUI.cems.accept(extReq);
-		///////////////////////////////////////////////////
-		
 		btnSubmit.setDisable(true);
 		btnDownload.setDisable(true);
 		GuiCommon.popUp("The exam is locked!");
