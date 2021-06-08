@@ -357,7 +357,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "lockActiveExam": {
-			lockActiveExam((Exam) req.getRequestData(), client);
+			lockActiveExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
 
@@ -964,13 +964,13 @@ public class CEMSserver extends AbstractServer {
 		}
 	}
 
-	private void lockActiveExam(Exam examToLock, ConnectionToClient client) {
+	private void lockActiveExam(ActiveExam examToLock, ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
-		respon.setResponseData((Boolean) false);
 		try {
-			if (dbController.deleteActiveExam(examToLock)) {
-				Boolean ans = dbController.updateExamStatus(examToLock);
-				if (ans)
+			if (dbController.deleteActiveExam(examToLock.getExam())) {
+				Boolean ans = dbController.updateExamStatus(examToLock.getExam());//hadar: update working
+				respon.setResponseData((Boolean) false);
+				if (respon.getStatusMsg().getStatus().equals("EXAM STATUS UPDATED"))
 					respon.setResponseData((Boolean) true);
 			}
 			client.sendToClient(respon);
