@@ -21,35 +21,35 @@ import logic.RequestToServer;
 
 public class EditExamController extends GuiCommon implements Initializable {
 
-	@FXML
-	private Text texTtitleScreen;
+    @FXML
+    private Text texTtitleScreen;
 
-	@FXML
-	private TextField textExamID;
+    @FXML
+    private TextField textExamID;
 
-	@FXML
-	private Button btnShowQuestion;
+    @FXML
+    private Label textTimeForExam;
 
-	@FXML
-	private Label textTimeForExam;
+    @FXML
+    private TextArea textTeacherComment;
 
-	@FXML
-	private TextArea textTeacherComment;
+    @FXML
+    private TextArea textStudentComment;
 
-	@FXML
-	private TextArea textStudentComment;
+    @FXML
+    private Button btnSaveEditeExam;
 
-	@FXML
-	private Button btnSaveEditeExam;
+    @FXML
+    private Button btnBackPrincipal;
 
-	@FXML
-	private Button btnBackPrincipal;
+    @FXML
+    private Text textNavigation;
 
-	@FXML
-	private Text textNavigation;
+    @FXML
+    private TextField textTimeAllocateForExam;
 
-	@FXML
-	private TextField textTimeAllocateForExam;
+    @FXML
+    private Button btnBrowseQuestions;
 
 	public static Exam exam;
 	private static Teacher teacher;
@@ -57,7 +57,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private static String screenStatus;
 
 	@FXML
-	void btnBackPrincipal(ActionEvent event) {
+	void btnBack(ActionEvent event) {
 		displayNextScreen(teacher, "/gui_teacher/ExamBank.fxml");
 	}
 
@@ -120,11 +120,6 @@ public class EditExamController extends GuiCommon implements Initializable {
 		displayNextScreen(teacher, "/gui_teacher/CreateQuestion.fxml");
 	}
 
-	@FXML
-	void btnShowQuestion(ActionEvent event) {
-
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// tack user data according to screen status from the prev action.
@@ -141,7 +136,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 			principal = (User) ClientUI.loggedInUser.getUser();
 			// load data of the selected exam for view.
 			textExamID.setText(exam.getExamID());
-			// textTimeAllocateForExam.setText(!!!!SQL);
+			textTimeAllocateForExam.setText(Integer.toString(exam.getTimeOfExam()));
 			textTeacherComment.setText(exam.getCommentForTeacher());
 			textStudentComment.setText(exam.getCommentForStudents());
 

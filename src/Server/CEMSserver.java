@@ -967,10 +967,9 @@ public class CEMSserver extends AbstractServer {
 
 	private void lockActiveExam(ActiveExam examToLock, ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
-		// ResponseFromServer respon = null;
 		try {
 			if (dbController.deleteActiveExam(examToLock)) {
-				Boolean ans = dbController.updateExamStatus(examToLock.getExam());
+				Boolean ans = dbController.updateExamStatus(examToLock.getExam());//hadar: update working
 				respon.setResponseData((Boolean) false);
 				if (respon.getStatusMsg().getStatus().equals("EXAM STATUS UPDATED"))
 					respon.setResponseData((Boolean) true);

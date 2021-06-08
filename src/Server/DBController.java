@@ -1003,19 +1003,18 @@ public class DBController {
 
 	public Boolean updateExamStatus(Exam exam) {
 		/* createNewActiveExam */
-		String examNewStatus = exam.getExamStatus().toString();
 		PreparedStatement pstmt;
-		// UPDATE exam SET status='active' WHERE examID='010203';
-		// UPDATE `cems`.`exam` SET `status` = 'inActive' WHERE (`examID` = '010203') and (`profession` = '01') and (`course` = '02');
 		try {
-			pstmt = conn.prepareStatement(
-					"UPDATE exam SET status=\"" + examNewStatus + "\" WHERE examID=" + "\"" + exam.getExamID() + "\"");
-			// pstmt.setString(1, examNewStatus);
-			//pstmt.setString(2, exam.getExamID());
+			pstmt = conn.prepareStatement("UPDATE exam SET status=? WHERE examID=?;");
+			pstmt.setObject(1, exam.getExamStatusObject().toString());
+			pstmt.setString(2, exam.getExamID());
+			if (pstmt.executeUpdate() == 1) {
+				return true;
+			}
 		} catch (SQLException e) {
 			return false;
 		}
-		return true;
+		return false;
 	}
 
 	public boolean checkIfExtensionRequestExists(ExtensionRequest extensionRequest) {
