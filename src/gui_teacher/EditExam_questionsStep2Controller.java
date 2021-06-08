@@ -37,28 +37,37 @@ import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
- * @author iluzh
+ * @author Hadar Iluz
  *
  */
-public class EditExam_questionsStep2Controller2 extends GuiCommon implements Initializable {
+public class EditExam_questionsStep2Controller extends GuiCommon implements Initializable {
 
-	@FXML
-	private Button btnCreateNewQuestion;
+    @FXML
+    private Button btnCreateNewQuestion;
+    
+    @FXML
+    private Text textNavigation;
 
-	@FXML
-	private ImageView imgStep1;
+    @FXML
+    private Text textTotal; 
 
-	@FXML
-	private ImageView imgStep2;
+    @FXML
+    private Text textTitalScreen_step2;
 
-	@FXML
-	private Button btnBack;
+    @FXML
+    private ImageView imgStep1;
 
-	@FXML
-	private Text textTotalScore;
+    @FXML
+    private ImageView imgStep2;
 
-	@FXML
-	private Label textErrorMsg;
+    @FXML
+    private Button btnBack;
+
+    @FXML
+    private Text textTotalScore;
+
+    @FXML
+    private Label textErrorMsg;
 
 	@FXML
 	private TableView<QuestionInExamRow> tableQuestion;
@@ -72,22 +81,26 @@ public class EditExam_questionsStep2Controller2 extends GuiCommon implements Ini
 	@FXML
 	private TableColumn<QuestionInExamRow, String> question;
 
-	@FXML
-	private Text ChosenQuestionID;
+    @FXML
+    private Text textQid;
 
-	@FXML
-	private TextField txtChangeScore;
+    @FXML
+    private Text ChosenQuestionID;
 
-	@FXML
-	private Button btnUpdateScore;
+    @FXML
+    private TextField txtChangeScore;
+
+    @FXML
+    private Button btnUpdateScore;
 
 	@FXML
 	private Button btnDelete;
 
-	private static TeacherController teacherController;
+//	private static TeacherController teacherController;
 	public static Exam exam;
 	private static Teacher teacher;
 	private static User principal;
+	private static boolean displayPrincipalView = false;
 
 	//
 	private static ArrayList<Question> availableQuestions;
@@ -107,20 +120,14 @@ public class EditExam_questionsStep2Controller2 extends GuiCommon implements Ini
 
 	}
 
-	@FXML
-	void btnBack(ActionEvent event) {
-		try {
-			// setQuestionsInNewExam(); //ASK YUVAL
-			CreateExam_step1Controller.setExamState(exam);
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_teacher/EditExam.fxml"));
-			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-			TeacherController.root.add(newPaneRight, 1, 0);
-
-		} catch (IOException e) {
-			System.out.println("Couldn't load!");
-			e.printStackTrace();
+    @FXML
+    void btnBack(ActionEvent event) {
+    	EditExamController.setprevScreenData(exam, displayPrincipalView);
+    	if (!displayPrincipalView) {
+			displayNextScreen(teacher, "/gui_teacher/EditExam.fxml");
+		} else {
+			displayNextScreen(principal, "/gui_teacher/EditExam.fxml");
 		}
-
 	}
 
 	@FXML
@@ -167,7 +174,7 @@ public class EditExam_questionsStep2Controller2 extends GuiCommon implements Ini
 	}
 
 	/**
-	 * method set text of questionID when user select a question row fron table
+	 * method set text of questionID when user select a question row from table
 	 * 
 	 * @param event occurs when User press on a selected row from table
 	 */
@@ -189,9 +196,9 @@ public class EditExam_questionsStep2Controller2 extends GuiCommon implements Ini
 		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 			txtChangeScore.setText("0");
-			initTableRows_getFronmServer();
+			//initTableRows_getFronmServer(); //TODO: NOT WORKING!!
 			
-			initTableCols();
+			//initTableCols(); //ASK YUVAL
 			
 			if (exam.getExamQuestionsWithScores() != null) {
 				for (QuestionInExam q : exam.getExamQuestionsWithScores()) {
@@ -204,7 +211,8 @@ public class EditExam_questionsStep2Controller2 extends GuiCommon implements Ini
 		} else if (ClientUI.loggedInUser.getUser() instanceof User) {
 			// setUp before load screen.
 			principal = (User) ClientUI.loggedInUser.getUser();
-
+			displayPrincipalView = true;
+			
 			btnDelete.setDisable(false);
 			btnDelete.setVisible(false);
 			btnUpdateScore.setDisable(false);
@@ -213,6 +221,18 @@ public class EditExam_questionsStep2Controller2 extends GuiCommon implements Ini
 			btnCreateNewQuestion.setVisible(false);
 			txtChangeScore.setDisable(false);
 			txtChangeScore.setVisible(false);
+			textErrorMsg.setDisable(false);
+			textErrorMsg.setVisible(false);
+			textTitalScreen_step2.setText("Exams Details");
+			textTotal.setDisable(false);
+			textTotal.setVisible(false);
+			textTotalScore.setDisable(false);
+			textTotalScore.setVisible(false);
+			textQid.setDisable(false);
+			textQid.setVisible(false);
+			ChosenQuestionID.setDisable(false);
+			ChosenQuestionID.setVisible(false);
+			textNavigation.setVisible(true);
 
 		}
 
@@ -255,11 +275,9 @@ public class EditExam_questionsStep2Controller2 extends GuiCommon implements Ini
 		return true;
 	}
 
-	/**
-	 * @param exam with information from the prev screen.
-	 */
+	
 	public static void setExamData(Exam examData) {
-		exam = examData;
+		
 	}
 
 
@@ -278,9 +296,16 @@ public class EditExam_questionsStep2Controller2 extends GuiCommon implements Ini
 //
 		ArrayList<QuestionInExam> finaleQusetionOfExamList = new ArrayList();
 		for (QuestionInExamRow q : selectedQuestionsRows) {
+			//allQuestionInExam.getOrDefault(finaleQusetionOfExamList, null)
+			
 			finaleQusetionOfExamList.add(q.getQuestionObject());
 		}
 		exam.setExamQuestionsWithScores(finaleQusetionOfExamList);
+	}
+
+	public static void setnextScreenData(Exam examData, boolean displayPrincipalView2) {
+		exam = examData;
+		displayPrincipalView=displayPrincipalView2;
 	}
 
 }

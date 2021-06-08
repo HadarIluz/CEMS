@@ -106,6 +106,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 				btnDeleteExam.setDisable(false);
 			}
 		}
+		else {
+			btnExamInfoPrincipal.setDisable(false);
+		}
 	}
 
 	/**
@@ -235,7 +238,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			textMsg2.setVisible(false);
 			textNavigation.setVisible(true);
 			btnExamInfoPrincipal.setVisible(true);
+			btnExamInfoPrincipal.setDisable(true);
 			displayPrincipalView = true;
+			textNavigation.setVisible(true);
 			fillTableForPrincipalALLexamsInSystem(); // set all exams in cems system into the table
 		}
 	}
