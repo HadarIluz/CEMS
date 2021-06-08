@@ -327,6 +327,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ClientUI.cems.accept(req);
 		examsList = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
 		TableColumn<Exam, String> course = new TableColumn<>("course");
+		
 		// PropertyValueFactory<Exam, String> factory = new PropertyValueFactory<>();
 
 		data = FXCollections.observableArrayList(examsList);
@@ -334,7 +335,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
-		course.setCellValueFactory(new PropertyValueFactory<>("course"));
+		course.setCellValueFactory(new PropertyValueFactory<>("courseID"));
 		tableExam.setItems(data);
 		tableExam.getColumns().addAll(ExamID, Proffesion, Time, course);
 	}
