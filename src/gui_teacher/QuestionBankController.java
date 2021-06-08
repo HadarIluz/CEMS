@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
+import entity.Exam;
 import entity.Question;
 import entity.QuestionRow;
 import entity.Teacher;
@@ -177,9 +178,9 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		textQuestionID.setEditable(true);
-		initTableRows();
 		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
+			initTableRows();
 		}
 
 		if (ClientUI.loggedInUser.getUser() instanceof User) {
@@ -199,9 +200,30 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 			btnDeleteQuestion.setVisible(false);
 			textNavigation.setVisible(true);
 			textQuestionID.setEditable(false);
+			fillTableForPrincipal_ALLQuestionsInSystem(); // set all exams in cems system into the table
 			
 		}
 
+	}
+
+
+	@SuppressWarnings("unchecked")
+	private void fillTableForPrincipal_ALLQuestionsInSystem() {
+		textQuestionID.setEditable(true);
+		RequestToServer req = new RequestToServer("getAllQuestionsStoredInSystem");
+		ArrayList<QuestionRow> questionList = new ArrayList<QuestionRow>();
+		ClientUI.cems.accept(req);
+
+		questionList = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
+		data = FXCollections.observableArrayList(questionList);
+
+		tableQuestion.getColumns().clear();
+		QuestionID.setCellValueFactory(new PropertyValueFactory<>("QuestionID"));
+		Proffesion.setCellValueFactory(new PropertyValueFactory<>("profession"));
+		Question.setCellValueFactory(new PropertyValueFactory<>("Question"));
+
+		tableQuestion.setItems(data);
+		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);
 	}
 
 	/**
@@ -217,13 +239,13 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 
 		req.setRequestData(ClientUI.loggedInUser.getUser().getId());
 
-		ArrayList<QuestionRow> examsOfTeacher = new ArrayList<QuestionRow>();
+		ArrayList<QuestionRow> questionList = new ArrayList<QuestionRow>();
 
 		ClientUI.cems.accept(req);
 
-		examsOfTeacher = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
+		questionList = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
 
-		data = FXCollections.observableArrayList(examsOfTeacher);
+		data = FXCollections.observableArrayList(questionList);
 
 		tableQuestion.getColumns().clear();
 		QuestionID.setCellValueFactory(new PropertyValueFactory<>("QuestionID"));
@@ -233,7 +255,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		tableQuestion.setItems(data);
 
 		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);
-
+		
 	}
 
 	/**

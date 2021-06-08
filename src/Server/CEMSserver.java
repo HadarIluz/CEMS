@@ -380,12 +380,19 @@ public class CEMSserver extends AbstractServer {
 		case "getQuestionsByIDForEditExam": {
 			getQuestionsByIDForEditExam((String) req.getRequestData(), client);
 		}
+			break;
+		case "getAllQuestionsStoredInSystem":{
+			getAllQuestionsStoredInSystem(client);
+		}
+		
 
 		}
 
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
+
 
 	/**
 	 * @param requestData
@@ -1052,5 +1059,31 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	private void getAllQuestionsStoredInSystem(ConnectionToClient client) {
+		ResponseFromServer response = null;
+		response=dbController.GetAllQuestions_ToQuestionsBank();
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);// print to server log.
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//
 
 }
