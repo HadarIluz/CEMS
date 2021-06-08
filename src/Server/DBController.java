@@ -1002,22 +1002,19 @@ public class DBController {
 		return false;
 	}
 
-	public ResponseFromServer updateExamStatus(ActiveExam newActiveExam) {
+	public Boolean updateExamStatus(Exam exam) {
 		/* createNewActiveExam */
-		ResponseFromServer res = null;
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("UPDATE exam SET status=? WHERE exam=?");
-	
-			pstmt.setString(1, String.valueOf( newActiveExam.getExam().getExamStatus()));
-			pstmt.setString(2, newActiveExam.getExam().getExamID());
-			if (pstmt.executeUpdate() !=0) {
-				res = new ResponseFromServer("EXAM STATUS UPDATED"); //FIXME: ENUM nor change in table.
-			}
-		} catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			String examNewStatus= exam.getExamStatus().toString();
+			pstmt.setString(1, examNewStatus);
+			pstmt.setString(2, exam.getExamID());
+			
+		} catch (SQLException e) {
+			return false;
 		}
-		return res;
+		return true;
 	}
 
 	public boolean checkIfExtensionRequestExists(ExtensionRequest extensionRequest) {

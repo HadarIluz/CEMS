@@ -62,7 +62,6 @@ public class CEMSserver extends AbstractServer {
 		loogedClients = new HashMap<Integer, ConnectionToClient>();
 	}
 
-
 	/**
 	 * This method handles any messages received from the client.
 	 *
@@ -688,14 +687,14 @@ public class CEMSserver extends AbstractServer {
 			System.out.println(key);
 		}
 		System.out.println("END LIST loggedInUsers\n------\n");
-		
+
 		System.out.println("**********\nPrint loogedClients list:");
-		for (Integer id : loogedClients .keySet()) {
+		for (Integer id : loogedClients.keySet()) {
 			String keyID = loogedClients.toString();
 			System.out.println(keyID);
 		}
 		System.out.println("END LIST loogedClients\n*******\n");
-		
+
 	}
 
 	/**
@@ -942,8 +941,10 @@ public class CEMSserver extends AbstractServer {
 
 	private void createNewActiveExam(ActiveExam newActiveExam, ConnectionToClient client) {
 		ResponseFromServer response = dbController.createNewActiveExam(newActiveExam);
-		// dbController.updateExamStatus(newActiveExam.getExam());
-		response.getStatusMsg().setStatus("New active exam created successfully");
+		Boolean ans = dbController.updateExamStatus(newActiveExam.getExam());
+		if (ans) {
+			response.getStatusMsg().setStatus("New active exam created successfully");
+		}
 		try {
 			client.sendToClient(response);
 		} catch (IOException ex) {
@@ -968,7 +969,7 @@ public class CEMSserver extends AbstractServer {
 		ResponseFromServer respon = null;
 		try {
 			if (dbController.deleteActiveExam(examToLock)) {
-				respon = dbController.updateExamStatus(examToLock);
+				Boolean ans = dbController.updateExamStatus(examToLock.getExam());
 				respon.setResponseData((Boolean) false);
 				if (respon.getStatusMsg().getStatus().equals("EXAM STATUS UPDATED"))
 					respon.setResponseData((Boolean) true);
