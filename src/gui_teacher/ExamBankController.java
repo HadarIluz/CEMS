@@ -328,6 +328,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ClientUI.cems.accept(req);
 		examsList = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
 		TableColumn<Exam, String> course = new TableColumn<>("course");
+		
 		// PropertyValueFactory<Exam, String> factory = new PropertyValueFactory<>();
 
 		data = FXCollections.observableArrayList(examsList);
@@ -335,7 +336,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
 		Proffesion.setCellValueFactory(new PropertyValueFactory<>("ProfessionName"));
 		Time.setCellValueFactory(new PropertyValueFactory<>("timeOfExam"));
-		course.setCellValueFactory(new PropertyValueFactory<>("course"));
+		course.setCellValueFactory(new PropertyValueFactory<>("courseID"));
 		tableExam.setItems(data);
 		tableExam.getColumns().addAll(ExamID, Proffesion, Time, course);
 	}
@@ -352,14 +353,13 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		Exam examToLock = GetTableDetails(textExamID.getText());
 		Qlist = tableExam.getSelectionModel().getSelectedItems();
 		examToLock.setExamStatus(ExamStatus.inActive);
-		ActiveExam activeExam = new ActiveExam(examToLock);
 		RequestToServer req = new RequestToServer("lockActiveExam");
-		req.setRequestData(activeExam);
-		//ClientUI.cems.accept(req);
-		//if (CEMSClient.responseFromServer.getResponseData().equals("EXAM LOCKED")) {
-		//	RequestToServer req2 = new RequestToServer("getStudentsInActiveExam");
-		//	req.setRequestData(activeExam);
-		//	ClientUI.cems.accept(req2);
+		req.setRequestData(examToLock);
+		ClientUI.cems.accept(req);
+		if (CEMSClient.responseFromServer.getResponseData().equals((Boolean) true)) {
+			RequestToServer req2 = new RequestToServer("getStudentsInActiveExam");
+			req.setRequestData(examToLock);
+			ClientUI.cems.accept(req2);
 			//ArrayList<Integer> students = (ArrayList<Integer>) CEMSClient.responseFromServer.getResponseData();
 			//ArrayList<ConnectionToClient> students = (ArrayList<ConnectionToClient>) CEMSClient.responseFromServer.getResponseData();
 			//if (!students.isEmpty()) {
@@ -371,9 +371,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 				
 			//}
 		
-		//}
-		//else
-		//	System.out.println("lock exam failed");
+		}
+		else
+			System.out.println("lock exam failed");
 	}
 
 }

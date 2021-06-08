@@ -500,8 +500,7 @@ public class DBController {
 			pstmt.setString(2, activeExam.getExam().getExamID());
 			if (pstmt.executeUpdate() == 1) {
 				response = deleteExtensionRequest(activeExam);
-			}
-			else
+			} else
 				response = new ResponseFromServer("TIME EXAM NOT UPDATED");
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
@@ -866,7 +865,7 @@ public class DBController {
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
 				exam.setCommentForTeacher(rs.getString(5));
 				exam.setCommentForStudents(rs.getString(6));
-				exam.setExamStatus(ExamStatus.valueOf((String) rs.getObject(8)) );
+				exam.setExamStatus(ExamStatus.valueOf((String) rs.getObject(8)));
 				rs.close();
 			}
 		} catch (SQLException ex) {
@@ -988,11 +987,11 @@ public class DBController {
 		return false;
 	}
 
-	public boolean deleteActiveExam(ActiveExam exam) {
+	public boolean deleteActiveExam(Exam exam) {
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("DELETE FROM active_exam WHERE exam=?");
-			pstmt.setString(1, exam.getExam().getExamID());
+			pstmt.setString(1, exam.getExamID());
 			if (pstmt.executeUpdate() == 1)
 				return true;
 		} catch (SQLException ex) {
@@ -1001,22 +1000,21 @@ public class DBController {
 		return false;
 	}
 
-	public ResponseFromServer updateExamStatus(ActiveExam newActiveExam) {
+	public Boolean updateExamStatus(Exam exam) {
 		/* createNewActiveExam */
-		ResponseFromServer res = null;
+		String examNewStatus = exam.getExamStatus().toString();
+		PreparedStatement pstmt;
+		// UPDATE exam SET status='active' WHERE examID='010203';
+		// UPDATE `cems`.`exam` SET `status` = 'inActive' WHERE (`examID` = '010203') and (`profession` = '01') and (`course` = '02');
 		try {
-			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("UPDATE exam SET status=? WHERE exam=?");
-	
-			pstmt.setString(1, String.valueOf( newActiveExam.getExam().getExamStatus()));
-			pstmt.setString(2, newActiveExam.getExam().getExamID());
-			if (pstmt.executeUpdate() !=0) {
-				res = new ResponseFromServer("EXAM STATUS UPDATED"); //FIXME: ENUM nor change in table.
-			}
-		} catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			pstmt = conn.prepareStatement(
+					"UPDATE exam SET status=\"" + examNewStatus + "\" WHERE examID=" + "\"" + exam.getExamID() + "\"");
+			// pstmt.setString(1, examNewStatus);
+			//pstmt.setString(2, exam.getExamID());
+		} catch (SQLException e) {
+			return false;
 		}
-		return res;
+		return true;
 	}
 
 	public boolean checkIfExtensionRequestExists(ExtensionRequest extensionRequest) {
@@ -1077,7 +1075,7 @@ public class DBController {
 		}
 		return students;
 	}
-	
+
 	public HashMap<String, Integer> getStudentGrades(int id) {
 		HashMap<String, Integer> ExamGrades = new HashMap<String, Integer>();
 		PreparedStatement pstmt;
@@ -1096,41 +1094,39 @@ public class DBController {
 		return ExamGrades;
 	}
 
-	public HashMap<String,ArrayList<Integer>> getAllStudentsExams() {
-		HashMap<String,ArrayList<Integer>> exams = new HashMap<String, ArrayList<Integer>>();
+	public HashMap<String, ArrayList<Integer>> getAllStudentsExams() {
+		HashMap<String, ArrayList<Integer>> exams = new HashMap<String, ArrayList<Integer>>();
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("SELECT exam,score FROM cems.exam_of_student;");
-			ResultSet rs=pstmt.executeQuery();
-			while(rs.next()) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
 				ArrayList<Integer> scoreList;
-				if(exams.get(rs.getString(1))==null) {
-					scoreList= new ArrayList<Integer>();
+				if (exams.get(rs.getString(1)) == null) {
+					scoreList = new ArrayList<Integer>();
 					scoreList.add(rs.getInt(2));
-				exams.put(rs.getString(1), scoreList);
-				}
-				else {
-					scoreList=exams.get(rs.getString(1));
+					exams.put(rs.getString(1), scoreList);
+				} else {
+					scoreList = exams.get(rs.getString(1));
 					scoreList.add(rs.getInt(2));
 					exams.put(rs.getString(1), scoreList);
 				}
-				}
-				
+			}
+
 			rs.close();
-				
+
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-		}	
+		}
 		return exams;
 	}
 
-
-	public ArrayList<Integer> getStudentsInActiveExam(ActiveExam activeExam) {
+	public ArrayList<Integer> getStudentsInActiveExam(Exam exam) {
 		ArrayList<Integer> students = new ArrayList<Integer>();
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("SELECT * FROM exam_of_student WHERE exam = ? AND totalTime = ?;");
-			pstmt.setString(1, activeExam.getExam().getExamID());
+			pstmt.setString(1, exam.getExamID());
 			pstmt.setInt(2, 0);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -1143,7 +1139,7 @@ public class DBController {
 		return students;
 	}
 
-	//TODO:CHECK
+	// TODO:CHECK
 	public ResponseFromServer InsertExamOfStudent(ExamOfStudent examOfStudent) {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
@@ -1162,6 +1158,6 @@ public class DBController {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 		return response;
-		
+
 	}
 }

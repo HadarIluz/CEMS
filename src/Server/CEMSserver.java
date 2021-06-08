@@ -357,12 +357,12 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "lockActiveExam": {
-			lockActiveExam((ActiveExam) req.getRequestData(), client);
+			lockActiveExam((Exam) req.getRequestData(), client);
 		}
 			break;
 
 		case "getStudentsInActiveExam": {
-			getStudentsInActiveExam((ActiveExam) req.getRequestData(), client);
+			getStudentsInActiveExam((Exam) req.getRequestData(), client);
 		}
 			break;
 
@@ -941,8 +941,10 @@ public class CEMSserver extends AbstractServer {
 
 	private void createNewActiveExam(ActiveExam newActiveExam, ConnectionToClient client) {
 		ResponseFromServer response = dbController.createNewActiveExam(newActiveExam);
-		// dbController.updateExamStatus(newActiveExam.getExam());
-		response.getStatusMsg().setStatus("New active exam created successfully");
+		Boolean ans = dbController.updateExamStatus(newActiveExam.getExam());
+		if (ans) {
+			response.getStatusMsg().setStatus("New active exam created successfully");
+		}
 		try {
 			client.sendToClient(response);
 		} catch (IOException ex) {
@@ -962,13 +964,14 @@ public class CEMSserver extends AbstractServer {
 		}
 	}
 
-	private void lockActiveExam(ActiveExam examToLock, ConnectionToClient client) {
-		ResponseFromServer respon = null;
+	private void lockActiveExam(Exam examToLock, ConnectionToClient client) {
+		ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
+		respon.setResponseData((Boolean) false);
 		try {
 			if (dbController.deleteActiveExam(examToLock)) {
-				respon = dbController.updateExamStatus(examToLock);
-				if (respon.getStatusMsg().getStatus().equals("EXAM STATUS UPDATED"))
-					respon = new ResponseFromServer("EXAM LOCKED");
+				Boolean ans = dbController.updateExamStatus(examToLock);
+				if (ans)
+					respon.setResponseData((Boolean) true);
 			}
 			client.sendToClient(respon);
 		} catch (IOException e) {
@@ -976,9 +979,9 @@ public class CEMSserver extends AbstractServer {
 		}
 	}
 
-	private void getStudentsInActiveExam(ActiveExam activeExam, ConnectionToClient client) {
+	private void getStudentsInActiveExam(Exam exam, ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("EXAM LOCKED BY THE TEACHER");
-		ArrayList<Integer> students = dbController.getStudentsInActiveExam(activeExam);
+		ArrayList<Integer> students = dbController.getStudentsInActiveExam(exam);
 		//try {
 		//	for (Integer id : students) {
 				//(loogedClients.get(id)).sendToClient(); // option 1

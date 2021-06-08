@@ -17,6 +17,11 @@ public class Exam implements Serializable {
 	private String commentForStudents;
 	private Teacher author; 
 	private String ProfessionName;
+
+	
+	
+	
+
 	private ArrayList<QuestionInExam> examQuestionsWithScores;
 	private ExamStatus examStatus;
 	//private String CourseName; //FIXME: display col in examBankController.
@@ -52,6 +57,8 @@ public class Exam implements Serializable {
 		this.course = course;
 	}
 	
+	
+	
 	public Exam(String examID, Profession profession, Course course, int timeOfExam) {
 		super();
 		this.examID = examID;
@@ -69,6 +76,7 @@ public class Exam implements Serializable {
 		return ProfessionName;
 	}
 
+	
 
 	public String getProfessionName() {
 		return profession.getProfessionID();
@@ -171,6 +179,11 @@ public class Exam implements Serializable {
 	public void setExamStatus(ExamStatus examStatus) {
 		this.examStatus = examStatus;
 	}
+
+	public String getCourseID() {
+		return this.getCourse().getCourseID();
+	}
+
 
 
 }

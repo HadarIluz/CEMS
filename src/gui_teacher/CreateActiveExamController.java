@@ -72,8 +72,8 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 
 		if (checkConditionToSaveActiveExam(examCode)) {
 
-			// exam.setAuthor(teacher); // TODO: think with team if need to delete from DB
-
+			exam.setAuthor((Teacher) ClientUI.loggedInUser.getUser());
+			exam.setExamStatus(ExamStatus.active);
 			ActiveExam newActiveExam = new ActiveExam(selectedTime, exam, examCode, activeExamType,
 					exam.getTimeOfExam());
 			// before we create new active exam, Request from server to check that
@@ -82,25 +82,15 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 
 			if (isAllowed) {
 				// Request from server to insert new active exam into DB.
+				// Request from server to update status filed for this exam: [ENUM('active')].
 				RequestToServer reqCreateExam = new RequestToServer("createNewActiveExam");
 				reqCreateExam.setRequestData(newActiveExam);
 				ClientUI.cems.accept(reqCreateExam);
 
 				if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("NEW ACTIVE EXAM CREATED")) {
-					// Request from server to update status filed for this exam: [ENUM('active')].
-					newActiveExam.getExam().setExamStatus(ExamStatus.active);
-					RequestToServer reqUpdate = new RequestToServer("updateExamStatus");
-					reqUpdate.setRequestData(newActiveExam);
-					ClientUI.cems.accept(reqUpdate); //FIXME: problam in DB 
-					System.out.println("!!!!!!!11");
-					
-					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("EXAM STATUS UPDATED")) {
 						popUp("New active exam has been successfully created in the system.");
-
 						displayNextScreen((Teacher) ClientUI.loggedInUser.getUser(), "ExamBank.fxml"); 
-						
-					}
-				}//Problem
+				}
 
 			} else {
 				popUp("This exam: " + newActiveExam.getExam().getExamID()
@@ -211,7 +201,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// teacher = (Teacher) ClientUI.loggedInUser.getUser();
 		selectedTime = null;
 		// TODO: get proffe..Name and set into examID label teacher.getProfessions()
 		// the same for Course.
