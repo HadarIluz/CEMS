@@ -84,8 +84,9 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	private static StudentController studentController;
 	private static ActiveExam newActiveExam;
-	private ExamOfStudent examOfStudent;
 	private Timer timer;
+	private ExamOfStudent examOfStudent;
+	private AtomicInteger timeForTimer;
 
 	@FXML
 	void btnDownload(ActionEvent event) {
@@ -130,6 +131,10 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					timer.cancel();
 					btnSubmit.setDisable(true);
 					txtUploadSucceed.setVisible(true);
+					examOfStudent.setTotalTime((newActiveExam.getTimeAllotedForTest() * 60 - timeForTimer.get())/60);
+					req = new RequestToServer("StudentFinishManualExam");
+					req.setRequestData(examOfStudent);
+					ClientUI.cems.accept(req);
 				}
 			} catch (Exception ex) {
 				txtError1.setVisible(true);
@@ -149,7 +154,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	public void initialize(URL location, ResourceBundle resources) {
 		examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
 		// set the timer
-		AtomicInteger timeForTimer = new AtomicInteger(newActiveExam.getTimeAllotedForTest() * 60);
+		timeForTimer = new AtomicInteger(newActiveExam.getTimeAllotedForTest() * 60);
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -183,7 +188,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
 		newActiveExam = newActiveExamInProgress;
-		
+
 	}
 
 }

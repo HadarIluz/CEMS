@@ -371,7 +371,10 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
-
+		case "StudentFinishManualExam": {
+			StudentFinishManualExam((ExamOfStudent) req.getRequestData(), client);
+		}
+			break;
 		}
 
 	}
@@ -969,7 +972,7 @@ public class CEMSserver extends AbstractServer {
 		try {
 			if (dbController.deleteActiveExam(examToLock.getExam())) {
 				Boolean ans = dbController.updateExamStatus(examToLock.getExam());// hadar: update working
-				if (ans) 
+				if (ans)
 					respon = new ResponseFromServer("EXAM LOCKED");
 			}
 			client.sendToClient(respon);
@@ -1015,6 +1018,20 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);
 
+	}
+
+	private void StudentFinishManualExam(ExamOfStudent studentExam, ConnectionToClient client) {
+		ResponseFromServer response = null;
+		Boolean ans = dbController.insertNewStudentManualExam(studentExam);
+		if (ans) {
+			response = new ResponseFromServer("TOTAL TIME SAVED");
+		}
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
 	}
 
 }

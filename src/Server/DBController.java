@@ -300,7 +300,7 @@ public class DBController {
 	public boolean createNewExam(Exam exam) {
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("INSERT INTO exam VALUES(?, ?, ?, ?, ?, ?, ?,?);");// matar
+			pstmt = conn.prepareStatement("INSERT INTO exam VALUES(?, ?, ?, ?, ?, ?, ?,?);");
 			pstmt.setString(1, exam.getExamID());
 			pstmt.setString(2, exam.getProfession().getProfessionID());
 			pstmt.setString(3, exam.getCourse().getCourseID());
@@ -959,33 +959,31 @@ public class DBController {
 
 	}
 
-
 	public ResponseFromServer SaveEditExam(Exam exam) {
-		ResponseFromServer response=null;
+		ResponseFromServer response = null;
 		PreparedStatement pstmt;
-		//examID, profession, course, timeAllotedForTest, commentForTeacher, commentForStudents, author, status, examType
+		// examID, profession, course, timeAllotedForTest, commentForTeacher,
+		// commentForStudents, author, status, examType
 		try {
 			pstmt = conn.prepareStatement(
 					"UPDATE exam SET timeAllotedForTest=?, commentForTeacher=?, commentForStudents=? WHERE examID=?");
-			pstmt.setString(1, Integer.toString(exam.getTimeOfExam())); 
-			pstmt.setString(2, exam.getCommentForTeacher()); 
+			pstmt.setString(1, Integer.toString(exam.getTimeOfExam()));
+			pstmt.setString(2, exam.getCommentForTeacher());
 			pstmt.setString(3, exam.getCommentForStudents());
 			pstmt.setString(4, exam.getExamID());
 			if (pstmt.executeUpdate() == 1) {
 				System.out.println("Edit Exam Saved");
 				response = new ResponseFromServer("Edit Exam Saved");
 				return response;
-			}
-			else {
+			} else {
 				response = new ResponseFromServer("Edit Exam_NOT_Saved");
 			}
-			
+
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 		return response;
 	}
-		
 
 	public boolean deleteActiveExam(Exam exam) {
 		PreparedStatement pstmt;
@@ -996,6 +994,7 @@ public class DBController {
 				return true;
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			return false;
 		}
 		return false;
 	}
@@ -1027,6 +1026,7 @@ public class DBController {
 				return false;
 		} catch (SQLException ex) {
 			ex.getMessage();
+			return true;
 		}
 		return true;
 	}
@@ -1138,7 +1138,6 @@ public class DBController {
 		return students;
 	}
 
-
 	public ResponseFromServer InsertExamOfStudent(ExamOfStudent examOfStudent) {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
@@ -1159,17 +1158,28 @@ public class DBController {
 		return response;
 
 	}
-	
 
-	
+	/**
+	 * @param studentExam
+	 * @return true or false if success in inserting the new manual exam of student
+	 *         to the DB
+	 */
+	public boolean insertNewStudentManualExam(ExamOfStudent studentExam) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("UPDATE exam_of_student SET totalTime=? WHERE exam=? AND student=?");
+			pstmt.setInt(3, studentExam.getStudent().getId());
+			pstmt.setString(2, studentExam.getActiveExam().getExam().getExamID());
+			pstmt.setInt(1, studentExam.getTotalTime());
+			if (pstmt.executeUpdate() != 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		return false;
+	}
+
 }
