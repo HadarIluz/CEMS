@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.QuestionBankController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.QuestionBankController">
    <children>
       <Button fx:id="btnEditQuestion" layoutX="224.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnEditQuestion" prefHeight="25.0" prefWidth="122.0" text="Edit" />
       <Button fx:id="btnDeleteQuestion" layoutX="412.0" layoutY="501.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnDeleteQuestion" prefHeight="25.0" prefWidth="124.0" text="Delete" />
@@ -53,5 +53,10 @@
             <Font name="System Italic" size="14.0" />
          </font>
       </Text>
+      <Button fx:id="btnOpenQuestionInfo" disable="true" layoutX="582.0" layoutY="442.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnOpenQuestionInfo" prefHeight="40.0" prefWidth="145.0" text="Open Question Info" textAlignment="CENTER" visible="false" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
