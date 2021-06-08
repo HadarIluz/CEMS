@@ -378,7 +378,6 @@ public class CEMSserver extends AbstractServer {
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
-
 	/**
 	 * @param requestData
 	 * @param client
@@ -396,7 +395,7 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
-	
+
 	private void getAllStudentsExams(ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("AllStudentsExams");
@@ -407,7 +406,6 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
-	
 
 	private void getStudentGrades(int studentID, ConnectionToClient client) {
 		try {
@@ -808,15 +806,9 @@ public class CEMSserver extends AbstractServer {
 	private void approvalTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
 		// update time alloted for test in active exam after the principal approves the
 		// request.
-		ResponseFromServer respon = new ResponseFromServer("EXTENSION APPROVED");
+		ResponseFromServer respon = null;
 		try {
-			if (dbController.setTimeForActiveTest(activeExam)) {
-				if (dbController.deleteExtenxtionRequest(activeExam))
-					respon.setResponseData((Boolean) true);
-				else
-					respon.setResponseData((Boolean) false);
-			} else
-				respon.setResponseData((Boolean) false);
+			respon = dbController.setTimeForActiveTest(activeExam);
 			client.sendToClient(respon);
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -825,9 +817,9 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void declineTimeExtention(ActiveExam activeExam, ConnectionToClient client) {
-		ResponseFromServer respon = new ResponseFromServer("EXTENSION DECLINED");
+		ResponseFromServer respon = null;
 		try {
-			respon.setResponseData(dbController.deleteExtenxtionRequest(activeExam));
+			respon = dbController.deleteExtenxtionRequest(activeExam);
 			client.sendToClient(respon);
 		} catch (IOException ex) {
 			ex.printStackTrace();

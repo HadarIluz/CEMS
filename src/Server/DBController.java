@@ -491,19 +491,22 @@ public class DBController {
 	 * @return true if the additional Time for activeExam has been updated at table
 	 *         active_exam in DB. else, return false
 	 */
-	public boolean setTimeForActiveTest(ActiveExam activeExam) {
+	public ResponseFromServer setTimeForActiveTest(ActiveExam activeExam) {
+		ResponseFromServer response = null;
 		PreparedStatement pstmt;
-
 		try {
 			pstmt = conn.prepareStatement("UPDATE active_exam SET timeAllotedForTest=? WHERE exam=?");
 			pstmt.setInt(1, activeExam.getTimeAllotedForTest());
 			pstmt.setString(2, activeExam.getExam().getExamID());
-			if (pstmt.executeUpdate() == 1)
-				return true;
+			if (pstmt.executeUpdate() == 1) {
+				response = deleteExtenxtionRequest(activeExam);
+			}
+			else
+				response = new ResponseFromServer("TIME EXAM NOT UPDATED");
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		return false;
+		return response;
 	}
 
 	/**
@@ -512,18 +515,20 @@ public class DBController {
 	 * @return true if deleting request for activeExam from table active_exam in DB
 	 *         succeeded, else return false
 	 */
-	public Boolean deleteExtenxtionRequest(ActiveExam activeExam) {
+	public ResponseFromServer deleteExtenxtionRequest(ActiveExam activeExam) {
+		ResponseFromServer response = null;
+		PreparedStatement pstmt;
 		try {
-			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("DELETE FROM extension_request WHERE exam=?");
 			pstmt.setString(1, activeExam.getExam().getExamID());
 			if (pstmt.executeUpdate() == 1)
-				return true;
+				response = new ResponseFromServer("EXTENSION REMOVED");
+			else
+				response = new ResponseFromServer("EXTENSION WAS NOT REMOVED");
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-			return false;
 		}
-		return false;
+		return response;
 	}
 
 	/**
