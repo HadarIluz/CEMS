@@ -53,14 +53,15 @@ public class CEMSserver extends AbstractServer {
 	private static DBController dbController = new DBController();
 	private ServerFrameController serverFrame;
 	private HashMap<Integer, User> loggedInUsers;
+	private HashMap<Integer, ConnectionToClient> loogedClients; // HashMap<StudentID>
 
 	public CEMSserver(int port, ServerFrameController serverUI) {
 		super(port);
 		this.serverFrame = serverUI;
 		loggedInUsers = new HashMap<Integer, User>();
+		loogedClients = new HashMap<Integer, ConnectionToClient>();
 	}
 
-	// Instance methods ************************************************
 
 	/**
 	 * This method handles any messages received from the client.
@@ -574,13 +575,6 @@ public class CEMSserver extends AbstractServer {
 		// logic of login
 		ResponseFromServer respon = null;
 		respon = dbController.verifyLoginUser(user);
-//FIXME:		//TODO: thing again if the following lines are needed- for testing project...	
-//		User userInSystem = (User) respon.getResponseData();
-//		boolean exist = loggedInUsers.containsValue(userInSystem.getId()); // check if hashMap contains this user id,
-//		// in case this user exist in 'loggedInUsers' update isLogged to 1.
-//		if (exist) {
-//			user.setLogged(1); // set isLogged to 1.
-//		}
 		try {
 			client.sendToClient(respon);
 		} catch (IOException e) {
@@ -599,8 +593,10 @@ public class CEMSserver extends AbstractServer {
 	private void UpdateUserLoggedIn(User user, ConnectionToClient client) {
 		user.setLogged(1); // set isLogged to 1.
 		loggedInUsers.put(user.getId(), user); // add new user to hashMap of all the logged users.
+		loogedClients.put(user.getId(), client); // add this client to HashMao by key: ID
 		// Response:
 		ResponseFromServer response = new ResponseFromServer("USER LOGIN !");
+		System.out.println("print new list for DEBUG");
 		printLoggedInUsersList(); // for DEBUG
 		try {
 			client.sendToClient(response);
@@ -620,6 +616,7 @@ public class CEMSserver extends AbstractServer {
 	private void UpdateUserLoggedOut(User user, ConnectionToClient client) {
 		ResponseFromServer response = new ResponseFromServer("USER LOGOUT");
 		loggedInUsers.remove(user.getId()); // remove this user from list.
+		loogedClients.remove(user.getId());
 		printLoggedInUsersList(); // for DEBUG- print current list.
 
 		// sent to client.
@@ -685,10 +682,20 @@ public class CEMSserver extends AbstractServer {
 	 */
 	private void printLoggedInUsersList() {
 		// for(loggedInUsers log : )
+		System.out.println("------\nPrint loggedInUsers list:");
 		for (Integer user : loggedInUsers.keySet()) {
 			String key = loggedInUsers.toString();
 			System.out.println(key);
 		}
+		System.out.println("END LIST loggedInUsers\n------\n");
+		
+		System.out.println("**********\nPrint loogedClients list:");
+		for (Integer id : loogedClients .keySet()) {
+			String keyID = loogedClients.toString();
+			System.out.println(keyID);
+		}
+		System.out.println("END LIST loogedClients\n*******\n");
+		
 	}
 
 	/**
