@@ -184,10 +184,6 @@ public class Exam implements Serializable {
 		return this.getCourse().getCourseID();
 	}
 	
-	public ExamStatus getExamStatusObject() {
-		return examStatus;
-	}
-
 
 
 }

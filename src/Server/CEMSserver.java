@@ -965,13 +965,12 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void lockActiveExam(ActiveExam examToLock, ConnectionToClient client) {
-		ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
+		ResponseFromServer respon = null;
 		try {
 			if (dbController.deleteActiveExam(examToLock.getExam())) {
-				Boolean ans = dbController.updateExamStatus(examToLock.getExam());//hadar: update working
-				respon.setResponseData((Boolean) false);
-				if (respon.getStatusMsg().getStatus().equals("EXAM STATUS UPDATED"))
-					respon.setResponseData((Boolean) true);
+				Boolean ans = dbController.updateExamStatus(examToLock.getExam());// hadar: update working
+				if (ans) 
+					respon = new ResponseFromServer("EXAM LOCKED");
 			}
 			client.sendToClient(respon);
 		} catch (IOException e) {
@@ -982,13 +981,13 @@ public class CEMSserver extends AbstractServer {
 	private void getStudentsInActiveExam(Exam exam, ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("EXAM LOCKED BY THE TEACHER");
 		ArrayList<Integer> students = dbController.getStudentsInActiveExam(exam);
-		//try {
-		//	for (Integer id : students) {
-				//(loogedClients.get(id)).sendToClient(); // option 1
-		//	}
-		//} catch (IOException e) {
-		//	e.printStackTrace();
-		//}
+		// try {
+		// for (Integer id : students) {
+		// (loogedClients.get(id)).sendToClient(); // option 1
+		// }
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
 		printMessageInLogFramServer("Message to Client:", respon); // print to server log.
 
 	}
@@ -1004,10 +1003,7 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);
 	}
-	
-	
-	
-	
+
 	private void SaveEditExam(Exam editExam, ConnectionToClient client) {
 		/* logic for EditExam */
 		ResponseFromServer response = null;
@@ -1018,11 +1014,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
-		
+
 	}
-	
-	
-	
-	
 
 }

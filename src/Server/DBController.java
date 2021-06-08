@@ -1005,7 +1005,7 @@ public class DBController {
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("UPDATE exam SET status=? WHERE examID=?;");
-			pstmt.setObject(1, exam.getExamStatusObject().toString());
+			pstmt.setObject(1, exam.getExamStatus().toString());
 			pstmt.setString(2, exam.getExamID());
 			if (pstmt.executeUpdate() == 1) {
 				return true;

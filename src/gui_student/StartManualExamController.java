@@ -18,6 +18,7 @@ import common.MyFile;
 import entity.ActiveExam;
 import gui_cems.GuiCommon;
 import entity.ExamOfStudent;
+import entity.ExamStatus;
 import entity.Student;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -125,7 +126,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				RequestToServer req = new RequestToServer("submitManualExam");
 				req.setRequestData(submitExam);
 				ClientUI.cems.accept(req);
-				if(CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) { //????
+				if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) { // ????
 					timer.cancel();
 					btnSubmit.setDisable(true);
 					txtUploadSucceed.setVisible(true);
@@ -146,7 +147,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		examOfStudent = new ExamOfStudent(newActiveExam,  (Student) ClientUI.loggedInUser.getUser());
+		examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
 		// set the timer
 		AtomicInteger timeForTimer = new AtomicInteger(newActiveExam.getTimeAllotedForTest() * 60);
 		timer = new Timer();
@@ -167,19 +168,22 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 			}
 		}, 0, 1000);
 	}
-	
+
 	private void lockExam() {
+		newActiveExam.getExam().setExamStatus((ExamStatus.inActive));
 		RequestToServer extReq = new RequestToServer("lockActiveExam");
 		extReq.setRequestData(newActiveExam);
 		ClientUI.cems.accept(extReq);
-		btnSubmit.setDisable(true);
-		btnDownload.setDisable(true);
-		GuiCommon.popUp("The exam is locked!");
+		if ((CEMSClient.responseFromServer.getResponseType()).equals("EXAM LOCKED")) {
+			btnSubmit.setDisable(true);
+			btnDownload.setDisable(true);
+			GuiCommon.popUp("The exam is locked!");
+		}
 	}
 
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
 		newActiveExam = newActiveExamInProgress;
+		
 	}
-
 
 }
