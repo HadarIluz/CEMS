@@ -23,17 +23,12 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
 public class StartManualExamController extends GuiCommon implements Initializable {
@@ -102,7 +97,6 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		txtDownloadSucceed.setVisible(true);
 	}
 
-	@SuppressWarnings("unlikely-arg-type")
 	@FXML
 	void btnSubmit(ActionEvent event) {
 		Object[] options = { " Cancel ", " Submit " };
@@ -159,7 +153,11 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				Platform.runLater(() -> textTimeLeft.setText(timeForTimer.toString()));
+				int hours = timeForTimer.get() / 3600;
+				int minutes = (timeForTimer.get() % 3600) / 60;
+				int seconds = timeForTimer.get() % 60;
+				String str = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+				Platform.runLater(() -> textTimeLeft.setText(str));
 				timeForTimer.decrementAndGet();
 				if (timeForTimer.get() == 0) {
 					// cancel the timer
