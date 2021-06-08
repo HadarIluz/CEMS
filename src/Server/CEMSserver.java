@@ -345,7 +345,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "SaveEditExam": {
-			dbController.editExamSave((Exam) req.getRequestData());
+			SaveEditExam((Exam) req.getRequestData(), client);
 
 		}
 			break;
@@ -1004,5 +1004,25 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);
 	}
+	
+	
+	
+	
+	private void SaveEditExam(Exam editExam, ConnectionToClient client) {
+		/* logic for EditExam */
+		ResponseFromServer response = null;
+		response = dbController.SaveEditExam(editExam);
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+		
+	}
+	
+	
+	
+	
 
 }
