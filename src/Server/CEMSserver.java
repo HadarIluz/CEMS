@@ -345,7 +345,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "SaveEditExam": {
-			dbController.editExamSave((Exam) req.getRequestData());
+			SaveEditExam((Exam) req.getRequestData(), client);
 
 		}
 			break;
@@ -377,6 +377,7 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
 
 	/**
 	 * @param requestData
@@ -966,7 +967,7 @@ public class CEMSserver extends AbstractServer {
 
 	private void lockActiveExam(ActiveExam examToLock, ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
-		//ResponseFromServer respon = null;
+		// ResponseFromServer respon = null;
 		try {
 			if (dbController.deleteActiveExam(examToLock)) {
 				Boolean ans = dbController.updateExamStatus(examToLock.getExam());
@@ -1002,5 +1003,25 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);
 	}
+	
+	
+	
+	
+	private void SaveEditExam(Exam editExam, ConnectionToClient client) {
+		/* logic for EditExam */
+		ResponseFromServer response = null;
+		response = dbController.SaveEditExam(editExam);
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+		
+	}
+	
+	
+	
+	
 
 }

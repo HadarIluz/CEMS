@@ -30,7 +30,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="textExamID" layoutX="286.0" layoutY="138.0" prefHeight="25.0" prefWidth="122.0" />
+      <TextField fx:id="textExamID" disable="true" editable="false" layoutX="286.0" layoutY="138.0" prefHeight="25.0" prefWidth="122.0" />
       <Label fx:id="textTimeForExam" layoutX="281.0" layoutY="175.0" prefHeight="30.0" prefWidth="135.0" text="120 minutes" textFill="#6a6868" visible="false">
          <font>
             <Font name="System Bold" size="20.0" />
