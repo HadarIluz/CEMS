@@ -136,6 +136,11 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
+		case "StudentView grade" :{
+			getStudentGrade(client,(String[]) req.getRequestData());
+			
+		}
+		break;
 		case "getProfNames": {
 			getProfNames(client);
 		}
@@ -377,6 +382,8 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+
+
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
 	/**
@@ -407,6 +414,19 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
+	
+	private void getStudentGrade(ConnectionToClient client, String[] requestData) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("StudentScore");
+			Res.setResponseData( (ArrayList<String>) dbController.getStudentScore(requestData));
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		
+	}
+
 
 	private void getStudentGrades(int studentID, ConnectionToClient client) {
 		try {

@@ -5,8 +5,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import client.CEMSClient;
 import client.ClientUI;
+import entity.Course;
+import entity.Exam;
 import entity.Question;
 import entity.QuestionRow;
 import entity.Teacher;
@@ -119,9 +123,13 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnDeleteQuestion(ActionEvent event) {
-		if (!checkForLegalID(textQuestionID.getText()))
+		if (!checkForLegalquestionID(textQuestionID.getText()))
 			return;
-
+	if(	!isExistQuestion(textQuestionID.getText()))
+		{
+		popUp("question ID is not found. delete failed!");
+		return;
+		}
 		ObservableList<QuestionRow> Qlist;
 		Question questionToDelete = new Question();
 		questionToDelete.setQuestionID(textQuestionID.getText());
@@ -132,7 +140,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		ClientUI.cems.accept(req);
 
 		if (CEMSClient.responseFromServer.getResponseData().equals("FALSE"))
-			System.out.println("failed to delete question");
+			popUp("Failed to delete question!");
 		else
 			data.removeAll(Qlist);
 		initTableRows();
@@ -148,7 +156,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnEditQuestion(ActionEvent event) {
-		if (!checkForLegalID(textQuestionID.getText()))
+		if (!checkForLegalquestionID(textQuestionID.getText()))
 			return;
 
 		try {
@@ -214,7 +222,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	 * @return true if legal, else false
 	 */
 
-	public boolean checkForLegalID(String QuestionID) {
+	public boolean checkForLegalquestionID(String QuestionID) {
 
 		if (QuestionID.length() != 5) {
 			popUp("Question ID Must be 5 digits.");
@@ -227,7 +235,18 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 			}
 		return true;
 	}
-
+	
+	
+	private Boolean isExistQuestion(String questionID) {
+	
+		for (QuestionRow q : data) {
+			if (q.getQuestionID().equals(questionID)) {
+				
+				return true;
+			}
+		}
+		return false;
+	}
 
 
 }
