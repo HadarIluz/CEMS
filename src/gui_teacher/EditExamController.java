@@ -1,24 +1,40 @@
 package gui_teacher;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
 import entity.Exam;
+import entity.Question;
+import entity.QuestionInExam;
+import entity.QuestionInExamRow;
+import entity.QuestionRow;
 import entity.Teacher;
 import entity.User;
 import gui_cems.GuiCommon;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import logic.RequestToServer;
 
+/**
+ * @author Hadar Iluz
+ *
+ */
 public class EditExamController extends GuiCommon implements Initializable {
 
     @FXML
@@ -55,11 +71,35 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private static Teacher teacher;
 	private static User principal;
 	private static String screenStatus;
-
+	
+	//var for BroweQestuion functionality:
+	private static ArrayList<Question> availableQuestions;
+    private ObservableList<QuestionInExamRow> selectedQuestionsRows = FXCollections.observableArrayList();
+    private ObservableList<QuestionRow> data;
+    
+    
 	@FXML
 	void btnBack(ActionEvent event) {
 		displayNextScreen(teacher, "/gui_teacher/ExamBank.fxml");
 	}
+	
+	@FXML
+	void btnBrowseQuestions(ActionEvent event) {
+		
+		if (!textExamID.getText().isEmpty()) {
+			//sent to next screen exam with data info.
+			EditExam_questionsStep2Controller2.setExamData(exam);
+			if (screenStatus.equals(super.teacherStatusScreen)) {
+			displayNextScreen(teacher, "/gui_teacher/EditExam_questionStep2.fxml");
+			}
+			else if (screenStatus.equals(super.principalStatusScreen)) {
+				displayNextScreen(principal, "/gui_teacher/EditExam_questionStep2.fxml");
+			}
+		}
+	}
+		
+		
+
 
 	@FXML
 	void btnSaveEditeExam(ActionEvent event) {
@@ -75,6 +115,8 @@ public class EditExamController extends GuiCommon implements Initializable {
 			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
 			
 			//TODO: handle case of click on btnBrowseQuestions.
+			//if btnBrowseQuestions win is open??
+			
 			
 			//Request from server to update data of this exam.
 			RequestToServer req = new RequestToServer("SaveEditExam");
@@ -115,9 +157,9 @@ public class EditExamController extends GuiCommon implements Initializable {
 		return flag;
 	}
 
-	@FXML
-	void btnBrowseQuestions(ActionEvent event) {
-		displayNextScreen(teacher, "/gui_teacher/CreateQuestion.fxml");
+	public static void setActiveExamState(Exam selectedExam, String status) {
+		screenStatus = status;
+		exam = selectedExam;
 	}
 
 	@Override
@@ -145,10 +187,10 @@ public class EditExamController extends GuiCommon implements Initializable {
 		}
 
 	}
+	
 
-	public static void setActiveExamState(Exam selectedExam, String status) {
-		screenStatus = status;
-		exam = selectedExam;
-	}
+	
+
+
 
 }

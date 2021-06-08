@@ -11,9 +11,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import client.ClientUI;
 import common.MyFile;
@@ -23,6 +27,7 @@ import entity.ExamOfStudent;
 import entity.ExtensionRequest;
 import entity.Profession;
 import entity.Question;
+import entity.QuestionInExam;
 import entity.Student;
 import entity.Teacher;
 import entity.UpdateScoreRequest;
@@ -372,12 +377,15 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
+		case "getQuestionsByIDForEditExam": {
+			getQuestionsByIDForEditExam((String) req.getRequestData(), client);
+		}
+
 		}
 
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
-
 
 	/**
 	 * @param requestData
@@ -969,7 +977,7 @@ public class CEMSserver extends AbstractServer {
 		ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
 		try {
 			if (dbController.deleteActiveExam(examToLock)) {
-				Boolean ans = dbController.updateExamStatus(examToLock.getExam());//hadar: update working
+				Boolean ans = dbController.updateExamStatus(examToLock.getExam());// hadar: update working
 				respon.setResponseData((Boolean) false);
 				if (respon.getStatusMsg().getStatus().equals("EXAM STATUS UPDATED"))
 					respon.setResponseData((Boolean) true);
@@ -1002,10 +1010,7 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);
 	}
-	
-	
-	
-	
+
 	private void SaveEditExam(Exam editExam, ConnectionToClient client) {
 		/* logic for EditExam */
 		ResponseFromServer response = null;
@@ -1016,11 +1021,36 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
-		
+
 	}
-	
-	
-	
-	
+
+	//TODO: CHECK
+	private void getQuestionsByIDForEditExam(String examID, ConnectionToClient client) {
+		/*logic for- EditExam _step2*/
+		ResponseFromServer response = null; 
+		ArrayList<QuestionInExam> questionIDList_InExam;
+		HashMap<String, Question> allQuestionInExam;
+		// HashMap<questionID, QuestionInExam>
+
+		
+		// Set<QuestionInExam> questionIDList_InExam = new HashSet<>();
+		// Map<String, Set<QuestionInExam>> allQuestionInExam = new HashMap<>();
+		// //Map<questionID, Set<QuestionInExam>>
+		try {
+
+			questionIDList_InExam = (ArrayList<QuestionInExam>) dbController.getQuestionsID_byExamID(examID);
+			allQuestionInExam = (HashMap<String, Question>) dbController.allQuestionInExam(questionIDList_InExam);
+			if (allQuestionInExam != null) {
+				response = new ResponseFromServer("All Question In ExamID: " + examID);
+				response.setResponseData(allQuestionInExam);
+			} else {
+				response = new ResponseFromServer("NOT Found All Question In Exam");
+			}
+
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
