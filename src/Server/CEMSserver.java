@@ -11,9 +11,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import client.ClientUI;
 import common.MyFile;
@@ -23,6 +27,7 @@ import entity.ExamOfStudent;
 import entity.ExtensionRequest;
 import entity.Profession;
 import entity.Question;
+import entity.QuestionInExam;
 import entity.Student;
 import entity.Teacher;
 import entity.UpdateScoreRequest;
@@ -375,11 +380,25 @@ public class CEMSserver extends AbstractServer {
 			StudentFinishManualExam((ExamOfStudent) req.getRequestData(), client);
 		}
 			break;
+		case "getQuestionsByIDForEditExam": {
+			getQuestionsByIDForEditExam((String) req.getRequestData(), client);
+		}
+			break;
+		case "getAllQuestionsStoredInSystem":{
+			getAllQuestionsStoredInSystem(client);
+		}
+			break;
+		case "getQuestionDataBy_questionID":{
+			getQuestionDataBy_questionID((String) req.getRequestData(), client);
+		}
+		
+
 		}
 
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
 
 	/**
 	 * @param requestData
@@ -1032,6 +1051,58 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
+	}
+	
+	//TODO: CHECK
+	private void getQuestionsByIDForEditExam(String examID, ConnectionToClient client) {
+		/*logic for- EditExam _step2*/
+		ResponseFromServer response = null; 
+		ArrayList<QuestionInExam> questionIDList_InExam;
+		HashMap<String, Question> allQuestionInExam;
+		// HashMap<questionID, QuestionInExam>
+		
+		// Set<QuestionInExam> questionIDList_InExam = new HashSet<>();
+		// Map<String, Set<QuestionInExam>> allQuestionInExam = new HashMap<>();
+		// //Map<questionID, Set<QuestionInExam>>
+		try {
+
+			questionIDList_InExam = (ArrayList<QuestionInExam>) dbController.getQuestionsID_byExamID(examID);
+			allQuestionInExam = (HashMap<String, Question>) dbController.allQuestionInExam(questionIDList_InExam);
+			if (allQuestionInExam != null) {
+				response = new ResponseFromServer("All Question In ExamID: " + examID);
+				response.setResponseData(allQuestionInExam);
+			} else {
+				response = new ResponseFromServer("NOT Found All Question In Exam");
+			}
+
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void getAllQuestionsStoredInSystem(ConnectionToClient client) {
+		ResponseFromServer response = null;
+		response=dbController.GetAllQuestions_ToQuestionsBank();
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);// print to server log.
+		
+	}
+	
+	private void getQuestionDataBy_questionID(String questionID, ConnectionToClient client) {
+		ResponseFromServer response = new ResponseFromServer("Question Data");
+		response.setResponseData((Question)dbController.getQuestionDataBy_questionID(questionID));
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);// print to server log.
+		
 	}
 
 }

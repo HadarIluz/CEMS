@@ -1,21 +1,21 @@
 package gui_teacher;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
+import entity.Exam;
 import entity.Question;
 import entity.QuestionRow;
 import entity.Teacher;
+import entity.User;
 import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -23,8 +23,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
@@ -37,32 +35,17 @@ import logic.RequestToServer;
  */
 public class QuestionBankController extends GuiCommon implements Initializable {
 
-	@FXML
-	private Button btnEditQuestion;
+    @FXML
+    private Button btnEditQuestion;
 
-	@FXML
-	private Button btnDeleteQuestion;
+    @FXML
+    private Button btnDeleteQuestion;
 
-	@FXML
-	private TextField textQuestionID;
+    @FXML
+    private TextField textQuestionID;
 
-	@FXML
-	private TableView<QuestionRow> tableQuestion;
-
-	@FXML
-	private Text textMsg1;
-
-	@FXML
-	private Text textMsg2;
-
-	@FXML
-	private Button btnCreateNewQuestion;
-
-	@FXML
-	private Button btnOpenQuestionInfo;
-
-	@FXML
-	private Text textNavigation;
+    @FXML
+    private TableView<QuestionRow> tableQuestion;
 
 	@FXML
 	private TableColumn<QuestionRow, String> QuestionID;
@@ -73,19 +56,36 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	@FXML
 	private TableColumn<QuestionRow, String> Question;
 
-	private ObservableList<QuestionRow> data;
+    @FXML
+    private Text textMsg1;
 
-	private static TeacherController teacherController;
+    @FXML
+    private Text textMsg2;
+
+    @FXML
+    private Button btnCreateNewQuestion;
+
+    @FXML
+    private Text textNavigation;
+
+    @FXML
+    private Button btnOpenQuestionInfo;
+
+    
+	private ObservableList<QuestionRow> data;
+	private static boolean displayPrincipalView = false;
+	private static Teacher teacher;
+	private static User principal;
+	private static String screenStatus;
 
 	/**
-	 * method set text of questionID when user select a question row fron table
+	 * method set text of questionID when user select a question row from table
 	 * 
 	 * @param event occurs when User press on a selected row from table
 	 */
 
 	@FXML
 	void MouseC(MouseEvent event) {
-
 		ObservableList<QuestionRow> Qlist;
 		Qlist = tableQuestion.getSelectionModel().getSelectedItems();
 		textQuestionID.setText(Qlist.get(0).getQuestionID());
@@ -100,16 +100,11 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnCreateNewQuestion(ActionEvent event) {
-
-		try {
-			AnchorPane newPaneRight = FXMLLoader.load(getClass().getResource("CreateQuestion.fxml"));
-			teacherController.root.add(newPaneRight, 1, 0);
-
-		} catch (IOException e) {
-			System.out.println("Couldn't load!");
-			e.printStackTrace();
+		if ((textQuestionID.getText().isEmpty())) {
+			btnCreateNewQuestion.setDisable(true);
+		} else {
+			displayNextScreen(teacher, "CreateQuestion.fxml");
 		}
-
 	}
 
 	/**
@@ -119,24 +114,28 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnDeleteQuestion(ActionEvent event) {
-		if (!checkForLegalID(textQuestionID.getText()))
-			return;
+		if ((textQuestionID.getText().isEmpty())) {
+			btnDeleteQuestion.setDisable(true);
+		} else {
 
-		ObservableList<QuestionRow> Qlist;
-		Question questionToDelete = new Question();
-		questionToDelete.setQuestionID(textQuestionID.getText());
-		questionToDelete.setTeacher(new Teacher(ClientUI.loggedInUser.getUser(), null));
-		Qlist = tableQuestion.getSelectionModel().getSelectedItems();
-		RequestToServer req = new RequestToServer("DeleteQuestion");
-		req.setRequestData(questionToDelete);
-		ClientUI.cems.accept(req);
+			if (!checkForLegalID(textQuestionID.getText()))
+				return;
 
-		if (CEMSClient.responseFromServer.getResponseData().equals("FALSE"))
-			System.out.println("failed to delete question");
-		else
-			data.removeAll(Qlist);
-		initTableRows();
+			ObservableList<QuestionRow> Qlist;
+			Question questionToDelete = new Question();
+			questionToDelete.setQuestionID(textQuestionID.getText());
+			questionToDelete.setTeacher(new Teacher(ClientUI.loggedInUser.getUser(), null));
+			Qlist = tableQuestion.getSelectionModel().getSelectedItems();
+			RequestToServer req = new RequestToServer("DeleteQuestion");
+			req.setRequestData(questionToDelete);
+			ClientUI.cems.accept(req);
 
+			if (CEMSClient.responseFromServer.getResponseData().equals("FALSE"))
+				System.out.println("failed to delete question");
+			else
+				data.removeAll(Qlist);
+			initTableRows();
+		}
 	}
 
 	/**
@@ -145,19 +144,27 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	 * @param event occurs when User press On Edit
 	 * 
 	 */
-
 	@FXML
 	void btnEditQuestion(ActionEvent event) {
-		if (!checkForLegalID(textQuestionID.getText()))
-			return;
+		if ((textQuestionID.getText().isEmpty())) {
+			btnCreateNewQuestion.setDisable(true);
 
-		try {
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditQuestion.fxml"));
-			teacherController.root.add(newPaneRight, 1, 0);
+		} else {
+			if (!checkForLegalID(textQuestionID.getText()))
+				return;
+			displayNextScreen(teacher, "EditQuestion.fxml");
+		}
+	}
 
-		} catch (IOException e) {
-			System.out.println("Couldn't load!");
-			e.printStackTrace();
+	@FXML
+	void btnOpenQuestionInfo(ActionEvent event) {
+		if (displayPrincipalView) {
+			if ((textQuestionID.getText().isEmpty())) {
+				btnCreateNewQuestion.setDisable(true);
+			} else {
+				CreateQuestionController.setNextScreenData(textQuestionID.getText());
+				displayNextScreen(principal, "CreateQuestion.fxml");
+			}
 		}
 	}
 
@@ -171,8 +178,52 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		initTableRows();
+		textQuestionID.setEditable(false);
+		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
+			teacher = (Teacher) ClientUI.loggedInUser.getUser();
+			initTableRows();
+		}
 
+		if (ClientUI.loggedInUser.getUser() instanceof User) {
+			principal = (User) ClientUI.loggedInUser.getUser();
+			displayPrincipalView = true;
+
+			btnOpenQuestionInfo.setDisable(false);
+			btnOpenQuestionInfo.setVisible(true);
+			
+			textMsg1.setVisible(false);
+			textMsg2.setVisible(false);
+			btnCreateNewQuestion.setVisible(false);
+			btnCreateNewQuestion.setVisible(false);
+			btnEditQuestion.setVisible(false);
+			btnEditQuestion.setVisible(false);
+			btnDeleteQuestion.setVisible(false);
+			btnDeleteQuestion.setVisible(false);
+			textNavigation.setVisible(true);
+			textQuestionID.setEditable(false);//CHECK!!!
+			fillTableForPrincipal_ALLQuestionsInSystem(); // set all exams in cems system into the table
+			
+		}
+
+	}
+
+
+	@SuppressWarnings("unchecked")
+	private void fillTableForPrincipal_ALLQuestionsInSystem() {
+		RequestToServer req = new RequestToServer("getAllQuestionsStoredInSystem");
+		ArrayList<QuestionRow> questionList = new ArrayList<QuestionRow>();
+		ClientUI.cems.accept(req);
+
+		questionList = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
+		data = FXCollections.observableArrayList(questionList);
+
+		tableQuestion.getColumns().clear();
+		QuestionID.setCellValueFactory(new PropertyValueFactory<>("QuestionID"));
+		Proffesion.setCellValueFactory(new PropertyValueFactory<>("profession"));
+		Question.setCellValueFactory(new PropertyValueFactory<>("Question"));
+
+		tableQuestion.setItems(data);
+		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);
 	}
 
 	/**
@@ -188,13 +239,13 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 
 		req.setRequestData(ClientUI.loggedInUser.getUser().getId());
 
-		ArrayList<QuestionRow> examsOfTeacher = new ArrayList<QuestionRow>();
+		ArrayList<QuestionRow> questionList = new ArrayList<QuestionRow>();
 
 		ClientUI.cems.accept(req);
 
-		examsOfTeacher = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
+		questionList = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
 
-		data = FXCollections.observableArrayList(examsOfTeacher);
+		data = FXCollections.observableArrayList(questionList);
 
 		tableQuestion.getColumns().clear();
 		QuestionID.setCellValueFactory(new PropertyValueFactory<>("QuestionID"));
@@ -204,7 +255,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		tableQuestion.setItems(data);
 
 		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);
-
+		
 	}
 
 	/**
@@ -227,7 +278,5 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 			}
 		return true;
 	}
-
-
 
 }

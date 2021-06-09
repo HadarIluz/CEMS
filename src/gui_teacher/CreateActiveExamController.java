@@ -59,8 +59,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 			"15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00" };
 
 	private static boolean toggleFlag = false;
-	// TODO: private Date date = null; //we need to add to table the date of the
-	// exam ??
 	private Time selectedTime;
 
 	/**

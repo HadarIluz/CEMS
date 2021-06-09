@@ -107,6 +107,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 				btnDeleteExam.setDisable(false);
 			}
 		}
+		else {
+			btnExamInfoPrincipal.setDisable(false);
+		}
 	}
 
 	/**
@@ -132,7 +135,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	/**
 	 * Method that check if the given ExamID is legal
 	 * 
-	 * @param ExamID send to method to checl if legak
+	 * @param ExamID send to method to check if legal
 	 * @return true if legal, else false
 	 */
 
@@ -209,7 +212,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	}
 
 	/**
-	 * Method initalize for user screen of Exam bank
+	 * Method initialize for user screen of Exam bank
 	 * 
 	 * @param location  for Url location
 	 * @param resources of type ResourceBundle
@@ -236,7 +239,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			textMsg2.setVisible(false);
 			textNavigation.setVisible(true);
 			btnExamInfoPrincipal.setVisible(true);
+			btnExamInfoPrincipal.setDisable(true);
 			displayPrincipalView = true;
+			textNavigation.setVisible(true);
 			fillTableForPrincipalALLexamsInSystem(); // set all exams in cems system into the table
 		}
 	}
@@ -284,8 +289,10 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	}
 
 	/**
-	 * btnCreateActiveExam open screen of exam info of teacher with the chosen Exam
-	 * ID
+	 * btnCreateActiveExam open screen of exam info of teacher with the chosen
+	 * ExamID. 
+	 * It is allowed to perform the same exam but NOT in the same time
+	 * checks by req to server in CreateActiveExamController.
 	 * 
 	 * @param event occurs when User press On "Create Active Exam"
 	 */
@@ -293,18 +300,19 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	@FXML
 	void btnCreateActiveExam(ActionEvent event) {
 
-		if (!(textExamID.getText().isEmpty())) {
+		if ((textExamID.getText().isEmpty())) {
+			btnCreateActiveExam.setDisable(true);
+		} else {
 			Exam selectedExam = getExistExamDetails(textExamID.getText());
 			CreateActiveExamController.setActiveExamState(selectedExam);
 			displayNextScreen(teacher, "CreateActiveExam.fxml");
 		}
-
 	}
 
 	/**
 	 * method gets from server all detail of exams with the key exam ID
 	 * 
-	 * @param examID is the key for the specipic exam
+	 * @param examID is the key for the specific exam
 	 * @return exam with details of examId
 	 */
 
@@ -328,7 +336,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ClientUI.cems.accept(req);
 		examsList = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
 		TableColumn<Exam, String> course = new TableColumn<>("course");
-		
+
 		// PropertyValueFactory<Exam, String> factory = new PropertyValueFactory<>();
 
 		data = FXCollections.observableArrayList(examsList);
