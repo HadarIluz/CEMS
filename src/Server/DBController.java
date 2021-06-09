@@ -1660,5 +1660,32 @@ public class DBController {
 		return sum;
 	}
 
+	public String EditQuestion(Question question) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("UPDATE question SET teacher=?, questionID=? ,profession=? ,question=?, answer1=? ,answer2=? ,answer3=?, answer4=? ,correctAnswerIndex=? ,description=? WHERE teacher=? AND questionID=?;");
+			pstmt.setInt(1, question.getTeacher().getId());
+			pstmt.setString(2, question.getQuestionID());
+			pstmt.setString(3, question.getProfession().getProfessionID());
+			pstmt.setString(4, question.getQuestion());
+			pstmt.setString(5, question.getAnswers()[0]);
+			pstmt.setString(6, question.getAnswers()[1]);
+			pstmt.setString(7, question.getAnswers()[2]);
+			pstmt.setString(8, question.getAnswers()[3]);
+			pstmt.setInt(9, question.getCorrectAnswerIndex());
+			pstmt.setString(10, question.getDescription());
+			pstmt.setInt(11,question.getTeacher().getId());
+			pstmt.setString(12, question.getQuestionID());
+			pstmt.executeUpdate();
+			
+			
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			return "false";
+		}
+
+		return "true";
+	}
+
 
 }

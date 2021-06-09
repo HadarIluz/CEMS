@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.EditQuestionController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.EditQuestionController">
    <children>
       <Text fx:id="texTtitleScreen" fill="#4672ae" layoutX="246.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit Question" textAlignment="CENTER" wrappingWidth="256.150390625">
          <font>
@@ -21,7 +21,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="textExamID" layoutX="245.0" layoutY="109.0" prefHeight="25.0" prefWidth="135.0" promptText="QuestionID shown here" />
+      <TextField fx:id="textExamID" editable="false" layoutX="245.0" layoutY="109.0" prefHeight="25.0" prefWidth="135.0" promptText="QuestionID shown here" />
       <Label fx:id="textTimeForExam" layoutX="281.0" layoutY="163.0" prefHeight="30.0" prefWidth="135.0" text="120 minutes" textFill="#6a6868" visible="false">
          <font>
             <Font name="System Bold" size="20.0" />
@@ -42,50 +42,44 @@
             <Font name="System Italic" size="14.0" />
          </font>
       </Text>
-      <TextField fx:id="textTheQuestion" editable="false" layoutX="246.0" layoutY="145.0" prefHeight="25.0" prefWidth="383.0" promptText="Question shown here" />
+      <TextField fx:id="textTheQuestion" layoutX="246.0" layoutY="145.0" prefHeight="25.0" prefWidth="383.0" promptText="Question shown here" />
       <Text layoutX="69.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Question:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <Text layoutX="68.0" layoutY="469.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:">
+      <Text layoutX="68.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextArea fx:id="textDescription" layoutX="240.0" layoutY="453.0" prefHeight="72.0" prefWidth="383.0" promptText="Enter description of question (optional)" />
-      <Text layoutX="69.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profession:">
+      <TextArea fx:id="textDescription" layoutX="240.0" layoutY="406.0" prefHeight="72.0" prefWidth="383.0" promptText="Enter description of question (optional)" />
+      <TextField fx:id="textAnswer1" layoutX="245.0" layoutY="183.0" prefHeight="25.0" prefWidth="383.0" promptText="Answer 1 shown here" />
+      <Text layoutX="68.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 1:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <ComboBox fx:id="selectProfession" layoutX="245.0" layoutY="189.0" onAction="#selectProfession" onMouseClicked="#selectProfession" prefWidth="150.0" promptText="profession list" />
-      <TextField fx:id="textAnswer1" editable="false" layoutX="245.0" layoutY="230.0" prefHeight="25.0" prefWidth="383.0" promptText="Answer 1 shown here" />
-      <Text layoutX="68.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 1:">
+      <TextField fx:id="textAnswer2" layoutX="244.0" layoutY="226.0" prefHeight="25.0" prefWidth="383.0" promptText="Answer 2 shown here" />
+      <Text layoutX="67.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 2:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="textAnswer2" editable="false" layoutX="244.0" layoutY="273.0" prefHeight="25.0" prefWidth="383.0" promptText="Answer 2 shown here" />
-      <Text layoutX="67.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 2:">
+      <TextField fx:id="textAnswer3" layoutX="243.0" layoutY="272.0" prefHeight="25.0" prefWidth="383.0" promptText="Answer 3 shown here" />
+      <Text layoutX="66.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="textAnswer3" editable="false" layoutX="243.0" layoutY="319.0" prefHeight="25.0" prefWidth="383.0" promptText="Answer 3 shown here" />
-      <Text layoutX="66.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3:">
+      <TextField fx:id="textAnswer4" layoutX="242.0" layoutY="315.0" prefHeight="25.0" prefWidth="383.0" promptText="Answer 4 shown here" />
+      <Text layoutX="68.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 4:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="textAnswer4" editable="false" layoutX="242.0" layoutY="362.0" prefHeight="25.0" prefWidth="383.0" promptText="Answer 4 shown here" />
-      <Text layoutX="65.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 4:">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </Text>
-      <ComboBox fx:id="selectCorrectAnswer" layoutX="240.0" layoutY="409.0" onAction="#selectCorrectAnswer" onMouseClicked="#selectCorrectAnswer" prefHeight="25.0" prefWidth="193.0" promptText="choose correct answer" />
-      <Text layoutX="66.0" layoutY="424.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct Answer:">
+      <ComboBox fx:id="selectCorrectAnswer" layoutX="240.0" layoutY="362.0" prefHeight="25.0" prefWidth="193.0" promptText="choose correct answer" />
+      <Text layoutX="66.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct Answer:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -95,35 +89,35 @@
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="56.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+      <Text fill="#e44d4d" layoutX="56.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="56.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+      <Text fill="#e44d4d" layoutX="56.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="56.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+      <Text fill="#e44d4d" layoutX="55.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="55.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+      <Text fill="#e44d4d" layoutX="55.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="55.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+      <Text fill="#e44d4d" layoutX="53.0" layoutY="382.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#e44d4d" layoutX="53.0" layoutY="429.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="20.356842041015625">
+      <Label fx:id="msgLabel" layoutX="502.0" layoutY="541.0" prefHeight="17.0" prefWidth="155.0">
          <font>
-            <Font size="21.0" />
+            <Font size="15.0" />
          </font>
-      </Text>
+      </Label>
    </children>
 </AnchorPane>

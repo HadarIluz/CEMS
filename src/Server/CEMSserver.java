@@ -351,6 +351,11 @@ public class CEMSserver extends AbstractServer {
 			createNewActiveExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
+			
+		case "EditQuestion": {
+			EditQuestion((Question) req.getRequestData(), client);
+		}
+			break;
 
 		case "submitManualExam": {
 			submitManualExam((MyFile) req.getRequestData(), client);
@@ -437,6 +442,8 @@ public class CEMSserver extends AbstractServer {
 
 	
 
+	
+
 	/**
 	 * @param studentExam
 	 * @param client
@@ -464,6 +471,16 @@ public class CEMSserver extends AbstractServer {
 			client.sendToClient(res);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void EditQuestion(Question question, ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Edit Question Update");
+			Res.setResponseData(dbController.EditQuestion((Question)question));
+			client.sendToClient(Res);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
