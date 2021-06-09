@@ -3,6 +3,7 @@ package entity;
 import java.io.Serializable;
 import java.util.HashMap;;
 
+@SuppressWarnings("serial")
 public class ExamOfStudent implements Serializable {
 	
 	private ActiveExam activeExam;
@@ -11,6 +12,7 @@ public class ExamOfStudent implements Serializable {
 	private int totalTime;
 	private HashMap<QuestionInExam, Integer> questionsAndAnswers;
 	private String examType;
+	private ReasonOfSubmit reasonOfSubmit;
 	
 	public String getExamType() {
 		return examType;
@@ -72,6 +74,14 @@ public class ExamOfStudent implements Serializable {
 	public void setScore(int score) { 
 		this.score=score;
 
+	}
+
+	public ReasonOfSubmit getReasonOfSubmit() {
+		return reasonOfSubmit;
+	}
+
+	public void setReasonOfSubmit(ReasonOfSubmit reasonOfSubmit) {
+		this.reasonOfSubmit = reasonOfSubmit;
 	}
 	
 	
