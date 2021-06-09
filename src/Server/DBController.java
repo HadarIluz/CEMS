@@ -1464,12 +1464,11 @@ public class DBController {
 		/*** EnterToExam ***/
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT examType FROM exam_of_student WHERE student=? AND exam=?;");
+			pstmt = conn.prepareStatement("SELECT * FROM exam_of_student WHERE student=? AND exam=?;");
 			pstmt.setInt(1, examOfStudent.getStudent().getId());
 			pstmt.setString(2, examOfStudent.getActiveExam().getExam().getExamID());
 			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				examOfStudent.setExamType(rs.getString(1));
+			if (rs.first()==true) {
 				rs.close();
 				return false;
 			}
@@ -1563,6 +1562,10 @@ public class DBController {
 		return null;
 	}
 
+	/**
+	 * @param examID
+	 * @return the time when an active exam with ID exam id started
+	 */
 	public Time getStartTimeOfActiveExam(String examID) {
 		
 		try {
@@ -1581,6 +1584,10 @@ public class DBController {
 		return null;
 	}
 
+	/**
+	 * @param examID
+	 * @return the number of students that didn't submit the exam
+	 */
 	public int getNumberOfNotSubmitted(String examID) {
 		PreparedStatement pstmt;
 		int sum = 0;
@@ -1599,6 +1606,10 @@ public class DBController {
 
 	}
 
+	/**
+	 * @param activeExam
+	 * @return true if documenting the exam was successfull
+	 */
 	public boolean documentExam(ActiveExam activeExam) {
 		int initiated = initiatedSubmitInActiveExam(activeExam.getExam().getExamID());
 		int forced = forcedSubmitInActiveExam(activeExam.getExam().getExamID());
@@ -1626,6 +1637,10 @@ public class DBController {
 		
 	}
 
+	/**
+	 * @param examID
+	 * @return the number of submitted exams that were forced by system
+	 */
 	private int forcedSubmitInActiveExam(String examID) {
 		PreparedStatement pstmt;
 		int sum = 0;
@@ -1643,6 +1658,10 @@ public class DBController {
 		return sum;
 	}
 
+	/**
+	 * @param examID
+	 * @return the number of submitted exams that were initiated by student
+	 */
 	private int initiatedSubmitInActiveExam(String examID) {
 		PreparedStatement pstmt;
 		int sum = 0;

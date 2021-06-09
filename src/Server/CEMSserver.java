@@ -485,6 +485,11 @@ public class CEMSserver extends AbstractServer {
 		}
 	}
 
+	/**
+	 * @param activeExam
+	 * @return true or false if the exam is finished
+	 * a finished exam is 30 minutes after start time & all students submitted (forced ot initiated)
+	 */
 	private boolean checkIfExamFinished(ActiveExam activeExam) {
 		// first check if it's after half an hour of beginning of exam	
 		Time time = dbController.getStartTimeOfActiveExam(activeExam.getExam().getExamID());
@@ -503,6 +508,10 @@ public class CEMSserver extends AbstractServer {
 		return false;
 	}
 	
+	/**
+	 * @param activeExam
+	 * this method documents a finished exam in the db
+	 */
 	private void documentExam(ActiveExam activeExam) {
 			// delete the active exam and document it
 			if (!dbController.deleteActiveExam(activeExam)) {
@@ -515,7 +524,7 @@ public class CEMSserver extends AbstractServer {
 			if (dbController.documentExam(activeExam)) { // enter all relavent data to record_exam table
 				printMessageInLogFramServer("document exam suceeded", null);
 			}
-			// now call for method that checks copying
+			// now call for method that checks copying (only if computerized)
 		
 	}
 
