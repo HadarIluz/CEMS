@@ -23,7 +23,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TableView fx:id="tableQuestion" layoutX="49.0" layoutY="108.0" onMouseClicked="#MouseC" prefHeight="294.0" prefWidth="679.0">
+      <TableView fx:id="tableQuestion" layoutX="49.0" layoutY="108.0" prefHeight="294.0" prefWidth="679.0">
         <columns>
           <TableColumn fx:id="QuestionID" prefWidth="91.0" text="Question ID" />
           <TableColumn fx:id="Proffesion" prefWidth="72.0" text="Proffesion" />
