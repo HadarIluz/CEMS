@@ -214,7 +214,11 @@ public class SolveExamController implements Initializable{
 		    timer.scheduleAtFixedRate(new TimerTask(){
 		        @Override
 		        public void run(){
-		          Platform.runLater(() -> lblTimeLeft.setText(timeForTimer.toString()));
+		        	int hours = timeForTimer.get() / 3600;
+					int minutes = (timeForTimer.get() % 3600) / 60;
+					int seconds = timeForTimer.get() % 60;
+					String str = String.format("Time left: %02d:%02d:%02d", hours, minutes, seconds);
+					Platform.runLater(() -> lblTimeLeft.setText(str));
 		          timeForTimer.decrementAndGet();
 		          if (timeForTimer.get() == 0) {
 			          Platform.runLater(() -> stopExam());
