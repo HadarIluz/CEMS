@@ -101,6 +101,7 @@ public class EditQuestionController extends GuiCommon implements Initializable {
 			msgLabel.setText("Edit Question Succeed.");
 		}
 		
+		
 	}
 
 	private boolean checkAllFieldsNotEmpty() {
