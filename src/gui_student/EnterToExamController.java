@@ -96,6 +96,7 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 			req.setRequestData(activeExam);
 			ClientUI.cems.accept(req);
 
+			// 'main if'
 			if ((CEMSClient.responseFromServer.getResponseType()).equals("ACTIVE EXAM EXIST")) {
 				// At this point we found exam so we can be sure an object has arrived in this
 				// response.
@@ -105,47 +106,52 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 				// message in console
 				System.out.println("Respont: there is active examID: " + existExamID + " type: " + ActiveExamType);
 
-				//-------Request from server to insert new row to student of exam.--------//
-				RequestToServer reqStusentInExam = new RequestToServer("InsertExamOfStudent");
-				ExamOfStudent examOfStudent= new ExamOfStudent(activeExam, student);
-				reqStusentInExam.setRequestData(examOfStudent);
-				ClientUI.cems.accept(reqStusentInExam);
-				
-				
-				
-				// The student has entered all the given details and transfer to exam screen
-				// - computerized or manual
-				switch (ActiveExamType) {
-				case "manual": {
-					// load manual start exam fxml
-					try {
-						StartManualExamController.setActiveExamState(activeExam);
-						Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
-						newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-						studentController.root.add(newPaneRight, 1, 0);
-					} catch (IOException e) {
-						System.out.println("Couldn't load!");
-						e.printStackTrace();
+				// ---Request server to check if this test is already associated to this student.-----//
+				boolean allowedToStartExam = checkExam_of_student_NotExists(activeExam, student);
+				if (allowedToStartExam) {
+					
+					// -------Request from server to insert new row to student of exam.--------//
+					RequestToServer reqStusentInExam = new RequestToServer("InsertExamOfStudent");
+					ExamOfStudent examOfStudent = new ExamOfStudent(activeExam, student);
+					reqStusentInExam.setRequestData(examOfStudent);
+					ClientUI.cems.accept(reqStusentInExam);
+
+					// The student has entered all the given details and transfer to exam screen
+					// - computerized or manual
+					switch (ActiveExamType) {
+					case "manual": {
+						// load manual start exam fxml
+						try {
+							StartManualExamController.setActiveExamState(activeExam);
+							Pane newPaneRight = FXMLLoader.load(getClass().getResource("StartManualExam.fxml"));
+							newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+							studentController.root.add(newPaneRight, 1, 0);
+						} catch (IOException e) {
+							System.out.println("Couldn't load!");
+							e.printStackTrace();
+						}
+					}
+						break;
+
+					case "computerized": {
+						// load computerized start exam fxml
+						try {
+							SolveExamController.setActiveExamState(activeExam);
+							Pane newPaneRight = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
+							newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+							studentController.root.add(newPaneRight, 1, 0);
+						} catch (IOException e) {
+							System.out.println("Couldn't load!");
+							e.printStackTrace();
+						}
+					}
+						break;
 					}
 				}
-					break;
 
-				case "computerized": {
-					// load computerized start exam fxml
-					try {
-						SolveExamController.setActiveExamState(activeExam);
-						Pane newPaneRight = FXMLLoader.load(getClass().getResource("SolveExam.fxml"));
-						newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-						studentController.root.add(newPaneRight, 1, 0);
-					} catch (IOException e) {
-						System.out.println("Couldn't load!");
-						e.printStackTrace();
-					}
-				}
-					break;
-				}
+			} // End 'main if'.
 
-			} else {
+			else {
 				popUp("There is no active exam for the exam you selected.");
 			}
 
@@ -198,7 +204,18 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 		return flag;
 	}
 
+	private boolean checkExam_of_student_NotExists(ActiveExam activeExam, Student student) {
+		ExamOfStudent examOfStudent = new ExamOfStudent(activeExam, student);
+		RequestToServer req = new RequestToServer("checkExam_of_student_NotExistsBeforeStartExam");
+		req.setRequestData(examOfStudent);
+		ClientUI.cems.accept(req);
 
+		if ((CEMSClient.responseFromServer.getResponseType()).equals("exam_of_student_allowed")) {
+			return true;
+		}
+		popUp("Error:\nThis exam already has been taken by student id: " + student.getId());
+		return false;
+	}
 
 	/**
 	 * initialize function to prepare the screen after it is loaded.

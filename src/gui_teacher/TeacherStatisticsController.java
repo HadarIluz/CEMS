@@ -164,19 +164,7 @@ public class TeacherStatisticsController extends GuiCommon {
 		ProfCourseName = (HashMap<String, ProfessionCourseName>) CEMSClient.responseFromServer.getResponseData();
 	}
 
-	public boolean checkForLegalID(String ExamID) {
 
-		if (ExamID.length() != 6) {
-			popUp("Exam ID Must be 6 digits.");
-			return false;
-		}
-		for (int i = 0; i < ExamID.length(); i++)
-			if (!Character.isDigit(ExamID.charAt(i))) {
-				popUp("Exam ID Must Contains only digits.");
-				return false;
-			}
-		return true;
-	}
 
 	public boolean chechExamExist(String ExamID) {
 		boolean isExsit = true;

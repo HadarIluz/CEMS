@@ -52,11 +52,15 @@
          </font>
       </Text>
       <TextField fx:id="textnewGradeField" layoutX="329.0" layoutY="454.0" promptText="new grade" />
-      <Button fx:id="btnUpdate" layoutX="464.0" layoutY="491.0" mnemonicParsing="false" onAction="#btnUpdate" prefHeight="38.0" prefWidth="117.0" text="Update" />
+      <Button fx:id="btnUpdate" layoutX="339.0" layoutY="495.0" mnemonicParsing="false" onAction="#btnUpdate" prefHeight="38.0" prefWidth="117.0" text="Update" />
       <TextField fx:id="textExamID" layoutX="333.0" layoutY="158.0" promptText="exam ID" />
-      <Button fx:id="btnViewStudentExam" layoutX="279.0" layoutY="491.0" mnemonicParsing="false" onAction="#btnViewStudentExam" prefHeight="38.0" prefWidth="117.0" text="View student exam" />
       <Label fx:id="textNewGradeReqField" layoutX="483.0" layoutY="458.0" prefHeight="17.0" prefWidth="263.0" text="Must add a reason and grade for update" textFill="#db2424" visible="false" />
       <Button fx:id="btnShow" layoutX="516.0" layoutY="158.0" mnemonicParsing="false" onAction="#ShowStudentByExamID" text="Show" />
       <Label fx:id="txtExamIdError" layoutX="568.0" layoutY="162.0" prefHeight="17.0" prefWidth="256.0" text="MIssing Parameters/Wrong input for Exam ID" textFill="#db2424" visible="false" />
+      <Label fx:id="lblCheat" layoutX="525.0" layoutY="243.0" prefHeight="17.0" prefWidth="117.0" text="Cheating Alert !" textFill="RED" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

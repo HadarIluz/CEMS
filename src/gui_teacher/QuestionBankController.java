@@ -4,8 +4,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import client.CEMSClient;
 import client.ClientUI;
+import entity.Course;
+
 import entity.Exam;
 import entity.Question;
 import entity.QuestionRow;
@@ -88,8 +92,9 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	void MouseC(MouseEvent event) {
 		ObservableList<QuestionRow> Qlist;
 		Qlist = tableQuestion.getSelectionModel().getSelectedItems();
-		textQuestionID.setText(Qlist.get(0).getQuestionID());
-
+		if(!Qlist.isEmpty()) {
+			textQuestionID.setText(Qlist.get(0).getQuestionID());
+		}
 	}
 
 	/**
@@ -114,6 +119,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnDeleteQuestion(ActionEvent event) {
+
 		if ((textQuestionID.getText().isEmpty())) {
 			btnDeleteQuestion.setDisable(true);
 		} else {
@@ -146,11 +152,13 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnEditQuestion(ActionEvent event) {
+
 		if ((textQuestionID.getText().isEmpty())) {
 			btnCreateNewQuestion.setDisable(true);
 
+
 		} else {
-			if (!checkForLegalID(textQuestionID.getText()))
+			if (!checkForLegalquestionID(textQuestionID.getText()))
 				return;
 			displayNextScreen(teacher, "EditQuestion.fxml");
 		}
@@ -258,25 +266,21 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		
 	}
 
-	/**
-	 * Method that check if the givenQuestion ID is legal
-	 * 
-	 * @param QuestionID send to method to check if legal
-	 * @return true if legal, else false
-	 */
+	
 
-	public boolean checkForLegalID(String QuestionID) {
-
-		if (QuestionID.length() != 5) {
-			popUp("Question ID Must be 5 digits.");
-			return false;
-		}
-		for (int i = 0; i < QuestionID.length(); i++)
-			if (!Character.isDigit(QuestionID.charAt(i))) {
-				popUp("Question ID Must Contains only digits.");
-				return false;
+	
+	
+	private Boolean isExistQuestion(String questionID) {
+	
+		for (QuestionRow q : data) {
+			if (q.getQuestionID().equals(questionID)) {
+				
+				return true;
 			}
-		return true;
+		}
+		return false;
 	}
+
+
 
 }

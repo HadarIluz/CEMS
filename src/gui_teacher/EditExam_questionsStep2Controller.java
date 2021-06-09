@@ -42,32 +42,32 @@ import logic.RequestToServer;
  */
 public class EditExam_questionsStep2Controller extends GuiCommon implements Initializable {
 
-    @FXML
-    private Button btnCreateNewQuestion;
-    
-    @FXML
-    private Text textNavigation;
+	@FXML
+	private Button btnCreateNewQuestion;
 
-    @FXML
-    private Text textTotal; 
+	@FXML
+	private Text textNavigation;
 
-    @FXML
-    private Text textTitalScreen_step2;
+	@FXML
+	private Text textTotal;
 
-    @FXML
-    private ImageView imgStep1;
+	@FXML
+	private Text textTitalScreen_step2;
 
-    @FXML
-    private ImageView imgStep2;
+	@FXML
+	private ImageView imgStep1;
 
-    @FXML
-    private Button btnBack;
+	@FXML
+	private ImageView imgStep2;
 
-    @FXML
-    private Text textTotalScore;
+	@FXML
+	private Button btnBack;
 
-    @FXML
-    private Label textErrorMsg;
+	@FXML
+	private Text textTotalScore;
+
+	@FXML
+	private Label textErrorMsg;
 
 	@FXML
 	private TableView<QuestionInExamRow> tableQuestion;
@@ -81,17 +81,17 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	@FXML
 	private TableColumn<QuestionInExamRow, String> question;
 
-    @FXML
-    private Text textQid;
+	@FXML
+	private Text textQid;
 
-    @FXML
-    private Text ChosenQuestionID;
+	@FXML
+	private Text ChosenQuestionID;
 
-    @FXML
-    private TextField txtChangeScore;
+	@FXML
+	private TextField txtChangeScore;
 
-    @FXML
-    private Button btnUpdateScore;
+	@FXML
+	private Button btnUpdateScore;
 
 	@FXML
 	private Button btnDelete;
@@ -115,15 +115,16 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	@FXML
 	void UpdateScore(ActionEvent event) {
-		Qlist.get(0).setScore(Integer.valueOf(txtChangeScore.getText().trim()));
-		updateTotalScore();
-
+		if (!Qlist.isEmpty()) {
+			Qlist.get(0).setScore(Integer.valueOf(txtChangeScore.getText().trim()));
+			updateTotalScore();
+		}
 	}
 
-    @FXML
-    void btnBack(ActionEvent event) {
-    	EditExamController.setprevScreenData(exam, displayPrincipalView);
-    	if (!displayPrincipalView) {
+	@FXML
+	void btnBack(ActionEvent event) {
+		EditExamController.setprevScreenData(exam, displayPrincipalView);
+		if (!displayPrincipalView) {
 			displayNextScreen(teacher, "/gui_teacher/EditExam.fxml");
 		} else {
 			displayNextScreen(principal, "/gui_teacher/EditExam.fxml");
@@ -185,8 +186,8 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		ChosenQuestionID.setText(Qlist.get(0).getQuestionID());
 
 	}
-	
-	//ASK YUVAL
+
+	// ASK YUVAL
 	public static void setExamState(Exam newExamInProgress) {
 		exam = newExamInProgress;
 	}
@@ -196,23 +197,22 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 			txtChangeScore.setText("0");
-			//initTableRows_getFronmServer(); //TODO: NOT WORKING!!
-			
-			//initTableCols(); //ASK YUVAL
-			
+			// initTableRows_getFronmServer(); //TODO: NOT WORKING!!
+
+			// initTableCols(); //ASK YUVAL
+
 			if (exam.getExamQuestionsWithScores() != null) {
 				for (QuestionInExam q : exam.getExamQuestionsWithScores()) {
 					availableQuestions.remove(q.getQuestion());
 					insertRow(q);
 				}
 			}
-			
-			
+
 		} else if (ClientUI.loggedInUser.getUser() instanceof User) {
 			// setUp before load screen.
 			principal = (User) ClientUI.loggedInUser.getUser();
 			displayPrincipalView = true;
-			
+
 			btnDelete.setDisable(false);
 			btnDelete.setVisible(false);
 			btnUpdateScore.setDisable(false);
@@ -237,12 +237,13 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		}
 
 	}
-	
+
 	private void insertRow(QuestionInExam q) {
-		selectedQuestionsRows.add(new QuestionInExamRow(q.getQuestion().getQuestionID(), q.getScore(), q.getQuestion().getQuestion(), q));
+		selectedQuestionsRows.add(
+				new QuestionInExamRow(q.getQuestion().getQuestionID(), q.getScore(), q.getQuestion().getQuestion(), q));
 		tableQuestion.refresh();
-        availableQuestions.remove(q.getQuestion());
-        updateTotalScore();	
+		availableQuestions.remove(q.getQuestion());
+		updateTotalScore();
 	}
 
 	public void initTableCols() {
@@ -254,36 +255,12 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		tableQuestion.setItems(selectedQuestionsRows);
 		tableQuestion.getColumns().addAll(questionID, questionScore, question);
 	}
-	
-	/**
-	 * Method that check if the givenQuestion ID is legal
-	 * 
-	 * @param QuestionID send to method to check if legal
-	 * @return true if legal, else false
-	 */
 
-	public boolean checkForLegalID(String QuestionID) {
-		if (QuestionID.length() != 5) {
-			popUp("Question ID Must be 5 digits.");
-			return false;
-		}
-		for (int i = 0; i < QuestionID.length(); i++)
-			if (!Character.isDigit(QuestionID.charAt(i))) {
-				popUp("Question ID Must Contains only digits.");
-				return false;
-			}
-		return true;
-	}
-
-	
 	public static void setExamData(Exam examData) {
-		
+
 	}
 
-
-	
-	
-	//TODO : !!!!!!!!!!
+	// TODO : !!!!!!!!!!
 	public void initTableRows_getFronmServer() {
 		// get Questions for the examID that teacher selected in the Exam Back.
 		RequestToServer req = new RequestToServer("getQuestionsByIDForEditExam");
@@ -296,8 +273,8 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 //
 		ArrayList<QuestionInExam> finaleQusetionOfExamList = new ArrayList();
 		for (QuestionInExamRow q : selectedQuestionsRows) {
-			//allQuestionInExam.getOrDefault(finaleQusetionOfExamList, null)
-			
+			// allQuestionInExam.getOrDefault(finaleQusetionOfExamList, null)
+
 			finaleQusetionOfExamList.add(q.getQuestionObject());
 		}
 		exam.setExamQuestionsWithScores(finaleQusetionOfExamList);
@@ -305,7 +282,7 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	public static void setnextScreenData(Exam examData, boolean displayPrincipalView2) {
 		exam = examData;
-		displayPrincipalView=displayPrincipalView2;
+		displayPrincipalView = displayPrincipalView2;
 	}
 
 }
