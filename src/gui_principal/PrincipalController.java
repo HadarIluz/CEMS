@@ -112,20 +112,12 @@ public class PrincipalController extends Application implements Initializable {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	/**
 	 * @param event that loading the principal right screen after pressing a button.
 	 */
 	@FXML
 	void btnApproveTimeExtension(ActionEvent event) {
-		//Reading the information from the table extension_request in the database
-		RequestToServer req = new RequestToServer("getExtensionRequests");
-		ArrayList<ExtensionRequest> extensionRequest = new ArrayList<ExtensionRequest>();
-		ClientUI.cems.accept(req);		
-		extensionRequest = (ArrayList<ExtensionRequest>) CEMSClient.responseFromServer.getResponseData();
-		//Right screen loading
 		try {
-			ApprovalTimeExtensionController.setExtensionRequestList(extensionRequest);
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ApprovalTimeExtension.fxml"));
 			root.add(newPaneRight, 1, 0);
 		} catch (IOException e) {
