@@ -17,12 +17,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import logic.RequestToServer;
 
+/**
+ * @author Hadar Iluz
+ *
+ */
 public class CreateActiveExamController extends GuiCommon implements Initializable {
 
 	@FXML
@@ -45,12 +47,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 
 	@FXML
 	private TextField textProfession;
-
-	@FXML
-	private RadioButton selectManual;
-
-	@FXML
-	private RadioButton selectComputerized;
 
 	private static Exam exam;
 	private static String activeExamType;
@@ -106,8 +102,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 	 *         Otherwise, displays a message and returns a false.
 	 */
 	private boolean checkConditionToSaveActiveExam(String examCode) {
-		boolean selectCompExam = selectComputerized.isSelected();
-		boolean selectManualExam = selectManual.isSelected();
 
 		boolean flag = true;
 		StringBuilder strBuilder = new StringBuilder();
@@ -123,10 +117,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 		}
 		if (selectedTime == null) {
 			strBuilder.append("Please choose start time for this exam.\n");
-			flag = false;
-		}
-		if (!selectCompExam && !selectManualExam) {
-			strBuilder.append("You need to select exam type.\n");
 			flag = false;
 		}
 
@@ -153,25 +143,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 		return false;
 	}
 
-	/**
-	 * @param event that occurs when the teacher chooses an exam type.
-	 */
-	@FXML
-	void selectComputerized(MouseEvent event) {
-		activeExamType = "computerized";
-		selectManual.setDisable(toggleFlagStatus());
-
-	}
-
-	/**
-	 * @param event that occurs when the teacher chooses an exam type.
-	 */
-	@FXML
-	void selectManual(MouseEvent event) {
-		activeExamType = "manual";
-		selectComputerized.setDisable(toggleFlagStatus());
-
-	}
 
 	/**
 	 * //Allows you to select a single type of exam
