@@ -19,6 +19,7 @@ import entity.ActiveExam;
 import gui_cems.GuiCommon;
 import entity.ExamOfStudent;
 import entity.ExamStatus;
+import entity.ReasonOfSubmit;
 import entity.Student;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -131,6 +132,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					ClientUI.cems.accept(req);
 					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) {
 						timer.cancel();
+						examOfStudent.setReasonOfSubmit(ReasonOfSubmit.initiated);
 						btnSubmit.setDisable(true);
 						txtUploadSucceed.setVisible(true);
 						examOfStudent
@@ -148,6 +150,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 			}
 		} else {
 			RequestToServer req = new RequestToServer("StudentFinishManualExam");
+			examOfStudent.setReasonOfSubmit(ReasonOfSubmit.forced);
 			timer.cancel();
 			btnSubmit.setDisable(true);
 			txtUploadSucceed.setVisible(true);

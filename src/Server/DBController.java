@@ -1223,9 +1223,9 @@ public class DBController {
 		return allQuestionInExam;
 
 	}
-	
+
 	public ResponseFromServer GetAllQuestions_ToQuestionsBank() {
-		ResponseFromServer response=null;
+		ResponseFromServer response = null;
 		ArrayList<QuestionRow> allQuestionList = new ArrayList<QuestionRow>();
 		try {
 			PreparedStatement pstmt;
@@ -1249,27 +1249,27 @@ public class DBController {
 		} else {
 			response = new ResponseFromServer("No Question Bank");
 		}
-		
+
 		return response;
 	}
 
 	public Question getQuestionDataBy_questionID(String questionID) {
 		/*** Question Bank-Principal step2 ***/
-		Question q=new Question();
+		Question q = new Question();
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM cems.question WHERE questionID=?");
 			pstmt.setString(1, questionID);
-			
+
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				q.setQuestionID(rs.getString(2));
 				q.setQuestion(rs.getString(4));
-				
+
 				Profession p = new Profession(null);
 				p.setProfessionID(rs.getString(3));
 				q.setProfession(p);
-				
+
 				String[] answers = new String[4];
 				answers[0] = rs.getString(5);
 				answers[1] = rs.getString(6);
@@ -1280,14 +1280,14 @@ public class DBController {
 				q.setDescription(rs.getString(10));
 				rs.close();
 			}
-			
+
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 		return q;
-		
-	}	
-	
+
+	}
+
 	/**
 	 * @param studentExam
 	 * @return true or false if success in inserting the new manual exam of student
@@ -1296,9 +1296,11 @@ public class DBController {
 	public boolean insertNewStudentManualExam(ExamOfStudent studentExam) {
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("UPDATE exam_of_student SET totalTime=? WHERE exam=? AND student=?");
-			pstmt.setInt(3, studentExam.getStudent().getId());
-			pstmt.setString(2, studentExam.getActiveExam().getExam().getExamID());
+			pstmt = conn.prepareStatement(
+					"UPDATE exam_of_student SET totalTime=? AND reason_of_submit=? WHERE exam=? AND student=?");
+			pstmt.setInt(4, studentExam.getStudent().getId());
+			pstmt.setString(3, studentExam.getActiveExam().getExam().getExamID());
+			pstmt.setObject(2, studentExam.getReasonOfSubmit().toString());
 			pstmt.setInt(1, studentExam.getTotalTime());
 			if (pstmt.executeUpdate() != 0) {
 				return true;
