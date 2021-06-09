@@ -125,5 +125,25 @@ public class GuiCommon {
 			}
 		return true;
 	}
+	/**
+	 * Method that check if the givenQuestion ID is legal
+	 * 
+	 * @param QuestionID send to method to check if legal
+	 * @return true if legal, else false
+	 */
+
+	public static boolean checkForLegalquestionID(String QuestionID) {
+
+		if (QuestionID.length() != 5) {
+			popUp("Question ID Must be 5 digits.");
+			return false;
+		}
+		for (int i = 0; i < QuestionID.length(); i++)
+			if (!Character.isDigit(QuestionID.charAt(i))) {
+				popUp("Question ID Must Contains only digits.");
+				return false;
+			}
+		return true;
+	}
 
 }
