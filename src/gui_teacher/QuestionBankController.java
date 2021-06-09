@@ -92,8 +92,9 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	void MouseC(MouseEvent event) {
 		ObservableList<QuestionRow> Qlist;
 		Qlist = tableQuestion.getSelectionModel().getSelectedItems();
-		textQuestionID.setText(Qlist.get(0).getQuestionID());
-
+		if(!Qlist.isEmpty()) {
+			textQuestionID.setText(Qlist.get(0).getQuestionID());
+		}
 	}
 
 	/**
