@@ -152,15 +152,13 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnEditQuestion(ActionEvent event) {
-		if (!checkForLegalquestionID(textQuestionID.getText()))
-			return;
 
 		if ((textQuestionID.getText().isEmpty())) {
 			btnCreateNewQuestion.setDisable(true);
 
 
 		} else {
-			if (!checkForLegalID(textQuestionID.getText()))
+			if (!checkForLegalquestionID(textQuestionID.getText()))
 				return;
 			displayNextScreen(teacher, "EditQuestion.fxml");
 		}
