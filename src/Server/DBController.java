@@ -1167,13 +1167,15 @@ public class DBController {
 		PreparedStatement pstmt;
 		ArrayList<String> Details = new ArrayList<>();
 		try {
-			pstmt = conn.prepareStatement("SELECT score FROM exam_of_student WHERE student=? AND exam =?;");
+			pstmt = conn.prepareStatement("SELECT score,examType FROM exam_of_student WHERE student=? AND exam =?;");
 			pstmt.setInt(1, Integer.parseInt(requestData[1]));
 			pstmt.setString(2, requestData[0]);
 			ResultSet rs = pstmt.executeQuery();
 			rs.next();
 
 			Details.add(String.valueOf(rs.getInt(1)));
+			Details.add(rs.getString(2));
+
 			rs.close();
 
 			pstmt = conn.prepareStatement("SELECT professionName FROM profession WHERE professionID=? ;");
@@ -1197,6 +1199,51 @@ public class DBController {
 		}
 
 		return Details;
+	}
+
+	public ArrayList<QuestionRow> getSolvedComputerizedExam(String[] details) {
+		 ArrayList<QuestionRow> questionsOfExam = new  ArrayList<QuestionRow>();
+		 PreparedStatement pstmt;
+			try {
+				pstmt = conn.prepareStatement("SELECT question,answer,correct FROM student_answers_in_exam where student =? and exam=?;");
+				pstmt.setString(1,details[0]);
+				pstmt.setString(2,details[1]);			
+				ResultSet rs=pstmt.executeQuery();
+				while(rs.next()) {
+					QuestionRow question= new QuestionRow();
+					question.setQuestionID(rs.getString(1));
+					question.setStudentAnswer(rs.getInt(2));
+					question.setCorrect(rs.getInt(3));
+					questionsOfExam.add(question);				
+				}
+				rs.close();
+			} catch (SQLException ex) {
+				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			}	
+		return questionsOfExam;
+	}
+
+	public Question correctAnswerForQuestion(String questionID) {
+		
+		
+		 PreparedStatement pstmt;
+			try {
+				pstmt = conn.prepareStatement("SELECT question,answer1,answer2,answer3,answer4,correctAnswerIndex FROM question where questionID=?;");
+				pstmt.setString(1,questionID);
+				ResultSet rs=pstmt.executeQuery();
+					rs.next(); 
+					Question question= new Question(questionID);
+					question.setQuestion(rs.getString(1));
+					String[] answers = {rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)};
+					question.setAnswers(answers);
+					question.setCorrectAnswerIndex(rs.getInt(6));
+					question.setCorrectAns(answers[question.getCorrectAnswerIndex()-1]);
+				rs.close();
+				return question;
+			} catch (SQLException ex) {
+				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			}	
+		return null;
 	}
 
 

@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.FileSystemException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import entity.Student;
 import entity.Teacher;
 import entity.UpdateScoreRequest;
 import entity.User;
+import gui_cems.GuiCommon;
 import gui_server.ServerFrameController;
 import logic.RequestToServer;
 import logic.ResponseFromServer;
@@ -61,7 +63,6 @@ public class CEMSserver extends AbstractServer {
 		loggedInUsers = new HashMap<Integer, User>();
 		loogedClients = new HashMap<Integer, ConnectionToClient>();
 	}
-
 
 	/**
 	 * This method handles any messages received from the client.
@@ -136,11 +137,11 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
-		case "StudentView grade" :{
-			getStudentGrade(client,(String[]) req.getRequestData());
-			
+		case "StudentView grade": {
+			getStudentGrade(client, (String[]) req.getRequestData());
+
 		}
-		break;
+			break;
 		case "getProfNames": {
 			getProfNames(client);
 		}
@@ -171,6 +172,11 @@ public class CEMSserver extends AbstractServer {
 
 		case "createNewExtensionRequest": {
 			createNewExtensionRequest((ExtensionRequest) req.getRequestData(), client);
+		}
+			break;
+
+		case "downloadSolvedManualExam": {
+			downloadSolvedManualExam((ExamOfStudent) req.getRequestData(), client);
 		}
 			break;
 
@@ -355,6 +361,20 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
+		case "getSolvedComputerizedExam": {
+			getSolvedComputerizedExam((String[]) req.getRequestData(), client);
+
+		}
+			break;
+			
+		case "getAnswersOfMistakeQuestion": {
+			getAnswersOfMistakeQuestion((String) req.getRequestData(), client);
+
+		}
+			break;
+			
+			
+			
 
 		case "getAllExamsStoredInSystem": {
 			getAllExamsStoredInSystem(client);
@@ -382,9 +402,11 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
-
-
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
+	
+
+	
 
 	/**
 	 * @param requestData
@@ -403,6 +425,26 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
+	
+	private void getSolvedComputerizedExam(String[] requestData, ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Solved Computerized Exam");
+			Res.setResponseData(dbController.getSolvedComputerizedExam(requestData));
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	private void getAnswersOfMistakeQuestion(String questionID, ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Answer For Mistake Question");
+			Res.setResponseData(dbController.correctAnswerForQuestion(questionID));
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+	}
 
 	private void getAllStudentsExams(ConnectionToClient client) {
 		try {
@@ -414,19 +456,17 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
-	
+
 	private void getStudentGrade(ConnectionToClient client, String[] requestData) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("StudentScore");
-			Res.setResponseData( (ArrayList<String>) dbController.getStudentScore(requestData));
+			Res.setResponseData((ArrayList<String>) dbController.getStudentScore(requestData));
 			client.sendToClient(Res);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		
 	}
-
 
 	private void getStudentGrades(int studentID, ConnectionToClient client) {
 		try {
@@ -708,14 +748,14 @@ public class CEMSserver extends AbstractServer {
 			System.out.println(key);
 		}
 		System.out.println("END LIST loggedInUsers\n------\n");
-		
+
 		System.out.println("**********\nPrint loogedClients list:");
-		for (Integer id : loogedClients .keySet()) {
+		for (Integer id : loogedClients.keySet()) {
 			String keyID = loogedClients.toString();
 			System.out.println(keyID);
 		}
 		System.out.println("END LIST loogedClients\n*******\n");
-		
+
 	}
 
 	/**
@@ -872,6 +912,35 @@ public class CEMSserver extends AbstractServer {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	private void downloadSolvedManualExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
+		String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_" + examOfStudent.getStudent().getId()
+				+ ".docx";
+		ResponseFromServer respon = new ResponseFromServer("Download Solved EXAM");
+		MyFile exam = new MyFile(fileName);
+		try {
+			String path = new File("").getCanonicalPath();
+			String LocalfilePath = path + "/files/" + fileName;
+			File newFile = new File(LocalfilePath);
+			if (!newFile.exists()) {
+				respon.setResponseData("Download Failed");
+				client.sendToClient(respon);
+			} else {
+				byte[] mybytearray = new byte[(int) newFile.length()];
+				FileInputStream fis = new FileInputStream(newFile);
+				BufferedInputStream bis = new BufferedInputStream(fis);
+				exam.initArray(mybytearray.length);
+				exam.setSize(mybytearray.length);
+				bis.read(exam.getMybytearray(), 0, mybytearray.length);
+				fis.close();
+				client.sendToClient(exam);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			// GuiCommon.popUp("Failed.");
+		}
+
 	}
 
 	private void submitManualExam(MyFile msg, ConnectionToClient client) {

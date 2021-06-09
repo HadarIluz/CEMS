@@ -4,6 +4,13 @@ import java.util.ArrayList;
 
 import client.CEMSClient;
 import client.ClientUI;
+import common.MyFile;
+import entity.ActiveExam;
+import entity.Exam;
+import entity.ExamOfStudent;
+import entity.Question;
+import entity.QuestionRow;
+import entity.Student;
 import entity.User;
 import gui_cems.GuiCommon;
 import javafx.event.ActionEvent;
@@ -63,9 +70,47 @@ public class ViewExamController extends GuiCommon {
 	private static StudentController studentController;
 
 	private static User student = (User) ClientUI.loggedInUser.getUser();
+	static ArrayList<QuestionRow> questionsID;
+	static ArrayList<Question> questions;
+	private String examType;
 
+	@SuppressWarnings("unchecked")
 	@FXML
 	void btnGetCopyOfExam(ActionEvent event) {
+
+		if (examType.equals("computerized")) {
+			RequestToServer req = new RequestToServer("getSolvedComputerizedExam");
+			String[] details= {String.valueOf(student.getId()),txtExamID.getText()};
+			req.setRequestData(details);
+			ClientUI.cems.accept(req);
+			questionsID = (ArrayList<QuestionRow>)CEMSClient.responseFromServer.getResponseData();
+			
+			
+			questions= new ArrayList<Question>();
+			for(QuestionRow curr:questionsID) {
+				RequestToServer req2question = new RequestToServer("getAnswersOfMistakeQuestion");
+				req2question.setRequestData(curr.getQuestionID());
+				ClientUI.cems.accept(req2question);
+				Question question;
+				question = (Question)CEMSClient.responseFromServer.getResponseData();
+				question.setCorrectAns(question.getAnswers()[question.getCorrectAnswerIndex()-1]);
+				question.setStdAns(question.getAnswers()[curr.getStudentAnswer()-1]);
+				questions.add(question);
+			}
+			
+			displayNextScreen(student, "solvedExam.fxml");
+			
+		} else {
+			ExamOfStudent studentExam = new ExamOfStudent(new ActiveExam(new Exam(txtExamID.getText())),(Student)student,0);
+			RequestToServer req = new RequestToServer("downloadSolvedManualExam");
+			req.setRequestData(studentExam);
+			ClientUI.cems.accept(req);	
+			if(CEMSClient.responseFromServer.getResponseData().equals("Download Failed")) {
+				popUp("Download Failed.");
+				return;
+			}
+			popUp("Exam Download Successfully!");	
+		}
 
 	}
 
@@ -92,18 +137,21 @@ public class ViewExamController extends GuiCommon {
 		textProfessionName.setVisible(true);
 		textCourseName.setVisible(true);
 		try {
-		textGrade.setText(Details.get(0));
-		textProfessionName.setText(Details.get(1));
-		textCourseName.setText(Details.get(2));
-		}catch(IndexOutOfBoundsException e) {
+			textGrade.setText(Details.get(0));
+			examType = Details.get(1);
+			textProfessionName.setText(Details.get(2));
+			textCourseName.setText(Details.get(3));
+			btnGetCopyOfExam.setDisable(false);
+		} catch (IndexOutOfBoundsException e) {
+			btnGetCopyOfExam.setDisable(true);
 			lblCourse.setVisible(false);
 			lblProfession.setVisible(false);
 			lblGrade.setVisible(false);
 			textGrade.setVisible(false);
 			textProfessionName.setVisible(false);
 			textCourseName.setVisible(false);
-			popUp("Worng Exam ID!");
-			
+			popUp("Wrong ExamID, Please check again!");
+
 		}
 
 	}
