@@ -106,7 +106,8 @@ public class ExamBankController extends GuiCommon implements Initializable {
 				btnLockExam.setDisable(true);
 				btnDeleteExam.setDisable(false);
 			}
-		} else {
+		}
+		else {
 			btnExamInfoPrincipal.setDisable(false);
 		}
 	}
@@ -289,7 +290,8 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	/**
 	 * btnCreateActiveExam open screen of exam info of teacher with the chosen
-	 * ExamID. It is allowed to perform the same exam but NOT in the same time
+	 * ExamID. 
+	 * It is allowed to perform the same exam but NOT in the same time
 	 * checks by req to server in CreateActiveExamController.
 	 * 
 	 * @param event occurs when User press On "Create Active Exam"
@@ -359,33 +361,28 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		Exam examToLock = GetTableDetails(textExamID.getText());
 		Qlist = tableExam.getSelectionModel().getSelectedItems();
 		examToLock.setExamStatus(ExamStatus.inActive);
-		ActiveExam activeExam = new ActiveExam(examToLock);
 		RequestToServer req = new RequestToServer("lockActiveExam");
-		req.setRequestData(activeExam);
+		req.setRequestData(examToLock);
 		ClientUI.cems.accept(req);
-
-		if (CEMSClient.responseFromServer.getResponseType().equals("EXAM LOCKED"))
-			popUp("The exam was successfully locked");
-
-		// RequestToServer req2 = new RequestToServer("getStudentsInActiveExam");
-		// req.setRequestData(examToLock);
-		// ClientUI.cems.accept(req2);
-		// ArrayList<Integer> students = (ArrayList<Integer>)
-		// CEMSClient.responseFromServer.getResponseData();
-		// ArrayList<ConnectionToClient> students = (ArrayList<ConnectionToClient>)
-		// CEMSClient.responseFromServer.getResponseData();
-		// if (!students.isEmpty()) {
-		// need to replace status in the table
-		// need to send to all the student in this exam
-		// for (ConnectionToClient client : students) {
-		// client.sendToClient(students);;
-		// }
-
-		// }
-
-		// }
-		// else
-		// System.out.println("lock exam failed");
+		
+		if (CEMSClient.responseFromServer.getResponseData().equals("EXAM LOCKED")) {
+			RequestToServer req2 = new RequestToServer("getStudentsInActiveExam");
+			req.setRequestData(examToLock);
+			ClientUI.cems.accept(req2);
+			//ArrayList<Integer> students = (ArrayList<Integer>) CEMSClient.responseFromServer.getResponseData();
+			//ArrayList<ConnectionToClient> students = (ArrayList<ConnectionToClient>) CEMSClient.responseFromServer.getResponseData();
+			//if (!students.isEmpty()) {
+				// need to replace status in the table
+				// need to send to all the student in this exam
+				//for (ConnectionToClient client : students) {
+				//	client.sendToClient(students);;
+			//	}
+				
+			//}
+		
+		}
+		else
+			System.out.println("lock exam failed");
 	}
 
 }

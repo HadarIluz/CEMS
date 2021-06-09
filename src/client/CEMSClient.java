@@ -4,7 +4,8 @@
 
 package client;
 
-import ocsf.client.*;
+import ocsf.client.*
+;
 import common.CemsIF;
 import common.MyFile;
 import gui_cems.GuiCommon;
@@ -34,6 +35,8 @@ public class CEMSClient extends AbstractClient {
 	public static ResponseFromServer responseFromServer = new ResponseFromServer(null);
 	public static StatusMsg statusMsg = new StatusMsg();
 	public static boolean awaitResponse = false;
+	//public static MyFile exam; //matar ????
+
 
 	// Constructors ****************************************************
 
@@ -61,23 +64,23 @@ public class CEMSClient extends AbstractClient {
 
 	public void handleMessageFromServer(Object msg) {
 		System.out.println("--> handleMessageFromServer");
-
+	
 		if (msg instanceof StatusMsg) {
 			statusMsg = (StatusMsg) msg;
 			clientUI.display(statusMsg.toString());
 			awaitResponse = false;
 		}
-
-		if (msg instanceof ResponseFromServer) {
+		
+		if(msg instanceof ResponseFromServer) {
+			// matar: if it's a notification --> do stuff
+			//GuiCommon.handleNotifications(msg);
 			responseFromServer = (ResponseFromServer) msg;
-			if (responseFromServer.getResponseType().startsWith("NOTIFICATION"))
-				GuiCommon.handleNotifications(responseFromServer);
 			responseFromServer.getStatusMsg().setStatus(responseFromServer.getResponseType());
 			clientUI.display(responseFromServer.toString());
 			awaitResponse = false;
 		}
-
-		if (msg instanceof MyFile) {
+		
+		if(msg instanceof MyFile) {
 			MyFile downloadExam = (MyFile) msg;
 			int fileSize = ((MyFile) msg).getSize();
 			System.out.println("Message received: " + msg + " from server");
@@ -85,7 +88,7 @@ public class CEMSClient extends AbstractClient {
 			String home = System.getProperty("user.home");
 			awaitResponse = false;
 			try {
-				FileOutputStream fos = new FileOutputStream(home + "/Downloads/" + downloadExam.getFileName());
+				FileOutputStream fos = new FileOutputStream(home + "/Downloads/" + downloadExam.getFileName());//NEED TO BE PATH
 				BufferedOutputStream bos = new BufferedOutputStream(fos);
 				bos.write(downloadExam.getMybytearray(), 0, fileSize);
 				bos.flush();
@@ -98,7 +101,8 @@ public class CEMSClient extends AbstractClient {
 			}
 		}
 	}
-
+	
+	
 	/**
 	 * This method handles all data coming from the UI
 	 *
