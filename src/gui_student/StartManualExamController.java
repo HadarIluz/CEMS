@@ -85,10 +85,10 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	private static StudentController studentController;
 	private static ActiveExam newActiveExam;
+	private AtomicInteger timeForTimer;
 	private Timer timer;
 	private ExamOfStudent examOfStudent;
-	private AtomicInteger timeForTimer;
-	private Boolean lock = false;
+	private static Boolean lock = false;
 
 	@FXML
 	void btnDownload(ActionEvent event) {
@@ -151,12 +151,12 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		} else {
 			RequestToServer req = new RequestToServer("StudentFinishManualExam");
 			examOfStudent.setReasonOfSubmit(ReasonOfSubmit.forced);
-			timer.cancel();
-			btnSubmit.setDisable(true);
-			txtUploadSucceed.setVisible(true);
 			examOfStudent.setTotalTime((newActiveExam.getTimeAllotedForTest() * 60 - timeForTimer.get()) / 60);
 			req.setRequestData(examOfStudent);
 			ClientUI.cems.accept(req);
+			if (CEMSClient.responseFromServer.getResponseType().equals("TOTAL TIME SAVED"))
+				btnSubmit.setDisable(true); // check
+			txtUploadSucceed.setVisible(true);// check
 		}
 	}
 
@@ -180,8 +180,14 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				String str = String.format("Time left: %02d:%02d:%02d", hours, minutes, seconds);
 				Platform.runLater(() -> textTimeLeft.setText(str));
 				timeForTimer.decrementAndGet();
-				if (timeForTimer.get() == 0) {
+				if (timeForTimer.get() == 0 || lock) {
 					// cancel the timer
+					if (timeForTimer.get() == 0) {
+						newActiveExam.getExam().setExamStatus(ExamStatus.inActive);
+						RequestToServer req = new RequestToServer("lockActiveExam");
+						req.setRequestData(newActiveExam);
+						ClientUI.cems.accept(req);
+					}
 					timer.cancel();
 					Platform.runLater(() -> lockExam());
 				}
@@ -191,22 +197,17 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	private void lockExam() {
 		lock = true;
-		newActiveExam.getExam().setExamStatus((ExamStatus.inActive));
+		popUp("The exam is locked!");
 		btnSubmit(null);
-
-		RequestToServer extReq = new RequestToServer("lockActiveExam");
-		extReq.setRequestData(newActiveExam);
-		ClientUI.cems.accept(extReq);
-		if ((CEMSClient.responseFromServer.getResponseType()).equals("EXAM LOCKED")) {
-			btnSubmit.setDisable(true);
-			btnDownload.setDisable(true);
-			GuiCommon.popUp("The exam is locked!");
-		}
 	}
 
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
 		newActiveExam = newActiveExamInProgress;
 
+	}
+
+	public static void setTimeForExam(Boolean temp) {
+		lock = temp;
 	}
 
 }

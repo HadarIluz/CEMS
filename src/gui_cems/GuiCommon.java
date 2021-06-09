@@ -33,6 +33,7 @@ public class GuiCommon {
 
 	/**
 	 * create a popUp with a given message.
+	 * 
 	 * @param msg
 	 */
 	public static void popUp(String msg) {
@@ -100,17 +101,36 @@ public class GuiCommon {
 				System.out.println("Couldn't load!");
 				e.printStackTrace();
 			}
-			
-			
+
 		}
-		
-		
-		
+	}
+
+	public static void handleNotifications(ResponseFromServer res) {
+		if (res.getResponseType().startsWith("NOTIFICATION_STUDENT"))
+			handleStudentNotifications(res);
+		else if (res.getResponseType().startsWith("NOTIFICATION_PRINCIPAL"))
+			handlePrincipalNotifications(res);
+		else if (res.getResponseType().startsWith("NOTIFICATION_TEACHER"))
+			handleTeacherNotifications(res);
+	}
+
+	private static void handleStudentNotifications(ResponseFromServer res) {
+		if (res.getResponseType().equals("NOTIFICATION_STUDENT_EXAM_LOCKED")) {
+			System.out.println("notification exam locked");
+			// StartManualExamController.setTimeForExam(true);//????
+			// StartManualExamController.setTimeForExam(0);//????
+		}
 
 	}
-	
-	public static void handleNotifications(ResponseFromServer res) {
-		// if the response is notificatoin for student -> check that user is student and do what you need
+
+	private static void handlePrincipalNotifications(ResponseFromServer res) {
+		// if the response is notificatoin for principal -> check that user is student
+		// and do what you need
+	}
+
+	private static void handleTeacherNotifications(ResponseFromServer res) {
+		// if the response is notificatoin for student -> check that user is student and
+		// do what you need
 	}
 
 	public static boolean checkForLegalID(String ExamID) {
@@ -125,6 +145,7 @@ public class GuiCommon {
 			}
 		return true;
 	}
+
 	/**
 	 * Method that check if the givenQuestion ID is legal
 	 * 
