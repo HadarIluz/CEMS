@@ -345,11 +345,6 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "CheckIfActiveExamAlreadyExists": {
-			CheckIfActiveExamAlreadyExists((ActiveExam) req.getRequestData(), client);
-		}
-			break;
-
 		case "createNewActiveExam": {
 			createNewActiveExam((ActiveExam) req.getRequestData(), client);
 		}
@@ -998,45 +993,6 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
-
-	}
-
-	private void CheckIfActiveExamAlreadyExists(ActiveExam activeExam, ConnectionToClient client) {
-		// logic for 'createNewActiveExam'
-		ActiveExam actExam = null;
-		ResponseFromServer res = null;
-		actExam = dbController.isActiveExamAlreadyExists(activeExam);
-
-		// in case ExamCode is null the same examID not found, so create this active
-		// exam is allowed.
-		if (actExam.getExamCode() == null) {
-			res = createResponse("CREATE ACTION ALLOWED", "Create action is allowed");
-		}
-
-		else {
-			String str = "ACTIVE EXAM EXIST: " + activeExam.getExam().getExamID() + ", start time: "
-					+ activeExam.getStartTime() + " Code: " + actExam.getExamCode();
-
-			// check if they have the same start time AND code.
-			/* actExam.getStartTime().equals(activeExam.getStartTime())&& */
-			if (actExam.getExamCode().equals(activeExam.getExamCode())) {
-				res = createResponse(str, "ACTIVE EXAM NOT ALLOWED");
-			} else {
-				// we allowed to perform different exams at the same time.
-				// we allowed to perform the same exam but NOT in the same time
-				res = createResponse(str, "Create action is allowed");
-			}
-
-		}
-
-		// ----------------------
-
-		try {
-			client.sendToClient(res);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		printMessageInLogFramServer("Message to Client:", res);
 
 	}
 

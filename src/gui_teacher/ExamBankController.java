@@ -101,9 +101,13 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			if (Qlist.get(0).getExamStatus().equals(ExamStatus.active)) {
 				btnLockExam.setDisable(false);
 				btnDeleteExam.setDisable(true);
+				btnCreateActiveExam.setDisable(true);
+				btnEditExam.setDisable(true); //can't edit exam in status active
 			} else {
 				btnLockExam.setDisable(true);
 				btnDeleteExam.setDisable(false);
+				btnCreateActiveExam.setDisable(false);
+				btnEditExam.setDisable(false);
 			}
 		}
 		else {
@@ -283,11 +287,12 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnCreateActiveExam(ActionEvent event) {
-
+		//can not create active exam for exam in status: active.
+		Exam selectedExam = getExistExamDetails(textExamID.getText());
 		if ((textExamID.getText().isEmpty())) {
 			btnCreateActiveExam.setDisable(true);
+			
 		} else {
-			Exam selectedExam = getExistExamDetails(textExamID.getText());
 			CreateActiveExamController.setActiveExamState(selectedExam);
 			displayNextScreen(teacher, "CreateActiveExam.fxml");
 		}
