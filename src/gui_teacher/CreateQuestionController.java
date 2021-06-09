@@ -10,27 +10,27 @@ import client.ClientUI;
 import entity.Profession;
 import entity.Question;
 import entity.Teacher;
+import entity.User;
 import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
+/**
+ * @author Yuval Hayan
+ * @author Hadar Iluz
+ *
+ */
 public class CreateQuestionController extends GuiCommon implements Initializable {
 
 	@FXML
@@ -80,12 +80,22 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 	private Integer selectedIndex;
 	private Profession selectedProfession;
 
+	private static Teacher teacher;
+	private static User principal;
+	private static String screenStatus;
+	private static boolean displayPrincipalView;
+
 	private static QuestionBankController questionBankController; // will be needed for btnBack button (for root, to
 																	// dispaly the prev screen)
+	private static String questionID;
 
 	@FXML
 	void btnBack(ActionEvent event) {
-
+		if (!displayPrincipalView) {
+			displayNextScreen(teacher, "/gui_teacher/QuestionBank.fxml");
+		} else {
+			displayNextScreen(principal, "/gui_teacher/QuestionBank.fxml");
+		}
 	}
 
 	@FXML
@@ -160,14 +170,67 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedIndex = null;
 		selectedProfession = null;
-		professionsMap = TeacherController.getProfessionsMap();
-		loadProfessionsToCombobox();
-		selectCorrectAnswer.setItems(FXCollections.observableArrayList(answerNumbers));
+		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
+			teacher = (Teacher) ClientUI.loggedInUser.getUser();
+
+			professionsMap = TeacherController.getProfessionsMap();
+			loadProfessionsToCombobox();
+			selectCorrectAnswer.setItems(FXCollections.observableArrayList(answerNumbers));
+		}
+
+		else if(ClientUI.loggedInUser.getUser() instanceof User){
+			principal = (User) ClientUI.loggedInUser.getUser();
+			displayPrincipalView = true;
+			// setUp
+			btnSaveQuestion.setDisable(false);
+			btnSaveQuestion.setVisible(false);
+			selectProfession.setDisable(false);
+			selectProfession.setVisible(false);
+			selectCorrectAnswer.setDisable(false);
+			selectCorrectAnswer.setVisible(false);
+
+			textCorrectAnswerIndex.setVisible(true);
+			textProfession.setVisible(true);
+			textNavigation.setVisible(true);
+			loadSelectedQuestionDataToView();
+		}
 
 	}
 
 	public void setData_From_QuestionBankController(QuestionBankController questionBankController) {
 		this.questionBankController = questionBankController;
+	}
+
+	public static void setNextScreenData(String questionIDselected) {
+		questionID = questionIDselected;
+	}
+
+	private void loadSelectedQuestionDataToView() {
+		RequestToServer req = new RequestToServer("getQuestionDataBy_questionID");
+		req.setRequestData(questionID);
+		ClientUI.cems.accept(req);
+
+		Question questionForView = (Question) CEMSClient.responseFromServer.getResponseData();
+		// questionForView
+		// textAnswer1 4 textCorrectAnswerIndex
+
+		textTheQuestion.setText(questionForView.getQuestion());
+		textProfession.setText(questionForView.getProfession().getProfessionID());
+		String ans[] = questionForView.getAnswers();
+		textAnswer1.setText(ans[0]);
+		textAnswer2.setText(ans[1]);
+		textAnswer3.setText(ans[2]);
+		textAnswer4.setText(ans[3]);
+		int index = questionForView.getCorrectAnswerIndex();
+		textCorrectAnswerIndex.setText(ans[index]);
+		textDescription.setText(questionForView.getDescription());
+		
+		textTheQuestion.setEditable(false);
+		textAnswer1.setEditable(false);
+		textAnswer2.setEditable(false);
+		textAnswer3.setEditable(false);
+		textAnswer4.setEditable(false);
+		textDescription.setEditable(false);
 	}
 
 }

@@ -535,7 +535,7 @@ public class DBController {
 	 *                   Query.
 	 */
 	public ResponseFromServer verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
-		Exam exam = new Exam();// TODO:i remove null- need to check
+		Exam exam = new Exam();
 		ResponseFromServer response = null;
 		/*** EnterToExam ***/
 		try {
@@ -964,29 +964,33 @@ public class DBController {
 	 * @return true if succeed to save edit exam values, return false if not.
 	 * 
 	 */
-	public boolean editExamSave(Exam exam) {
-		// Message from Lior: still not working & need to understand if need to save
-		// changes in questions (
-		// that delete in the next screen)
+	public ResponseFromServer SaveEditExam(Exam exam) {
+		ResponseFromServer response = null;
 		PreparedStatement pstmt;
+		// examID, profession, course, timeAllotedForTest, commentForTeacher,
+		// commentForStudents, author, status, examType
 		try {
 			pstmt = conn.prepareStatement(
-					"UPDATE exam SET timeAllotedForTest=?, commentForTeacher=?, commentForStudents=?, author=? WHERE examID=?");
-			pstmt.setString(1, Integer.toString(exam.getTimeOfExam())); // set exam time
-			pstmt.setString(2, exam.getCommentForTeacher()); // set comments for teacher
-			pstmt.setString(3, exam.getCommentForStudents());// set comments for students
-			pstmt.setLong(4, exam.getAuthor().getId());// set teacher id
-			pstmt.setString(5, exam.getExamID()); // set exam id
+					"UPDATE exam SET timeAllotedForTest=?, commentForTeacher=?, commentForStudents=? WHERE examID=?");
+			pstmt.setString(1, Integer.toString(exam.getTimeOfExam()));
+			pstmt.setString(2, exam.getCommentForTeacher());
+			pstmt.setString(3, exam.getCommentForStudents());
+			pstmt.setString(4, exam.getExamID());
 			if (pstmt.executeUpdate() == 1) {
-				System.out.println("Saved");
-				return true;
+				System.out.println("Edit Exam Saved");
+				response = new ResponseFromServer("Edit Exam Saved");
+				return response;
+			} else {
+				response = new ResponseFromServer("Edit Exam_NOT_Saved");
 			}
+
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		return false;
+		return response;
 	}
-
+	
+	
 	public boolean deleteActiveExam(ActiveExam exam) {
 		PreparedStatement pstmt;
 		try {
@@ -1001,22 +1005,20 @@ public class DBController {
 		return false;
 	}
 
-	public ResponseFromServer updateExamStatus(ActiveExam newActiveExam) {
+	public Boolean updateExamStatus(Exam exam) {
 		/* createNewActiveExam */
-		ResponseFromServer res = null;
+		PreparedStatement pstmt;
 		try {
-			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("UPDATE exam SET status=? WHERE exam=?");
-
-			pstmt.setString(1, String.valueOf(newActiveExam.getExam().getExamStatus()));
-			pstmt.setString(2, newActiveExam.getExam().getExamID());
-			if (pstmt.executeUpdate() != 0) {
-				res = new ResponseFromServer("EXAM STATUS UPDATED"); // FIXME: ENUM nor change in table.
+			pstmt = conn.prepareStatement("UPDATE exam SET status=? WHERE examID=?;");
+			pstmt.setObject(1, exam.getExamStatus().toString());
+			pstmt.setString(2, exam.getExamID());
+			if (pstmt.executeUpdate() == 1) {
+				return true;
 			}
-		} catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		} catch (SQLException e) {
+			return false;
 		}
-		return res;
+		return false;
 	}
 
 	public boolean checkIfExtensionRequestExists(ExtensionRequest extensionRequest) {

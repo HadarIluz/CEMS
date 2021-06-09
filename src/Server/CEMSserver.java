@@ -12,9 +12,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.FileSystemException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import client.ClientUI;
 import common.MyFile;
@@ -24,6 +28,7 @@ import entity.ExamOfStudent;
 import entity.ExtensionRequest;
 import entity.Profession;
 import entity.Question;
+import entity.QuestionInExam;
 import entity.Student;
 import entity.Teacher;
 import entity.UpdateScoreRequest;
@@ -38,7 +43,7 @@ import ocsf.server.ConnectionToClient;
 
 public class CEMSserver extends AbstractServer {
 	// Class variables *************************************************
-
+	//
 	/**
 	 * The default port to listen on.
 	 */
@@ -357,7 +362,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "SaveEditExam": {
-			dbController.editExamSave((Exam) req.getRequestData());
+			SaveEditExam((Exam) req.getRequestData(), client);
 
 		}
 			break;
@@ -395,6 +400,24 @@ public class CEMSserver extends AbstractServer {
 		case "InsertExamOfStudent": {
 			InsertExamOfStudent((ExamOfStudent) req.getRequestData(), client);
 
+		}
+			break;
+
+		case "getQuestionsByIDForEditExam": {
+			getQuestionsByIDForEditExam((String) req.getRequestData(), client);
+		}
+			break;
+		case "getAllQuestionsStoredInSystem": {
+			getAllQuestionsStoredInSystem(client);
+		}
+			break;
+		case "getQuestionDataBy_questionID": {
+			getQuestionDataBy_questionID((String) req.getRequestData(), client);
+		}
+			break;
+
+		case "checkExam_of_student_NotExistsBeforeStartExam": {
+			checkExam_of_student_NotExistsBeforeStartExam((ExamOfStudent) req.getRequestData(), client);
 		}
 			break;
 
@@ -1031,8 +1054,10 @@ public class CEMSserver extends AbstractServer {
 
 	private void createNewActiveExam(ActiveExam newActiveExam, ConnectionToClient client) {
 		ResponseFromServer response = dbController.createNewActiveExam(newActiveExam);
-		// dbController.updateExamStatus(newActiveExam.getExam());
-		response.getStatusMsg().setStatus("New active exam created successfully");
+		Boolean ans = dbController.updateExamStatus(newActiveExam.getExam());
+		if (ans) {
+			response.getStatusMsg().setStatus("New active exam created successfully");
+		}
 		try {
 			client.sendToClient(response);
 		} catch (IOException ex) {
@@ -1053,11 +1078,10 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void lockActiveExam(ActiveExam examToLock, ConnectionToClient client) {
-		// ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
-		ResponseFromServer respon = null;
+		ResponseFromServer respon = new ResponseFromServer("EXAM LOCK");
 		try {
 			if (dbController.deleteActiveExam(examToLock)) {
-				respon = dbController.updateExamStatus(examToLock);
+				Boolean ans = dbController.updateExamStatus(examToLock.getExam());// hadar: update working
 				respon.setResponseData((Boolean) false);
 				if (respon.getStatusMsg().getStatus().equals("EXAM STATUS UPDATED"))
 					respon.setResponseData((Boolean) true);
@@ -1090,5 +1114,92 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);
 	}
+
+	private void SaveEditExam(Exam editExam, ConnectionToClient client) {
+		/* logic for EditExam */
+		ResponseFromServer response = null;
+		response = dbController.SaveEditExam(editExam);
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+
+	}
+
+	// TODO: CHECK----->DELETE AND TACK FROM YUVAL
+	private void getQuestionsByIDForEditExam(String examID, ConnectionToClient client) {
+		/* logic for- EditExam _step2 */
+		ResponseFromServer response = null;
+		ArrayList<QuestionInExam> questionIDList_InExam;
+		HashMap<String, Question> allQuestionInExam;
+		// HashMap<questionID, QuestionInExam>
+
+		// Set<QuestionInExam> questionIDList_InExam = new HashSet<>();
+		// Map<String, Set<QuestionInExam>> allQuestionInExam = new HashMap<>();
+		// //Map<questionID, Set<QuestionInExam>>
+		try {
+			// DELETE
+			questionIDList_InExam = (ArrayList<QuestionInExam>) dbController.getQuestionsID_byExamID(examID);
+			allQuestionInExam = (HashMap<String, Question>) dbController.allQuestionInExam(questionIDList_InExam);
+			if (allQuestionInExam != null) {
+				response = new ResponseFromServer("All Question In ExamID: " + examID);
+				response.setResponseData(allQuestionInExam);
+			} else {
+				response = new ResponseFromServer("NOT Found All Question In Exam");
+			}
+
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void getAllQuestionsStoredInSystem(ConnectionToClient client) {
+		ResponseFromServer response = null;
+		response = dbController.GetAllQuestions_ToQuestionsBank();
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);// print to server log.
+
+	}
+
+	private void getQuestionDataBy_questionID(String questionID, ConnectionToClient client) {
+		ResponseFromServer response = new ResponseFromServer("Question Data");
+		response.setResponseData((Question) dbController.getQuestionDataBy_questionID(questionID));
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);// print to server log.
+
+	}
+
+	private void checkExam_of_student_NotExistsBeforeStartExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
+		ResponseFromServer response = null;	
+		if (dbController.verifyExamOfStudentByExamID(examOfStudent)) {
+			response=new ResponseFromServer("exam_of_student_allowed");
+		}
+		else {
+			response=new ResponseFromServer("Exam_of_student Already Exists");
+		}
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);// print to server log.
+	}
+
+
+	
+	
+	
+	//
 
 }

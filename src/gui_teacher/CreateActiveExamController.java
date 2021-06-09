@@ -17,12 +17,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import logic.RequestToServer;
 
+/**
+ * @author Hadar Iluz
+ *
+ */
 public class CreateActiveExamController extends GuiCommon implements Initializable {
 
 	@FXML
@@ -46,12 +48,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 	@FXML
 	private TextField textProfession;
 
-	@FXML
-	private RadioButton selectManual;
-
-	@FXML
-	private RadioButton selectComputerized;
-
 	private static Exam exam;
 	private static String activeExamType;
 	private String[] startTimeArr = { "08:00:00", "08:30:00", "09:00:00", "09:30:00", "10:00:00", "10:30:00",
@@ -59,8 +55,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 			"15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00" };
 
 	private static boolean toggleFlag = false;
-	// TODO: private Date date = null; //we need to add to table the date of the
-	// exam ??
 	private Time selectedTime;
 
 	/**
@@ -72,8 +66,8 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 
 		if (checkConditionToSaveActiveExam(examCode)) {
 
-			// exam.setAuthor(teacher); // TODO: think with team if need to delete from DB
-
+			exam.setAuthor((Teacher) ClientUI.loggedInUser.getUser());
+			exam.setExamStatus(ExamStatus.active);
 			ActiveExam newActiveExam = new ActiveExam(selectedTime, exam, examCode, activeExamType,
 					exam.getTimeOfExam());
 			// before we create new active exam, Request from server to check that
@@ -82,25 +76,15 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 
 			if (isAllowed) {
 				// Request from server to insert new active exam into DB.
+				// Request from server to update status filed for this exam: [ENUM('active')].
 				RequestToServer reqCreateExam = new RequestToServer("createNewActiveExam");
 				reqCreateExam.setRequestData(newActiveExam);
 				ClientUI.cems.accept(reqCreateExam);
 
 				if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("NEW ACTIVE EXAM CREATED")) {
-					// Request from server to update status filed for this exam: [ENUM('active')].
-					newActiveExam.getExam().setExamStatus(ExamStatus.active);
-					RequestToServer reqUpdate = new RequestToServer("updateExamStatus");
-					reqUpdate.setRequestData(newActiveExam);
-					ClientUI.cems.accept(reqUpdate); //FIXME: problam in DB 
-					System.out.println("!!!!!!!11");
-					
-					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("EXAM STATUS UPDATED")) {
 						popUp("New active exam has been successfully created in the system.");
-
 						displayNextScreen((Teacher) ClientUI.loggedInUser.getUser(), "ExamBank.fxml"); 
-						
-					}
-				}//Problem
+				}
 
 			} else {
 				popUp("This exam: " + newActiveExam.getExam().getExamID()
@@ -118,8 +102,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 	 *         Otherwise, displays a message and returns a false.
 	 */
 	private boolean checkConditionToSaveActiveExam(String examCode) {
-		boolean selectCompExam = selectComputerized.isSelected();
-		boolean selectManualExam = selectManual.isSelected();
 
 		boolean flag = true;
 		StringBuilder strBuilder = new StringBuilder();
@@ -135,10 +117,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 		}
 		if (selectedTime == null) {
 			strBuilder.append("Please choose start time for this exam.\n");
-			flag = false;
-		}
-		if (!selectCompExam && !selectManualExam) {
-			strBuilder.append("You need to select exam type.\n");
 			flag = false;
 		}
 
@@ -165,25 +143,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 		return false;
 	}
 
-	/**
-	 * @param event that occurs when the teacher chooses an exam type.
-	 */
-	@FXML
-	void selectComputerized(MouseEvent event) {
-		activeExamType = "computerized";
-		selectManual.setDisable(toggleFlagStatus());
-
-	}
-
-	/**
-	 * @param event that occurs when the teacher chooses an exam type.
-	 */
-	@FXML
-	void selectManual(MouseEvent event) {
-		activeExamType = "manual";
-		selectComputerized.setDisable(toggleFlagStatus());
-
-	}
 
 	/**
 	 * //Allows you to select a single type of exam
@@ -211,7 +170,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// teacher = (Teacher) ClientUI.loggedInUser.getUser();
 		selectedTime = null;
 		// TODO: get proffe..Name and set into examID label teacher.getProfessions()
 		// the same for Course.
