@@ -92,8 +92,9 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	void MouseC(MouseEvent event) {
 		ObservableList<QuestionRow> Qlist;
 		Qlist = tableQuestion.getSelectionModel().getSelectedItems();
-		textQuestionID.setText(Qlist.get(0).getQuestionID());
-
+		if(!Qlist.isEmpty()) {
+			textQuestionID.setText(Qlist.get(0).getQuestionID());
+		}
 	}
 
 	/**
@@ -151,15 +152,13 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnEditQuestion(ActionEvent event) {
-		if (!checkForLegalquestionID(textQuestionID.getText()))
-			return;
 
 		if ((textQuestionID.getText().isEmpty())) {
 			btnCreateNewQuestion.setDisable(true);
 
 
 		} else {
-			if (!checkForLegalID(textQuestionID.getText()))
+			if (!checkForLegalquestionID(textQuestionID.getText()))
 				return;
 			displayNextScreen(teacher, "EditQuestion.fxml");
 		}
@@ -267,26 +266,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		
 	}
 
-	/**
-	 * Method that check if the givenQuestion ID is legal
-	 * 
-	 * @param QuestionID send to method to check if legal
-	 * @return true if legal, else false
-	 */
-
-	public boolean checkForLegalquestionID(String QuestionID) {
-
-		if (QuestionID.length() != 5) {
-			popUp("Question ID Must be 5 digits.");
-			return false;
-		}
-		for (int i = 0; i < QuestionID.length(); i++)
-			if (!Character.isDigit(QuestionID.charAt(i))) {
-				popUp("Question ID Must Contains only digits.");
-				return false;
-			}
-		return true;
-	}
+	
 
 	
 	

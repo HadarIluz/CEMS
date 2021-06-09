@@ -96,6 +96,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	void selectExamFromTable(MouseEvent event) {
 		ObservableList<Exam> Qlist;
 		Qlist = tableExam.getSelectionModel().getSelectedItems();
+		if(Qlist.isEmpty()) {
+			return;
+		}
 		textExamID.setText(Qlist.get(0).getExamID());
 		if (!displayPrincipalView) {
 			if (Qlist.get(0).getExamStatus().equals(ExamStatus.active)) {
@@ -209,7 +212,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		tableExam.setEditable(true);
+		tableExam.setEditable(false);
 		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 			initTableRows();
@@ -259,7 +262,6 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@SuppressWarnings("unchecked")
 	private void initTableRows() {
-		textExamID.setEditable(true);
 		RequestToServer req = new RequestToServer("getExams");
 		req.setRequestData(teacher.getId());
 		ArrayList<Exam> ExamsOfTeacher = new ArrayList<Exam>();
