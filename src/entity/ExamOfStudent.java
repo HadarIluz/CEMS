@@ -1,11 +1,10 @@
 package entity;
 
-import java.io.Serializable;
-<<<<<<< HEAD
+import java.io.Serializable
+;
 import java.sql.Time;
 import java.util.HashMap;
-import entity.Student;;
-=======
+import entity.Student;
 import java.util.HashMap;;
 
 @SuppressWarnings("serial")
