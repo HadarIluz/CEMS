@@ -68,7 +68,7 @@ public class DBController {
 	}
 
 	/*
-	 * checks if the user that try to login exists in the DB.
+	 * checks if the user that try to login exists in the DB
 	 * 
 	 * @param obj of user which include student id to verify if exists.
 	 */
