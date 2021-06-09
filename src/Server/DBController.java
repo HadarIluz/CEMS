@@ -1563,6 +1563,10 @@ public class DBController {
 		return null;
 	}
 
+	/**
+	 * @param examID
+	 * @return the time when an active exam with ID exam id started
+	 */
 	public Time getStartTimeOfActiveExam(String examID) {
 		
 		try {
@@ -1581,6 +1585,10 @@ public class DBController {
 		return null;
 	}
 
+	/**
+	 * @param examID
+	 * @return the number of students that didn't submit the exam
+	 */
 	public int getNumberOfNotSubmitted(String examID) {
 		PreparedStatement pstmt;
 		int sum = 0;
@@ -1599,6 +1607,10 @@ public class DBController {
 
 	}
 
+	/**
+	 * @param activeExam
+	 * @return true if documenting the exam was successfull
+	 */
 	public boolean documentExam(ActiveExam activeExam) {
 		int initiated = initiatedSubmitInActiveExam(activeExam.getExam().getExamID());
 		int forced = forcedSubmitInActiveExam(activeExam.getExam().getExamID());
@@ -1626,6 +1638,10 @@ public class DBController {
 		
 	}
 
+	/**
+	 * @param examID
+	 * @return the number of submitted exams that were forced by system
+	 */
 	private int forcedSubmitInActiveExam(String examID) {
 		PreparedStatement pstmt;
 		int sum = 0;
@@ -1643,6 +1659,10 @@ public class DBController {
 		return sum;
 	}
 
+	/**
+	 * @param examID
+	 * @return the number of submitted exams that were initiated by student
+	 */
 	private int initiatedSubmitInActiveExam(String examID) {
 		PreparedStatement pstmt;
 		int sum = 0;
