@@ -19,35 +19,35 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <CheckBox fx:id="checkBoxShowTime" layoutX="517.0" layoutY="435.0" mnemonicParsing="false" onMouseClicked="#checkBoxShowTime" selected="true" text="Show Time Left">
+      <CheckBox fx:id="checkBoxShowTime" layoutX="359.0" layoutY="490.0" mnemonicParsing="false" onMouseClicked="#checkBoxShowTime" selected="true" text="Show Time Left">
          <font>
             <Font size="14.0" />
          </font>
       </CheckBox>
-      <Label fx:id="lblTimeLeft" layoutX="517.0" layoutY="465.0" prefHeight="20.0" prefWidth="109.0" text="Time left: 25:20" textFill="#e40909">
+      <Label fx:id="lblTimeLeft" layoutX="359.0" layoutY="520.0" prefHeight="20.0" prefWidth="109.0" text="Time left: 25:20" textFill="#e40909">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <RadioButton fx:id="btnAnswer1" layoutX="232.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnAnswer1" prefHeight="17.0" prefWidth="127.0" text="2">
+      <RadioButton fx:id="btnAnswer1" layoutX="232.0" layoutY="335.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnAnswer1" prefHeight="17.0" prefWidth="400.0" text="2">
 
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="btnAnswer2" layoutX="232.0" layoutY="375.0" mnemonicParsing="false" onAction="#btnAnswer2" prefHeight="17.0" prefWidth="127.0" text="3">
+      <RadioButton fx:id="btnAnswer2" layoutX="232.0" layoutY="375.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnAnswer2" prefHeight="17.0" prefWidth="400.0" text="3">
 
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="btnAnswer3" layoutX="232.0" layoutY="415.0" mnemonicParsing="false" onAction="#btnAnswer3" prefHeight="17.0" prefWidth="127.0" text="4">
+      <RadioButton fx:id="btnAnswer3" layoutX="232.0" layoutY="415.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnAnswer3" prefHeight="17.0" prefWidth="400.0" text="4">
 
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="btnAnswer4" layoutX="232.0" layoutY="455.0" mnemonicParsing="false" onAction="#btnAnswer4" prefHeight="17.0" prefWidth="127.0" text="6">
+      <RadioButton fx:id="btnAnswer4" layoutX="232.0" layoutY="455.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnAnswer4" prefHeight="17.0" prefWidth="400.0" text="6">
 
          <font>
             <Font size="14.0" />
@@ -69,7 +69,7 @@
          </font>
       </Text>
       <TextArea fx:id="txtQuestionDescription" editable="false" layoutX="232.0" layoutY="222.0" prefHeight="50.0" prefWidth="406.0" />
-      <Label fx:id="textQuestion" layoutX="232.0" layoutY="283.0" prefHeight="17.0" prefWidth="184.0" text="How much is 2+2?" textFill="#0704c0">
+      <Label fx:id="textQuestion" layoutX="232.0" layoutY="283.0" minWidth="-Infinity" prefHeight="17.0" prefWidth="400.0" text="How much is 2+2?" textFill="#0704c0">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
