@@ -58,5 +58,10 @@
       <Label fx:id="textNewGradeReqField" layoutX="483.0" layoutY="458.0" prefHeight="17.0" prefWidth="263.0" text="Must add a reason and grade for update" textFill="#db2424" visible="false" />
       <Button fx:id="btnShow" layoutX="516.0" layoutY="158.0" mnemonicParsing="false" onAction="#ShowStudentByExamID" text="Show" />
       <Label fx:id="txtExamIdError" layoutX="568.0" layoutY="162.0" prefHeight="17.0" prefWidth="256.0" text="MIssing Parameters/Wrong input for Exam ID" textFill="#db2424" visible="false" />
+      <Label fx:id="lblCheat" layoutX="525.0" layoutY="243.0" prefHeight="17.0" prefWidth="117.0" text="Cheating Alert !" textFill="RED" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

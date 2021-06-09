@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.FileSystemException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,6 +33,7 @@ import entity.Student;
 import entity.Teacher;
 import entity.UpdateScoreRequest;
 import entity.User;
+import gui_cems.GuiCommon;
 import gui_server.ServerFrameController;
 import logic.RequestToServer;
 import logic.ResponseFromServer;
@@ -140,6 +142,11 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
+		case "StudentView grade": {
+			getStudentGrade(client, (String[]) req.getRequestData());
+
+		}
+			break;
 		case "getProfNames": {
 			getProfNames(client);
 		}
@@ -170,6 +177,11 @@ public class CEMSserver extends AbstractServer {
 
 		case "createNewExtensionRequest": {
 			createNewExtensionRequest((ExtensionRequest) req.getRequestData(), client);
+		}
+			break;
+
+		case "downloadSolvedManualExam": {
+			downloadSolvedManualExam((ExamOfStudent) req.getRequestData(), client);
 		}
 			break;
 
@@ -333,11 +345,6 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "CheckIfActiveExamAlreadyExists": {
-			CheckIfActiveExamAlreadyExists((ActiveExam) req.getRequestData(), client);
-		}
-			break;
-
 		case "createNewActiveExam": {
 			createNewActiveExam((ActiveExam) req.getRequestData(), client);
 		}
@@ -354,6 +361,20 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
+		case "getSolvedComputerizedExam": {
+			getSolvedComputerizedExam((String[]) req.getRequestData(), client);
+
+		}
+			break;
+			
+		case "getAnswersOfMistakeQuestion": {
+			getAnswersOfMistakeQuestion((String) req.getRequestData(), client);
+
+		}
+			break;
+			
+			
+			
 
 		case "getAllExamsStoredInSystem": {
 			getAllExamsStoredInSystem(client);
@@ -409,6 +430,10 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
+	
+
+	
 
 	/**
 	 * @param studentExam
@@ -476,11 +501,42 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
+	
+	private void getSolvedComputerizedExam(String[] requestData, ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Solved Computerized Exam");
+			Res.setResponseData(dbController.getSolvedComputerizedExam(requestData));
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	private void getAnswersOfMistakeQuestion(String questionID, ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Answer For Mistake Question");
+			Res.setResponseData(dbController.correctAnswerForQuestion(questionID));
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+	}
 
 	private void getAllStudentsExams(ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("AllStudentsExams");
 			Res.setResponseData(dbController.getAllStudentsExams());
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private void getStudentGrade(ConnectionToClient client, String[] requestData) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("StudentScore");
+			Res.setResponseData((ArrayList<String>) dbController.getStudentScore(requestData));
 			client.sendToClient(Res);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -934,6 +990,35 @@ public class CEMSserver extends AbstractServer {
 		}
 	}
 
+	private void downloadSolvedManualExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
+		String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_" + examOfStudent.getStudent().getId()
+				+ ".docx";
+		ResponseFromServer respon = new ResponseFromServer("Download Solved EXAM");
+		MyFile exam = new MyFile(fileName);
+		try {
+			String path = new File("").getCanonicalPath();
+			String LocalfilePath = path + "/files/" + fileName;
+			File newFile = new File(LocalfilePath);
+			if (!newFile.exists()) {
+				respon.setResponseData("Download Failed");
+				client.sendToClient(respon);
+			} else {
+				byte[] mybytearray = new byte[(int) newFile.length()];
+				FileInputStream fis = new FileInputStream(newFile);
+				BufferedInputStream bis = new BufferedInputStream(fis);
+				exam.initArray(mybytearray.length);
+				exam.setSize(mybytearray.length);
+				bis.read(exam.getMybytearray(), 0, mybytearray.length);
+				fis.close();
+				client.sendToClient(exam);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			// GuiCommon.popUp("Failed.");
+		}
+
+	}
+
 	private void submitManualExam(MyFile msg, ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("SUBMIT EXAM");
 		MyFile submitExam = (MyFile) msg;
@@ -966,45 +1051,6 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
-
-	}
-
-	private void CheckIfActiveExamAlreadyExists(ActiveExam activeExam, ConnectionToClient client) {
-		// logic for 'createNewActiveExam'
-		ActiveExam actExam = null;
-		ResponseFromServer res = null;
-		actExam = dbController.isActiveExamAlreadyExists(activeExam);
-
-		// in case ExamCode is null the same examID not found, so create this active
-		// exam is allowed.
-		if (actExam.getExamCode() == null) {
-			res = createResponse("CREATE ACTION ALLOWED", "Create action is allowed");
-		}
-
-		else {
-			String str = "ACTIVE EXAM EXIST: " + activeExam.getExam().getExamID() + ", start time: "
-					+ activeExam.getStartTime() + " Code: " + actExam.getExamCode();
-
-			// check if they have the same start time AND code.
-			/* actExam.getStartTime().equals(activeExam.getStartTime())&& */
-			if (actExam.getExamCode().equals(activeExam.getExamCode())) {
-				res = createResponse(str, "ACTIVE EXAM NOT ALLOWED");
-			} else {
-				// we allowed to perform different exams at the same time.
-				// we allowed to perform the same exam but NOT in the same time
-				res = createResponse(str, "Create action is allowed");
-			}
-
-		}
-
-		// ----------------------
-
-		try {
-			client.sendToClient(res);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		printMessageInLogFramServer("Message to Client:", res);
 
 	}
 

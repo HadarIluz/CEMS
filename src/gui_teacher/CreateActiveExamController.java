@@ -70,28 +70,17 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 			exam.setExamStatus(ExamStatus.active);
 			ActiveExam newActiveExam = new ActiveExam(selectedTime, exam, examCode, activeExamType,
 					exam.getTimeOfExam());
-			// before we create new active exam, Request from server to check that
-			// the same examID at the same time not already exist.
-			boolean isAllowed = isActiveExamExist(newActiveExam);
+			
+			// Request from server to insert new active exam into DB.
+			// Request from server to update status filed for this exam: [ENUM('active')].
+			RequestToServer reqCreateExam = new RequestToServer("createNewActiveExam");
+			reqCreateExam.setRequestData(newActiveExam);
+			ClientUI.cems.accept(reqCreateExam);
 
-			if (isAllowed) {
-				// Request from server to insert new active exam into DB.
-				// Request from server to update status filed for this exam: [ENUM('active')].
-				RequestToServer reqCreateExam = new RequestToServer("createNewActiveExam");
-				reqCreateExam.setRequestData(newActiveExam);
-				ClientUI.cems.accept(reqCreateExam);
-
-				if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("NEW ACTIVE EXAM CREATED")) {
-						popUp("New active exam has been successfully created in the system.");
-						displayNextScreen((Teacher) ClientUI.loggedInUser.getUser(), "ExamBank.fxml"); 
-				}
-
-			} else {
-				popUp("This exam: " + newActiveExam.getExam().getExamID()
-						+ " already created as active in the same start time.\n This exam can be created as new active only after finished.");
-
+			if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("NEW ACTIVE EXAM CREATED")) {
+				popUp("New active exam has been successfully created in the system.");
+				displayNextScreen((Teacher) ClientUI.loggedInUser.getUser(), "ExamBank.fxml");
 			}
-
 		}
 
 	}
@@ -124,23 +113,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 			popUp(strBuilder.toString());
 		}
 		return flag;
-	}
-
-	// in order to avoid from create the same Active Exam in the same time!!
-
-	/**
-	 * @param activeExam
-	 * @return true if active create action this exam as new active exam is allowed
-	 */
-	private boolean isActiveExamExist(ActiveExam activeExam) {
-		RequestToServer req = new RequestToServer("CheckIfActiveExamAlreadyExists");
-		req.setRequestData(activeExam);
-		ClientUI.cems.accept(req);
-
-		if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("CREATE ACTION ALLOWED")) {
-			return true;
-		}
-		return false;
 	}
 
 

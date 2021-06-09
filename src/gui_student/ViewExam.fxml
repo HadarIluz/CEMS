@@ -12,11 +12,11 @@
 <AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_student.ViewExamController">
    <children>
       <TextField fx:id="txtExamID" layoutX="374.0" layoutY="185.0" prefHeight="27.0" prefWidth="186.0" promptText="exam ID" />
-      <Button fx:id="btnGetCopyOfExam" disable="true" layoutX="235.0" layoutY="273.0" mnemonicParsing="false" onAction="#btnGetCopyOfExam" onMouseClicked="#btnGetCopyOfExam" onMouseMoved="#btnGetCopyOfExam" prefHeight="38.0" prefWidth="138.0" text="Get Exam Copy">
+      <Button fx:id="btnGetCopyOfExam" disable="true" layoutX="235.0" layoutY="273.0" mnemonicParsing="false" onAction="#btnGetCopyOfExam" prefHeight="38.0" prefWidth="138.0" text="Get Exam Copy">
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Button fx:id="btnViewGrade" disable="true" layoutX="433.0" layoutY="274.0" mnemonicParsing="false" onAction="#btnViewGrade" onMouseClicked="#btnViewGrade" prefHeight="37.0" prefWidth="126.0" text="View Grade">
+      <Button fx:id="btnViewGrade" layoutX="433.0" layoutY="274.0" mnemonicParsing="false" onAction="#btnViewGrade" prefHeight="37.0" prefWidth="126.0" text="View Grade">
          <font>
             <Font size="16.0" />
          </font></Button>
@@ -56,7 +56,7 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="textProfessionName" layoutX="354.0" layoutY="366.0" prefHeight="30.0" prefWidth="126.0" text="Mathematics" visible="false">
+      <Label fx:id="textProfessionName" layoutX="354.0" layoutY="366.0" prefHeight="30.0" prefWidth="390.0" text="Mathematics" visible="false">
          <font>
             <Font size="20.0" />
          </font>
@@ -76,7 +76,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <ImageView fx:id="imgRefresh" fitHeight="37.0" fitWidth="32.0" layoutX="180.0" layoutY="277.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgRefresh" fitHeight="37.0" fitWidth="32.0" layoutX="180.0" layoutY="277.0" onMouseClicked="#RefreshPage" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/refresh.png" />
          </image>

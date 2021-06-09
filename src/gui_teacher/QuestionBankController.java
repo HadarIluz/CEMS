@@ -4,8 +4,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import client.CEMSClient;
 import client.ClientUI;
+import entity.Course;
+
 import entity.Exam;
 import entity.Question;
 import entity.QuestionRow;
@@ -114,6 +118,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnDeleteQuestion(ActionEvent event) {
+
 		if ((textQuestionID.getText().isEmpty())) {
 			btnDeleteQuestion.setDisable(true);
 		} else {
@@ -146,8 +151,12 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnEditQuestion(ActionEvent event) {
+		if (!checkForLegalquestionID(textQuestionID.getText()))
+			return;
+
 		if ((textQuestionID.getText().isEmpty())) {
 			btnCreateNewQuestion.setDisable(true);
+
 
 		} else {
 			if (!checkForLegalID(textQuestionID.getText()))
@@ -265,7 +274,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	 * @return true if legal, else false
 	 */
 
-	public boolean checkForLegalID(String QuestionID) {
+	public boolean checkForLegalquestionID(String QuestionID) {
 
 		if (QuestionID.length() != 5) {
 			popUp("Question ID Must be 5 digits.");
@@ -278,5 +287,20 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 			}
 		return true;
 	}
+
+	
+	
+	private Boolean isExistQuestion(String questionID) {
+	
+		for (QuestionRow q : data) {
+			if (q.getQuestionID().equals(questionID)) {
+				
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 
 }

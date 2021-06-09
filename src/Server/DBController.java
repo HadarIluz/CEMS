@@ -211,7 +211,7 @@ public class DBController {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				stdScore.put(rs.getString(2), rs.getInt(5));
+				stdScore.put(rs.getString(1), rs.getInt(4));
 			}
 			rs.close();
 
@@ -880,30 +880,6 @@ public class DBController {
 		return response;
 	}
 
-	public ActiveExam isActiveExamAlreadyExists(ActiveExam activeExam) {
-		/*** CheckBeforeCreateNewActiveExam ***/
-		ActiveExam acExam = new ActiveExam(activeExam.getExam(), activeExam.getStartTime());
-		// FIXME: time problem with SQL.
-		try {
-			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement(
-					"SELECT examCode, timeAllotedForTest FROM active_exam WHERE exam=? and startTime=?;");
-			pstmt.setString(1, activeExam.getExam().getExamID());
-			pstmt.setTime(2, activeExam.getStartTime());
-
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				acExam.setExamCode(rs.getString(1));
-				acExam.setTimeAllotedForTest(rs.getString(2));
-				rs.close();
-			}
-
-		} catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-		}
-
-		return acExam;
-	}
 
 	public ResponseFromServer createNewActiveExam(ActiveExam newActiveExam) {
 		ResponseFromServer response = null;
@@ -1500,5 +1476,89 @@ public class DBController {
 		}
 		return true;
 	}
+	
+	public ArrayList<String> getStudentScore(String[] requestData) {
+		PreparedStatement pstmt;
+		ArrayList<String> Details = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement("SELECT score,examType FROM exam_of_student WHERE student=? AND exam =?;");
+			pstmt.setInt(1, Integer.parseInt(requestData[1]));
+			pstmt.setString(2, requestData[0]);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+
+			Details.add(String.valueOf(rs.getInt(1)));
+			Details.add(rs.getString(2));
+
+			rs.close();
+
+			pstmt = conn.prepareStatement("SELECT professionName FROM profession WHERE professionID=? ;");
+			pstmt.setString(1, requestData[0].substring(0, 2));
+			rs = pstmt.executeQuery();
+			rs.next();
+			Details.add(rs.getString(1));
+			rs.close();
+			
+			pstmt = conn.prepareStatement("SELECT courseName FROM course WHERE courseID=? AND profession=?;");
+			pstmt.setString(1, requestData[0].substring(2, 4));
+			pstmt.setString(2, requestData[0].substring(0, 2));
+			rs = pstmt.executeQuery();
+			rs.next();
+			Details.add(rs.getString(1));
+			rs.close();
+						
+						
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+
+		return Details;
+	}
+	
+	public ArrayList<QuestionRow> getSolvedComputerizedExam(String[] details) {
+		 ArrayList<QuestionRow> questionsOfExam = new  ArrayList<QuestionRow>();
+		 PreparedStatement pstmt;
+			try {
+				pstmt = conn.prepareStatement("SELECT question,answer,correct FROM student_answers_in_exam where student =? and exam=?;");
+				pstmt.setString(1,details[0]);
+				pstmt.setString(2,details[1]);			
+				ResultSet rs=pstmt.executeQuery();
+				while(rs.next()) {
+					QuestionRow question= new QuestionRow();
+					question.setQuestionID(rs.getString(1));
+					question.setStudentAnswer(rs.getInt(2));
+					question.setCorrect(rs.getInt(3));
+					questionsOfExam.add(question);				
+				}
+				rs.close();
+			} catch (SQLException ex) {
+				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			}	
+		return questionsOfExam;
+	}
+	
+	public Question correctAnswerForQuestion(String questionID) {
+		
+		
+		 PreparedStatement pstmt;
+			try {
+				pstmt = conn.prepareStatement("SELECT question,answer1,answer2,answer3,answer4,correctAnswerIndex FROM question where questionID=?;");
+				pstmt.setString(1,questionID);
+				ResultSet rs=pstmt.executeQuery();
+					rs.next(); 
+					Question question= new Question(questionID);
+					question.setQuestion(rs.getString(1));
+					String[] answers = {rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)};
+					question.setAnswers(answers);
+					question.setCorrectAnswerIndex(rs.getInt(6));
+					question.setCorrectAns(answers[question.getCorrectAnswerIndex()-1]);
+				rs.close();
+				return question;
+			} catch (SQLException ex) {
+				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			}	
+		return null;
+	}
+
 
 }

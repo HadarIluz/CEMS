@@ -8,6 +8,29 @@ public class QuestionRow  implements Serializable {
 	private String QuestionID;
 	private String profession;
 	private String Question;
+	private int studentAnswer;
+	
+	public int getStudentAnswer() {
+		return studentAnswer;
+	}
+
+
+	public void setStudentAnswer(int studentAnswer) {
+		this.studentAnswer = studentAnswer;
+	}
+
+
+	public int getCorrect() {
+		return correct;
+	}
+
+
+	public void setCorrect(int correct) {
+		this.correct = correct;
+	}
+
+
+	private int correct;
 	
 	
 	

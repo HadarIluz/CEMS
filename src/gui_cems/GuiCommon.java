@@ -100,7 +100,12 @@ public class GuiCommon {
 				System.out.println("Couldn't load!");
 				e.printStackTrace();
 			}
+			
+			
 		}
+		
+		
+		
 
 	}
 	
@@ -108,6 +113,17 @@ public class GuiCommon {
 		// if the response is notificatoin for student -> check that user is student and do what you need
 	}
 
-	//
+	public static boolean checkForLegalID(String ExamID) {
+		if (ExamID.length() != 6) {
+			popUp("Exam ID Must be 6 digits.");
+			return false;
+		}
+		for (int i = 0; i < ExamID.length(); i++)
+			if (!Character.isDigit(ExamID.charAt(i))) {
+				popUp("Exam ID Must Contains only digits.");
+				return false;
+			}
+		return true;
+	}
 
 }
