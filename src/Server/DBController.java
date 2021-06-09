@@ -211,7 +211,7 @@ public class DBController {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				stdScore.put(rs.getString(2), rs.getInt(5));
+				stdScore.put(rs.getString(1), rs.getInt(4));
 			}
 			rs.close();
 
