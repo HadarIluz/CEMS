@@ -11,9 +11,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.FileSystemException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -442,9 +444,17 @@ public class CEMSserver extends AbstractServer {
 	 */
 	private void StudentFinishExam(ExamOfStudent studentExam, ConnectionToClient client) {
 		ResponseFromServer res = null;
+		int finaleScore = 100;
+		for (QuestionInExam q : studentExam.getQuestionsAndAnswers().keySet()) {
+			if (studentExam.getQuestionsAndAnswers().get(q) != q.getQuestion().getCorrectAnswerIndex()) {
+				finaleScore -= q.getScore();
+			}
+		}
+		studentExam.setScore(finaleScore);
 		if (dbController.updateStudentExam(studentExam)) {
 			if (dbController.insertStudentQuestions(studentExam)) {
 				res = new ResponseFromServer("Success student finish exam");
+				if (checkIfExamFinished(studentExam.getActiveExam())) documentExam(studentExam.getActiveExam());
 			}
 		}
 		else {
@@ -456,6 +466,40 @@ public class CEMSserver extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private boolean checkIfExamFinished(ActiveExam activeExam) {
+		// first check if it's after half an hour of beginning of exam	
+		Time time = dbController.getStartTimeOfActiveExam(activeExam.getExam().getExamID());
+		if (time == null) {
+			printMessageInLogFramServer("There was a problem getting the start time", null);
+			return false;
+		}
+		activeExam.setStartTime(time);
+		long halfHourAfterStart = time.getTime() + 1800000;
+		if (System.currentTimeMillis() > halfHourAfterStart) {
+			// it's half an hour past the starting time of the exam
+			// now check if some students are not done
+			int notSubmitted = dbController.getNumberOfNotSubmitted(activeExam.getExam().getExamID());
+			if (notSubmitted == 0) return true;
+		}
+		return false;
+	}
+	
+	private void documentExam(ActiveExam activeExam) {
+			// delete the active exam and document it
+			if (!dbController.deleteActiveExam(activeExam)) {
+				printMessageInLogFramServer("There was a problem with deleteing the active exam", null);
+			}
+			if (!dbController.updateExamStatus(activeExam.getExam())) {
+				printMessageInLogFramServer("There was a problem with update exam status", null);
+			}
+			
+			if (dbController.documentExam(activeExam)) { // enter all relavent data to record_exam table
+				printMessageInLogFramServer("document exam suceeded", null);
+			}
+			// now call for method that checks copying
+		
 	}
 
 	/**

@@ -9,7 +9,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -1384,11 +1386,12 @@ public class DBController {
 	public boolean updateStudentExam(ExamOfStudent studentExam) {
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("UPDATE exam_of_student SET totalTime=?, reason_of_submit=? WHERE exam=? AND student=?");
+			pstmt = conn.prepareStatement("UPDATE exam_of_student SET totalTime=?, reason_of_submit=?, score=? WHERE exam=? AND student=?");
 			pstmt.setInt(1, studentExam.getTotalTime());
 			pstmt.setString(2, studentExam.getReasonOfSubmit().toString());
-			pstmt.setString(3, studentExam.getActiveExam().getExam().getExamID());
-			pstmt.setInt(4, studentExam.getStudent().getId());
+			pstmt.setInt(3, studentExam.getScore());
+			pstmt.setString(4, studentExam.getActiveExam().getExam().getExamID());
+			pstmt.setInt(5, studentExam.getStudent().getId());
 			
 			if (pstmt.executeUpdate() != 0) {
 				return true;
@@ -1558,6 +1561,103 @@ public class DBController {
 				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			}	
 		return null;
+	}
+
+	public Time getStartTimeOfActiveExam(String examID) {
+		
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT startTime FROM active_exam WHERE exam=?");
+			pstmt.setString(1, examID);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				Time startTime = rs.getTime(1, Calendar.getInstance());
+				rs.close();
+				return startTime;
+			}
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return null;
+	}
+
+	public int getNumberOfNotSubmitted(String examID) {
+		PreparedStatement pstmt;
+		int sum = 0;
+		try {
+			pstmt = conn.prepareStatement("SELECT SUM(exam=?) as sum FROM exam_of_student WHERE reason_of_submit IS NULL;");
+			pstmt.setString(1, examID);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				sum = rs.getInt(1);
+			}
+			rs.close();
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return sum;
+
+	}
+
+	public boolean documentExam(ActiveExam activeExam) {
+		int initiated = initiatedSubmitInActiveExam(activeExam.getExam().getExamID());
+		int forced = forcedSubmitInActiveExam(activeExam.getExam().getExamID());
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("INSERT INTO exam_records VALUES(?, ?, ?, ?, ?, ?, ?);");
+			pstmt.setString(1, activeExam.getExam().getExamID());
+			pstmt.setTime(2, new Time(System.currentTimeMillis()));
+			pstmt.setInt(3, activeExam.getExam().getTimeOfExam());
+			int actualTime = (int) ((System.currentTimeMillis() - activeExam.getStartTime().toLocalTime().toNanoOfDay())/60000);
+			pstmt.setInt(4, actualTime);
+			pstmt.setInt(5, initiated);
+			pstmt.setInt(6, forced);
+			pstmt.setInt(7, initiated+forced);
+
+			if (pstmt.executeUpdate() != 0) {
+				return true;
+			}
+			// to do something with status
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+		
+	}
+
+	private int forcedSubmitInActiveExam(String examID) {
+		PreparedStatement pstmt;
+		int sum = 0;
+		try {
+			pstmt = conn.prepareStatement("SELECT SUM(exam=?) as sum FROM exam_of_student WHERE reason_of_submit='forced';");
+			pstmt.setString(1, examID);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				sum = rs.getInt(1);
+			}
+			rs.close();
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return sum;
+	}
+
+	private int initiatedSubmitInActiveExam(String examID) {
+		PreparedStatement pstmt;
+		int sum = 0;
+		try {
+			pstmt = conn.prepareStatement("SELECT SUM(exam=?) as sum FROM exam_of_student WHERE reason_of_submit='initiated';");
+			pstmt.setString(1, examID);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				sum = rs.getInt(1);
+			}
+			rs.close();
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return sum;
 	}
 
 
