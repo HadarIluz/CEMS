@@ -90,7 +90,7 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 			System.out.println(sqlEndRangeTimeToTakeExam);
 
 			ActiveExam activeExam = new ActiveExam(sqlTime, sqlEndRangeTimeToTakeExam, examCode);
-			// Request to server to return an examID for this examCode if exist.
+			// Request to server to return an data, examID for this examCode if exist.
 			// if not return null.
 			RequestToServer req = new RequestToServer("isActiveExamExist");
 			req.setRequestData(activeExam);

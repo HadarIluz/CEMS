@@ -1464,12 +1464,11 @@ public class DBController {
 		/*** EnterToExam ***/
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT examType FROM exam_of_student WHERE student=? AND exam=?;");
+			pstmt = conn.prepareStatement("SELECT * FROM exam_of_student WHERE student=? AND exam=?;");
 			pstmt.setInt(1, examOfStudent.getStudent().getId());
 			pstmt.setString(2, examOfStudent.getActiveExam().getExam().getExamID());
 			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				examOfStudent.setExamType(rs.getString(1));
+			if (rs.first()==true) {
 				rs.close();
 				return false;
 			}
