@@ -381,11 +381,11 @@ public class CEMSserver extends AbstractServer {
 			getQuestionsByIDForEditExam((String) req.getRequestData(), client);
 		}
 			break;
-		case "getAllQuestionsStoredInSystem":{
+		case "getAllQuestionsStoredInSystem": {
 			getAllQuestionsStoredInSystem(client);
 		}
 			break;
-		case "getQuestionDataBy_questionID":{
+		case "getQuestionDataBy_questionID": {
 			getQuestionDataBy_questionID((String) req.getRequestData(), client);
 		}
 		break;
@@ -397,6 +397,12 @@ public class CEMSserver extends AbstractServer {
 			StudentFinishExam((ExamOfStudent)req.getRequestData(), client);
 		}
 		break;
+	
+
+		case "checkExam_of_student_NotExistsBeforeStartExam": {
+			checkExam_of_student_NotExistsBeforeStartExam((ExamOfStudent) req.getRequestData(), client);
+		}
+			break;
 
 		}
 
@@ -1090,20 +1096,19 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
-	//TODO: CHECK
+	// TODO: CHECK----->DELETE AND TACK FROM YUVAL
 	private void getQuestionsByIDForEditExam(String examID, ConnectionToClient client) {
-		/*logic for- EditExam _step2*/
-		ResponseFromServer response = null; 
+		/* logic for- EditExam _step2 */
+		ResponseFromServer response = null;
 		ArrayList<QuestionInExam> questionIDList_InExam;
 		HashMap<String, Question> allQuestionInExam;
 		// HashMap<questionID, QuestionInExam>
 
-		
 		// Set<QuestionInExam> questionIDList_InExam = new HashSet<>();
 		// Map<String, Set<QuestionInExam>> allQuestionInExam = new HashMap<>();
 		// //Map<questionID, Set<QuestionInExam>>
 		try {
-			//DELETE
+			// DELETE
 			questionIDList_InExam = (ArrayList<QuestionInExam>) dbController.getQuestionsID_byExamID(examID);
 			allQuestionInExam = (HashMap<String, Question>) dbController.allQuestionInExam(questionIDList_InExam);
 			if (allQuestionInExam != null) {
@@ -1118,38 +1123,48 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	private void getAllQuestionsStoredInSystem(ConnectionToClient client) {
 		ResponseFromServer response = null;
-		response=dbController.GetAllQuestions_ToQuestionsBank();
+		response = dbController.GetAllQuestions_ToQuestionsBank();
 		try {
 			client.sendToClient(response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
-		
+
 	}
-	
-	
-	
+
 	private void getQuestionDataBy_questionID(String questionID, ConnectionToClient client) {
 		ResponseFromServer response = new ResponseFromServer("Question Data");
-		response.setResponseData((Question)dbController.getQuestionDataBy_questionID(questionID));
+		response.setResponseData((Question) dbController.getQuestionDataBy_questionID(questionID));
 		try {
 			client.sendToClient(response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
-		
+
 	}
-	
-	
-	
-	
-	
+
+	private void checkExam_of_student_NotExistsBeforeStartExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
+		ResponseFromServer response = null;	
+		if (dbController.verifyExamOfStudentByExamID(examOfStudent)) {
+			response=new ResponseFromServer("exam_of_student_allowed");
+		}
+		else {
+			response=new ResponseFromServer("Exam_of_student Already Exists");
+		}
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);// print to server log.
+	}
+
+
 	
 	
 	
