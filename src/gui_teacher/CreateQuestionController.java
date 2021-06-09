@@ -83,7 +83,7 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 	private static Teacher teacher;
 	private static User principal;
 	private static String screenStatus;
-	private static boolean displayPrincipalView = false;
+	private static boolean displayPrincipalView;
 
 	private static QuestionBankController questionBankController; // will be needed for btnBack button (for root, to
 																	// dispaly the prev screen)
@@ -170,7 +170,7 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedIndex = null;
 		selectedProfession = null;
-		if (!displayPrincipalView) {
+		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 
 			professionsMap = TeacherController.getProfessionsMap();
@@ -178,9 +178,9 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 			selectCorrectAnswer.setItems(FXCollections.observableArrayList(answerNumbers));
 		}
 
-		else {
+		else if(ClientUI.loggedInUser.getUser() instanceof User){
 			principal = (User) ClientUI.loggedInUser.getUser();
-			displayPrincipalView = true;
+			//isplayPrincipalView = true;
 			// setUp
 			btnSaveQuestion.setDisable(false);
 			btnSaveQuestion.setVisible(false);
