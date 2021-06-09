@@ -1,6 +1,5 @@
 package gui_teacher;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -9,7 +8,6 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.Exam;
 import entity.Question;
-import entity.QuestionInExam;
 import entity.QuestionInExamRow;
 import entity.QuestionRow;
 import entity.Teacher;
@@ -19,17 +17,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
@@ -149,10 +143,19 @@ public class EditExamController extends GuiCommon implements Initializable {
 			strBuilder.append("Exam time must contains only digits.\n");
 			flag = false;
 		}
-		if (timeAllocateForExam.matches("[0-9]+") == false) {
+		int time = Integer.parseInt(timeAllocateForExam);
+		if (timeAllocateForExam.matches("[0-9]+") == false || time <=0) {
 			strBuilder.append("Time allocate for exam must set in minuse.\n");
-
 		}
+		if (time <= 29) {
+			strBuilder.append("Exam time too short.\n");
+			flag = false;
+		}
+		if (time > 240) {
+			strBuilder.append("Exam time too short.\n");
+			flag = false;
+		}
+ 
 		if (!flag) {
 			popUp(strBuilder.toString());
 		}
@@ -168,7 +171,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	// tack user data according to screen status from the prev action.
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		// load data of the selected exam for edit/view according to logged user..
 		textExamID.setText(exam.getExamID());
 		textTimeAllocateForExam.setText(Integer.toString(exam.getTimeOfExam()));

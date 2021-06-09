@@ -85,8 +85,11 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
     	}
     	else {
     		int time = Integer.parseInt(textExamDuration.getText().trim());
-    		if (time <= 20) {
+    		if (time <= 29) {
         		popUp("Exam time too short");
+    		}
+    		if (time <= 0) {
+        		popUp("Invalid time");
     		}
     		else {
     			if (newExam == null) {
