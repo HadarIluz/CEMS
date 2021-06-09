@@ -255,25 +255,7 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		tableQuestion.getColumns().addAll(questionID, questionScore, question);
 	}
 	
-	/**
-	 * Method that check if the givenQuestion ID is legal
-	 * 
-	 * @param QuestionID send to method to check if legal
-	 * @return true if legal, else false
-	 */
 
-	public boolean checkForLegalID(String QuestionID) {
-		if (QuestionID.length() != 5) {
-			popUp("Question ID Must be 5 digits.");
-			return false;
-		}
-		for (int i = 0; i < QuestionID.length(); i++)
-			if (!Character.isDigit(QuestionID.charAt(i))) {
-				popUp("Question ID Must Contains only digits.");
-				return false;
-			}
-		return true;
-	}
 
 	
 	public static void setExamData(Exam examData) {

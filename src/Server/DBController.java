@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import client.CEMSClient;
 import client.ClientUI;
@@ -66,7 +68,7 @@ public class DBController {
 	}
 
 	/*
-	 * checks if the user that try to login exists in the DB.
+	 * checks if the user that try to login exists in the DB
 	 * 
 	 * @param obj of user which include student id to verify if exists.
 	 */
@@ -935,11 +937,6 @@ public class DBController {
 
 	}
 
-	/**
-	 * @param
-	 * @return true if succeed to save edit exam values, return false if not.
-	 * 
-	 */
 	public ResponseFromServer SaveEditExam(Exam exam) {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
@@ -965,8 +962,7 @@ public class DBController {
 		}
 		return response;
 	}
-	
-	
+
 	public boolean deleteActiveExam(ActiveExam exam) {
 		PreparedStatement pstmt;
 		try {
@@ -1119,18 +1115,18 @@ public class DBController {
 		return students;
 	}
 
-	// TODO:CHECK
 	public ResponseFromServer InsertExamOfStudent(ExamOfStudent examOfStudent) {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("INSERT INTO exam_of_student VALUES(?, ?, ?, ?, ?,?);");
+			pstmt = conn.prepareStatement("INSERT INTO exam_of_student VALUES(?, ?, ?, ?, ?,?,?);");
 			pstmt.setInt(1, examOfStudent.getStudent().getId());
 			pstmt.setString(2, examOfStudent.getActiveExam().getExam().getExamID());
 			pstmt.setString(3, examOfStudent.getActiveExam().getActiveExamType());
 			pstmt.setInt(4, 0);
 			pstmt.setString(5, null);
 			pstmt.setInt(6, 0);
+			pstmt.setString(7, null);
 			if (pstmt.executeUpdate() != 0) {
 				response = new ResponseFromServer("NEW EXAM OF STUDENT HAS BEEN INSERT");
 			}
@@ -1141,6 +1137,153 @@ public class DBController {
 
 	}
 
+//TODO:CHECK
+	// return ArrayList of questionID and score by ExamID.
+	public ArrayList<QuestionInExam> getQuestionsID_byExamID(String examID) {
+		ArrayList<QuestionInExam> questionInExam = new ArrayList<>();
+
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT question, score FROM question_in_exam WHERE exam=?");
+			pstmt.setString(1, examID);
+
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Question question = new Question(rs.getString(1));
+				QuestionInExam qInExam = new QuestionInExam(rs.getInt(2), question);
+				questionInExam.add(qInExam);
+			}
+			rs.close();
+
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return questionInExam;
+	}
+
+	// OLD:
+	public HashMap<String, Question> allQuestionInExam(ArrayList<QuestionInExam> questionIDList_InExam) {
+
+		HashMap<String, Question> allQuestionInExam = new HashMap<String, Question>();
+
+		PreparedStatement pstmt;
+		try {
+			for (QuestionInExam q : questionIDList_InExam) {
+				pstmt = conn.prepareStatement(
+						"SELECT question, answer1, answer2, answer3, answer4, correctAnswerIndex, description FROM question WHERE questionID=?;");
+				pstmt.setString(1, q.getQuestion().getQuestionID());
+				ResultSet rs = pstmt.executeQuery();
+				// public Question(String questionID, String question, String[] answers, int
+				// correctAnswerIndex, String description) {
+				if (rs.next()) {
+					Question qInExam = new Question(q.getQuestion().getQuestionID());
+					qInExam.setQuestion(rs.getString(1));
+					String[] answers = new String[4];
+					answers[0] = rs.getString(2);
+					answers[1] = rs.getString(3);
+					answers[2] = rs.getString(4);
+					answers[3] = rs.getString(5);
+					qInExam.setAnswers(answers);
+					qInExam.setCorrectAnswerIndex(rs.getInt(6));
+					qInExam.setDescription(rs.getString(7));
+
+					allQuestionInExam.put(qInExam.getQuestionID(), qInExam); // add to HashMap.
+					rs.close();
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return allQuestionInExam;
+
+	}
+
+	public ResponseFromServer GetAllQuestions_ToQuestionsBank() {
+		ResponseFromServer response = null;
+		ArrayList<QuestionRow> allQuestionList = new ArrayList<QuestionRow>();
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM question");
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				QuestionRow newQuestion = new QuestionRow();
+				newQuestion.setQuestionID(rs.getString(2));
+				newQuestion.setProfession(rs.getString(3));
+				newQuestion.setQuestion(rs.getString(4));
+				allQuestionList.add(newQuestion);
+			}
+			rs.close();
+
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		if (allQuestionList.size() > 0) {
+			response = new ResponseFromServer("Question bank FOUND");
+			response.setResponseData(allQuestionList);
+		} else {
+			response = new ResponseFromServer("No Question Bank");
+		}
+
+		return response;
+	}
+
+	public Question getQuestionDataBy_questionID(String questionID) {
+		/*** Question Bank-Principal step2 ***/
+		Question q = new Question();
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM cems.question WHERE questionID=?");
+			pstmt.setString(1, questionID);
+
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				q.setQuestionID(rs.getString(2));
+				q.setQuestion(rs.getString(4));
+
+				Profession p = new Profession(null);
+				p.setProfessionID(rs.getString(3));
+				q.setProfession(p);
+
+				String[] answers = new String[4];
+				answers[0] = rs.getString(5);
+				answers[1] = rs.getString(6);
+				answers[2] = rs.getString(7);
+				answers[3] = rs.getString(8);
+				q.setAnswers(answers);
+				q.setCorrectAnswerIndex(rs.getInt(9));
+				q.setDescription(rs.getString(10));
+				rs.close();
+			}
+
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return q;
+
+	}
+
+	public Boolean verifyExamOfStudentByExamID(ExamOfStudent examOfStudent) {
+		/*** EnterToExam ***/
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT examType FROM exam_of_student WHERE student=? AND exam=?;");
+			pstmt.setInt(1, examOfStudent.getStudent().getId());
+			pstmt.setString(2, examOfStudent.getActiveExam().getExam().getExamID());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				examOfStudent.setExamType(rs.getString(1));
+				rs.close();
+				return false;
+			}
+
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return true;
+	}
+	
 	public ArrayList<String> getStudentScore(String[] requestData) {
 		PreparedStatement pstmt;
 		ArrayList<String> Details = new ArrayList<>();
@@ -1178,7 +1321,7 @@ public class DBController {
 
 		return Details;
 	}
-
+	
 	public ArrayList<QuestionRow> getSolvedComputerizedExam(String[] details) {
 		 ArrayList<QuestionRow> questionsOfExam = new  ArrayList<QuestionRow>();
 		 PreparedStatement pstmt;
@@ -1200,7 +1343,7 @@ public class DBController {
 			}	
 		return questionsOfExam;
 	}
-
+	
 	public Question correctAnswerForQuestion(String questionID) {
 		
 		
