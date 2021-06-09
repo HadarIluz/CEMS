@@ -1065,7 +1065,7 @@ public class CEMSserver extends AbstractServer {
 		// Map<String, Set<QuestionInExam>> allQuestionInExam = new HashMap<>();
 		// //Map<questionID, Set<QuestionInExam>>
 		try {
-
+			//DELETE
 			questionIDList_InExam = (ArrayList<QuestionInExam>) dbController.getQuestionsID_byExamID(examID);
 			allQuestionInExam = (HashMap<String, Question>) dbController.allQuestionInExam(questionIDList_InExam);
 			if (allQuestionInExam != null) {
