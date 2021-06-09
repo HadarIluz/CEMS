@@ -45,9 +45,7 @@ public class BrowseQuestionController implements Initializable {
 
 	@FXML
 	void clickOnTableRow(MouseEvent event) {
-		if (!Qlist.isEmpty()) {
-			Qlist = tableQuestion.getSelectionModel().getSelectedItems();
-		}
+		Qlist = tableQuestion.getSelectionModel().getSelectedItems();
 	}
 
 	@FXML
@@ -55,6 +53,8 @@ public class BrowseQuestionController implements Initializable {
 		if (textQuestionScore.getText().trim().length() == 0) {
 			// handle with popup
 		} else {
+			if (Qlist.isEmpty())
+				return;
 			selectedQ = new QuestionInExam(Integer.parseInt(textQuestionScore.getText()), Qlist.get(0), null);
 			btnSelectQuestion.getScene().getWindow().hide();
 		}
