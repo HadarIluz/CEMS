@@ -1297,7 +1297,7 @@ public class DBController {
 		
 		for (QuestionInExam q : studentExam.getQuestionsAndAnswers().keySet() ) {
 			try {
-				pstmt = conn.prepareStatement("INSERT INTO exam_of_student VALUES(?, ?, ?, ?, ?);");
+				pstmt = conn.prepareStatement("INSERT INTO student_answers_in_exam VALUES(?, ?, ?, ?, ?);");
 				pstmt.setInt(1, studentExam.getStudent().getId());
 				pstmt.setString(2, studentExam.getActiveExam().getExam().getExamID());
 				pstmt.setString(3, q.getQuestion().getQuestionID());
@@ -1305,8 +1305,8 @@ public class DBController {
 				pstmt.setInt(5, studentExam.getQuestionsAndAnswers().get(q) == q.getQuestion().getCorrectAnswerIndex() ? 1 : 0);
 				
 
-				if (pstmt.executeUpdate() != 0) {
-					return true;
+				if (pstmt.executeUpdate() == 0) {
+					return false;
 				}
 				// to do something with status
 			} catch (SQLException e) {
@@ -1315,7 +1315,7 @@ public class DBController {
 			}
 		}
 		
-		return false;
+		return true;
 
 	}
 	
@@ -1408,11 +1408,11 @@ public class DBController {
 	public boolean updateStudentExam(ExamOfStudent studentExam) {
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("UPDATE exam_of_student SET totalTime=?, reason_of_submit WHERE exam=? AND student=?");
-			pstmt.setInt(4, studentExam.getStudent().getId());
-			pstmt.setString(3, studentExam.getActiveExam().getExam().getExamID());
+			pstmt = conn.prepareStatement("UPDATE exam_of_student SET totalTime=?, reason_of_submit=? WHERE exam=? AND student=?");
 			pstmt.setInt(1, studentExam.getTotalTime());
 			pstmt.setString(2, studentExam.getReasonOfSubmit().toString());
+			pstmt.setString(3, studentExam.getActiveExam().getExam().getExamID());
+			pstmt.setInt(4, studentExam.getStudent().getId());
 			
 			if (pstmt.executeUpdate() != 0) {
 				return true;

@@ -144,6 +144,13 @@ public class SolveExamController implements Initializable{
 		RequestToServer req = new RequestToServer("StudentFinishExam");
 		req.setRequestData(examOfStudent);
 		ClientUI.cems.accept(req);
+		
+		if (CEMSClient.responseFromServer.getResponseType().equals("Success student finish exam")) {
+			GuiCommon.popUp("Submit was successfull. You may exit the exam");
+		}
+		else {
+			GuiCommon.popUp("There has been an error. please contact your teacher");
+		}
 	}
 
 	@FXML

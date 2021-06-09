@@ -419,7 +419,7 @@ public class CEMSserver extends AbstractServer {
 		ResponseFromServer res = null;
 		if (dbController.updateStudentExam(studentExam)) {
 			if (dbController.insertStudentQuestions(studentExam)) {
-				res = new ResponseFromServer("Sucees student finish exam");
+				res = new ResponseFromServer("Success student finish exam");
 			}
 		}
 		else {

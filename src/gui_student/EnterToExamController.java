@@ -213,7 +213,7 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 		if ((CEMSClient.responseFromServer.getResponseType()).equals("exam_of_student_allowed")) {
 			return true;
 		}
-		popUp("Error:\nThis exam already has been tacken by student id: " + student.getId());
+		popUp("Error:\nThis exam already has been taken by student id: " + student.getId());
 		return false;
 	}
 
