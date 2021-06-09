@@ -162,7 +162,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 			if ((textQuestionID.getText().isEmpty())) {
 				btnCreateNewQuestion.setDisable(true);
 			} else {
-				CreateQuestionController.setNextScreenData(textQuestionID.getText(), displayPrincipalView);
+				CreateQuestionController.setNextScreenData(textQuestionID.getText());
 				displayNextScreen(principal, "CreateQuestion.fxml");
 			}
 		}

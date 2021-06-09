@@ -180,7 +180,7 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 
 		else if(ClientUI.loggedInUser.getUser() instanceof User){
 			principal = (User) ClientUI.loggedInUser.getUser();
-			//isplayPrincipalView = true;
+			displayPrincipalView = true;
 			// setUp
 			btnSaveQuestion.setDisable(false);
 			btnSaveQuestion.setVisible(false);
@@ -201,9 +201,8 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 		this.questionBankController = questionBankController;
 	}
 
-	public static void setNextScreenData(String questionIDselected, boolean displayPrincipalView2) {
+	public static void setNextScreenData(String questionIDselected) {
 		questionID = questionIDselected;
-		displayPrincipalView = displayPrincipalView2;
 	}
 
 	private void loadSelectedQuestionDataToView() {
