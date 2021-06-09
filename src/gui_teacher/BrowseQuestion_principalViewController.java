@@ -19,52 +19,50 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
-public class BrowseQuestion_principalViewController implements Initializable{
+public class BrowseQuestion_principalViewController implements Initializable {
 
-    @FXML
-    private Button btnSelectQuestion;
+	@FXML
+	private Button btnSelectQuestion;
 
-    @FXML
-    private TextField textQuestionScore;
+	@FXML
+	private TextField textQuestionScore;
 
-    @FXML
-    private TableView<Question> tableQuestion;
+	@FXML
+	private TableView<Question> tableQuestion;
 
-    @FXML
-    private TableColumn<Question, String> QuestionID;
+	@FXML
+	private TableColumn<Question, String> QuestionID;
 
-    @FXML
-    private TableColumn<Question, String> Question;
+	@FXML
+	private TableColumn<Question, String> Question;
 
-    @FXML
-    private Text textMsg1;
-    
-    private QuestionInExam selectedQ = null;
-    private static ArrayList<Question> availableQuestions;
-    private ObservableList<Question> Qlist;
+	@FXML
+	private Text textMsg1;
 
+	private QuestionInExam selectedQ = null;
+	private static ArrayList<Question> availableQuestions;
+	private ObservableList<Question> Qlist;
 
-    @FXML
-    void clickOnTableRow(MouseEvent event) {
-    	
-		Qlist = tableQuestion.getSelectionModel().getSelectedItems();
-    }
+	@FXML
+	void clickOnTableRow(MouseEvent event) {
+		if (!Qlist.isEmpty()) {
+			Qlist = tableQuestion.getSelectionModel().getSelectedItems();
+		}
+	}
 
-    @FXML
-    void selectQuestion(ActionEvent event) {
-    	if (textQuestionScore.getText().trim().length() == 0) {
-    		// handle with popup
-    	}
-    	else {
-    		selectedQ = new QuestionInExam(Integer.parseInt(textQuestionScore.getText()), Qlist.get(0), null);
-    		btnSelectQuestion.getScene().getWindow().hide();
-    	}
-    	
+	@FXML
+	void selectQuestion(ActionEvent event) {
+		if (textQuestionScore.getText().trim().length() == 0) {
+			// handle with popup
+		} else {
+			selectedQ = new QuestionInExam(Integer.parseInt(textQuestionScore.getText()), Qlist.get(0), null);
+			btnSelectQuestion.getScene().getWindow().hide();
+		}
 
-    }
+	}
 
 	public QuestionInExam getSelectedQuestion() {
-		
+
 		return selectedQ;
 	}
 
@@ -77,9 +75,9 @@ public class BrowseQuestion_principalViewController implements Initializable{
 		tableQuestion.setItems(FXCollections.observableArrayList(availableQuestions));
 
 		tableQuestion.getColumns().addAll(QuestionID, Question);
-				
+
 	}
-	
+
 	public static void setAvailableQuestions(ArrayList<Question> availableQ) {
 		availableQuestions = availableQ;
 	}
