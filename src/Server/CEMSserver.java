@@ -461,7 +461,6 @@ public class CEMSserver extends AbstractServer {
 		if (dbController.updateStudentExam(studentExam)) {
 			if (dbController.insertStudentQuestions(studentExam)) {
 				res = new ResponseFromServer("Success student finish exam");
-				if (checkIfExamFinished(studentExam.getActiveExam())) documentExam(studentExam.getActiveExam());
 			}
 		}
 		else {
@@ -473,6 +472,7 @@ public class CEMSserver extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if (checkIfExamFinished(studentExam.getActiveExam())) documentExam(studentExam.getActiveExam());
 	}
 	
 	private void EditQuestion(Question question, ConnectionToClient client) {
