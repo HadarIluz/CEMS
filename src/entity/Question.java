@@ -30,6 +30,15 @@ public class Question implements Serializable{
 		this.profession = profession;
 		this.teacher = teacher;
 	}
+	
+	public Question(String questionID, String question, String[] answers, int correctAnswerIndex, String description) {
+		super();
+		this.questionID = questionID;
+		this.question = question;
+		this.description = description;
+		this.answers = answers;
+		this.correctAnswerIndex = correctAnswerIndex;
+	}
 
 	public String getQuestionID() {
 		return questionID;

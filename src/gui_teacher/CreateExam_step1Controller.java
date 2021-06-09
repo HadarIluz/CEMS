@@ -13,6 +13,7 @@ import entity.Exam;
 import entity.Profession;
 import entity.Question;
 import entity.Teacher;
+import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,7 +34,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class CreateExam_step1Controller implements Initializable{
+public class CreateExam_step1Controller extends GuiCommon implements Initializable{
 
     @FXML
     private TextArea textLecturers_Instructions;
@@ -204,19 +205,6 @@ public class CreateExam_step1Controller implements Initializable{
     
     }
 	
-	// create a popup with a message
-	public void popUp(String txt) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(txt);
-		lbl.setPadding(new Insets(5));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
-	}
 
 	public static void setExamState(Exam newExam2) {
 		newExam = newExam2;

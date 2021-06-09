@@ -1,10 +1,14 @@
 package entity;
 
 import java.io.Serializable;
+<<<<<<< HEAD
 import java.sql.Time;
 import java.util.HashMap;
 import entity.Student;;
+=======
+import java.util.HashMap;;
 
+@SuppressWarnings("serial")
 public class ExamOfStudent implements Serializable {
 	
 	private ActiveExam activeExam;
@@ -13,6 +17,8 @@ public class ExamOfStudent implements Serializable {
 	private int totalTime;
 	private HashMap<QuestionInExam, Integer> questionsAndAnswers;
 	private String examType;
+
+	private ReasonOfSubmit reasonOfSubmit;
 	
 	public String getExamType() {
 		return examType;
@@ -29,12 +35,11 @@ public class ExamOfStudent implements Serializable {
 		this.score=score;
 	}
 	
-	public ExamOfStudent(ActiveExam exam,entity.Student student) {
+
+	public ExamOfStudent(ActiveExam exam,Student student) {
 		this.activeExam=exam;
 		this.student=student;
-	}
-	
-	
+	}	
 	
 	public int getTotalTime() {
 		return totalTime;
@@ -77,6 +82,14 @@ public class ExamOfStudent implements Serializable {
 	public void setScore(int score) { 
 		this.score=score;
 
+	}
+
+	public ReasonOfSubmit getReasonOfSubmit() {
+		return reasonOfSubmit;
+	}
+
+	public void setReasonOfSubmit(ReasonOfSubmit reasonOfSubmit) {
+		this.reasonOfSubmit = reasonOfSubmit;
 	}
 	
 	

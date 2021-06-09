@@ -19,7 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
-public class BrowseQuestionController implements Initializable{
+public class BrowseQuestion_principalViewController implements Initializable{
 
     @FXML
     private Button btnSelectQuestion;

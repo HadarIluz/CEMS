@@ -17,12 +17,24 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import logic.ResponseFromServer;
 
+/**
+ * This class contains functions common to different classes that inherit from
+ * it. With the help of this department the reuse mechanism is implemented.
+ * 
+ * @author Hadar Iluz
+ *
+ */
 public class GuiCommon {
 
 	public final String principalStatusScreen = "PRINCIPAL";
 	public final String teacherStatusScreen = "TEACHER";
 
+	/**
+	 * create a popUp with a given message.
+	 * @param msg
+	 */
 	public static void popUp(String msg) {
 		final Stage dialog = new Stage();
 		VBox dialogVbox = new VBox(20);
@@ -90,6 +102,10 @@ public class GuiCommon {
 			}
 		}
 
+	}
+	
+	public static void handleNotifications(ResponseFromServer res) {
+		// if the response is notificatoin for student -> check that user is student and do what you need
 	}
 
 	//

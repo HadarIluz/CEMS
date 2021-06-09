@@ -19,7 +19,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
@@ -46,10 +45,19 @@ import logic.RequestToServer;
 //     _______\/////////___\///////////////___\///______________\///_____\///////////_____
 
 /**
+ * A class that manages the current login state. This is a model class which is
+ * typically associated with a single session, for the duration of the session.
+ * 
+ * we implement authentication (and thus produce authentication changes), will
+ * indicate their result in this object using the login() or logout() methods.
+ * 
+ * This class also react to login state changes (typically, a user logging in or
+ * logout or press on X) should listen to the changed() signal of this object.
+ * 
  * @author Hadar_Iluz
  *
  */
-public class LoginController {
+public class LoginController extends GuiCommon{
 
 	@FXML
 	private MenuItem pressQuit;
@@ -121,6 +129,7 @@ public class LoginController {
 		// in case fields not empty checks if exist in DB
 		if (!userID.trim().isEmpty() && !userPassword.trim().isEmpty() && userID.length() == 9
 				&& isOnlyDigits(userID)) {
+
 			int id = Integer.parseInt(txtUserName.getText().trim());
 			user = new User(id, userPassword);
 			// create in 'Serializable' class my request from server.
@@ -228,7 +237,7 @@ public class LoginController {
 
 			}
 			return;
-			
+
 		}
 
 		// handle case that one of the parameters is invalid.
@@ -253,24 +262,7 @@ public class LoginController {
 		label.setText(msg);
 	}
 
-	/**
-	 * this method checks if the given string includes letters.
-	 * 
-	 * @param str
-	 * @return true only if the String contains something that isn't a digit.
-	 */
-	private boolean isOnlyDigits(String str) {
-		boolean containsLetter = true;
-		for (char ch : str.toCharArray()) {
-			if (!Character.isDigit(ch)) {
-				containsLetter = false;
-				System.out.println("id includ letter");
-				break;
-			}
-		}
-		System.out.println("isOnlyDigits returns:" + containsLetter); // message to console
-		return containsLetter;
-	}
+
 
 	/**
 	 * Display HomePage after client connection.
@@ -293,23 +285,6 @@ public class LoginController {
 		listenToCloseWindow(primaryStage);
 	}
 
-	/**
-	 * create a popUp with a given message.
-	 * 
-	 * @param msg
-	 */
-	private void popUp(String msg) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(msg);
-		lbl.setPadding(new Insets(15));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
-	}
 
 	/**
 	 * @param user object given to send as a request to server to update this user
@@ -361,6 +336,7 @@ public class LoginController {
 	void pressQuit(ActionEvent event) {
 		System.exit(0);
 	}
+
 	/**
 	 * listen for close events on a JavaFX Stage, notified when the user clicks the
 	 * button with the X on, in the upper right corner of the Stage

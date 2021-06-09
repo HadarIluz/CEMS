@@ -17,11 +17,14 @@ public class Exam implements Serializable {
 	private String commentForStudents;
 	private Teacher author; 
 	private String ProfessionName;
-	private ArrayList<QuestionInExam> examQuestionsWithScores;
 
-	private String CourseName;
-	public enum Status{inActive,active} //matar
-	Status status;
+	
+	
+	
+
+	private ArrayList<QuestionInExam> examQuestionsWithScores;
+	private ExamStatus examStatus;
+	//private String CourseName; //FIXME: display col in examBankController.
 	
 	public Exam() {
 		super();
@@ -54,6 +57,8 @@ public class Exam implements Serializable {
 		this.course = course;
 	}
 	
+	
+	
 	public Exam(String examID, Profession profession, Course course, int timeOfExam) {
 		super();
 		this.examID = examID;
@@ -71,9 +76,15 @@ public class Exam implements Serializable {
 		return ProfessionName;
 	}
 
+	
+
 	public String getProfessionName() {
 		return profession.getProfessionID();
 	}
+	
+//	public String getCourseName() {
+//		return course.getCourseID();
+//	}
 
 	public Exam(String examID, Profession profession, Course course, int timeOfExam, ArrayList<Question> questions,
 		HashMap<String, Integer> questionScores, String commentForTeacher, String commentForStudents,
@@ -161,12 +172,16 @@ public class Exam implements Serializable {
 		this.examID = examID;
 	}
 	
-	public Status getStatus() {
-		return status;
+	public ExamStatus getExamStatus() {
+		return examStatus;
 	}
 
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setExamStatus(ExamStatus examStatus) {
+		this.examStatus = examStatus;
 	}
 
+	public String getCourseID() {
+		return this.getCourse().getCourseID();
+	}
+	
 }

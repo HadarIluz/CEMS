@@ -1,7 +1,6 @@
 package gui_teacher;
 
-import java.io.IOException
-;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,54 +31,55 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import logic.RequestToServer;
 
-
 /**
- * @author Yadin and Nadav
- *
+ * @author Yadin
+ * @author Nadav Dery
  */
 public class TeacherController extends Application implements Initializable {
 
-    @FXML
-    private ImageView imgPrincipal;
+	@FXML
+	private ImageView imgPrincipal;
 
-    @FXML
-    private ImageView imgLogo;
+	@FXML
+	private ImageView imgLogo;
 
-    @FXML
-    private Label textTeacherName;
+	@FXML
+	private Label textTeacherName;
 
-    @FXML
-    private Button brnManageQuestionsBank;
+	@FXML
+	private Button brnManageQuestionsBank;
 
-    @FXML
-    private ImageView imgPhone;
+	@FXML
+	private ImageView imgPhone;
 
-    @FXML
-    private ImageView imgEmail;
+	@FXML
+	private ImageView imgEmail;
 
-    @FXML
-    private Button btnManageExamsBank;
+	@FXML
+	private Button btnManageExamsBank;
 
-    @FXML
-    private Button btnGetStatistics;
+	@FXML
+	private Button btnGetStatistics;
 
-    @FXML
-    private Button btnScoreApproval;
+	@FXML
+	private Button btnScoreApproval;
 
-    @FXML
-    private Button btnChangeExamTime;
+	@FXML
+	private Button btnChangeExamTime;
 
-    @FXML
-    private Label pressLogout;
-	
+	@FXML
+	private Label pressLogout;
+
 	public LoginController loginController;
 	public static GridPane root;
 	public Scene scene;
 	protected User teacher;
 	private static HashMap<String, Profession> professionsMap = null;
 
-	/**TODO: add comment
-	 * @param event
+	/**
+	 * method open the screnn for manage question bank of teacher
+	 * 
+	 * @param event occurs when User press Manage Questions Bank
 	 */
 	@FXML
 	void btnManageQuestionsBank(ActionEvent event) {
@@ -95,8 +95,11 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
-	/*TODO: add comment
-	 * @param event
+	/**
+	 * method open the screen for Change Exam Time of teacher that sent after to
+	 * principal
+	 * 
+	 * @param event occurs when User press "Change Exam Time"
 	 */
 	@FXML
 	void btnChangeExamTime(ActionEvent event) {
@@ -112,8 +115,10 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
-	/**TODO: add comment
-	 * @param event
+	/**
+	 * method open the screen of Statistics for teacher
+	 * 
+	 * @param event occurs when User press "Change Get Statistics"
 	 */
 	@FXML
 	void btnGetStatistics(ActionEvent event) {
@@ -128,8 +133,10 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
-	/** TODO: add comment
-	 * @param event
+	/**
+	 * method open the screen of Manage Exams Bank for teacher
+	 * 
+	 * @param event occurs when User press "Manage Exams Bank"
 	 */
 	@FXML
 	void btnManageExamsBank(ActionEvent event) {
@@ -143,8 +150,10 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
-	/** TODO: add comment
-	 * @param event
+	/**
+	 * method open the screen scores approval of teacher
+	 * 
+	 * @param event when User press "Score Approval"
 	 */
 	@FXML
 	void btnScoreApproval(ActionEvent event) {
@@ -158,9 +167,10 @@ public class TeacherController extends Application implements Initializable {
 		}
 
 	}
-	
-	
-	/**Event Logout that occur when clicking on logout at the left menu
+
+	/**
+	 * Event Logout that occur when clicking on logout at the left menu
+	 * 
 	 * @param event that display pop up message and ask if he want to logout.
 	 */
 	@FXML
@@ -173,7 +183,7 @@ public class TeacherController extends Application implements Initializable {
 
 		alert.getButtonTypes().setAll(okButton, noButton);
 		alert.showAndWait().ifPresent(type -> {
-			if (type == okButton) {		
+			if (type == okButton) {
 				loginController = new LoginController();
 				((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
 				try {
@@ -198,31 +208,49 @@ public class TeacherController extends Application implements Initializable {
 		primaryStage.setTitle("CEMS-Computerized Exam Management System");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
+
 		listenToCloseWindow(primaryStage);
 
 	}
 
+	/**
+	 * Method initialize for user screen of teacher menu
+	 * 
+	 * @param location  for Url location
+	 * @param resources of type ResourceBundle
+	 * 
+	 */
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		teacher=ClientUI.loggedInUser.getUser();
-		textTeacherName.setText(teacher.getFirstName()+" " +teacher.getLastName());
-		setProfessionMap(((Teacher)ClientUI.loggedInUser.getUser()).getProfessions());
+		teacher = ClientUI.loggedInUser.getUser();
+		textTeacherName.setText(teacher.getFirstName() + " " + teacher.getLastName());
+		setProfessionMap(((Teacher) ClientUI.loggedInUser.getUser()).getProfessions());
 	}
-	
+
+	/**
+	 * method insert professions of teacher to his Proffession Mapp
+	 * 
+	 * @param professionsList for proffession input
+	 */
 
 	public void setProfessionMap(ArrayList<Profession> professionsList) {
 		professionsMap = new HashMap<>();
-		for (Profession p: professionsList) {
+		for (Profession p : professionsList) {
 			professionsMap.put(p.getProfessionName(), p);
 		}
 	}
-	
+
+	/**
+	 * method return the profession map
+	 * 
+	 * @return hashMap of profession with a key of profession ID
+	 */
+
 	public static HashMap<String, Profession> getProfessionsMap() {
 		return professionsMap;
 	}
-	
-	
+
 	/**
 	 * listen for close events on a JavaFX Stage, notified when the user clicks the
 	 * button with the X on, in the upper right corner of the Stage
@@ -244,6 +272,5 @@ public class TeacherController extends Application implements Initializable {
 		});
 
 	}
-
 
 }

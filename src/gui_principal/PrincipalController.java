@@ -28,7 +28,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import logic.LoggedInUser;
 import logic.RequestToServer;
 
 /**
@@ -56,7 +55,7 @@ public class PrincipalController extends Application implements Initializable {
 	private Button btnGetReports;
 
 	@FXML
-	private Button btnApproveTimeExtention;
+	private Button btnApproveTimeExtension;
 
 	@FXML
 	private Button btnViewInfo;
@@ -118,7 +117,7 @@ public class PrincipalController extends Application implements Initializable {
 	 * @param event that loading the principal right screen after pressing a button.
 	 */
 	@FXML
-	void btnApproveTimeExtention(ActionEvent event) {
+	void btnApproveTimeExtension(ActionEvent event) {
 		//Reading the information from the table extension_request in the database
 		RequestToServer req = new RequestToServer("getExtensionRequests");
 		ArrayList<ExtensionRequest> extensionRequest = new ArrayList<ExtensionRequest>();
@@ -126,11 +125,11 @@ public class PrincipalController extends Application implements Initializable {
 		extensionRequest = (ArrayList<ExtensionRequest>) CEMSClient.responseFromServer.getResponseData();
 		//Right screen loading
 		try {
-			ApprovalTimeExtentionController.setExtensionRequestList(extensionRequest);
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ApprovalTimeExtention.fxml"));
+			ApprovalTimeExtensionController.setExtensionRequestList(extensionRequest);
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ApprovalTimeExtension.fxml"));
 			root.add(newPaneRight, 1, 0);
 		} catch (IOException e) {
-			System.out.println("Couldn't load- ApprovalTimeExtention.fxml");
+			System.out.println("Couldn't load- ApprovalTimeExtension.fxml");
 			e.printStackTrace();
 		}
 
@@ -157,7 +156,7 @@ public class PrincipalController extends Application implements Initializable {
 	 *              configure them in a way that will not be editable by principal.
 	 */
 	@FXML
-	void btnViewExamBanckinfo(ActionEvent event) {
+	void btnViewExamBankinfo(ActionEvent event) {
 		
 		try {
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_teacher/ExamBank.fxml"));
@@ -176,7 +175,7 @@ public class PrincipalController extends Application implements Initializable {
 	 *              configure them in a way that will not be editable by principal.
 	 */
 	@FXML
-	void btnViewQuestionBanckinfo(ActionEvent event) {
+	void btnViewQuestionBankinfo(ActionEvent event) {
 		try {
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_teacher/QuestionBank.fxml"));
 			root.add(newPaneRight, 1, 0);

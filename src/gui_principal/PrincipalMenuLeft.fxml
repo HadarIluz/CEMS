@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="585.0" prefWidth="227.2" style="-fx-background-color: #E0FFFF;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_principal.PrincipalController">
+<AnchorPane prefHeight="585.0" prefWidth="227.2" style="-fx-background-color: #E0FFFF;" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_principal.PrincipalController">
    <children>
       <ImageView fx:id="person" fitHeight="111.0" fitWidth="112.0" layoutX="58.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -66,13 +66,13 @@
       </Button>
       <Separator layoutX="6.0" layoutY="278.0" prefHeight="3.0" prefWidth="221.0" />
       <Separator layoutX="3.0" layoutY="224.0" prefHeight="3.0" prefWidth="221.0" />
-      <Button fx:id="btnApproveTimeExtention" alignment="CENTER" layoutX="3.0" layoutY="281.0" mnemonicParsing="false" onAction="#btnApproveTimeExtention" prefHeight="49.0" prefWidth="221.0" text="Approve Time Extention">
+      <Button fx:id="btnApproveTimeExtension" alignment="CENTER" layoutX="3.0" layoutY="281.0" mnemonicParsing="false" onAction="#btnApproveTimeExtension" prefHeight="49.0" prefWidth="221.0" text="Approve Time Extension">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
       <Separator layoutX="3.0" layoutY="387.0" prefHeight="3.0" prefWidth="221.0" />
-      <Button fx:id="btnViewExamBanckinfo" alignment="CENTER" layoutX="3.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnViewExamBanckinfo" prefHeight="49.0" prefWidth="221.0" text="View Exam Banck info">
+      <Button fx:id="btnViewExamBankinfo" alignment="CENTER" layoutX="3.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnViewExamBankinfo" prefHeight="49.0" prefWidth="221.0" text="View Exam Bank info">
          <font>
             <Font size="15.0" />
          </font>
@@ -84,7 +84,7 @@
          </font>
       </Label>
       <Separator layoutX="2.0" layoutY="442.0" prefHeight="3.0" prefWidth="221.0" />
-      <Button fx:id="btnViewQuestionBanckinfo" alignment="CENTER" layoutX="2.0" layoutY="390.0" mnemonicParsing="false" onAction="#btnViewQuestionBanckinfo" prefHeight="49.0" prefWidth="221.0" text="View Question Banck info">
+      <Button fx:id="btnViewQuestionBankinfo" alignment="CENTER" layoutX="2.0" layoutY="390.0" mnemonicParsing="false" onAction="#btnViewQuestionBankinfo" prefHeight="49.0" prefWidth="221.0" text="View Question Bank info">
          <font>
             <Font size="15.0" />
          </font>

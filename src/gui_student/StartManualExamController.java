@@ -3,38 +3,35 @@ package gui_student;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import client.CEMSClient;
 import client.ClientUI;
 import common.MyFile;
 import entity.ActiveExam;
+import gui_cems.GuiCommon;
 import entity.ExamOfStudent;
 import entity.Student;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
-public class StartManualExamController implements Initializable {
+public class StartManualExamController extends GuiCommon implements Initializable {
 
 	@FXML
 	private Button btnDownload;
@@ -81,11 +78,13 @@ public class StartManualExamController implements Initializable {
 	@FXML
 	private TextField textFileName;
 
-	private static StudentController studentController; // why ??
-	private static ActiveExam newActiveExam;
+	@FXML
+	private Text txtDownloadSucceed;
 
-	private Student student; // MAYBE NOT NEED BECAUSE STUDENTCONTROLLER ??
+	private static StudentController studentController;
+	private static ActiveExam newActiveExam;
 	private ExamOfStudent examOfStudent;
+	private Timer timer;
 
 	@FXML
 	void btnDownload(ActionEvent event) {
@@ -95,21 +94,21 @@ public class StartManualExamController implements Initializable {
 		ClientUI.cems.accept(req);
 		btnDownload.setDisable(true);
 		btnSubmit.setDisable(false);
+		txtDownloadSucceed.setVisible(true);
 	}
 
 	@FXML
 	void btnSubmit(ActionEvent event) {
-		
 		Object[] options = { " Cancel ", " Submit " };
 		JFrame frame = new JFrame("Submit Exam");
 		int dialogResult = JOptionPane.showOptionDialog(frame,
-				"Please Note!\nOnce you click Submit you can't edit exam egain.", null,
-				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, // do not use a custom Icon
+				"Please Note!\nOnce you click Submit you can't edit exam egain.", null, JOptionPane.YES_NO_OPTION,
+				JOptionPane.WARNING_MESSAGE, null, // do not use a custom Icon
 				options, // the titles of buttons
 				null); // default button title
 		if (dialogResult == 1) {
-			String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_" + examOfStudent.getStudent().getId()
-					+ ".docx";
+			String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_"
+					+ examOfStudent.getStudent().getId() + ".docx";
 			String home = System.getProperty("user.home");
 			String LocalfilePath = home + "/Downloads/" + examOfStudent.getActiveExam().getExam().getExamID()
 					+ "_exam.docx";
@@ -126,50 +125,65 @@ public class StartManualExamController implements Initializable {
 				RequestToServer req = new RequestToServer("submitManualExam");
 				req.setRequestData(submitExam);
 				ClientUI.cems.accept(req);
+				if(CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) { //????
+					timer.cancel();
+					btnSubmit.setDisable(true);
+					txtUploadSucceed.setVisible(true);
+				}
 			} catch (Exception ex) {
+				txtError1.setVisible(true);
+				txtError2.setVisible(true);
+				txtError3.setVisible(true);
 				ex.printStackTrace();
 			}
-			btnSubmit.setDisable(true);
 		}
 	}
 
 	@FXML
 	void checkBoxShowTime(ActionEvent event) {
-		// show time left
-		if (checkBoxShowTime.isSelected()) {
-			textTimeLeft.setDisable(false);
-			textTimeLeft.setOpacity(1.0);
-		} else { // Do not show time left
-			textTimeLeft.setDisable(true);
-			textTimeLeft.setOpacity(0.0);
-		}
+		textTimeLeft.setVisible(!textTimeLeft.visibleProperty().get());
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		student = (Student) ClientUI.loggedInUser.getUser();
-		examOfStudent = new ExamOfStudent(newActiveExam, student);
+		examOfStudent = new ExamOfStudent(newActiveExam,  (Student) ClientUI.loggedInUser.getUser());
+		// set the timer
+		AtomicInteger timeForTimer = new AtomicInteger(newActiveExam.getTimeAllotedForTest() * 60);
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				int hours = timeForTimer.get() / 3600;
+				int minutes = (timeForTimer.get() % 3600) / 60;
+				int seconds = timeForTimer.get() % 60;
+				String str = String.format("Time left: %02d:%02d:%02d", hours, minutes, seconds);
+				Platform.runLater(() -> textTimeLeft.setText(str));
+				timeForTimer.decrementAndGet();
+				if (timeForTimer.get() == 0) {
+					// cancel the timer
+					timer.cancel();
+					Platform.runLater(() -> lockExam());
+				}
+			}
+		}, 0, 1000);
+	}
+	
+	private void lockExam() {
+		//to add update status and delete from  active_exam.
+		//maybe the update in delete ? at the same time ??
+		RequestToServer extReq = new RequestToServer("lockActiveExam");
+		extReq.setRequestData(newActiveExam);
+		ClientUI.cems.accept(extReq);
+		///////////////////////////////////////////////////
+		
+		btnSubmit.setDisable(true);
+		btnDownload.setDisable(true);
+		GuiCommon.popUp("The exam is locked!");
 	}
 
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
 		newActiveExam = newActiveExamInProgress;
 	}
 
-	/**
-	 * this method create a popup with a message.
-	 * 
-	 * @param str
-	 */
-	public void popUp(String str) {
-		final Stage dialog = new Stage();
-		VBox dialogVbox = new VBox(20);
-		Label lbl = new Label(str);
-		lbl.setPadding(new Insets(5));
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		dialogVbox.getChildren().add(lbl);
-		Scene dialogScene = new Scene(dialogVbox, lbl.getMinWidth(), lbl.getMinHeight());
-		dialog.setScene(dialogScene);
-		dialog.show();
-	}
+
 }

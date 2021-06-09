@@ -11,9 +11,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import client.ClientUI;
 import common.MyFile;
@@ -54,14 +58,14 @@ public class CEMSserver extends AbstractServer {
 	private static DBController dbController = new DBController();
 	private ServerFrameController serverFrame;
 	private HashMap<Integer, User> loggedInUsers;
+	private HashMap<Integer, ConnectionToClient> loogedClients; // HashMap<StudentID>
 
 	public CEMSserver(int port, ServerFrameController serverUI) {
 		super(port);
 		this.serverFrame = serverUI;
 		loggedInUsers = new HashMap<Integer, User>();
+		loogedClients = new HashMap<Integer, ConnectionToClient>();
 	}
-
-	// Instance methods ************************************************
 
 	/**
 	 * This method handles any messages received from the client.
@@ -111,6 +115,16 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
+		case "getStudentGrades": {
+			getStudentGrades((int) req.getRequestData(), client);
+		}
+			break;
+
+		case "getAllStudentsExams": {
+			getAllStudentsExams(client);
+		}
+			break;
+
 		case "createNewQuestion": {
 			createNewQuestion((Question) req.getRequestData(), client);
 		}
@@ -148,6 +162,7 @@ public class CEMSserver extends AbstractServer {
 			addTimeToExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
+
 		case "getQuestionBank": {
 			getQuestionBank((Question) req.getRequestData(), client);
 		}
@@ -169,8 +184,8 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "approvalTimeExtention": {
-			approvalTimeExtention((ActiveExam) req.getRequestData(), client);
+		case "approvalTimeExtension": {
+			approvalTimeExtension((ActiveExam) req.getRequestData(), client);
 		}
 			break;
 
@@ -237,6 +252,7 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
+
 		case "DeleteQuestion": {
 			try {
 
@@ -334,7 +350,7 @@ public class CEMSserver extends AbstractServer {
 			break;
 
 		case "SaveEditExam": {
-			dbController.editExamSave((Exam) req.getRequestData());
+			SaveEditExam((Exam) req.getRequestData(), client);
 
 		}
 			break;
@@ -350,7 +366,14 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
-
+		case "lockActiveExam": {
+			lockActiveExam((ActiveExam) req.getRequestData(), client);
+		}
+			break;
+		case "getStudentsInActiveExam": {
+			getStudentsInActiveExam((ActiveExam) req.getRequestData(), client);
+		}
+			break;
 		case "updateExamStatus": {
 			updateExamStatus((ActiveExam) req.getRequestData(), client);
 
@@ -364,7 +387,19 @@ public class CEMSserver extends AbstractServer {
 			StudentFinishExam((ExamOfStudent)req.getRequestData(), client);
 		}
 		break;
+		case "getQuestionsByIDForEditExam": {
+			getQuestionsByIDForEditExam((String) req.getRequestData(), client);
 		}
+		break;
+		}
+	case "getAllQuestionsStoredInSystem":{
+		getAllQuestionsStoredInSystem(client);
+	}
+		break;
+	case "getQuestionDataBy_questionID":{
+		getQuestionDataBy_questionID((String) req.getRequestData(), client);
+	}
+	break;
 
 	}
 
