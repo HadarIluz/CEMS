@@ -537,7 +537,7 @@ public class DBController {
 	 *                   Query.
 	 */
 	public ResponseFromServer verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
-		Exam exam = new Exam();// TODO:i remove null- need to check
+		Exam exam = new Exam();
 		ResponseFromServer response = null;
 		/*** EnterToExam ***/
 		try {
@@ -1143,13 +1143,14 @@ public class DBController {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("INSERT INTO exam_of_student VALUES(?, ?, ?, ?, ?,?);");
+			pstmt = conn.prepareStatement("INSERT INTO exam_of_student VALUES(?, ?, ?, ?, ?,?,?);");
 			pstmt.setInt(1, examOfStudent.getStudent().getId());
 			pstmt.setString(2, examOfStudent.getActiveExam().getExam().getExamID());
 			pstmt.setString(3, examOfStudent.getActiveExam().getActiveExamType());
 			pstmt.setInt(4, 0);
 			pstmt.setString(5, null);
 			pstmt.setInt(6, 0);
+			pstmt.setString(7, null);
 			if (pstmt.executeUpdate() != 0) {
 				response = new ResponseFromServer("NEW EXAM OF STUDENT HAS BEEN INSERT");
 			}
@@ -1222,9 +1223,9 @@ public class DBController {
 		return allQuestionInExam;
 
 	}
-	
+
 	public ResponseFromServer GetAllQuestions_ToQuestionsBank() {
-		ResponseFromServer response=null;
+		ResponseFromServer response = null;
 		ArrayList<QuestionRow> allQuestionList = new ArrayList<QuestionRow>();
 		try {
 			PreparedStatement pstmt;
@@ -1248,27 +1249,27 @@ public class DBController {
 		} else {
 			response = new ResponseFromServer("No Question Bank");
 		}
-		
+
 		return response;
 	}
 
 	public Question getQuestionDataBy_questionID(String questionID) {
 		/*** Question Bank-Principal step2 ***/
-		Question q=new Question();
+		Question q = new Question();
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT * FROM cems.question WHERE questionID=?");
 			pstmt.setString(1, questionID);
-			
+
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				q.setQuestionID(rs.getString(2));
 				q.setQuestion(rs.getString(4));
-				
+
 				Profession p = new Profession(null);
 				p.setProfessionID(rs.getString(3));
 				q.setProfession(p);
-				
+
 				String[] answers = new String[4];
 				answers[0] = rs.getString(5);
 				answers[1] = rs.getString(6);
@@ -1279,67 +1280,32 @@ public class DBController {
 				q.setDescription(rs.getString(10));
 				rs.close();
 			}
-			
+
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 		return q;
-		
-	}	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
-//	public ResponseFromServer GetAllQuestionsData() {
-//		ArrayList<Question> qList = new ArrayList<Question>();
-//		ResponseFromServer response = null;
-//		/*** Question Bank-Principal ***/
-//		try {
-//			PreparedStatement pstmt;
-//			pstmt = conn.prepareStatement("SELECT * FROM cems.question");
-//			ResultSet rs = pstmt.executeQuery();
-//			while (rs.next()) {
-//				Question q = new Question();
-//				q.setQuestionID(rs.getString(2));
-//				q.setQuestion(rs.getString(4));
-//				
-//				Profession p = new Profession(null);
-//				p.setProfessionID(rs.getString(3));
-//				q.setProfession(p);
-//				
-//				String[] answers = new String[4];
-//				answers[0] = rs.getString(5);
-//				answers[1] = rs.getString(6);
-//				answers[2] = rs.getString(7);
-//				answers[3] = rs.getString(8);
-//				q.setAnswers(answers);
-//				q.setCorrectAnswerIndex(rs.getInt(9));
-//				q.setDescription(rs.getString(10));
-//
-//				qList.add(q);
-//			}
-//			rs.close();
-//		} catch (SQLException ex) {
-//			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-//		}
-//		if (qList.size() > 0) {
-//			response = new ResponseFromServer("Question bank FOUND");
-//			response.setResponseData(qList);
-//		} else {
-//			response = new ResponseFromServer("No Question Bank");
-//		}
-//		return response;
-//	}
+	}
+
+	public Boolean verifyExamOfStudentByExamID(ExamOfStudent examOfStudent) {
+		/*** EnterToExam ***/
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT examType FROM exam_of_student WHERE student=? AND exam=?;");
+			pstmt.setInt(1, examOfStudent.getStudent().getId());
+			pstmt.setString(2, examOfStudent.getActiveExam().getExam().getExamID());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				examOfStudent.setExamType(rs.getString(1));
+				rs.close();
+				return false;
+			}
+
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return true;
+	}
 
 }
