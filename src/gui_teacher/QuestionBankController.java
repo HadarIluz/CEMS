@@ -184,7 +184,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 			initTableRows();
 		}
 
-		if (ClientUI.loggedInUser.getUser() instanceof User) {
+		else if (ClientUI.loggedInUser.getUser() instanceof User) {
 			principal = (User) ClientUI.loggedInUser.getUser();
 			displayPrincipalView = true;
 
