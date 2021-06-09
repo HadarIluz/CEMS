@@ -2,6 +2,7 @@ package gui_teacher;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import client.CEMSClient;
@@ -9,6 +10,7 @@ import client.ClientUI;
 import entity.Course;
 import entity.Exam;
 import entity.ExamStatus;
+import entity.QuestionRow;
 import entity.Teacher;
 import entity.User;
 import gui_cems.GuiCommon;
@@ -84,6 +86,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private static Teacher teacher;
 	private static User principal;
 	private boolean displayPrincipalView = false;
+	private HashMap<String, String> profName ;
 
 	/**
 	 * method selectExamFromTable return selected exam from combo box.
@@ -213,6 +216,10 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		tableExam.setEditable(false);
+		RequestToServer req = new RequestToServer("getProfNames");
+		ClientUI.cems.accept(req);
+		profName =(HashMap<String, String>) CEMSClient.responseFromServer.getResponseData();
+
 		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 			initTableRows();
@@ -267,6 +274,8 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ArrayList<Exam> ExamsOfTeacher = new ArrayList<Exam>();
 		ClientUI.cems.accept(req);
 		ExamsOfTeacher = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
+		for(Exam curr:ExamsOfTeacher) 
+			curr.getProfession().setProfessionID(profName.get(curr.getExamID().substring(0,2)));
 		data = FXCollections.observableArrayList(ExamsOfTeacher);
 		tableExam.getColumns().clear();
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
@@ -328,8 +337,9 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		examsList = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
 		TableColumn<Exam, String> course = new TableColumn<>("course");
 
-		// PropertyValueFactory<Exam, String> factory = new PropertyValueFactory<>();
-
+		for(Exam curr:examsList) 
+			curr.getProfession().setProfessionID(profName.get(curr.getExamID().substring(0,2)));
+		
 		data = FXCollections.observableArrayList(examsList);
 		tableExam.getColumns().clear();
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
