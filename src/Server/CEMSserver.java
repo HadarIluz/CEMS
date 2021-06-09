@@ -411,7 +411,7 @@ public class CEMSserver extends AbstractServer {
 	 */
 	private void StudentFinishExam(ExamOfStudent studentExam, ConnectionToClient client) {
 		ResponseFromServer res = null;
-		if (dbController.insertNewStudentExam(studentExam)) {
+		if (dbController.updateStudentExam(studentExam)) {
 			if (dbController.insertStudentQuestions(studentExam)) {
 				res = new ResponseFromServer("Sucees student finish exam");
 			}

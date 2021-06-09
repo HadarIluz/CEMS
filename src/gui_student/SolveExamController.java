@@ -14,6 +14,7 @@ import entity.ActiveExam;
 import entity.Exam;
 import entity.ExamOfStudent;
 import entity.QuestionInExam;
+import entity.ReasonOfSubmit;
 import entity.Student;
 import gui_cems.GuiCommon;
 import javafx.application.Platform;
@@ -116,10 +117,10 @@ public class SolveExamController implements Initializable{
 
 	@FXML
 	void btnSubmitExam(ActionEvent event) {
-		submitExam();
+		submitExam(ReasonOfSubmit.initiated);
 	}
 	
-	private void submitExam() {
+	private void submitExam(ReasonOfSubmit reasonOfSubmit) {
 		btnSubmitExam.setDisable(true);
 		timer.cancel();
 		btnAnswer1.setDisable(true);
@@ -138,6 +139,7 @@ public class SolveExamController implements Initializable{
 		examOfStudent.setQuestionsAndAnswers(studentQuestions);
 		examOfStudent.setTotalTime((newActiveExam.getTimeAllotedForTest()*60 - timeForTimer.get())/60);
 		examOfStudent.setExamType("computerized");
+		examOfStudent.setReasonOfSubmit(reasonOfSubmit);
 		
 		RequestToServer req = new RequestToServer("StudentFinishExam");
 		req.setRequestData(examOfStudent);
@@ -251,7 +253,7 @@ public class SolveExamController implements Initializable{
 
 	private void stopExam() {
 		GuiCommon.popUp("Time for exam is over!");
-		submitExam();
+		submitExam(ReasonOfSubmit.forced);
 	}
 	
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {

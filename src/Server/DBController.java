@@ -549,7 +549,7 @@ public class DBController {
 			pstmt.setTime(3, activeExam.getEndTimeToTakeExam());
 			// Time Range for start the exam:
 			System.out.println(activeExam.getStartTime() + " - " + activeExam.getEndTimeToTakeExam());
-
+			System.out.println(pstmt.toString());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				exam.setExamID(rs.getString(1));
@@ -1404,13 +1404,14 @@ public class DBController {
 	 * @param studentExam
 	 * @return true or false if success in update the new exam of student to the DB
 	 */
-	public boolean insertNewStudentExam(ExamOfStudent studentExam) {
+	public boolean updateStudentExam(ExamOfStudent studentExam) {
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("UPDATE exam_of_student SET totalTime=? WHERE exam=? AND student=?");
-			pstmt.setInt(3, studentExam.getStudent().getId());
-			pstmt.setString(2, studentExam.getActiveExam().getExam().getExamID());
+			pstmt = conn.prepareStatement("UPDATE exam_of_student SET totalTime=?, reason_of_submit WHERE exam=? AND student=?");
+			pstmt.setInt(4, studentExam.getStudent().getId());
+			pstmt.setString(3, studentExam.getActiveExam().getExam().getExamID());
 			pstmt.setInt(1, studentExam.getTotalTime());
+			pstmt.setString(2, studentExam.getReasonOfSubmit().toString());
 			
 			if (pstmt.executeUpdate() != 0) {
 				return true;
