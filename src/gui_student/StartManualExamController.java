@@ -87,6 +87,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	private Timer timer;
 	private ExamOfStudent examOfStudent;
 	private AtomicInteger timeForTimer;
+	private Boolean lock = false;
 
 	@FXML
 	void btnDownload(ActionEvent event) {
@@ -101,47 +102,58 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	@FXML
 	void btnSubmit(ActionEvent event) {
-		Object[] options = { " Cancel ", " Submit " };
-		JFrame frame = new JFrame("Submit Exam");
-		int dialogResult = JOptionPane.showOptionDialog(frame,
-				"Please Note!\nOnce you click Submit you can't edit exam egain.", null, JOptionPane.YES_NO_OPTION,
-				JOptionPane.WARNING_MESSAGE, null, // do not use a custom Icon
-				options, // the titles of buttons
-				null); // default button title
-		if (dialogResult == 1) {
-			String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_"
-					+ examOfStudent.getStudent().getId() + ".docx";
-			String home = System.getProperty("user.home");
-			String LocalfilePath = home + "/Downloads/" + examOfStudent.getActiveExam().getExam().getExamID()
-					+ "_exam.docx";
-			MyFile submitExam = new MyFile(fileName);
-			try {
-				File newFile = new File(LocalfilePath);
-				byte[] mybytearray = new byte[(int) newFile.length()];
-				FileInputStream fis = new FileInputStream(newFile);
-				BufferedInputStream bis = new BufferedInputStream(fis);
-				submitExam.initArray(mybytearray.length);
-				submitExam.setSize(mybytearray.length);
-				bis.read(submitExam.getMybytearray(), 0, mybytearray.length);
-				fis.close();
-				RequestToServer req = new RequestToServer("submitManualExam");
-				req.setRequestData(submitExam);
-				ClientUI.cems.accept(req);
-				if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) { // ????
-					timer.cancel();
-					btnSubmit.setDisable(true);
-					txtUploadSucceed.setVisible(true);
-					examOfStudent.setTotalTime((newActiveExam.getTimeAllotedForTest() * 60 - timeForTimer.get())/60);
-					req = new RequestToServer("StudentFinishManualExam");
-					req.setRequestData(examOfStudent);
+		if (!lock) {
+			Object[] options = { " Cancel ", " Submit " };
+			JFrame frame = new JFrame("Submit Exam");
+			int dialogResult = JOptionPane.showOptionDialog(frame,
+					"Please Note!\nOnce you click Submit you can't edit exam egain.", null, JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE, null, // do not use a custom Icon
+					options, // the titles of buttons
+					null); // default button title
+			if (dialogResult == 1) {
+				String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_"
+						+ examOfStudent.getStudent().getId() + ".docx";
+				String home = System.getProperty("user.home");
+				String LocalfilePath = home + "/Downloads/" + examOfStudent.getActiveExam().getExam().getExamID()
+						+ "_exam.docx";
+				MyFile submitExam = new MyFile(fileName);
+				try {
+					File newFile = new File(LocalfilePath);
+					byte[] mybytearray = new byte[(int) newFile.length()];
+					FileInputStream fis = new FileInputStream(newFile);
+					BufferedInputStream bis = new BufferedInputStream(fis);
+					submitExam.initArray(mybytearray.length);
+					submitExam.setSize(mybytearray.length);
+					bis.read(submitExam.getMybytearray(), 0, mybytearray.length);
+					fis.close();
+					RequestToServer req = new RequestToServer("submitManualExam");
+					req.setRequestData(submitExam);
 					ClientUI.cems.accept(req);
+					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) {
+						timer.cancel();
+						btnSubmit.setDisable(true);
+						txtUploadSucceed.setVisible(true);
+						examOfStudent
+								.setTotalTime((newActiveExam.getTimeAllotedForTest() * 60 - timeForTimer.get()) / 60);
+						req = new RequestToServer("StudentFinishManualExam");
+						req.setRequestData(examOfStudent);
+						ClientUI.cems.accept(req);
+					}
+				} catch (Exception ex) {
+					txtError1.setVisible(true);
+					txtError2.setVisible(true);
+					txtError3.setVisible(true);
+					ex.printStackTrace();
 				}
-			} catch (Exception ex) {
-				txtError1.setVisible(true);
-				txtError2.setVisible(true);
-				txtError3.setVisible(true);
-				ex.printStackTrace();
 			}
+		} else {
+			RequestToServer req = new RequestToServer("StudentFinishManualExam");
+			timer.cancel();
+			btnSubmit.setDisable(true);
+			txtUploadSucceed.setVisible(true);
+			examOfStudent.setTotalTime((newActiveExam.getTimeAllotedForTest() * 60 - timeForTimer.get()) / 60);
+			req.setRequestData(examOfStudent);
+			ClientUI.cems.accept(req);
 		}
 	}
 
@@ -175,7 +187,10 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	}
 
 	private void lockExam() {
+		lock = true;
 		newActiveExam.getExam().setExamStatus((ExamStatus.inActive));
+		btnSubmit(null);
+
 		RequestToServer extReq = new RequestToServer("lockActiveExam");
 		extReq.setRequestData(newActiveExam);
 		ClientUI.cems.accept(extReq);
