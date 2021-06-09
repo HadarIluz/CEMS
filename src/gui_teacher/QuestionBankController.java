@@ -162,7 +162,8 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 			if ((textQuestionID.getText().isEmpty())) {
 				btnCreateNewQuestion.setDisable(true);
 			} else {
-				displayNextScreen(principal, "/gui_teacher/CreateQuestion.fxml");
+				CreateQuestionController.setNextScreenData(textQuestionID.getText(), displayPrincipalView);
+				displayNextScreen(principal, "CreateQuestion.fxml");
 			}
 		}
 	}
@@ -177,7 +178,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		textQuestionID.setEditable(true);
+		textQuestionID.setEditable(false);
 		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 			initTableRows();
@@ -199,7 +200,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 			btnDeleteQuestion.setVisible(false);
 			btnDeleteQuestion.setVisible(false);
 			textNavigation.setVisible(true);
-			textQuestionID.setEditable(false);
+			textQuestionID.setEditable(false);//CHECK!!!
 			fillTableForPrincipal_ALLQuestionsInSystem(); // set all exams in cems system into the table
 			
 		}
@@ -209,7 +210,6 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 
 	@SuppressWarnings("unchecked")
 	private void fillTableForPrincipal_ALLQuestionsInSystem() {
-		textQuestionID.setEditable(true);
 		RequestToServer req = new RequestToServer("getAllQuestionsStoredInSystem");
 		ArrayList<QuestionRow> questionList = new ArrayList<QuestionRow>();
 		ClientUI.cems.accept(req);

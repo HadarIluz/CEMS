@@ -1250,6 +1250,41 @@ public class DBController {
 		}
 		
 		return response;
+	}
+
+	public Question getQuestionDataBy_questionID(String questionID) {
+		/*** Question Bank-Principal step2 ***/
+		Question q=new Question();
+		try {
+			PreparedStatement pstmt;
+			pstmt = conn.prepareStatement("SELECT * FROM cems.question WHERE questionID=?");
+			pstmt.setString(1, questionID);
+			
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				q.setQuestionID(rs.getString(2));
+				q.setQuestion(rs.getString(4));
+				
+				Profession p = new Profession(null);
+				p.setProfessionID(rs.getString(3));
+				q.setProfession(p);
+				
+				String[] answers = new String[4];
+				answers[0] = rs.getString(5);
+				answers[1] = rs.getString(6);
+				answers[2] = rs.getString(7);
+				answers[3] = rs.getString(8);
+				q.setAnswers(answers);
+				q.setCorrectAnswerIndex(rs.getInt(9));
+				q.setDescription(rs.getString(10));
+				rs.close();
+			}
+			
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return q;
+		
 	}	
 	
 	

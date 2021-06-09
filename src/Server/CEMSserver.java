@@ -384,6 +384,10 @@ public class CEMSserver extends AbstractServer {
 		case "getAllQuestionsStoredInSystem":{
 			getAllQuestionsStoredInSystem(client);
 		}
+			break;
+		case "getQuestionDataBy_questionID":{
+			getQuestionDataBy_questionID((String) req.getRequestData(), client);
+		}
 		
 
 		}
@@ -1075,7 +1079,17 @@ public class CEMSserver extends AbstractServer {
 	
 	
 	
-	
+	private void getQuestionDataBy_questionID(String questionID, ConnectionToClient client) {
+		ResponseFromServer response = new ResponseFromServer("Question Data");
+		response.setResponseData((Question)dbController.getQuestionDataBy_questionID(questionID));
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);// print to server log.
+		
+	}
 	
 	
 	
