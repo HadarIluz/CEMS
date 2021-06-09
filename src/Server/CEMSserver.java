@@ -384,21 +384,19 @@ public class CEMSserver extends AbstractServer {
 			getQuestionsByIDForEditExam((String) req.getRequestData(), client);
 		}
 			break;
-		case "getAllQuestionsStoredInSystem":{
+		case "getAllQuestionsStoredInSystem": {
 			getAllQuestionsStoredInSystem(client);
 		}
 			break;
-		case "getQuestionDataBy_questionID":{
+		case "getQuestionDataBy_questionID": {
 			getQuestionDataBy_questionID((String) req.getRequestData(), client);
 		}
-		
 
 		}
 
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
-
 
 	/**
 	 * @param requestData
@@ -990,7 +988,7 @@ public class CEMSserver extends AbstractServer {
 		ResponseFromServer respon = null;
 		try {
 			if (dbController.deleteActiveExam(examToLock.getExam())) {
-				Boolean ans = dbController.updateExamStatus(examToLock.getExam());// hadar: update working
+				Boolean ans = dbController.updateExamStatus(examToLock.getExam());
 				if (ans)
 					respon = new ResponseFromServer("EXAM LOCKED");
 			}
@@ -998,18 +996,19 @@ public class CEMSserver extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
 
 	private void getStudentsInActiveExam(Exam exam, ConnectionToClient client) {
-		ResponseFromServer respon = new ResponseFromServer("EXAM LOCKED BY THE TEACHER");
+		ResponseFromServer respon = new ResponseFromServer("NOTIFICATION_STUDENT_EXAM_LOCKED");
 		ArrayList<Integer> students = dbController.getStudentsInActiveExam(exam);
-		// try {
-		// for (Integer id : students) {
-		// (loogedClients.get(id)).sendToClient(); // option 1
-		// }
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
+		try {
+			for (Integer id : students) {
+				(loogedClients.get(id)).sendToClient(respon);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		printMessageInLogFramServer("Message to Client:", respon); // print to server log.
 
 	}
@@ -1052,20 +1051,20 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);
 	}
-	
-	//TODO: CHECK
+
+	// TODO: CHECK
 	private void getQuestionsByIDForEditExam(String examID, ConnectionToClient client) {
-		/*logic for- EditExam _step2*/
-		ResponseFromServer response = null; 
+		/* logic for- EditExam _step2 */
+		ResponseFromServer response = null;
 		ArrayList<QuestionInExam> questionIDList_InExam;
 		HashMap<String, Question> allQuestionInExam;
 		// HashMap<questionID, QuestionInExam>
-		
+
 		// Set<QuestionInExam> questionIDList_InExam = new HashSet<>();
 		// Map<String, Set<QuestionInExam>> allQuestionInExam = new HashMap<>();
 		// //Map<questionID, Set<QuestionInExam>>
 		try {
-			//DELETE
+			// DELETE
 			questionIDList_InExam = (ArrayList<QuestionInExam>) dbController.getQuestionsID_byExamID(examID);
 			allQuestionInExam = (HashMap<String, Question>) dbController.allQuestionInExam(questionIDList_InExam);
 			if (allQuestionInExam != null) {
@@ -1080,29 +1079,29 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void getAllQuestionsStoredInSystem(ConnectionToClient client) {
 		ResponseFromServer response = null;
-		response=dbController.GetAllQuestions_ToQuestionsBank();
+		response = dbController.GetAllQuestions_ToQuestionsBank();
 		try {
 			client.sendToClient(response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
-		
+
 	}
-	
+
 	private void getQuestionDataBy_questionID(String questionID, ConnectionToClient client) {
 		ResponseFromServer response = new ResponseFromServer("Question Data");
-		response.setResponseData((Question)dbController.getQuestionDataBy_questionID(questionID));
+		response.setResponseData((Question) dbController.getQuestionDataBy_questionID(questionID));
 		try {
 			client.sendToClient(response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
-		
+
 	}
 
 }

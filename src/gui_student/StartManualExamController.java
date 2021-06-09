@@ -85,9 +85,9 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	private static StudentController studentController;
 	private static ActiveExam newActiveExam;
+	private static AtomicInteger timeForTimer;
 	private Timer timer;
 	private ExamOfStudent examOfStudent;
-	private AtomicInteger timeForTimer;
 	private Boolean lock = false;
 
 	@FXML
@@ -193,20 +193,23 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		lock = true;
 		newActiveExam.getExam().setExamStatus((ExamStatus.inActive));
 		btnSubmit(null);
-
 		RequestToServer extReq = new RequestToServer("lockActiveExam");
 		extReq.setRequestData(newActiveExam);
 		ClientUI.cems.accept(extReq);
 		if ((CEMSClient.responseFromServer.getResponseType()).equals("EXAM LOCKED")) {
 			btnSubmit.setDisable(true);
 			btnDownload.setDisable(true);
-			GuiCommon.popUp("The exam is locked!");
+			popUp("The exam is locked!");
 		}
 	}
 
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
 		newActiveExam = newActiveExamInProgress;
 
+	}
+	
+	public static void setTimeForExam(int time) {
+		timeForTimer.set(time);
 	}
 
 }

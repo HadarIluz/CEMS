@@ -57,7 +57,7 @@ public class ApprovalTimeExtensionController extends GuiCommon implements Initia
 	void btnApprove(ActionEvent event) {
 		// When no test is selected
 		if (selectedExtensionRequest == null) {
-			GuiCommon.popUp("Please choose a exam extension.");
+			popUp("Please choose a exam extension.");
 		}
 		// When a test is selected
 		else {
@@ -70,7 +70,7 @@ public class ApprovalTimeExtensionController extends GuiCommon implements Initia
 			req.setRequestData(selectedExtensionRequest.getActiveExam());
 			ClientUI.cems.accept(req);
 			if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("EXTENSION REMOVED")) {
-				GuiCommon.popUp("The time to take the exam has been updated.");
+				popUp("The time to take the exam has been updated.");
 				refreshFunc();
 			}
 		}
@@ -84,7 +84,7 @@ public class ApprovalTimeExtensionController extends GuiCommon implements Initia
 	void btnDecline(ActionEvent event) {
 		// When no test is selected
 		if (selectedExtensionRequest == null) {
-			GuiCommon.popUp("Please choose a exam extension.");
+			popUp("Please choose a exam extension.");
 		}
 		// When a test is selected
 		else {
@@ -92,7 +92,7 @@ public class ApprovalTimeExtensionController extends GuiCommon implements Initia
 			req.setRequestData(selectedExtensionRequest.getActiveExam());
 			ClientUI.cems.accept(req);
 			if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("EXTENSION REMOVED")) {
-				GuiCommon.popUp("The time to take the exam has not changed.");
+				popUp("The time to take the exam has not changed.");
 				refreshFunc();
 			}
 		}
