@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import logic.ResponseFromServer;
 
 /**
  * This class contains functions common to different classes that inherit from
@@ -101,6 +102,10 @@ public class GuiCommon {
 			}
 		}
 
+	}
+	
+	public static void handleNotifications(ResponseFromServer res) {
+		// if the response is notificatoin for student -> check that user is student and do what you need
 	}
 
 	//

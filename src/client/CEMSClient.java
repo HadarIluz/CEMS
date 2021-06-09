@@ -8,6 +8,7 @@ import ocsf.client.*
 ;
 import common.CemsIF;
 import common.MyFile;
+import gui_cems.GuiCommon;
 import logic.ResponseFromServer;
 import logic.StatusMsg;
 import java.io.*;
@@ -71,6 +72,8 @@ public class CEMSClient extends AbstractClient {
 		}
 		
 		if(msg instanceof ResponseFromServer) {
+			// matar: if it's a notification --> do stuff
+			//GuiCommon.handleNotifications(msg);
 			responseFromServer = (ResponseFromServer) msg;
 			responseFromServer.getStatusMsg().setStatus(responseFromServer.getResponseType());
 			clientUI.display(responseFromServer.toString());
