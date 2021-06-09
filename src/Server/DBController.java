@@ -788,7 +788,7 @@ public class DBController {
 
 	public HashMap<String, ProfessionCourseName> getCoursesNames() {
 		HashMap<String, ProfessionCourseName> courseMap = new HashMap<String, ProfessionCourseName>();
-		PreparedStatement pstmt;
+		PreparedStatement pstmt;	
 		try {
 			pstmt = conn.prepareStatement("SELECT * FROM course;");
 			ResultSet rs = pstmt.executeQuery();

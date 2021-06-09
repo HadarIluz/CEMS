@@ -10,6 +10,7 @@ import client.ClientUI;
 import entity.Course;
 import entity.Exam;
 import entity.ExamStatus;
+import entity.ProfessionCourseName;
 import entity.QuestionRow;
 import entity.Teacher;
 import entity.User;
@@ -335,10 +336,17 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ArrayList<Exam> examsList = new ArrayList<Exam>();
 		ClientUI.cems.accept(req);
 		examsList = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
-		TableColumn<Exam, String> course = new TableColumn<>("course");
+		TableColumn<Exam, String> course = new TableColumn<>("Course");
 
 		for(Exam curr:examsList) 
 			curr.getProfession().setProfessionID(profName.get(curr.getExamID().substring(0,2)));
+		RequestToServer req2 = new RequestToServer("getCoursesNames");
+		HashMap<String, ProfessionCourseName> coursesNames ;
+		ClientUI.cems.accept(req2);
+		coursesNames= (HashMap<String, ProfessionCourseName>) CEMSClient.responseFromServer.getResponseData();
+		
+		for(Exam curr:examsList)
+			curr.getCourse().setCourseID(coursesNames.get(curr.getExamID().substring(0, 2)).getCourses().get(curr.getExamID().substring(2, 4)));
 		
 		data = FXCollections.observableArrayList(examsList);
 		tableExam.getColumns().clear();
