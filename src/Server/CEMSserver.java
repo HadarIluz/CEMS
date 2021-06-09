@@ -472,7 +472,7 @@ public class CEMSserver extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (checkIfExamFinished(studentExam.getActiveExam())) documentExam(studentExam.getActiveExam());
+		//if (checkIfExamFinished(studentExam.getActiveExam())) documentExam(studentExam.getActiveExam());
 	}
 	
 	private void EditQuestion(Question question, ConnectionToClient client) {
