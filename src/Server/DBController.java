@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.mysql.cj.xdevapi.SqlDataResult;
-
 import client.CEMSClient;
 import client.ClientUI;
 import common.MyFile;
@@ -42,22 +40,6 @@ import logic.StatusMsg;
 
 /**
  * @author CEMS_Team
- *
- */
-/**
- * @author yuval
- *
- */
-/**
- * @author yuval
- *
- */
-/**
- * @author yuval
- *
- */
-/**
- * @author yuval
  *
  */
 public class DBController {
@@ -1157,146 +1139,6 @@ public class DBController {
 		return students;
 	}
 
-
-	/**
-	 * @param exam with only ID
-	 * @return exam with comment for students
-	 */
-	public Exam getCommentForStudents(Exam exam) {
-		PreparedStatement pstmt;
-		try {
-			
-			pstmt = conn.prepareStatement("SELECT commentForStudents FROM exam WHERE examID=?;");
-			pstmt.setString(1, exam.getExamID());
-			
-			ResultSet rs=pstmt.executeQuery();
-			while(rs.next()) {
-				exam.setCommentForStudents(rs.getString(1));
-			}
-			rs.close();
-				
-		} catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-		}
-		return exam;
-		
-	}
-
-	/**
-	 * @param examID
-	 * @return array list of questions in exam including the question ID and score
-	 */
-	public ArrayList<QuestionInExam> getQuestionsOfExam(String examID) {
-		ArrayList<QuestionInExam> list = new ArrayList<>();
-		PreparedStatement pstmt;
-		try {
-			
-			pstmt = conn.prepareStatement("SELECT question, score FROM question_in_exam WHERE exam=?;");
-			pstmt.setString(1, examID);
-			
-			ResultSet rs=pstmt.executeQuery();
-			while(rs.next()) {
-				QuestionInExam q = new QuestionInExam(rs.getInt(2), new Question(rs.getString(1)), null);
-				list.add(q);
-			}
-			rs.close();
-				
-		} catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-		}
-		return list;
-	}
-
-	/**
-	 * @param questionID
-	 * @return a question with all the info (description, answers etc)
-	 */
-	public Question getFullQuestion(String questionID) {
-		Question q = new Question(questionID);
-		
-		PreparedStatement pstmt;
-		try {
-			
-			pstmt = conn.prepareStatement("SELECT question, answer1, answer2, answer3, answer4, description FROM question WHERE questionID=?;");
-			pstmt.setString(1, questionID);
-			ResultSet rs=pstmt.executeQuery();
-			while(rs.next()) {
-				q.setQuestion(rs.getString(1));
-				String[] answers = new String[4];
-				answers[0] = rs.getString(2);
-				answers[1] = rs.getString(3);
-				answers[2] = rs.getString(4);
-				answers[3] = rs.getString(5);
-				q.setAnswers(answers);
-				q.setDescription(rs.getString(6));
-
-			}
-			rs.close();
-				
-		} catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-		}
-		
-		return q;
-	}
-
-	/**
-	 * @param studentExam
-	 * @return true or false if success in update the new exam of student to the DB
-	 */
-	public boolean insertNewStudentExam(ExamOfStudent studentExam) {
-		PreparedStatement pstmt;
-		try {
-			pstmt = conn.prepareStatement("UPDATE exam_of_student SET totalTime=? WHERE exam=? AND student=?");
-			pstmt.setInt(3, studentExam.getStudent().getId());
-			pstmt.setString(2, studentExam.getActiveExam().getExam().getExamID());
-			pstmt.setInt(1, studentExam.getTotalTime());
-			
-			if (pstmt.executeUpdate() != 0) {
-				return true;
-			}
-			// to do something with status
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		
-		return false;	
-	}
-
-	/**
-	 * @param studentExam
-	 * @return true if success inserting all students questions with answers from exam
-	 */
-	public boolean insertStudentQuestions(ExamOfStudent studentExam) {
-		PreparedStatement pstmt;
-		
-		for (QuestionInExam q : studentExam.getQuestionsAndAnswers().keySet() ) {
-			try {
-				pstmt = conn.prepareStatement("INSERT INTO exam_of_student VALUES(?, ?, ?, ?, ?);");
-				pstmt.setInt(1, studentExam.getStudent().getId());
-				pstmt.setString(2, studentExam.getActiveExam().getExam().getExamID());
-				pstmt.setString(3, q.getQuestion().getQuestionID());
-				pstmt.setInt(4, studentExam.getQuestionsAndAnswers().get(q));
-				pstmt.setInt(5, studentExam.getQuestionsAndAnswers().get(q) == q.getQuestion().getCorrectAnswerIndex() ? 1 : 0);
-				
-
-				if (pstmt.executeUpdate() != 0) {
-					return true;
-				}
-				// to do something with status
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
-		
-		return false;
-
-	}
-	
-	
-
 	public ResponseFromServer InsertExamOfStudent(ExamOfStudent examOfStudent) {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
@@ -1445,7 +1287,142 @@ public class DBController {
 		
 	}	
 	
+	/**
+	 * @param studentExam
+	 * @return true if success inserting all students questions with answers from exam
+	 */
+	public boolean insertStudentQuestions(ExamOfStudent studentExam) {
+		PreparedStatement pstmt;
+		
+		for (QuestionInExam q : studentExam.getQuestionsAndAnswers().keySet() ) {
+			try {
+				pstmt = conn.prepareStatement("INSERT INTO exam_of_student VALUES(?, ?, ?, ?, ?);");
+				pstmt.setInt(1, studentExam.getStudent().getId());
+				pstmt.setString(2, studentExam.getActiveExam().getExam().getExamID());
+				pstmt.setString(3, q.getQuestion().getQuestionID());
+				pstmt.setInt(4, studentExam.getQuestionsAndAnswers().get(q));
+				pstmt.setInt(5, studentExam.getQuestionsAndAnswers().get(q) == q.getQuestion().getCorrectAnswerIndex() ? 1 : 0);
+				
 
+				if (pstmt.executeUpdate() != 0) {
+					return true;
+				}
+				// to do something with status
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		
+		return false;
+
+	}
+	
+		/**
+	 * @param exam with only ID
+	 * @return exam with comment for students
+	 */
+	public Exam getCommentForStudents(Exam exam) {
+		PreparedStatement pstmt;
+		try {
+			
+			pstmt = conn.prepareStatement("SELECT commentForStudents FROM exam WHERE examID=?;");
+			pstmt.setString(1, exam.getExamID());
+			
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
+				exam.setCommentForStudents(rs.getString(1));
+			}
+			rs.close();
+				
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return exam;
+		
+	}
+
+	/**
+	 * @param examID
+	 * @return array list of questions in exam including the question ID and score
+	 */
+	public ArrayList<QuestionInExam> getQuestionsOfExam(String examID) {
+		ArrayList<QuestionInExam> list = new ArrayList<>();
+		PreparedStatement pstmt;
+		try {
+			
+			pstmt = conn.prepareStatement("SELECT question, score FROM question_in_exam WHERE exam=?;");
+			pstmt.setString(1, examID);
+			
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
+				QuestionInExam q = new QuestionInExam(rs.getInt(2), new Question(rs.getString(1)), null);
+				list.add(q);
+			}
+			rs.close();
+				
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		return list;
+	}
+
+	/**
+	 * @param questionID
+	 * @return a question with all the info (description, answers etc)
+	 */
+	public Question getFullQuestion(String questionID) {
+		Question q = new Question(questionID);
+		
+		PreparedStatement pstmt;
+		try {
+			
+			pstmt = conn.prepareStatement("SELECT question, answer1, answer2, answer3, answer4, description FROM question WHERE questionID=?;");
+			pstmt.setString(1, questionID);
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
+				q.setQuestion(rs.getString(1));
+				String[] answers = new String[4];
+				answers[0] = rs.getString(2);
+				answers[1] = rs.getString(3);
+				answers[2] = rs.getString(4);
+				answers[3] = rs.getString(5);
+				q.setAnswers(answers);
+				q.setDescription(rs.getString(6));
+
+			}
+			rs.close();
+				
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		
+		return q;
+	}
+
+	/**
+	 * @param studentExam
+	 * @return true or false if success in update the new exam of student to the DB
+	 */
+	public boolean insertNewStudentExam(ExamOfStudent studentExam) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("UPDATE exam_of_student SET totalTime=? WHERE exam=? AND student=?");
+			pstmt.setInt(3, studentExam.getStudent().getId());
+			pstmt.setString(2, studentExam.getActiveExam().getExam().getExamID());
+			pstmt.setInt(1, studentExam.getTotalTime());
+			
+			if (pstmt.executeUpdate() != 0) {
+				return true;
+			}
+			// to do something with status
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return false;	
+	}
 	
 	
 	
