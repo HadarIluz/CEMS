@@ -882,6 +882,7 @@ public class DBController {
 		return response;
 	}
 
+
 	public ResponseFromServer createNewActiveExam(ActiveExam newActiveExam) {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
@@ -1262,26 +1263,25 @@ public class DBController {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 		return q;
-
-	}
-
+		
+	}	
+	
 	/**
 	 * @param studentExam
-	 * @return true if success inserting all students questions with answers from
-	 *         exam
+	 * @return true if success inserting all students questions with answers from exam
 	 */
 	public boolean insertStudentQuestions(ExamOfStudent studentExam) {
 		PreparedStatement pstmt;
-
-		for (QuestionInExam q : studentExam.getQuestionsAndAnswers().keySet()) {
+		
+		for (QuestionInExam q : studentExam.getQuestionsAndAnswers().keySet() ) {
 			try {
 				pstmt = conn.prepareStatement("INSERT INTO student_answers_in_exam VALUES(?, ?, ?, ?, ?);");
 				pstmt.setInt(1, studentExam.getStudent().getId());
 				pstmt.setString(2, studentExam.getActiveExam().getExam().getExamID());
 				pstmt.setString(3, q.getQuestion().getQuestionID());
 				pstmt.setInt(4, studentExam.getQuestionsAndAnswers().get(q));
-				pstmt.setInt(5,
-						studentExam.getQuestionsAndAnswers().get(q) == q.getQuestion().getCorrectAnswerIndex() ? 1 : 0);
+				pstmt.setInt(5, studentExam.getQuestionsAndAnswers().get(q) == q.getQuestion().getCorrectAnswerIndex() ? 1 : 0);
+				
 
 				if (pstmt.executeUpdate() == 0) {
 					return false;
@@ -1292,33 +1292,33 @@ public class DBController {
 				return false;
 			}
 		}
-
+		
 		return true;
 
 	}
-
-	/**
+	
+		/**
 	 * @param exam with only ID
 	 * @return exam with comment for students
 	 */
 	public Exam getCommentForStudents(Exam exam) {
 		PreparedStatement pstmt;
 		try {
-
+			
 			pstmt = conn.prepareStatement("SELECT commentForStudents FROM exam WHERE examID=?;");
 			pstmt.setString(1, exam.getExamID());
-
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
+			
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
 				exam.setCommentForStudents(rs.getString(1));
 			}
 			rs.close();
-
+				
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 		return exam;
-
+		
 	}
 
 	/**
@@ -1329,17 +1329,17 @@ public class DBController {
 		ArrayList<QuestionInExam> list = new ArrayList<>();
 		PreparedStatement pstmt;
 		try {
-
+			
 			pstmt = conn.prepareStatement("SELECT question, score FROM question_in_exam WHERE exam=?;");
 			pstmt.setString(1, examID);
-
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
+			
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
 				QuestionInExam q = new QuestionInExam(rs.getInt(2), new Question(rs.getString(1)), null);
 				list.add(q);
 			}
 			rs.close();
-
+				
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
@@ -1352,15 +1352,14 @@ public class DBController {
 	 */
 	public Question getFullQuestion(String questionID) {
 		Question q = new Question(questionID);
-
+		
 		PreparedStatement pstmt;
 		try {
-
-			pstmt = conn.prepareStatement(
-					"SELECT question, answer1, answer2, answer3, answer4, description FROM question WHERE questionID=?;");
+			
+			pstmt = conn.prepareStatement("SELECT question, answer1, answer2, answer3, answer4, description FROM question WHERE questionID=?;");
 			pstmt.setString(1, questionID);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
 				q.setQuestion(rs.getString(1));
 				String[] answers = new String[4];
 				answers[0] = rs.getString(2);
@@ -1372,11 +1371,11 @@ public class DBController {
 
 			}
 			rs.close();
-
+				
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-
+		
 		return q;
 	}
 
@@ -1387,14 +1386,13 @@ public class DBController {
 	public boolean updateStudentExam(ExamOfStudent studentExam) {
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement(
-					"UPDATE exam_of_student SET totalTime=?, reason_of_submit=?, score=? WHERE exam=? AND student=?");
+			pstmt = conn.prepareStatement("UPDATE exam_of_student SET totalTime=?, reason_of_submit=?, score=? WHERE exam=? AND student=?");
 			pstmt.setInt(1, studentExam.getTotalTime());
 			pstmt.setString(2, studentExam.getReasonOfSubmit().toString());
 			pstmt.setInt(3, studentExam.getScore());
 			pstmt.setString(4, studentExam.getActiveExam().getExam().getExamID());
 			pstmt.setInt(5, studentExam.getStudent().getId());
-
+			
 			if (pstmt.executeUpdate() != 0) {
 				return true;
 			}
@@ -1403,9 +1401,21 @@ public class DBController {
 			e.printStackTrace();
 			return false;
 		}
-
-		return false;
+		
+		return false;	
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 //	public ResponseFromServer GetAllQuestionsData() {
 //		ArrayList<Question> qList = new ArrayList<Question>();
@@ -1448,16 +1458,17 @@ public class DBController {
 //		return response;
 //	}
 
+	
+
 	public Boolean verifyExamOfStudentByExamID(ExamOfStudent examOfStudent) {
 		/*** EnterToExam ***/
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT examType FROM exam_of_student WHERE student=? AND exam=?;");
+			pstmt = conn.prepareStatement("SELECT * FROM exam_of_student WHERE student=? AND exam=?;");
 			pstmt.setInt(1, examOfStudent.getStudent().getId());
 			pstmt.setString(2, examOfStudent.getActiveExam().getExam().getExamID());
 			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				examOfStudent.setExamType(rs.getString(1));
+			if (rs.first()==true) {
 				rs.close();
 				return false;
 			}
@@ -1467,7 +1478,7 @@ public class DBController {
 		}
 		return true;
 	}
-
+	
 	public ArrayList<String> getStudentScore(String[] requestData) {
 		PreparedStatement pstmt;
 		ArrayList<String> Details = new ArrayList<>();
@@ -1489,7 +1500,7 @@ public class DBController {
 			rs.next();
 			Details.add(rs.getString(1));
 			rs.close();
-
+			
 			pstmt = conn.prepareStatement("SELECT courseName FROM course WHERE courseID=? AND profession=?;");
 			pstmt.setString(1, requestData[0].substring(2, 4));
 			pstmt.setString(2, requestData[0].substring(0, 2));
@@ -1497,57 +1508,57 @@ public class DBController {
 			rs.next();
 			Details.add(rs.getString(1));
 			rs.close();
-
+						
+						
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
 
 		return Details;
 	}
-
+	
 	public ArrayList<QuestionRow> getSolvedComputerizedExam(String[] details) {
-		ArrayList<QuestionRow> questionsOfExam = new ArrayList<QuestionRow>();
-		PreparedStatement pstmt;
-		try {
-			pstmt = conn.prepareStatement(
-					"SELECT question,answer,correct FROM student_answers_in_exam where student =? and exam=?;");
-			pstmt.setString(1, details[0]);
-			pstmt.setString(2, details[1]);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				QuestionRow question = new QuestionRow();
-				question.setQuestionID(rs.getString(1));
-				question.setStudentAnswer(rs.getInt(2));
-				question.setCorrect(rs.getInt(3));
-				questionsOfExam.add(question);
-			}
-			rs.close();
-		} catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-		}
+		 ArrayList<QuestionRow> questionsOfExam = new  ArrayList<QuestionRow>();
+		 PreparedStatement pstmt;
+			try {
+				pstmt = conn.prepareStatement("SELECT question,answer,correct FROM student_answers_in_exam where student =? and exam=?;");
+				pstmt.setString(1,details[0]);
+				pstmt.setString(2,details[1]);			
+				ResultSet rs=pstmt.executeQuery();
+				while(rs.next()) {
+					QuestionRow question= new QuestionRow();
+					question.setQuestionID(rs.getString(1));
+					question.setStudentAnswer(rs.getInt(2));
+					question.setCorrect(rs.getInt(3));
+					questionsOfExam.add(question);				
+				}
+				rs.close();
+			} catch (SQLException ex) {
+				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			}	
 		return questionsOfExam;
 	}
-
+	
 	public Question correctAnswerForQuestion(String questionID) {
-
-		PreparedStatement pstmt;
-		try {
-			pstmt = conn.prepareStatement(
-					"SELECT question,answer1,answer2,answer3,answer4,correctAnswerIndex FROM question where questionID=?;");
-			pstmt.setString(1, questionID);
-			ResultSet rs = pstmt.executeQuery();
-			rs.next();
-			Question question = new Question(questionID);
-			question.setQuestion(rs.getString(1));
-			String[] answers = { rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5) };
-			question.setAnswers(answers);
-			question.setCorrectAnswerIndex(rs.getInt(6));
-			question.setCorrectAns(answers[question.getCorrectAnswerIndex() - 1]);
-			rs.close();
-			return question;
-		} catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-		}
+		
+		
+		 PreparedStatement pstmt;
+			try {
+				pstmt = conn.prepareStatement("SELECT question,answer1,answer2,answer3,answer4,correctAnswerIndex FROM question where questionID=?;");
+				pstmt.setString(1,questionID);
+				ResultSet rs=pstmt.executeQuery();
+					rs.next(); 
+					Question question= new Question(questionID);
+					question.setQuestion(rs.getString(1));
+					String[] answers = {rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)};
+					question.setAnswers(answers);
+					question.setCorrectAnswerIndex(rs.getInt(6));
+					question.setCorrectAns(answers[question.getCorrectAnswerIndex()-1]);
+				rs.close();
+				return question;
+			} catch (SQLException ex) {
+				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			}	
 		return null;
 	}
 
@@ -1556,7 +1567,7 @@ public class DBController {
 	 * @return the time when an active exam with ID exam id started
 	 */
 	public Time getStartTimeOfActiveExam(String examID) {
-
+		
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("SELECT startTime FROM active_exam WHERE exam=?");
@@ -1581,8 +1592,7 @@ public class DBController {
 		PreparedStatement pstmt;
 		int sum = 0;
 		try {
-			pstmt = conn
-					.prepareStatement("SELECT SUM(exam=?) as sum FROM exam_of_student WHERE reason_of_submit IS NULL;");
+			pstmt = conn.prepareStatement("SELECT SUM(exam=?) as sum FROM exam_of_student WHERE reason_of_submit IS NULL;");
 			pstmt.setString(1, examID);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -1609,12 +1619,11 @@ public class DBController {
 			pstmt.setString(1, activeExam.getExam().getExamID());
 			pstmt.setTime(2, new Time(System.currentTimeMillis()));
 			pstmt.setInt(3, activeExam.getExam().getTimeOfExam());
-			int actualTime = (int) ((System.currentTimeMillis() - activeExam.getStartTime().toLocalTime().toNanoOfDay())
-					/ 60000);
+			int actualTime = (int) ((System.currentTimeMillis() - activeExam.getStartTime().toLocalTime().toNanoOfDay())/60000);
 			pstmt.setInt(4, actualTime);
 			pstmt.setInt(5, initiated);
 			pstmt.setInt(6, forced);
-			pstmt.setInt(7, initiated + forced);
+			pstmt.setInt(7, initiated+forced);
 
 			if (pstmt.executeUpdate() != 0) {
 				return true;
@@ -1625,7 +1634,7 @@ public class DBController {
 			return false;
 		}
 		return false;
-
+		
 	}
 
 	/**
@@ -1636,8 +1645,7 @@ public class DBController {
 		PreparedStatement pstmt;
 		int sum = 0;
 		try {
-			pstmt = conn.prepareStatement(
-					"SELECT SUM(exam=?) as sum FROM exam_of_student WHERE reason_of_submit='forced';");
+			pstmt = conn.prepareStatement("SELECT SUM(exam=?) as sum FROM exam_of_student WHERE reason_of_submit='forced';");
 			pstmt.setString(1, examID);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -1658,8 +1666,7 @@ public class DBController {
 		PreparedStatement pstmt;
 		int sum = 0;
 		try {
-			pstmt = conn.prepareStatement(
-					"SELECT SUM(exam=?) as sum FROM exam_of_student WHERE reason_of_submit='initiated';");
+			pstmt = conn.prepareStatement("SELECT SUM(exam=?) as sum FROM exam_of_student WHERE reason_of_submit='initiated';");
 			pstmt.setString(1, examID);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -1671,5 +1678,33 @@ public class DBController {
 		}
 		return sum;
 	}
+
+	public String EditQuestion(Question question) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("UPDATE question SET teacher=?, questionID=? ,profession=? ,question=?, answer1=? ,answer2=? ,answer3=?, answer4=? ,correctAnswerIndex=? ,description=? WHERE teacher=? AND questionID=?;");
+			pstmt.setInt(1, question.getTeacher().getId());
+			pstmt.setString(2, question.getQuestionID());
+			pstmt.setString(3, question.getProfession().getProfessionID());
+			pstmt.setString(4, question.getQuestion());
+			pstmt.setString(5, question.getAnswers()[0]);
+			pstmt.setString(6, question.getAnswers()[1]);
+			pstmt.setString(7, question.getAnswers()[2]);
+			pstmt.setString(8, question.getAnswers()[3]);
+			pstmt.setInt(9, question.getCorrectAnswerIndex());
+			pstmt.setString(10, question.getDescription());
+			pstmt.setInt(11,question.getTeacher().getId());
+			pstmt.setString(12, question.getQuestionID());
+			pstmt.executeUpdate();
+			
+			
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			return "false";
+		}
+
+		return "true";
+	}
+
 
 }

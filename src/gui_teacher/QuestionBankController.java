@@ -81,7 +81,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	private static Teacher teacher;
 	private static User principal;
 	private static String screenStatus;
-
+	protected static String chosenQuestionID;
 	/**
 	 * method set text of questionID when user select a question row from table
 	 * 
@@ -160,6 +160,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		} else {
 			if (!checkForLegalquestionID(textQuestionID.getText()))
 				return;
+			chosenQuestionID=textQuestionID.getText();
 			displayNextScreen(teacher, "EditQuestion.fxml");
 		}
 	}

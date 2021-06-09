@@ -351,6 +351,11 @@ public class CEMSserver extends AbstractServer {
 			createNewActiveExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
+			
+		case "EditQuestion": {
+			EditQuestion((Question) req.getRequestData(), client);
+		}
+			break;
 
 		case "submitManualExam": {
 			submitManualExam((MyFile) req.getRequestData(), client);
@@ -368,12 +373,15 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
-
+			
 		case "getAnswersOfMistakeQuestion": {
 			getAnswersOfMistakeQuestion((String) req.getRequestData(), client);
 
 		}
 			break;
+			
+			
+			
 
 		case "getAllExamsStoredInSystem": {
 			getAllExamsStoredInSystem(client);
@@ -408,15 +416,16 @@ public class CEMSserver extends AbstractServer {
 		case "getQuestionDataBy_questionID": {
 			getQuestionDataBy_questionID((String) req.getRequestData(), client);
 		}
-			break;
+		break;
 		case "getFullExamDetails": {
-			getFullExamDetails((Exam) req.getRequestData(), client);
+			getFullExamDetails((Exam)req.getRequestData(), client);
 		}
-			break;
+		break;
 		case "StudentFinishExam": {
-			StudentFinishExam((ExamOfStudent) req.getRequestData(), client);
+			StudentFinishExam((ExamOfStudent)req.getRequestData(), client);
 		}
-			break;
+		break;
+	
 
 		case "checkExam_of_student_NotExistsBeforeStartExam": {
 			checkExam_of_student_NotExistsBeforeStartExam((ExamOfStudent) req.getRequestData(), client);
@@ -429,9 +438,16 @@ public class CEMSserver extends AbstractServer {
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
+	
+
+	
+
+	
+
 	/**
 	 * @param studentExam
-	 * @param client      inserts all student exam data to DB
+	 * @param client
+	 * inserts all student exam data to DB
 	 */
 	private void StudentFinishExam(ExamOfStudent studentExam, ConnectionToClient client) {
 		ResponseFromServer res = null;
@@ -445,10 +461,9 @@ public class CEMSserver extends AbstractServer {
 		if (dbController.updateStudentExam(studentExam)) {
 			if (dbController.insertStudentQuestions(studentExam)) {
 				res = new ResponseFromServer("Success student finish exam");
-				if (checkIfExamFinished(studentExam.getActiveExam()))
-					documentExam(studentExam.getActiveExam());
 			}
-		} else {
+		}
+		else {
 			res = new ResponseFromServer("Fail student finish exam");
 		}
 		try {
@@ -457,15 +472,26 @@ public class CEMSserver extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//if (checkIfExamFinished(studentExam.getActiveExam())) documentExam(studentExam.getActiveExam());
+	}
+	
+	private void EditQuestion(Question question, ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Edit Question Update");
+			Res.setResponseData(dbController.EditQuestion((Question)question));
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * @param activeExam
-	 * @return true or false if the exam is finished a finished exam is 30 minutes
-	 *         after start time & all students submitted (forced ot initiated)
+	 * @return true or false if the exam is finished
+	 * a finished exam is 30 minutes after start time & all students submitted (forced ot initiated)
 	 */
 	private boolean checkIfExamFinished(ActiveExam activeExam) {
-		// first check if it's after half an hour of beginning of exam
+		// first check if it's after half an hour of beginning of exam	
 		Time time = dbController.getStartTimeOfActiveExam(activeExam.getExam().getExamID());
 		if (time == null) {
 			printMessageInLogFramServer("There was a problem getting the start time", null);
@@ -477,56 +503,56 @@ public class CEMSserver extends AbstractServer {
 			// it's half an hour past the starting time of the exam
 			// now check if some students are not done
 			int notSubmitted = dbController.getNumberOfNotSubmitted(activeExam.getExam().getExamID());
-			if (notSubmitted == 0)
-				return true;
+			if (notSubmitted == 0) return true;
 		}
 		return false;
 	}
-
+	
 	/**
-	 * @param activeExam this method documents a finished exam in the db
+	 * @param activeExam
+	 * this method documents a finished exam in the db
 	 */
 	private void documentExam(ActiveExam activeExam) {
-		// delete the active exam and document it
-		if (!dbController.deleteActiveExam(activeExam)) {
-			printMessageInLogFramServer("There was a problem with deleteing the active exam", null);
-		}
-		if (!dbController.updateExamStatus(activeExam.getExam())) {
-			printMessageInLogFramServer("There was a problem with update exam status", null);
-		}
-
-		if (dbController.documentExam(activeExam)) { // enter all relavent data to record_exam table
-			printMessageInLogFramServer("document exam suceeded", null);
-		}
-		// now call for method that checks copying (only if computerized)
-
+			// delete the active exam and document it
+			if (!dbController.deleteActiveExam(activeExam)) {
+				printMessageInLogFramServer("There was a problem with deleteing the active exam", null);
+			}
+			if (!dbController.updateExamStatus(activeExam.getExam())) {
+				printMessageInLogFramServer("There was a problem with update exam status", null);
+			}
+			
+			if (dbController.documentExam(activeExam)) { // enter all relavent data to record_exam table
+				printMessageInLogFramServer("document exam suceeded", null);
+			}
+			// now call for method that checks copying (only if computerized)
+		
 	}
 
 	/**
 	 * @param exam
 	 * @param client
 	 * 
-	 *               gets from the db details of exam for student to solve: exam
-	 *               comments, all questions and scores
+	 * gets from the db details of exam for student to solve: exam comments, all questions and scores
 	 */
 	private void getFullExamDetails(Exam exam, ConnectionToClient client) {
 		exam = dbController.getCommentForStudents(exam);
 		ArrayList<QuestionInExam> questionsList = dbController.getQuestionsOfExam(exam.getExamID());
-		for (QuestionInExam q : questionsList) {
+		for (QuestionInExam q: questionsList) {
 			q.setQuestion(dbController.getFullQuestion(q.getQuestion().getQuestionID()));
 		}
 		exam.setExamQuestionsWithScores(questionsList);
 		ResponseFromServer res = new ResponseFromServer("FullExam");
 		res.setResponseData(exam);
-
+		
 		try {
 			client.sendToClient(res);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 	}
+
 
 	/**
 	 * @param requestData
@@ -545,7 +571,7 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
-
+	
 	private void getSolvedComputerizedExam(String[] requestData, ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Solved Computerized Exam");
@@ -553,9 +579,9 @@ public class CEMSserver extends AbstractServer {
 			client.sendToClient(Res);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}		
 	}
-
+	
 	private void getAnswersOfMistakeQuestion(String questionID, ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Answer For Mistake Question");
@@ -563,7 +589,7 @@ public class CEMSserver extends AbstractServer {
 			client.sendToClient(Res);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}		
 	}
 
 	private void getAllStudentsExams(ConnectionToClient client) {
@@ -1241,11 +1267,12 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void checkExam_of_student_NotExistsBeforeStartExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
-		ResponseFromServer response = null;
+		ResponseFromServer response = null;	
 		if (dbController.verifyExamOfStudentByExamID(examOfStudent)) {
-			response = new ResponseFromServer("exam_of_student_allowed");
-		} else {
-			response = new ResponseFromServer("Exam_of_student Already Exists");
+			response=new ResponseFromServer("exam_of_student_allowed");
+		}
+		else {
+			response=new ResponseFromServer("Exam_of_student Already Exists");
 		}
 		try {
 			client.sendToClient(response);
@@ -1255,6 +1282,10 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 	}
 
+
+	
+	
+	
 	//
 
 }
