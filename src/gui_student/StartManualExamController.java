@@ -85,9 +85,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	private AtomicInteger timeForTimer;
 	private Timer timer;
 	private ExamOfStudent examOfStudent;
-	private static Boolean lockBecauseTeacher = false;
 	private Boolean lockBecauseTime = false;
-	private static int flag;
+	private static int lockBecauseTeacher;
 	private static int addTime;
 	private int timeLeft;
 
@@ -104,7 +103,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	@FXML
 	void btnSubmit(ActionEvent event) {
-		if (!lockBecauseTime && flag != 1) {
+		if (!lockBecauseTime && lockBecauseTeacher != 1) {
 			Object[] options = { " Cancel ", " Submit " };
 			JFrame frame = new JFrame("Submit Exam");
 			int dialogResult = JOptionPane.showOptionDialog(frame,
@@ -190,15 +189,15 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 			@Override
 			public void run() {
 				if (addTime != 0) {
-					// String msg = "Please note, the exam time was extended by " + addTime + "
-					// minutes.";
-					// textNotificationMsg.setText(msg);
 					newActiveExam.setExtraTime(addTime);
 					timeLeft = timeForTimer.get() + (addTime * 60);
+					String msg = String.format("Please note, the exam time","\r\n","was extended by %d minutes.",
+							newActiveExam.getExtraTime()); //need to check!
 					timeForTimer.set(timeLeft);
+					Platform.runLater(() -> textNotificationMsg.setText(msg));
 					imgNotification.setVisible(true);
 					txtMessageFrom.setVisible(true);
-					// textNotificationMsg.setVisible(true);
+					textNotificationMsg.setVisible(true);
 					addTime = 0;
 				}
 				int hours = timeForTimer.get() / 3600;
@@ -207,7 +206,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				String str = String.format("Time left: %02d:%02d:%02d", hours, minutes, seconds);
 				Platform.runLater(() -> textTimeLeft.setText(str));
 				timeForTimer.decrementAndGet();
-				if (timeForTimer.get() == 0 || flag == 1) {
+				if (timeForTimer.get() == 0 || lockBecauseTeacher == 1) {
 					if (timeForTimer.get() == 0)
 						lockBecauseTime = true;
 					Platform.runLater(() -> lockExam());
@@ -228,7 +227,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	}
 
 	public static void setFlagToLockExam(int temp) {
-		flag = temp;
+		lockBecauseTeacher = temp;
 	}
 
 	public static void addTimeToExam(int time) {
