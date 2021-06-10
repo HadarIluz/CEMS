@@ -3,18 +3,23 @@ package gui_student;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import client.ClientUI;
 import entity.Exam;
 import entity.Question;
+import entity.User;
+import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
-public class ExamCopyController implements Initializable{
+public class ExamCopyController extends GuiCommon implements Initializable{
 
     @FXML
     private TableView<Question> tableQuestion;
@@ -31,10 +36,17 @@ public class ExamCopyController implements Initializable{
 
     @FXML
     private Text textNavigation;
+    @FXML
+    private Button backBtn;
     
 	private ObservableList<Question> data;
 
+   
 
+    @FXML
+    void BackBtn(ActionEvent event) {
+    	displayNextScreen((User)ClientUI.loggedInUser.getUser(), "ViewExam.fxml");
+    }
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
