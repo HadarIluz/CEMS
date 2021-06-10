@@ -2,10 +2,12 @@ package gui_teacher;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import javax.swing.text.StyledEditorKit.BoldAction;
 
+import Server.CEMSserver;
 import client.CEMSClient;
 import client.ClientUI;
 import entity.Course;
@@ -29,6 +31,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
+import logic.ResponseFromServer;
 
 /**
  * 
@@ -81,7 +84,8 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	private static Teacher teacher;
 	private static User principal;
 	private static String screenStatus;
-
+	protected static String chosenQuestionID;
+	private HashMap<String, String> profName;
 	/**
 	 * method set text of questionID when user select a question row from table
 	 * 
@@ -160,6 +164,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		} else {
 			if (!checkForLegalquestionID(textQuestionID.getText()))
 				return;
+			chosenQuestionID=textQuestionID.getText();
 			displayNextScreen(teacher, "EditQuestion.fxml");
 		}
 	}
@@ -187,6 +192,9 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		textQuestionID.setEditable(false);
+		RequestToServer req = new RequestToServer("getProfNames");
+		ClientUI.cems.accept(req);
+		profName =(HashMap<String, String>) CEMSClient.responseFromServer.getResponseData();
 		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 			initTableRows();
@@ -223,6 +231,9 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		ClientUI.cems.accept(req);
 
 		questionList = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
+		for(QuestionRow curr:questionList) 
+			curr.setProfession(profName.get(curr.getQuestionID().substring(0,2)));
+		
 		data = FXCollections.observableArrayList(questionList);
 
 		tableQuestion.getColumns().clear();
@@ -252,6 +263,9 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		ClientUI.cems.accept(req);
 
 		questionList = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
+		for(QuestionRow curr:questionList) 
+			curr.setProfession(profName.get(curr.getQuestionID().substring(0,2)));
+		
 
 		data = FXCollections.observableArrayList(questionList);
 

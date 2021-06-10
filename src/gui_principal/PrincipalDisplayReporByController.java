@@ -22,7 +22,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import logic.RequestToServer;
 
-public class PrincipalDisplayReporByController implements Initializable {
+public class PrincipalDisplayReporByController extends GuiCommon implements Initializable {
 
 	@FXML
 	private Label lblMedian;
@@ -79,8 +79,10 @@ public class PrincipalDisplayReporByController implements Initializable {
 				median.getData().add(new XYChart.Data(curr.substring(4, 6), calcMedian((examsOfStudents.get(curr)))));
 			}
 		}
-
+		if(avg.getData().isEmpty())
+			popUp("This Course Doesn't Have Any Solved Exam.");
 		CourseHisto.getData().addAll(avg, median);
+		
 
 	}
 

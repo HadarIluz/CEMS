@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
+import gui_cems.GuiCommon;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
@@ -19,7 +20,7 @@ import javafx.scene.chart.XYChart.Data;
 import javafx.scene.control.Label;
 import logic.RequestToServer;
 
-public class PrincipalDisplayReporByStudentController implements Initializable {
+public class PrincipalDisplayReporByStudentController extends GuiCommon implements Initializable {
 
 	@FXML
 	private BarChart<?, ?> ExamsHisto;
@@ -54,11 +55,14 @@ public class PrincipalDisplayReporByStudentController implements Initializable {
 		ClientUI.cems.accept(req);
 		ExamGrades = new HashMap<String, Integer>();
 		ExamGrades = (HashMap<String, Integer>) CEMSClient.responseFromServer.getResponseData();
-		calcAvgAndMedian();
 		XYChart.Series chart = new XYChart.Series();
+		if(!ExamGrades.isEmpty()) {
+		calcAvgAndMedian();
 		chart.setName("Score");
 		for (String curr : ExamGrades.keySet())
 			chart.getData().add(new XYChart.Data(curr, ExamGrades.get(curr)));
+		}else
+			popUp("This Student Doesn't Have Any Solved Exam");
 		ExamsHisto.getData().add(chart);
 	}
 

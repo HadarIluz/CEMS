@@ -7,22 +7,12 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.FileSystemException;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
-import client.ClientUI;
 import common.MyFile;
 import entity.ActiveExam;
 import entity.Exam;
@@ -35,7 +25,6 @@ import entity.Student;
 import entity.Teacher;
 import entity.UpdateScoreRequest;
 import entity.User;
-import gui_cems.GuiCommon;
 import gui_server.ServerFrameController;
 import logic.RequestToServer;
 import logic.ResponseFromServer;
@@ -213,6 +202,13 @@ public class CEMSserver extends AbstractServer {
 			declineTimeExtension((ActiveExam) req.getRequestData(), client);
 		}
 			break;
+			
+		case "getAllExams": {
+			getAllExams(client);
+		}
+			break;
+			
+			
 
 		case "getStudents": {
 			getStudents(client);
@@ -351,6 +347,11 @@ public class CEMSserver extends AbstractServer {
 			createNewActiveExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
+			
+		case "EditQuestion": {
+			EditQuestion((Question) req.getRequestData(), client);
+		}
+			break;
 
 		case "submitManualExam": {
 			submitManualExam((MyFile) req.getRequestData(), client);
@@ -431,7 +432,11 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	
+
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
+	
 
 	
 
@@ -454,7 +459,6 @@ public class CEMSserver extends AbstractServer {
 		if (dbController.updateStudentExam(studentExam)) {
 			if (dbController.insertStudentQuestions(studentExam)) {
 				res = new ResponseFromServer("Success student finish exam");
-				if (checkIfExamFinished(studentExam.getActiveExam())) documentExam(studentExam.getActiveExam());
 			}
 		}
 		else {
@@ -466,6 +470,27 @@ public class CEMSserver extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//if (checkIfExamFinished(studentExam.getActiveExam())) documentExam(studentExam.getActiveExam());
+	}
+	
+	private void EditQuestion(Question question, ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Edit Question Update");
+			Res.setResponseData(dbController.EditQuestion((Question)question));
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void getAllExams(ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Edit Question Update");
+			Res.setResponseData(dbController.getAllExams());
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
 	}
 
 	/**
@@ -645,6 +670,19 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 
+	}
+	
+	private void CheckSameMistakeOfStudent(ArrayList<ExamOfStudent> exams,ConnectionToClient client)
+	{
+		try {
+		ResponseFromServer Res = new ResponseFromServer("Check Copy of Exam");
+		Res.setResponseData(dbController.getPotentialCopyList(exams));
+		client.sendToClient(Res);
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+
+		
 	}
 
 	/**
