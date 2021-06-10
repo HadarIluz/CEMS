@@ -22,7 +22,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import logic.RequestToServer;
 
-public class PrincipalDisplayReportByTeacherController implements Initializable {
+public class PrincipalDisplayReportByTeacherController extends GuiCommon implements Initializable {
 
 	@FXML
 	private BarChart<?, ?> ExamsHisto;
@@ -78,7 +78,6 @@ public class PrincipalDisplayReportByTeacherController implements Initializable 
 						calcMedian()));
 			} // new DecimalFormat("##.##").format(calcMedian()))
 		}
-
 		ExamsHisto.getData().addAll(avg, median);
 
 	}

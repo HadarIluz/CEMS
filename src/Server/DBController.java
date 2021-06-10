@@ -1698,4 +1698,21 @@ public class DBController {
 		return "true";
 	}
 
+
+	public ArrayList<String> getAllExams() {
+		ArrayList<String> examsID = new ArrayList<String>();
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT examID FROM exam ;");
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next())
+				if (!examsID.contains(rs.getString(1)))
+					examsID.add(rs.getString(1));
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+
+		return examsID;
+	}
+
 }
