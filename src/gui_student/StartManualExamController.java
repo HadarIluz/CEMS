@@ -130,6 +130,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					RequestToServer req = new RequestToServer("submitManualExam");
 					req.setRequestData(submitExam);
 					ClientUI.cems.accept(req);
+
 					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) {
 						timer.cancel();
 						examOfStudent.setScore(0);
@@ -159,12 +160,17 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60 - timeForTimer.get())
 							/ 60);
 			examOfStudent.setReasonOfSubmit(ReasonOfSubmit.forced);
-			if (timeForTimer.get() == 0) {
-				// need to check that will not lock if is not the last
-				// need to check if the last (what yuval did)
-				// need to add document (what yuval did)
 
-			} else {
+			if (timeForTimer.get() == 0) { // need to check if the last (what yuval did)
+				RequestToServer req = new RequestToServer("checkIfTheLastStudent");
+				req.setRequestData(examOfStudent.getActiveExam());
+				ClientUI.cems.accept(req);
+				if (!CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("LAST STUDENT")) {
+					RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
+					req2.setRequestData(examOfStudent);
+					ClientUI.cems.accept(req2);
+				}
+			} else { // because teacher || THE LAST STUDENT + TIME OVER
 				examOfStudent.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
 				RequestToServer req2 = new RequestToServer("lockActiveExam");
 				req2.setRequestData(examOfStudent);
@@ -191,8 +197,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				if (addTime != 0) {
 					newActiveExam.setExtraTime(addTime);
 					timeLeft = timeForTimer.get() + (addTime * 60);
-					String msg = String.format("Please note, the exam time","\r\n","was extended by %d minutes.",
-							newActiveExam.getExtraTime()); //need to check!
+					String msg = String.format("Please note, the exam time", "\r\n", "was extended by %d minutes.",
+							newActiveExam.getExtraTime()); // need to check!
 					timeForTimer.set(timeLeft);
 					Platform.runLater(() -> textNotificationMsg.setText(msg));
 					imgNotification.setVisible(true);

@@ -433,24 +433,38 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
+		case "checkIfTheLastStudent": {
+			checkIfTheLastStudent((ActiveExam) req.getRequestData(), client);
 		}
 
+			break;
+
+		}
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
+	private void checkIfTheLastStudent(ActiveExam activeExam, ConnectionToClient client) {
+		ResponseFromServer response = null;
+		if(checkIfExamFinished(activeExam))
+			response = new ResponseFromServer("LAST STUDENT");
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+	}
+
 	private void StudentFinishManualExam(ExamOfStudent studentExam, ConnectionToClient client) {
 		ResponseFromServer response = null;
 		if (dbController.updateStudentExam(studentExam)) {
-			// if(checkIfExamFinished(studentExam.getActiveExam()))
-			// documentExam(studentExam.getActiveExam());
 			response = new ResponseFromServer("EXAM OF STUDENT UPDATE");
-			// lockActiveExam(studentExam.getActiveExam(), client);
 		}
-		// documentExam(studentExam.getActiveExam());
-		// response = new ResponseFromServer("TOTAL TIME SAVED");
 		try {
 			client.sendToClient(response);
+			if (checkIfExamFinished(studentExam.getActiveExam()))
+				lockActiveExam(studentExam, client);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -1010,8 +1024,7 @@ public class CEMSserver extends AbstractServer {
 		if (!dbController.checkIfExtensionRequestExists(extensionRequest)) {
 			res = dbController.createNewExtensionRequest(extensionRequest);
 			principalId = dbController.getPrincipalId();
-		}
-		else
+		} else
 			res = new ResponseFromServer("EXTENSION REQUEST DIDN'T CREATED");
 		try {
 			loogedClients.get(principalId).sendToClient(res2);
@@ -1049,10 +1062,8 @@ public class CEMSserver extends AbstractServer {
 			for (Integer id : students) {
 				(loogedClients.get(id)).sendToClient(respon2);
 			}
-			
 
-			
-			//loogedClients.get(teacherId).sendToClient(respon3);
+			// loogedClients.get(teacherId).sendToClient(respon3);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -1197,6 +1208,10 @@ public class CEMSserver extends AbstractServer {
 			if (dbController.activeExamExists(examOfStudent.getActiveExam())) {
 				if (dbController.deleteActiveExam(examOfStudent.getActiveExam())) {
 					Boolean ans = dbController.updateExamStatus(examOfStudent.getActiveExam().getExam());
+					// if (dbController.documentExam(examOfStudent.getActiveExam())) {
+					// enter all relavent data to record_exam table
+					// printMessageInLogFramServer("document exam suceeded", null);
+					// }
 					if (ans)
 						respon = new ResponseFromServer("EXAM LOCKED");
 				}
