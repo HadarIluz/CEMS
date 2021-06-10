@@ -90,6 +90,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	private ExamOfStudent examOfStudent;
 	private static Boolean lockBecauseTeacher = false;
 	private Boolean lockBecauseTime = false;
+	private static int flag;
 
 	@FXML
 	void btnDownload(ActionEvent event) {
@@ -104,7 +105,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	@FXML
 	void btnSubmit(ActionEvent event) {
-		if (!lockBecauseTime && !lockBecauseTeacher) {
+		if (!lockBecauseTime && flag != 1) {
 			Object[] options = { " Cancel ", " Submit " };
 			JFrame frame = new JFrame("Submit Exam");
 			int dialogResult = JOptionPane.showOptionDialog(frame,
@@ -157,10 +158,17 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 			examOfStudent.setScore(0);
 			examOfStudent.setTotalTime((newActiveExam.getTimeAllotedForTest() * 60 - timeForTimer.get()) / 60);
 			examOfStudent.setReasonOfSubmit(ReasonOfSubmit.forced);
-			examOfStudent.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
-			RequestToServer req2 = new RequestToServer("lockActiveExam");
-			req2.setRequestData(examOfStudent);
-			ClientUI.cems.accept(req2);
+			if (timeForTimer.get() == 0) {
+				// need to check that will not lock if is not the last
+				//need to  check if the last (what yuval did)
+				//need to add document (what yuval did)
+
+			} else {
+				examOfStudent.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
+				RequestToServer req2 = new RequestToServer("lockActiveExam");
+				req2.setRequestData(examOfStudent);
+				ClientUI.cems.accept(req2);
+			}
 		}
 
 	}
@@ -185,7 +193,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				String str = String.format("Time left: %02d:%02d:%02d", hours, minutes, seconds);
 				Platform.runLater(() -> textTimeLeft.setText(str));
 				timeForTimer.decrementAndGet();
-				if (timeForTimer.get() == 0 || lockBecauseTeacher) {
+				if (timeForTimer.get() == 0 || flag == 1) {
 					if (timeForTimer.get() == 0)
 						lockBecauseTime = true;
 					Platform.runLater(() -> lockExam());
@@ -205,8 +213,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	}
 
-	public static void setFlagToLockExam(Boolean temp) {
-		lockBecauseTeacher = temp;
+	public static void setFlagToLockExam(int temp) {
+		flag = temp;
 	}
 
 }

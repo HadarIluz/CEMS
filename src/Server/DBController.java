@@ -1104,7 +1104,7 @@ public class DBController {
 		try {
 			pstmt = conn.prepareStatement("SELECT * FROM exam_of_student WHERE exam = ? AND totalTime = ?;");
 			pstmt.setString(1, exam.getExamID());
-			pstmt.setString(2, null);
+			pstmt.setInt(2, 0);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				students.add(rs.getInt(1));
