@@ -213,13 +213,6 @@ public class CEMSserver extends AbstractServer {
 			declineTimeExtension((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-			
-		case "getAllExams": {
-			getAllExams(client);
-		}
-			break;
-			
-			
 
 		case "getStudents": {
 			getStudents(client);
@@ -443,8 +436,6 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
-	
-
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
 	
@@ -492,16 +483,6 @@ public class CEMSserver extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private void getAllExams(ConnectionToClient client) {
-		try {
-			ResponseFromServer Res = new ResponseFromServer("Edit Question Update");
-			Res.setResponseData(dbController.getAllExams());
-			client.sendToClient(Res);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
 	}
 
 	/**
