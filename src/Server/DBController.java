@@ -1698,7 +1698,6 @@ public class DBController {
 		return "true";
 	}
 
-
 	public ArrayList<String> getAllExams() {
 		ArrayList<String> examsID = new ArrayList<String>();
 		PreparedStatement pstmt;
@@ -1713,6 +1712,41 @@ public class DBController {
 		}
 
 		return examsID;
+	}
+
+	public Object getPotentialCopyList(ArrayList<ExamOfStudent> exams) {
+		PreparedStatement pstmt;
+		HashMap<Integer, ArrayList<Integer>> studentsAns = new HashMap<Integer, ArrayList<Integer>>();
+		ArrayList<String> questionOfExam = new ArrayList<String>();
+		int numberOfquestion = exams.get(0).getQuestionsAndAnswers().size();
+
+		Set<QuestionInExam> questioninExam = exams.get(0).getQuestionsAndAnswers().keySet();
+		
+		String SpecificExam = exams.get(0).getActiveExam().getExam().getExamID();
+
+		for (QuestionInExam q : questioninExam) {
+
+			questionOfExam.add(q.getQuestion().getQuestionID());
+
+		}
+		
+		
+		
+
+		try {
+			pstmt = conn.prepareStatement(
+					"SELECT * FROM cems.student_answers_in_exam where exam=? and question=? and correct=0;");
+			pstmt.setString(1,SpecificExam );
+
+			ResultSet rs = pstmt.executeQuery();
+			/*while (rs.next())
+				if (!examsID.contains(rs.getString(1)))
+					examsID.add(rs.getString(1));*/
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+
+		return null;
 	}
 
 }

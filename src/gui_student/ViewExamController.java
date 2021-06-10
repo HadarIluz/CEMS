@@ -69,7 +69,7 @@ public class ViewExamController extends GuiCommon {
 
 	private static StudentController studentController;
 
-	private static User student = (User) ClientUI.loggedInUser.getUser();
+	private  User student = (User) ClientUI.loggedInUser.getUser();
 	static ArrayList<QuestionRow> questionsID;
 	static ArrayList<Question> questions;
 	private String examType;
