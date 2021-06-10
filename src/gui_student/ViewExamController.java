@@ -80,36 +80,43 @@ public class ViewExamController extends GuiCommon {
 
 		if (examType.equals("computerized")) {
 			RequestToServer req = new RequestToServer("getSolvedComputerizedExam");
-			String[] details= {String.valueOf(student.getId()),txtExamID.getText()};
+			String[] details = { String.valueOf(student.getId()), txtExamID.getText() };
 			req.setRequestData(details);
 			ClientUI.cems.accept(req);
-			questionsID = (ArrayList<QuestionRow>)CEMSClient.responseFromServer.getResponseData();
-			
-			
-			questions= new ArrayList<Question>();
-			for(QuestionRow curr:questionsID) {
+			questionsID = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
+
+			questions = new ArrayList<Question>();
+			for (QuestionRow curr : questionsID) {
 				RequestToServer req2question = new RequestToServer("getAnswersOfMistakeQuestion");
 				req2question.setRequestData(curr.getQuestionID());
 				ClientUI.cems.accept(req2question);
 				Question question;
-				question = (Question)CEMSClient.responseFromServer.getResponseData();
-				question.setCorrectAns(question.getAnswers()[question.getCorrectAnswerIndex()-1]);
-				question.setStdAns(question.getAnswers()[curr.getStudentAnswer()-1]);
+				question = (Question) CEMSClient.responseFromServer.getResponseData();
+				question.setCorrectAns(question.getAnswers()[question.getCorrectAnswerIndex() - 1]);
+				question.setStdAns(question.getAnswers()[curr.getStudentAnswer() - 1]);
+				if (!question.getCorrectAns().equals(question.getStdAns())) {
+					question.setDescription("X");
+				} else {
+
+					question.setDescription("V");
+				}
+
 				questions.add(question);
 			}
-			
+
 			displayNextScreen(student, "solvedExam.fxml");
-			
+
 		} else {
-			ExamOfStudent studentExam = new ExamOfStudent(new ActiveExam(new Exam(txtExamID.getText())),(Student)student,0);
+			ExamOfStudent studentExam = new ExamOfStudent(new ActiveExam(new Exam(txtExamID.getText())),
+					(Student) student, 0);
 			RequestToServer req = new RequestToServer("downloadSolvedManualExam");
 			req.setRequestData(studentExam);
-			ClientUI.cems.accept(req);	
-			if(CEMSClient.responseFromServer.getResponseData().equals("Download Failed")) {
+			ClientUI.cems.accept(req);
+			if (CEMSClient.responseFromServer.getResponseData().equals("Download Failed")) {
 				popUp("Download Failed.");
 				return;
 			}
-			popUp("Exam Download Successfully!");	
+			popUp("Exam Download Successfully!");
 		}
 
 	}

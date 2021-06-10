@@ -33,6 +33,9 @@ public class ExamCopyController extends GuiCommon implements Initializable{
 
     @FXML
     private TableColumn<Question, String> CorrectAns;
+    
+    @FXML
+    private TableColumn<Question, String> ResAns;
 
     @FXML
     private Text textNavigation;
@@ -55,8 +58,9 @@ public class ExamCopyController extends GuiCommon implements Initializable{
 		Question.setCellValueFactory(new PropertyValueFactory<>("question"));
 		YourAnswer.setCellValueFactory(new PropertyValueFactory<>("StdAns"));
 		CorrectAns.setCellValueFactory(new PropertyValueFactory<>("correctAns"));
+		ResAns.setCellValueFactory(new PropertyValueFactory<>("description"));
 		tableQuestion.setItems(data);
-		tableQuestion.getColumns().addAll(Question, YourAnswer, CorrectAns);
+		tableQuestion.getColumns().addAll(Question, YourAnswer, CorrectAns,ResAns);
 
 	}
 
