@@ -7,22 +7,12 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.FileSystemException;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
-import client.ClientUI;
 import common.MyFile;
 import entity.ActiveExam;
 import entity.Exam;
@@ -35,7 +25,6 @@ import entity.Student;
 import entity.Teacher;
 import entity.UpdateScoreRequest;
 import entity.User;
-import gui_cems.GuiCommon;
 import gui_server.ServerFrameController;
 import logic.RequestToServer;
 import logic.ResponseFromServer;
@@ -681,6 +670,19 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 
+	}
+	
+	private void CheckSameMistakeOfStudent(ArrayList<ExamOfStudent> exams,ConnectionToClient client)
+	{
+		try {
+		ResponseFromServer Res = new ResponseFromServer("Check Copy of Exam");
+		Res.setResponseData(dbController.getPotentialCopyList(exams));
+		client.sendToClient(Res);
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+
+		
 	}
 
 	/**
