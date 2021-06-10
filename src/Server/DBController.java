@@ -1714,7 +1714,7 @@ public class DBController {
 		return examsID;
 	}
 
-	public Object getPotentialCopyList(ArrayList<ExamOfStudent> exams) {
+	public ArrayList<Integer> getPotentialCopyList(ArrayList<ExamOfStudent> exams) {
 		PreparedStatement pstmt;
 		HashMap<Integer, ArrayList<Integer>> studentsAns = new HashMap<Integer, ArrayList<Integer>>();
 
@@ -1726,7 +1726,7 @@ public class DBController {
 		studentsAns.put(2, Answer2);
 		studentsAns.put(3, Answer3);
 		studentsAns.put(4, Answer4);
-
+		ArrayList<Integer> suspectedInCopy = new ArrayList<Integer>();
 		ArrayList<String> questionOfExam = new ArrayList<String>();
 		int numberOfquestion = exams.get(0).getQuestionsAndAnswers().size();
 
@@ -1740,58 +1740,74 @@ public class DBController {
 
 		}
 
-		for(String q:questionOfExam)
-			
+		for (String q : questionOfExam)
+
 		{
 
-		try {
-			pstmt = conn.prepareStatement(
-					"SELECT * FROM cems.student_answers_in_exam where exam=? and question=? and correct=0;");
-			pstmt.setString(1, SpecificExam);
-			pstmt.setString(2, q);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
+			try {
+				pstmt = conn.prepareStatement(
+						"SELECT * FROM cems.student_answers_in_exam where exam=? and question=? and correct=0;");
+				pstmt.setString(1, SpecificExam);
+				pstmt.setString(2, q);
+				ResultSet rs = pstmt.executeQuery();
+				while (rs.next()) {
 
-				switch (rs.getInt(4)) {
+					switch (rs.getInt(4)) {
 
-				case 1: {
+					case 1: {
 
-					Answer1.add(rs.getInt(1));
+						Answer1.add(rs.getInt(1));
 
-				}
+					}
+						break;
+					case 2: {
+
+						Answer2.add(rs.getInt(1));
+
+					}
+						break;
+
+					case 3: {
+						Answer3.add(rs.getInt(1));
+
+					}
+						break;
+
+					case 4: {
+
+						Answer4.add(rs.getInt(1));
+
+					}
+
+					}
 					break;
-				case 2: {
-
-					Answer2.add(rs.getInt(1));
-
-				}
-					break;
-
-				case 3: {
-					Answer3.add(rs.getInt(1));
-
-				}
-					break;
-
-				case 4: {
-
-					Answer4.add(rs.getInt(1));
-
 				}
 
-				}
-				break;
+			} catch (
+
+			SQLException ex) {
+				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			}
 
-		} catch (
+			for (int i = 1; i < 5; i++) {
+				if (studentsAns.get(i).size() > 1) {
 
-		SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-		}
-		
+					suspectedInCopy.addAll(studentsAns.get(i));
+
+				}
+
+				Answer1.clear();
+				Answer2.clear();
+				Answer3.clear();
+				Answer4.clear();
+
+			}
+
 		}
 
-		return null;
+		suspectedInCopy = (ArrayList<Integer>) suspectedInCopy.stream().distinct();
+
+		return suspectedInCopy;
 	}
 
 }
