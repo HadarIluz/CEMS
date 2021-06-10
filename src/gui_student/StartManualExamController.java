@@ -63,9 +63,6 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	private ImageView imgNotification;
 
 	@FXML
-	private Label textTeacherName;
-
-	@FXML
 	private Label textNotificationMsg;
 
 	@FXML
@@ -91,6 +88,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	private static Boolean lockBecauseTeacher = false;
 	private Boolean lockBecauseTime = false;
 	private static int flag;
+	private static int addTime;
+	private int timeLeft;
 
 	@FXML
 	void btnDownload(ActionEvent event) {
@@ -140,8 +139,9 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 						btnSubmit.setDisable(true);
 						RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
 						examOfStudent.setExamType("manual");
-						examOfStudent
-								.setTotalTime((newActiveExam.getTimeAllotedForTest() * 60 - timeForTimer.get()) / 60);
+						examOfStudent.setTotalTime(
+								((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60
+										- timeForTimer.get()) / 60);
 						req2.setRequestData(examOfStudent);
 						ClientUI.cems.accept(req2);
 					}
@@ -156,12 +156,14 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 			timer.cancel();
 			examOfStudent.setExamType("manual");
 			examOfStudent.setScore(0);
-			examOfStudent.setTotalTime((newActiveExam.getTimeAllotedForTest() * 60 - timeForTimer.get()) / 60);
+			examOfStudent.setTotalTime(
+					((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60 - timeForTimer.get())
+							/ 60);
 			examOfStudent.setReasonOfSubmit(ReasonOfSubmit.forced);
 			if (timeForTimer.get() == 0) {
 				// need to check that will not lock if is not the last
-				//need to  check if the last (what yuval did)
-				//need to add document (what yuval did)
+				// need to check if the last (what yuval did)
+				// need to add document (what yuval did)
 
 			} else {
 				examOfStudent.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
@@ -187,6 +189,18 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
+				if (addTime != 0) {
+					// String msg = "Please note, the exam time was extended by " + addTime + "
+					// minutes.";
+					// textNotificationMsg.setText(msg);
+					newActiveExam.setExtraTime(addTime);
+					timeLeft = timeForTimer.get() + (addTime * 60);
+					timeForTimer.set(timeLeft);
+					imgNotification.setVisible(true);
+					txtMessageFrom.setVisible(true);
+					// textNotificationMsg.setVisible(true);
+					addTime = 0;
+				}
 				int hours = timeForTimer.get() / 3600;
 				int minutes = (timeForTimer.get() % 3600) / 60;
 				int seconds = timeForTimer.get() % 60;
@@ -215,6 +229,10 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	public static void setFlagToLockExam(int temp) {
 		flag = temp;
+	}
+
+	public static void addTimeToExam(int time) {
+		addTime = time;
 	}
 
 }

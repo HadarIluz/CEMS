@@ -120,7 +120,10 @@ public class GuiCommon {
 			System.out.println("notification exam locked");
 			   StartManualExamController.setFlagToLockExam(1);
 		}
-
+		if (res.getResponseType().equals("NOTIFICATION_STUDENT_ADDED_TIME")) {
+			System.out.println("added time to exam");
+			   StartManualExamController.addTimeToExam((int) res.getResponseData());
+		}
 	}
 
 	private static void handlePrincipalNotifications(ResponseFromServer res) {
@@ -129,8 +132,11 @@ public class GuiCommon {
 	}
 
 	private static void handleTeacherNotifications(ResponseFromServer res) {
-		// if the response is notificatoin for student -> check that user is student and
-		// do what you need
+		if (res.getResponseType().equals("NOTIFICATION_TEACHER_APPROVE_REQUEST")) {
+			System.out.println("added time to exam");
+			// StartManualExamController.setFlagToLockExam(1);
+			// to show nitification to the screen
+		}
 	}
 
 	public static boolean checkForLegalID(String ExamID) {

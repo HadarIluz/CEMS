@@ -65,6 +65,7 @@ public class ApprovalTimeExtensionController extends GuiCommon implements Initia
 			timeOfExam = selectedExtensionRequest.getActiveExam().getTimeAllotedForTest();
 			timeOfExam += Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
 			selectedExtensionRequest.getActiveExam().setTimeAllotedForTest("" + timeOfExam);
+			selectedExtensionRequest.getActiveExam().setExtraTime(Integer.parseInt(selectedExtensionRequest.getAdditionalTime()));
 			// Update the exam time and delete the extension Request in the database
 			RequestToServer req = new RequestToServer("approvalTimeExtension");
 			req.setRequestData(selectedExtensionRequest.getActiveExam());

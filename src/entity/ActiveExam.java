@@ -14,6 +14,7 @@ public class ActiveExam implements Serializable {
 	private String activeExamType; //{manual / computerized}
 	private Time startTime; 	
 	private Time endTimeToTakeExam;
+	private int extraTime;
 
 	public ActiveExam(Exam exam) {
 		this.exam = exam;
@@ -102,4 +103,14 @@ public class ActiveExam implements Serializable {
 	public void setEndTimeToTakeExam(Time endTimeToTakeExam) {
 		this.endTimeToTakeExam = endTimeToTakeExam;
 	}
+	
+	public int getExtraTime() {
+		return extraTime;
+	}
+
+	public void setExtraTime(int extraTime) {
+		this.extraTime = extraTime;
+	}
+	
+	
 }

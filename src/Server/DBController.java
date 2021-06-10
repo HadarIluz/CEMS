@@ -59,7 +59,8 @@ public class DBController {
 		}
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cems?useTime_zone=false", "root","Aa123456");
+			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cems?useTime_zone=false", "root",
+					"Aa123456");
 
 			serverFrame.printToTextArea("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
@@ -1697,7 +1698,7 @@ public class DBController {
 
 		return "true";
 	}
-	
+
 	public boolean activeExamExists(ActiveExam activeExam) {
 		PreparedStatement pstmt;
 		try {
@@ -1711,5 +1712,22 @@ public class DBController {
 			ex.getMessage();
 		}
 		return true;
+	}
+
+	public int getTeacherOfExam(Exam exam) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT author FROM exam WHERE exam = ?;");
+			pstmt.setInt(1, Integer.parseInt(exam.getExamID()));
+			pstmt.setString(2, exam.getExamID());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				int x = rs.getInt(1);
+				return x;
+			}
+		} catch (SQLException ex) {
+			ex.getMessage();
+		}
+		return 0;
 	}
 }
