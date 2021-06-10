@@ -21,6 +21,12 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.layout.Pane;
 import logic.RequestToServer;
 
+/**
+ * 
+ * @author Yadin Amsalem
+ * @author Nadav Dery
+ *
+ */
 public class PrincipalGetReportsController extends GuiCommon {
 
 	@FXML
@@ -54,16 +60,23 @@ public class PrincipalGetReportsController extends GuiCommon {
 	ArrayList<Teacher> teachers;
 	ArrayList<Student> students;
 
-	static String selctedValue,UserName,Pname,Cname;
+	static String selctedValue, UserName, Pname, Cname;
 	static int Id, pId;
 
+	/**
+	 * called when the principal click on "generate report" button the method check
+	 * if all the required fields have been selected and than send the
+	 * user(principal) to the next window
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void btnGenarateReport(ActionEvent event) {
 		String value;
 		if (radioBtnTeacher.isSelected()) {
 			value = selectTeacher.getSelectionModel().getSelectedItem();
-			UserName=value;
-			if(value==null) {
+			UserName = value;
+			if (value == null) {
 				popUp("Please select a Teacher from the list.");
 				return;
 			}
@@ -77,37 +90,43 @@ public class PrincipalGetReportsController extends GuiCommon {
 
 		} else if (radioBtnStudent.isSelected()) {
 			value = selectStudent.getSelectionModel().getSelectedItem();
-			UserName=value;
-			if(value==null) {
+			UserName = value;
+			if (value == null) {
 				popUp("Please select a Student from the list.");
 				return;
 			}
 			for (Student curr : students) {
 				if (value.equals(curr.getLastName() + " " + curr.getFirstName())) {
 					Id = curr.getId();
-				displayNextScreen(principal, "ReportByStudent.fxml");
+					displayNextScreen(principal, "ReportByStudent.fxml");
 				}
 
 			}
 
 		} else if (radioBtnCourse.isSelected()) {
 			value = selectCourse.getSelectionModel().getSelectedItem();
-			Cname=value;
-			Pname=selectProfession.getSelectionModel().getSelectedItem();
-			if(value==null) {
+			Cname = value;
+			Pname = selectProfession.getSelectionModel().getSelectedItem();
+			if (value == null) {
 				popUp("Please select a Course from the list.");
 				return;
 			}
 			for (Course curr : courses)
 				if (curr.getCourseName().equals(value)) {
 					Id = Integer.valueOf(curr.getCourseID());
-			displayNextScreen(principal, "PrincipalDisplayReporBy.fxml");
+					displayNextScreen(principal, "PrincipalDisplayReporBy.fxml");
 				}
 
 		}
 	}
 
-
+	/**
+	 * called when the principal click on the report by course radio button
+	 * according to that the method would disable the other irrelevant buttons
+	 * and initialize the profession comboBox with all the option to chose from
+	 * 
+	 * @param event
+	 */
 
 	@SuppressWarnings("unchecked")
 	@FXML
@@ -125,6 +144,12 @@ public class PrincipalGetReportsController extends GuiCommon {
 		selectProfession.setItems(FXCollections.observableArrayList(professions.values()));
 	}
 
+	/**
+	 * called when principal choose profession from professions list the method
+	 * opens the course comboBox and initialize it with the relevant courses
+	 * 
+	 * @param event
+	 */
 	@SuppressWarnings("unchecked")
 	@FXML
 	void selectProfession(ActionEvent event) {
@@ -149,6 +174,12 @@ public class PrincipalGetReportsController extends GuiCommon {
 
 	}
 
+	/**
+	 * called when the principal click on the report by student radio button
+	 * according to that, the method would disable the other irrelevant buttons
+	 * and initialize the student comboBox with all the student to chose
+	 * @param event
+	 */
 	@FXML
 	void reportByStudent(ActionEvent event) {
 		selectCourse.setDisable(true);
@@ -168,6 +199,12 @@ public class PrincipalGetReportsController extends GuiCommon {
 		selectStudent.setItems(FXCollections.observableArrayList(Qlist.values()));
 	}
 
+	/**
+	 * called when the principal click on the report by teacher radio button
+	 * according to that, the method would disable the other irrelevant buttons
+	 * and initialize the comboBox with all the teacher to chose from.
+	 * @param event
+	 */
 	@SuppressWarnings("unchecked")
 	@FXML
 	void reportByTeacher(ActionEvent event) {

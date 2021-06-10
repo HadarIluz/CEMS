@@ -21,7 +21,12 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import logic.RequestToServer;
-
+/**
+ * 
+ * @author Yadin Amsalem
+ * @author Nadav Dery
+ *
+ */
 public class PrincipalDisplayReporByController extends GuiCommon implements Initializable {
 
 	@FXML
