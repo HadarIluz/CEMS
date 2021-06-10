@@ -46,7 +46,10 @@ public class PrincipalDisplayReporByController extends GuiCommon implements Init
 	private Label lblProf;
 
 	private static PrincipalController principalController;
-
+/**This method initialize the name of the profession and course on screen and 
+ * the histogram with the average and median of any exam took at this course
+ * 
+ */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -85,7 +88,11 @@ public class PrincipalDisplayReporByController extends GuiCommon implements Init
 		
 
 	}
-
+/** This method calculate the median of the grades in specific exam
+ * 
+ * @param arr ArrayList the contains the grades of student who took the exam
+ * @return returning the median calculation
+ */
 	private float calcMedian(ArrayList<Integer> arr) {
 		Collections.sort(arr);
 		if (arr.size() % 2 == 0) {
@@ -97,6 +104,11 @@ public class PrincipalDisplayReporByController extends GuiCommon implements Init
 			return (float) arr.get((arr.size() + 1) / 2 - 1);
 	}
 
+	/** calculate the average of the grades (for specific exam)
+	 * 
+	 * @param arr ArrayList the contains the grades of student who took the exam
+	 * @return returning the average of grades
+	 */
 	private float calcAvg(ArrayList<Integer> arr) {
 		float sum = 0;
 		for (Integer a : arr)
