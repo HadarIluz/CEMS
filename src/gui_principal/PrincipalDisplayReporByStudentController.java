@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import com.sun.org.glassfish.gmbal.Description;
+
 import client.CEMSClient;
 import client.ClientUI;
 import gui_cems.GuiCommon;
@@ -19,7 +21,11 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.control.Label;
 import logic.RequestToServer;
-
+/**
+ * @author Yadin Amsalem
+ * @author Nadav Dery
+ *
+ */
 public class PrincipalDisplayReporByStudentController extends GuiCommon implements Initializable {
 
 	@FXML
@@ -44,7 +50,12 @@ public class PrincipalDisplayReporByStudentController extends GuiCommon implemen
 	private Label StudentMedianLabel;
 	
 	HashMap<String, Integer> ExamGrades;
-
+	
+/** This method initialize the histogram of specific student with the grades of all the exam he took.
+ * @param location
+ * @param resources
+ *  
+ */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -65,7 +76,10 @@ public class PrincipalDisplayReporByStudentController extends GuiCommon implemen
 			popUp("This Student Doesn't Have Any Solved Exam");
 		ExamsHisto.getData().add(chart);
 	}
-
+	/** This method calculate the average and the median of the student grades.
+	 * 
+	 *  
+	 */
 	private void calcAvgAndMedian() {
 		
 		ArrayList<Integer> grades=new ArrayList<Integer>();
