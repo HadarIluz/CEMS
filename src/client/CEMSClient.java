@@ -75,8 +75,6 @@ public class CEMSClient extends AbstractClient {
 				GuiCommon.handleNotifications(responseFromServer);
 			responseFromServer.getStatusMsg().setStatus(responseFromServer.getResponseType());
 			clientUI.display(responseFromServer.toString());
-			responseFromServer.getStatusMsg().setStatus(responseFromServer.getResponseType());
-			clientUI.display(responseFromServer.toString());
 		}
 
 		if (msg instanceof MyFile) {

@@ -7,6 +7,7 @@ import entity.Student;
 import entity.Teacher;
 import entity.User;
 import gui_principal.PrincipalController;
+import gui_student.StartManualExamController;
 import gui_student.StudentController;
 import gui_teacher.TeacherController;
 import javafx.fxml.FXMLLoader;
@@ -117,7 +118,7 @@ public class GuiCommon {
 	private static void handleStudentNotifications(ResponseFromServer res) {
 		if (res.getResponseType().equals("NOTIFICATION_STUDENT_EXAM_LOCKED")) {
 			System.out.println("notification exam locked");
-			// StartManualExamController.setTimeForExam(true);//????
+			 StartManualExamController.setFlagToLockExam((Boolean) true);//????
 			// StartManualExamController.setTimeForExam(0);//????
 		}
 

@@ -349,20 +349,20 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ObservableList<Exam> Qlist;
 		Exam examToLock = GetTableDetails(textExamID.getText());
 		Qlist = tableExam.getSelectionModel().getSelectedItems();
-		examToLock.setExamStatus(ExamStatus.inActive);
-		ActiveExam activeExam = new ActiveExam(examToLock);
-		RequestToServer req = new RequestToServer("lockActiveExam");
-		req.setRequestData(activeExam);
-		ClientUI.cems.accept(req);
+		//examToLock.setExamStatus(ExamStatus.inActive);
+		//ActiveExam activeExam = new ActiveExam(examToLock);
+		// RequestToServer req = new RequestToServer("lockActiveExam");
+		// req.setRequestData(activeExam);
+		// ClientUI.cems.accept(req);
 ////////////////////////////////UNTIL HERE WORK GOOD
 
-		if (CEMSClient.responseFromServer.getResponseData().equals("EXAM LOCKED")) {
-			RequestToServer req2 = new RequestToServer("getStudentsInActiveExam");
-			req2.setRequestData(examToLock);
-			ClientUI.cems.accept(req2);
-			if (CEMSClient.responseFromServer.getResponseType().equals("NOTIFICATION_STUDENT_EXAM_LOCKED"))
-				popUp("The exam was successfully locked");
-		} else
+		// if (CEMSClient.responseFromServer.getResponseData().equals("EXAM LOCKED")) {
+		RequestToServer req = new RequestToServer("getStudentsInActiveExam");
+		req.setRequestData(examToLock);
+		ClientUI.cems.accept(req);
+		if (CEMSClient.responseFromServer.getResponseType().equals("EXAM LOCKED"))
+			popUp("The exam was successfully locked");
+		else
 			popUp("lock exam failed");
 
 	}

@@ -88,7 +88,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	private AtomicInteger timeForTimer;
 	private Timer timer;
 	private ExamOfStudent examOfStudent;
-	private static Boolean lock = false;
+	private static Boolean lockBecauseTeacher = false;
+	private Boolean lockBecauseTime = false;
 
 	@FXML
 	void btnDownload(ActionEvent event) {
@@ -103,7 +104,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	@FXML
 	void btnSubmit(ActionEvent event) {
-		if (!lock) {
+		if (!lockBecauseTime && !lockBecauseTeacher) {
 			Object[] options = { " Cancel ", " Submit " };
 			JFrame frame = new JFrame("Submit Exam");
 			int dialogResult = JOptionPane.showOptionDialog(frame,
@@ -132,14 +133,16 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					ClientUI.cems.accept(req);
 					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) {
 						timer.cancel();
+						examOfStudent.setScore(0);
 						examOfStudent.setReasonOfSubmit(ReasonOfSubmit.initiated);
-						btnSubmit.setDisable(true);
 						txtUploadSucceed.setVisible(true);
+						btnSubmit.setDisable(true);
+						RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
+						examOfStudent.setExamType("manual");
 						examOfStudent
 								.setTotalTime((newActiveExam.getTimeAllotedForTest() * 60 - timeForTimer.get()) / 60);
-						req = new RequestToServer("StudentFinishManualExam");
-						req.setRequestData(examOfStudent);
-						ClientUI.cems.accept(req);
+						req2.setRequestData(examOfStudent);
+						ClientUI.cems.accept(req2);
 					}
 				} catch (Exception ex) {
 					txtError1.setVisible(true);
@@ -149,15 +152,17 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				}
 			}
 		} else {
-			RequestToServer req = new RequestToServer("StudentFinishManualExam");
-			examOfStudent.setReasonOfSubmit(ReasonOfSubmit.forced);
+			timer.cancel();
+			examOfStudent.setExamType("manual");
+			examOfStudent.setScore(0);
 			examOfStudent.setTotalTime((newActiveExam.getTimeAllotedForTest() * 60 - timeForTimer.get()) / 60);
-			req.setRequestData(examOfStudent);
-			ClientUI.cems.accept(req);
-			if (CEMSClient.responseFromServer.getResponseType().equals("TOTAL TIME SAVED"))
-				btnSubmit.setDisable(true); // check
-			txtUploadSucceed.setVisible(true);// check
+			examOfStudent.setReasonOfSubmit(ReasonOfSubmit.forced);
+			examOfStudent.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
+			RequestToServer req2 = new RequestToServer("lockActiveExam");
+			req2.setRequestData(examOfStudent);
+			ClientUI.cems.accept(req2);
 		}
+
 	}
 
 	@FXML
@@ -180,15 +185,9 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				String str = String.format("Time left: %02d:%02d:%02d", hours, minutes, seconds);
 				Platform.runLater(() -> textTimeLeft.setText(str));
 				timeForTimer.decrementAndGet();
-				if (timeForTimer.get() == 0 || lock) {
-					// cancel the timer
-					if (timeForTimer.get() == 0) {
-						newActiveExam.getExam().setExamStatus(ExamStatus.inActive);
-						RequestToServer req = new RequestToServer("lockActiveExam");
-						req.setRequestData(newActiveExam);
-						ClientUI.cems.accept(req);
-					}
-					timer.cancel();
+				if (timeForTimer.get() == 0 || lockBecauseTeacher) {
+					if (timeForTimer.get() == 0)
+						lockBecauseTime = true;
 					Platform.runLater(() -> lockExam());
 				}
 			}
@@ -196,7 +195,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	}
 
 	private void lockExam() {
-		lock = true;
+		btnSubmit.setDisable(true);
 		popUp("The exam is locked!");
 		btnSubmit(null);
 	}
@@ -206,8 +205,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	}
 
-	public static void setTimeForExam(Boolean temp) {
-		lock = temp;
+	public static void setFlagToLockExam(Boolean temp) {
+		lockBecauseTeacher = temp;
 	}
 
 }
