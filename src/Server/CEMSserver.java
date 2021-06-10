@@ -27,6 +27,7 @@ import common.MyFile;
 import entity.ActiveExam;
 import entity.Exam;
 import entity.ExamOfStudent;
+import entity.ExamStatus;
 import entity.ExtensionRequest;
 import entity.Profession;
 import entity.Question;
@@ -458,6 +459,7 @@ public class CEMSserver extends AbstractServer {
 
 	private void StudentFinishManualExam(ExamOfStudent studentExam, ConnectionToClient client) {
 		ResponseFromServer response = null;
+		studentExam.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
 		if (dbController.updateStudentExam(studentExam)) {
 			response = new ResponseFromServer("EXAM OF STUDENT UPDATE");
 		}
