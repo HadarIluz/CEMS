@@ -59,7 +59,8 @@ public class DBController {
 		}
 
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cems?serverTimezone=IST", "root",
+			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cems?useTime_zone=false"
+					+ "", "root",
 					"Aa123456");
 			serverFrame.printToTextArea("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
