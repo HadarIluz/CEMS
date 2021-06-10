@@ -1,9 +1,11 @@
 package gui_teacher;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import client.CEMSClient;
 import client.ClientUI;
+import entity.Exam;
 import entity.UpdateScoreRequest;
 import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
@@ -48,9 +50,9 @@ public class ScoreApprovalController extends GuiCommon {
 
 	@FXML
 	private Label txtExamIdError;
-	
+
 	@FXML
-    private Label lblCheat;
+	private Label lblCheat;
 
 	HashMap<String, Integer> stdScore = new HashMap<>();
 	// <StudentID,Score>
@@ -133,7 +135,7 @@ public class ScoreApprovalController extends GuiCommon {
 
 	private void CheatingDetection(String selectedStudentID) {
 		// here we would implement query to check if he suspected as cheater
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -146,18 +148,29 @@ public class ScoreApprovalController extends GuiCommon {
 
 		if (!checkForLegalID(ExamID))
 			return;
-
-		RequestToServer req = new RequestToServer("getStudentsByExamID");
-		req.setRequestData(ExamID);
+		RequestToServer req = new RequestToServer("getAllExams");
 		ClientUI.cems.accept(req);
+		ArrayList<String> exams = (ArrayList<String>) CEMSClient.responseFromServer.getResponseData();
+		boolean examexist=false;
+		for (String curr : exams) 
+			if (curr.equals(ExamID)) {
+				examexist=true;
+			}
+		if(examexist==false) {
+			popUp("Exam Doesn't Exist, Try Again.");
+			return;
+		}
+
+		RequestToServer req2 = new RequestToServer("getStudentsByExamID");
+		req2.setRequestData(ExamID);
+		ClientUI.cems.accept(req2);
 		stdScore = (HashMap<String, Integer>) CEMSClient.responseFromServer.getResponseData();
-		if(stdScore.isEmpty()) {
+		if (stdScore.isEmpty()) {
 			popUp("This exam does not have any students who solved it.");
 		}
 		selectStudent.setDisable(false);
 		selectStudent.setItems(FXCollections.observableArrayList(stdScore.keySet()));
 
 	}
-
 
 }
