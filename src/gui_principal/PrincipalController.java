@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -63,10 +64,18 @@ public class PrincipalController extends Application implements Initializable {
 	@FXML
 	private Label pressLogout;
 
+	@FXML
+	private static ImageView msgRequest;
+
+	@FXML
+	private static Label lblNew;
+
 	public LoginController loginController;
 	protected User principal;
 	public static GridPane root;
 	public Scene scene;
+	private static int newRequest;
+	static ColorAdjust colorAdjust = new ColorAdjust();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -109,7 +118,6 @@ public class PrincipalController extends Application implements Initializable {
 			}
 
 		});
-
 	}
 
 	/**
@@ -149,7 +157,7 @@ public class PrincipalController extends Application implements Initializable {
 	 */
 	@FXML
 	void btnViewExamBankinfo(ActionEvent event) {
-		
+
 		try {
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_teacher/ExamBank.fxml"));
 			root.add(newPaneRight, 1, 0);
@@ -208,6 +216,18 @@ public class PrincipalController extends Application implements Initializable {
 			}
 		});
 
+	}
+
+	public static void getExtensionRequest(int temp) {
+		newRequest = temp;
+		
+		//where and how ???
+		// if (newRequest == 1) {
+		// colorAdjust.setBrightness(0.0);//
+		// colorAdjust.setSaturation(0.0);//
+		// msgRequest.setEffect(colorAdjust);//
+		// }
+		//lblNew.setVisible(true);
 	}
 
 }

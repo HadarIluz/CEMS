@@ -1005,11 +1005,16 @@ public class CEMSserver extends AbstractServer {
 
 	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {
 		ResponseFromServer res;
-		if (!dbController.checkIfExtensionRequestExists(extensionRequest))
+		ResponseFromServer res2 = new ResponseFromServer("NOTIFICATION_PRINCIPAL_GET_REQUEST");
+		int principalId = 0;
+		if (!dbController.checkIfExtensionRequestExists(extensionRequest)) {
 			res = dbController.createNewExtensionRequest(extensionRequest);
+			principalId = dbController.getPrincipalId();
+		}
 		else
 			res = new ResponseFromServer("EXTENSION REQUEST DIDN'T CREATED");
 		try {
+			loogedClients.get(principalId).sendToClient(res2);
 			client.sendToClient(res);
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -1032,7 +1037,7 @@ public class CEMSserver extends AbstractServer {
 		// update time alloted for test in active exam after the principal approves the
 		// request.
 		ArrayList<Integer> students = dbController.getStudentsInActiveExam(activeExam.getExam());
-		int teacher = dbController.getTeacherOfExam(activeExam.getExam());
+		int teacherId = dbController.getTeacherOfExam(activeExam.getExam());
 		ResponseFromServer respon = null;
 		ResponseFromServer respon2 = new ResponseFromServer("NOTIFICATION_STUDENT_ADDED_TIME");
 		respon2.setResponseData(activeExam.getExtraTime());
@@ -1047,7 +1052,7 @@ public class CEMSserver extends AbstractServer {
 			
 
 			
-			//loogedClients.get(teacher).sendToClient(respon3);
+			//loogedClients.get(teacherId).sendToClient(respon3);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

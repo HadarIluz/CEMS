@@ -118,17 +118,19 @@ public class GuiCommon {
 	private static void handleStudentNotifications(ResponseFromServer res) {
 		if (res.getResponseType().equals("NOTIFICATION_STUDENT_EXAM_LOCKED")) {
 			System.out.println("notification exam locked");
-			   StartManualExamController.setFlagToLockExam(1);
+			StartManualExamController.setFlagToLockExam(1);
 		}
 		if (res.getResponseType().equals("NOTIFICATION_STUDENT_ADDED_TIME")) {
 			System.out.println("added time to exam");
-			   StartManualExamController.addTimeToExam((int) res.getResponseData());
+			StartManualExamController.addTimeToExam((int) res.getResponseData());
 		}
 	}
 
 	private static void handlePrincipalNotifications(ResponseFromServer res) {
-		// if the response is notificatoin for principal -> check that user is student
-		// and do what you need
+		if (res.getResponseType().equals("NOTIFICATION_PRINCIPAL_GET_REQUEST")) {
+			System.out.println("get request to extension time for exam");
+			PrincipalController.getExtensionRequest(1);
+		}
 	}
 
 	private static void handleTeacherNotifications(ResponseFromServer res) {

@@ -1718,12 +1718,27 @@ public class DBController {
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("SELECT author FROM exam WHERE exam = ?;");
-			pstmt.setInt(1, Integer.parseInt(exam.getExamID()));
-			pstmt.setString(2, exam.getExamID());
+			pstmt.setString(1, exam.getExamID());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				int x = rs.getInt(1);
-				return x;
+				int teacherId = rs.getInt(1);
+				return teacherId;
+			}
+		} catch (SQLException ex) {
+			ex.getMessage();
+		}
+		return 0;
+	}
+	
+	public int getPrincipalId() {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT id FROM user WHERE userType = ?;");
+			pstmt.setString(1, "Principal");
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				int principalId = rs.getInt(1);
+				return principalId;
 			}
 		} catch (SQLException ex) {
 			ex.getMessage();
