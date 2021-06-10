@@ -227,20 +227,7 @@ public class PrincipalGetReportsController extends GuiCommon {
 		selectTeacher.setItems(FXCollections.observableArrayList(Qlist.values()));
 	}
 
-	@SuppressWarnings("unchecked")
-	@FXML
-	void selectCourse(ActionEvent event) {
-
-	}
-
-	@FXML
-	void selectStudent(ActionEvent event) {
-
-	}
-
-	@FXML
-	void selectTeacher(ActionEvent event) {
-
-	}
+	
+	
 
 }
