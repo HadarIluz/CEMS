@@ -1,6 +1,5 @@
 package gui_teacher;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +11,6 @@ import entity.Exam;
 import entity.Question;
 import entity.QuestionInExam;
 import entity.QuestionInExamRow;
-import entity.QuestionRow;
 import entity.Teacher;
 import entity.User;
 import gui_cems.GuiCommon;
@@ -20,9 +18,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -31,9 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
@@ -41,12 +35,6 @@ import logic.RequestToServer;
  *
  */
 public class EditExam_questionsStep2Controller extends GuiCommon implements Initializable {
-
-	@FXML
-	private Button btnCreateNewQuestion;
-
-	@FXML
-	private Text textNavigation;
 
 	@FXML
 	private Text textTotal;
@@ -94,9 +82,11 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	private Button btnUpdateScore;
 
 	@FXML
-	private Button btnDelete;
+	private Text textNavigation;
 
-//	private static TeacherController teacherController;
+//	@FXML
+//	private Button btnDelete;
+
 	public static Exam exam;
 	private static Teacher teacher;
 	private static User principal;
@@ -107,11 +97,13 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	private ObservableList<QuestionInExamRow> selectedQuestionsRows = FXCollections.observableArrayList();
 	private ObservableList<QuestionInExamRow> Qlist;
 
-	@FXML
-	void DeleteFromExam(ActionEvent event) {
-		selectedQuestionsRows.remove(Qlist.get(0));
-		updateTotalScore();
-	}
+
+
+//	@FXML
+//	void DeleteFromExam(ActionEvent event) {
+//		selectedQuestionsRows.remove(Qlist.get(0));
+//		updateTotalScore();
+//	}
 
 	@FXML
 	void UpdateScore(ActionEvent event) {
@@ -131,26 +123,29 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		}
 	}
 
-	@FXML
-	void btnBrowseQuestions(ActionEvent event) {
-		BrowseQuestionController.setAvailableQuestions(availableQuestions);
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("BrowseQuestions.fxml"));
-		Scene newScene;
-		try {
-			newScene = new Scene(loader.load());
-		} catch (IOException ex) {
-			return;
-		}
-
-		Stage inputStage = new Stage();
-		inputStage.initOwner(TeacherController.root.getScene().getWindow());
-		inputStage.setScene(newScene);
-		inputStage.showAndWait();
-
-		QuestionInExam q = loader.<BrowseQuestionController>getController().getSelectedQuestion();
-		q.setExam(exam);
-		insertRow(q);
-	}
+	
+	
+	
+//	@FXML
+//	void btnBrowseQuestions(ActionEvent event) {
+//		BrowseQuestionController.setAvailableQuestions(availableQuestions);
+//		FXMLLoader loader = new FXMLLoader(getClass().getResource("BrowseQuestions.fxml"));
+//		Scene newScene;
+//		try {
+//			newScene = new Scene(loader.load());
+//		} catch (IOException ex) {
+//			return;
+//		}
+//
+//		Stage inputStage = new Stage();
+//		inputStage.initOwner(TeacherController.root.getScene().getWindow());
+//		inputStage.setScene(newScene);
+//		inputStage.showAndWait();
+//
+//		QuestionInExam q = loader.<BrowseQuestionController>getController().getSelectedQuestion();
+//		q.setExam(exam);
+//		insertRow(q);
+//	}
 
 	private void updateTotalScore() {
 		int sum = 0;
@@ -168,11 +163,17 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		}
 
 	}
-
-	@FXML
-	void btnCreateNewQuestion(ActionEvent event) {
-		// Cancel this button!!!!
+	
+	
+	
+	private void setQuestionsInNewExam() {
+		ArrayList<QuestionInExam> finaleQusetionList = new ArrayList();
+		for (QuestionInExamRow q : selectedQuestionsRows) {
+			finaleQusetionList.add(q.getQuestionObject());
+		}
+		exam.setExamQuestionsWithScores(finaleQusetionList);
 	}
+	
 
 	/**
 	 * method set text of questionID when user select a question row from table
@@ -187,38 +188,50 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	}
 
-	// ASK YUVAL
 	public static void setExamState(Exam newExamInProgress) {
 		exam = newExamInProgress;
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		txtChangeScore.setText("0");
+			
+		// bring all exam details (also questions and scores)
+		RequestToServer req = new RequestToServer("getFullExamDetails");
+		req.setRequestData(exam);
+		ClientUI.cems.accept(req);
+
+		exam= (Exam) CEMSClient.responseFromServer.getResponseData();
+		
+		
+		
 		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 			txtChangeScore.setText("0");
+			textErrorMsg.setVisible(false); // when exam open at first for edit the total score is 100 !.
 			// initTableRows_getFronmServer(); //TODO: NOT WORKING!!
 
-			// initTableCols(); //ASK YUVAL
-
+			//initTableCols(); //HERE?
+			
 			if (exam.getExamQuestionsWithScores() != null) {
 				for (QuestionInExam q : exam.getExamQuestionsWithScores()) {
-					availableQuestions.remove(q.getQuestion());
-					insertRow(q);
+					System.out.println("!");
+					//availableQuestions.remove(q.getQuestion());   //DELETE
+					q.getQuestion();
+					insertRow(q);//DEBUG HERE!!
 				}
 			}
+			initTableCols();//NEW
 
 		} else if (ClientUI.loggedInUser.getUser() instanceof User) {
 			// setUp before load screen.
 			principal = (User) ClientUI.loggedInUser.getUser();
 			displayPrincipalView = true;
 
-			btnDelete.setDisable(false);
-			btnDelete.setVisible(false);
+//			btnDelete.setDisable(false);
+//			btnDelete.setVisible(false);
 			btnUpdateScore.setDisable(false);
 			btnUpdateScore.setVisible(false);
-			btnCreateNewQuestion.setDisable(false);
-			btnCreateNewQuestion.setVisible(false);
 			txtChangeScore.setDisable(false);
 			txtChangeScore.setVisible(false);
 			textErrorMsg.setDisable(false);
@@ -241,27 +254,30 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	private void insertRow(QuestionInExam q) {
 		selectedQuestionsRows.add(
 				new QuestionInExamRow(q.getQuestion().getQuestionID(), q.getScore(), q.getQuestion().getQuestion(), q));
-		tableQuestion.refresh();
-		availableQuestions.remove(q.getQuestion());
+		//tableQuestion.refresh();
+		//availableQuestions.remove(q.getQuestion());
 		updateTotalScore();
 	}
-
+	
+	
 	public void initTableCols() {
-		tableQuestion.getColumns().clear();
+
+		//tableQuestion.getColumns().clear();
 		questionID.setCellValueFactory(new PropertyValueFactory<>("questionID"));
 		questionScore.setCellValueFactory(new PropertyValueFactory<>("score"));
 		question.setCellValueFactory(new PropertyValueFactory<>("question"));
 
-		tableQuestion.setItems(selectedQuestionsRows);
+		//tableQuestion.setItems(selectedQuestionsRows);
 		tableQuestion.getColumns().addAll(questionID, questionScore, question);
-	}
-
-	public static void setExamData(Exam examData) {
 
 	}
+	
+	
+	
+	
 
 	// TODO : !!!!!!!!!!
-	public void initTableRows_getFronmServer() {
+	public void initTableRows_getFromServer() {
 		// get Questions for the examID that teacher selected in the Exam Back.
 		RequestToServer req = new RequestToServer("getQuestionsByIDForEditExam");
 		req.setRequestData(exam.getExamID());
@@ -273,7 +289,7 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 //
 		ArrayList<QuestionInExam> finaleQusetionOfExamList = new ArrayList();
 		for (QuestionInExamRow q : selectedQuestionsRows) {
-			// allQuestionInExam.getOrDefault(finaleQusetionOfExamList, null)
+			// allQuestionInExam.getOrDefault(finaleQusetionOfExamList, null) XXX
 
 			finaleQusetionOfExamList.add(q.getQuestionObject());
 		}
