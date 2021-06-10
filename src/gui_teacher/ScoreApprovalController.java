@@ -151,7 +151,9 @@ public class ScoreApprovalController extends GuiCommon {
 		req.setRequestData(ExamID);
 		ClientUI.cems.accept(req);
 		stdScore = (HashMap<String, Integer>) CEMSClient.responseFromServer.getResponseData();
-
+		if(stdScore.isEmpty()) {
+			popUp("This exam does not have any students who solved it.");
+		}
 		selectStudent.setDisable(false);
 		selectStudent.setItems(FXCollections.observableArrayList(stdScore.keySet()));
 
