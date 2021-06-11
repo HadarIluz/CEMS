@@ -74,11 +74,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private static User principal;
 	private static String screenStatus;
 	private static boolean displayPrincipalView = false;
-
-	// var for BroweQestuion functionality:
 	private static ArrayList<QuestionInExam> updatedQuestions;
-	//private static ObservableList<QuestionInExam> selectedQuestionsRows = FXCollections.observableArrayList();
-
 
 	@FXML
 	void btnBack(ActionEvent event) {
@@ -92,12 +88,24 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnBrowseQuestions(ActionEvent event) {
-		// sent to next screen exam with data info.
-		EditExam_questionsStep2Controller.setnextScreenData(exam, displayPrincipalView);
-		if (!displayPrincipalView) {
-			displayNextScreen(teacher, "/gui_teacher/EditExam_questionStep2.fxml");
-		} else {
-			displayNextScreen(principal, "/gui_teacher/EditExam_questionStep2.fxml");
+		String teacherComment = textTeacherComment.getText().trim();
+		String studentComment = textStudentComment.getText().trim();
+		String timeAllocateForExam = textTimeAllocateForExam.getText().trim();
+		// Check that all fields that must be filled are filled correctly.
+		boolean condition = checkConditionToStart(teacherComment, studentComment, timeAllocateForExam);
+		if (condition) {
+			// set the new parameters into editExam
+			exam.setCommentForStudents(studentComment);
+			exam.setCommentForTeacher(teacherComment);
+			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
+
+			// sent to next screen exam with data info.
+			EditExam_questionsStep2Controller.setnextScreenData(exam, displayPrincipalView);
+			if (!displayPrincipalView) {
+				displayNextScreen(teacher, "/gui_teacher/EditExam_questionStep2.fxml");
+			} else {
+				displayNextScreen(principal, "/gui_teacher/EditExam_questionStep2.fxml");
+			}
 		}
 
 	}
@@ -115,11 +123,11 @@ public class EditExamController extends GuiCommon implements Initializable {
 			exam.setCommentForTeacher(teacherComment);
 			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
 
-			// Request from server to update scores Of edited Exam.			
-			RequestToServer reqUpdate = new RequestToServer("updateScoresOfEditExam"); //TODO: CHECK DEBUG
+			// Request from server to update scores Of edited Exam.
+			RequestToServer reqUpdate = new RequestToServer("updateScoresOfEditExam"); // TODO: CHECK DEBUG
 			reqUpdate.setRequestData(updatedQuestions);
 			ClientUI.cems.accept(reqUpdate);
-			
+
 			if ((CEMSClient.responseFromServer.getResponseType()).equals("Edit Exam Scores Updated")) {
 
 				// Request from server to update data of this exam.
@@ -152,13 +160,17 @@ public class EditExamController extends GuiCommon implements Initializable {
 		int time = Integer.parseInt(timeAllocateForExam);
 		if (timeAllocateForExam.matches("[0-9]+") == false || time <= 0) {
 			strBuilder.append("Time allocate for exam must set in minuse.\n");
+			textTimeAllocateForExam.clear();
+			flag = false;
 		}
 		if (time <= 29) {
 			strBuilder.append("Exam time too short.\n");
+			textTimeAllocateForExam.clear();
 			flag = false;
 		}
 		if (time > 240) {
 			strBuilder.append("Exam time too short.\n");
+			textTimeAllocateForExam.clear();
 			flag = false;
 		}
 

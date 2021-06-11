@@ -8,7 +8,6 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.Exam;
 import entity.QuestionInExam;
-import entity.QuestionInExamRow;
 import entity.Teacher;
 import entity.User;
 import gui_cems.GuiCommon;
@@ -85,7 +84,6 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	private static boolean displayPrincipalView;
 
 	private static ArrayList<QuestionInExam> existsQuestions;
-	private ObservableList<QuestionInExam> selectedQuestionsRows = FXCollections.observableArrayList();
 	private ObservableList<QuestionInExam> Qlist;
 
 	@FXML
