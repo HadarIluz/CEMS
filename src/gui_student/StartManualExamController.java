@@ -30,6 +30,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
@@ -82,12 +83,12 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	private static StudentController studentController;
 	private static ActiveExam newActiveExam;
+	private static Boolean lockBecauseTeacher;
+	private Boolean lockBecauseTime;
+	private static int addTime;
 	private AtomicInteger timeForTimer;
 	private Timer timer;
 	private ExamOfStudent examOfStudent;
-	private Boolean lockBecauseTime = false;
-	private static int lockBecauseTeacher;
-	private static int addTime;
 	private int timeLeft;
 
 	@FXML
@@ -103,7 +104,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	@FXML
 	void btnSubmit(ActionEvent event) {
-		if (!lockBecauseTime && lockBecauseTeacher != 1) {
+		if (!lockBecauseTime && !lockBecauseTeacher) {
 			Object[] options = { " Cancel ", " Submit " };
 			JFrame frame = new JFrame("Submit Exam");
 			int dialogResult = JOptionPane.showOptionDialog(frame,
@@ -171,6 +172,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					ClientUI.cems.accept(req2);
 				}
 			} else { // because teacher || THE LAST STUDENT + TIME OVER
+				btnDownload.setDisable(true);
+				//btnSubmit.setDisable(true);
 				examOfStudent.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
 				RequestToServer req2 = new RequestToServer("lockActiveExam");
 				req2.setRequestData(examOfStudent);
@@ -184,10 +187,21 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	void checkBoxShowTime(ActionEvent event) {
 		textTimeLeft.setVisible(!textTimeLeft.visibleProperty().get());
 	}
+	
+	 @FXML
+	    void clickImgNotification(MouseEvent event) {
+		 imgNotification.setVisible(false);
+		 txtMessageFrom.setVisible(false);
+		 textNotificationMsg.setVisible(false);
+	    }
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
+		lockBecauseTeacher = false;
+		lockBecauseTime = false;
+		addTime = 0;
 		// set the timer
 		timeForTimer = new AtomicInteger(newActiveExam.getTimeAllotedForTest() * 60);
 		timer = new Timer();
@@ -197,10 +211,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				if (addTime != 0) {
 					newActiveExam.setExtraTime(addTime);
 					timeLeft = timeForTimer.get() + (addTime * 60);
-					String msg = String.format("Please note, the exam time", "\r\n", "was extended by %d minutes.",
-							newActiveExam.getExtraTime()); // need to check!
 					timeForTimer.set(timeLeft);
-					Platform.runLater(() -> textNotificationMsg.setText(msg));
+					Platform.runLater(() -> textNotificationMsg.setText("Please note, the exam time\nwas extended by " + newActiveExam.getExtraTime() + " minutes."));
 					imgNotification.setVisible(true);
 					txtMessageFrom.setVisible(true);
 					textNotificationMsg.setVisible(true);
@@ -212,7 +224,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				String str = String.format("Time left: %02d:%02d:%02d", hours, minutes, seconds);
 				Platform.runLater(() -> textTimeLeft.setText(str));
 				timeForTimer.decrementAndGet();
-				if (timeForTimer.get() == 0 || lockBecauseTeacher == 1) {
+				if (timeForTimer.get() == 0 || lockBecauseTeacher ) {
 					if (timeForTimer.get() == 0)
 						lockBecauseTime = true;
 					Platform.runLater(() -> lockExam());
@@ -222,7 +234,6 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	}
 
 	private void lockExam() {
-		btnSubmit.setDisable(true);
 		popUp("The exam is locked!");
 		btnSubmit(null);
 	}
@@ -232,7 +243,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	}
 
-	public static void setFlagToLockExam(int temp) {
+	public static void setFlagToLockExam(Boolean temp) {
 		lockBecauseTeacher = temp;
 	}
 

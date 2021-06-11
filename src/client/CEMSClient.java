@@ -85,9 +85,7 @@ public class CEMSClient extends AbstractClient {
 			String home = System.getProperty("user.home");
 			awaitResponse = false;
 			try {
-				FileOutputStream fos = new FileOutputStream(home + "/Downloads/" + downloadExam.getFileName());// NEED
-																												// TO BE
-																												// PATH
+				FileOutputStream fos = new FileOutputStream(home + "/Downloads/" + downloadExam.getFileName());
 				BufferedOutputStream bos = new BufferedOutputStream(fos);
 				bos.write(downloadExam.getMybytearray(), 0, fileSize);
 				bos.flush();

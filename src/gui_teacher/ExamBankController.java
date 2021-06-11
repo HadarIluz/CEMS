@@ -345,17 +345,21 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnLockExam(ActionEvent event) {
-
-		ObservableList<Exam> Qlist;
-		Exam examToLock = GetTableDetails(textExamID.getText());
-		Qlist = tableExam.getSelectionModel().getSelectedItems();
-		RequestToServer req = new RequestToServer("getStudentsInActiveExam");
-		req.setRequestData(examToLock);
-		ClientUI.cems.accept(req);
-		if (CEMSClient.responseFromServer.getResponseType().equals("EXAM LOCKED"))
-			popUp("The exam was successfully locked");
-		else
-			popUp("lock exam failed");
+		if (textExamID.getText().isEmpty())
+			popUp("Please select a exam.");
+		else {
+			ObservableList<Exam> Qlist;
+			Exam examToLock = GetTableDetails(textExamID.getText());
+			Qlist = tableExam.getSelectionModel().getSelectedItems();
+			RequestToServer req = new RequestToServer("getStudentsInActiveExam");
+			req.setRequestData(examToLock);
+			ClientUI.cems.accept(req);
+			if (CEMSClient.responseFromServer.getResponseType().equals("EXAM LOCKED"))
+				popUp("The exam was successfully locked");
+			else
+				popUp("lock exam failed");
+			initTableRows();
+			textExamID.clear();
+		}
 	}
-
 }
