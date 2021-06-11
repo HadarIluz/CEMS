@@ -21,8 +21,13 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import logic.RequestToServer;
-
-public class PrincipalDisplayReporByController implements Initializable {
+/**
+ * 
+ * @author Yadin Amsalem
+ * @author Nadav Dery
+ *
+ */
+public class PrincipalDisplayReporByController extends GuiCommon implements Initializable {
 
 	@FXML
 	private Label lblMedian;
@@ -46,7 +51,10 @@ public class PrincipalDisplayReporByController implements Initializable {
 	private Label lblProf;
 
 	private static PrincipalController principalController;
-
+/**This method initialize the name of the profession and course on screen and 
+ * the histogram with the average and median of any exam took at this course
+ * 
+ */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -79,11 +87,17 @@ public class PrincipalDisplayReporByController implements Initializable {
 				median.getData().add(new XYChart.Data(curr.substring(4, 6), calcMedian((examsOfStudents.get(curr)))));
 			}
 		}
-
+		if(avg.getData().isEmpty())
+			popUp("This Course Doesn't Have Any Solved Exam.");
 		CourseHisto.getData().addAll(avg, median);
+		
 
 	}
-
+/** This method calculate the median of the grades in specific exam
+ * 
+ * @param arr ArrayList the contains the grades of student who took the exam
+ * @return returning the median calculation
+ */
 	private float calcMedian(ArrayList<Integer> arr) {
 		Collections.sort(arr);
 		if (arr.size() % 2 == 0) {
@@ -95,6 +109,11 @@ public class PrincipalDisplayReporByController implements Initializable {
 			return (float) arr.get((arr.size() + 1) / 2 - 1);
 	}
 
+	/** calculate the average of the grades (for specific exam)
+	 * 
+	 * @param arr ArrayList the contains the grades of student who took the exam
+	 * @return returning the average of grades
+	 */
 	private float calcAvg(ArrayList<Integer> arr) {
 		float sum = 0;
 		for (Integer a : arr)

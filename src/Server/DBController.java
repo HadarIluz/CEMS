@@ -61,7 +61,6 @@ public class DBController {
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cems?useTime_zone=false", "root",
 					"Aa123456");
-
 			serverFrame.printToTextArea("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
@@ -1744,5 +1743,117 @@ public class DBController {
 			ex.getMessage();
 		}
 		return 0;
+	}
+	
+	public ArrayList<String> getAllExams() {
+		ArrayList<String> examsID = new ArrayList<String>();
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT examID FROM exam ;");
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next())
+				if (!examsID.contains(rs.getString(1)))
+					examsID.add(rs.getString(1));
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+
+		return examsID;
+	}
+
+	public ArrayList<Integer> getPotentialCopyList(ArrayList<ExamOfStudent> exams) {
+		PreparedStatement pstmt;
+		HashMap<Integer, ArrayList<Integer>> studentsAns = new HashMap<Integer, ArrayList<Integer>>();
+
+		ArrayList<Integer> Answer1 = new ArrayList<Integer>();
+		ArrayList<Integer> Answer2 = new ArrayList<Integer>();
+		ArrayList<Integer> Answer3 = new ArrayList<Integer>();
+		ArrayList<Integer> Answer4 = new ArrayList<Integer>();
+		studentsAns.put(1, Answer1);
+		studentsAns.put(2, Answer2);
+		studentsAns.put(3, Answer3);
+		studentsAns.put(4, Answer4);
+		ArrayList<Integer> suspectedInCopy = new ArrayList<Integer>();
+		ArrayList<String> questionOfExam = new ArrayList<String>();
+		int numberOfquestion = exams.get(0).getQuestionsAndAnswers().size();
+
+		Set<QuestionInExam> questioninExam = exams.get(0).getQuestionsAndAnswers().keySet();
+
+		String SpecificExam = exams.get(0).getActiveExam().getExam().getExamID();
+
+		for (QuestionInExam q : questioninExam) {
+
+			questionOfExam.add(q.getQuestion().getQuestionID());
+
+		}
+
+		for (String q : questionOfExam)
+
+		{
+
+			try {
+				pstmt = conn.prepareStatement(
+						"SELECT * FROM cems.student_answers_in_exam where exam=? and question=? and correct=0;");
+				pstmt.setString(1, SpecificExam);
+				pstmt.setString(2, q);
+				ResultSet rs = pstmt.executeQuery();
+				while (rs.next()) {
+
+					switch (rs.getInt(4)) {
+
+					case 1: {
+
+						Answer1.add(rs.getInt(1));
+
+					}
+						break;
+					case 2: {
+
+						Answer2.add(rs.getInt(1));
+
+					}
+						break;
+
+					case 3: {
+						Answer3.add(rs.getInt(1));
+
+					}
+						break;
+
+					case 4: {
+
+						Answer4.add(rs.getInt(1));
+
+					}
+
+					}
+					break;
+				}
+
+			} catch (
+
+			SQLException ex) {
+				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			}
+
+			for (int i = 1; i < 5; i++) {
+				if (studentsAns.get(i).size() > 1) {
+
+					suspectedInCopy.addAll(studentsAns.get(i));
+
+				}
+
+				Answer1.clear();
+				Answer2.clear();
+				Answer3.clear();
+				Answer4.clear();
+
+			}
+
+		}
+
+		suspectedInCopy = (ArrayList<Integer>) suspectedInCopy.stream().distinct();
+
+		return suspectedInCopy;
 	}
 }

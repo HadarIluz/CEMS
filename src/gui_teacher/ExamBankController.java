@@ -2,6 +2,7 @@ package gui_teacher;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import client.CEMSClient;
@@ -10,6 +11,8 @@ import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
 import entity.ExamStatus;
+import entity.ProfessionCourseName;
+import entity.QuestionRow;
 import entity.Teacher;
 import entity.User;
 import gui_cems.GuiCommon;
@@ -85,6 +88,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private static Teacher teacher;
 	private static User principal;
 	private boolean displayPrincipalView = false;
+	private HashMap<String, String> profName ;
 
 	/**
 	 * method selectExamFromTable return selected exam from combo box.
@@ -97,7 +101,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	void selectExamFromTable(MouseEvent event) {
 		ObservableList<Exam> Qlist;
 		Qlist = tableExam.getSelectionModel().getSelectedItems();
-		if (Qlist.isEmpty()) {
+		if(Qlist.isEmpty()) {
 			return;
 		}
 		textExamID.setText(Qlist.get(0).getExamID());
@@ -106,14 +110,15 @@ public class ExamBankController extends GuiCommon implements Initializable {
 				btnLockExam.setDisable(false);
 				btnDeleteExam.setDisable(true);
 				btnCreateActiveExam.setDisable(true);
-				btnEditExam.setDisable(true); // can't edit exam in status active
+				btnEditExam.setDisable(true); //can't edit exam in status active
 			} else {
 				btnLockExam.setDisable(true);
 				btnDeleteExam.setDisable(false);
 				btnCreateActiveExam.setDisable(false);
 				btnEditExam.setDisable(false);
 			}
-		} else {
+		}
+		else {
 			btnExamInfoPrincipal.setDisable(false);
 		}
 	}
@@ -138,6 +143,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		return null;
 	}
 
+
 	/**
 	 * Method use to delete data of exam from the teacher's exam bank
 	 * 
@@ -153,7 +159,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			ObservableList<Exam> Qlist;
 
 			Exam ExamToDelete = GetTableDetails(textExamID.getText());
-			if (ExamToDelete == null) {
+			if(ExamToDelete==null) {
 				popUp("Exam Id is not exist!");
 				return;
 			}
@@ -212,6 +218,10 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		tableExam.setEditable(false);
+		RequestToServer req = new RequestToServer("getProfNames");
+		ClientUI.cems.accept(req);
+		profName =(HashMap<String, String>) CEMSClient.responseFromServer.getResponseData();
+
 		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 			initTableRows();
@@ -266,6 +276,8 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ArrayList<Exam> ExamsOfTeacher = new ArrayList<Exam>();
 		ClientUI.cems.accept(req);
 		ExamsOfTeacher = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
+		for(Exam curr:ExamsOfTeacher) 
+			curr.getProfession().setProfessionID(profName.get(curr.getExamID().substring(0,2)));
 		data = FXCollections.observableArrayList(ExamsOfTeacher);
 		tableExam.getColumns().clear();
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
@@ -279,7 +291,8 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	/**
 	 * btnCreateActiveExam open screen of exam info of teacher with the chosen
-	 * ExamID. It is allowed to perform the same exam but NOT in the same time
+	 * ExamID. 
+	 * It is allowed to perform the same exam but NOT in the same time
 	 * checks by req to server in CreateActiveExamController.
 	 * 
 	 * @param event occurs when User press On "Create Active Exam"
@@ -287,11 +300,11 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnCreateActiveExam(ActionEvent event) {
-		// can not create active exam for exam in status: active.
+		//can not create active exam for exam in status: active.
 		Exam selectedExam = getExistExamDetails(textExamID.getText());
 		if ((textExamID.getText().isEmpty())) {
 			btnCreateActiveExam.setDisable(true);
-
+			
 		} else {
 			CreateActiveExamController.setActiveExamState(selectedExam);
 			displayNextScreen(teacher, "CreateActiveExam.fxml");
@@ -324,10 +337,18 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ArrayList<Exam> examsList = new ArrayList<Exam>();
 		ClientUI.cems.accept(req);
 		examsList = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
-		TableColumn<Exam, String> course = new TableColumn<>("course");
+		TableColumn<Exam, String> course = new TableColumn<>("Course");
 
-		// PropertyValueFactory<Exam, String> factory = new PropertyValueFactory<>();
-
+		for(Exam curr:examsList) 
+			curr.getProfession().setProfessionID(profName.get(curr.getExamID().substring(0,2)));
+		RequestToServer req2 = new RequestToServer("getCoursesNames");
+		HashMap<String, ProfessionCourseName> coursesNames ;
+		ClientUI.cems.accept(req2);
+		coursesNames= (HashMap<String, ProfessionCourseName>) CEMSClient.responseFromServer.getResponseData();
+		
+		for(Exam curr:examsList)
+			curr.getCourse().setCourseID(coursesNames.get(curr.getExamID().substring(0, 2)).getCourses().get(curr.getExamID().substring(2, 4)));
+		
 		data = FXCollections.observableArrayList(examsList);
 		tableExam.getColumns().clear();
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));

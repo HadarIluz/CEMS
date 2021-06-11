@@ -21,8 +21,13 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import logic.RequestToServer;
-
-public class PrincipalDisplayReportByTeacherController implements Initializable {
+/**
+ * 
+ * @author Yadin Amsalem
+ * @author Nadav Dery
+ *
+ */
+public class PrincipalDisplayReportByTeacherController extends GuiCommon implements Initializable {
 
 	@FXML
 	private BarChart<?, ?> ExamsHisto;
@@ -42,7 +47,10 @@ public class PrincipalDisplayReportByTeacherController implements Initializable 
 	ArrayList<Integer> gradesOfExam;
 	HashMap<String, String> idNamecourses = new HashMap<String, String>();
 	// <id,name>
-
+/** initialize the screen with the chosen teacher ID & Name and the histogram
+ * of the exams he created and their median and average.
+ * 
+ */
 	@SuppressWarnings({ "unchecked", "rawtypes", "unused" })
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -78,11 +86,13 @@ public class PrincipalDisplayReportByTeacherController implements Initializable 
 						calcMedian()));
 			} // new DecimalFormat("##.##").format(calcMedian()))
 		}
-
 		ExamsHisto.getData().addAll(avg, median);
 
 	}
-
+/**calculate the average of every exam of the chosen teachr
+ * 
+ * @return returning the average calculation 
+ */
 	private float calcAvg() {
 		float sum = 0;
 		for (Integer a : gradesOfExam)
@@ -91,6 +101,10 @@ public class PrincipalDisplayReportByTeacherController implements Initializable 
 		return sum;
 	}
 
+	/** calculate the median of the specific exam of the teacher
+	 * 
+	 * @return returning the median calculation
+	 */
 	private float calcMedian() {
 		Collections.sort(gradesOfExam);
 		if (gradesOfExam.size() % 2 == 0) {
@@ -102,7 +116,10 @@ public class PrincipalDisplayReportByTeacherController implements Initializable 
 			return (float) gradesOfExam.get((gradesOfExam.size() + 1) / 2 - 1);
 
 	}
-
+/**get the courses names that belong to specific profession
+ * 
+ * @param id the profession ID
+ */
 	public void getCoursesNames(String id) {
 		Profession prof = new Profession(id);
 		RequestToServer req = new RequestToServer("getCoursesByProfession");

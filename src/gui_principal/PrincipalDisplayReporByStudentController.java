@@ -7,8 +7,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+//import com.sun.org.glassfish.gmbal.Description;
+
 import client.CEMSClient;
 import client.ClientUI;
+import gui_cems.GuiCommon;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
@@ -18,8 +21,12 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.control.Label;
 import logic.RequestToServer;
-
-public class PrincipalDisplayReporByStudentController implements Initializable {
+/**
+ * @author Yadin Amsalem
+ * @author Nadav Dery
+ *
+ */
+public class PrincipalDisplayReporByStudentController extends GuiCommon implements Initializable {
 
 	@FXML
 	private BarChart<?, ?> ExamsHisto;
@@ -43,7 +50,12 @@ public class PrincipalDisplayReporByStudentController implements Initializable {
 	private Label StudentMedianLabel;
 	
 	HashMap<String, Integer> ExamGrades;
-
+	
+/** This method initialize the histogram of specific student with the grades of all the exam he took.
+ * @param location
+ * @param resources
+ *  
+ */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -54,14 +66,20 @@ public class PrincipalDisplayReporByStudentController implements Initializable {
 		ClientUI.cems.accept(req);
 		ExamGrades = new HashMap<String, Integer>();
 		ExamGrades = (HashMap<String, Integer>) CEMSClient.responseFromServer.getResponseData();
-		calcAvgAndMedian();
 		XYChart.Series chart = new XYChart.Series();
+		if(!ExamGrades.isEmpty()) {
+		calcAvgAndMedian();
 		chart.setName("Score");
 		for (String curr : ExamGrades.keySet())
 			chart.getData().add(new XYChart.Data(curr, ExamGrades.get(curr)));
+		}else
+			popUp("This Student Doesn't Have Any Solved Exam");
 		ExamsHisto.getData().add(chart);
 	}
-
+	/** This method calculate the average and the median of the student grades.
+	 * 
+	 *  
+	 */
 	private void calcAvgAndMedian() {
 		
 		ArrayList<Integer> grades=new ArrayList<Integer>();
