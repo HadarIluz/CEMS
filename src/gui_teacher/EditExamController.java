@@ -8,6 +8,7 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.Exam;
 import entity.Question;
+import entity.QuestionInExam;
 import entity.QuestionInExamRow;
 import entity.QuestionRow;
 import entity.Teacher;
@@ -76,7 +77,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 	// var for BroweQestuion functionality:
 	private static ArrayList<Question> availableQuestions;
-	private ObservableList<QuestionInExamRow> selectedQuestionsRows = FXCollections.observableArrayList();
+	private static ObservableList<QuestionInExam> selectedQuestionsRows = FXCollections.observableArrayList();
 	private ObservableList<QuestionRow> data;
 
 	@FXML
@@ -113,9 +114,6 @@ public class EditExamController extends GuiCommon implements Initializable {
 			exam.setCommentForStudents(studentComment);
 			exam.setCommentForTeacher(teacherComment);
 			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
-
-			// TODO: handle case of click on btnBrowseQuestions.
-			// if btnBrowseQuestions win is open??
 
 			// Request from server to update data of this exam.
 			RequestToServer req = new RequestToServer("SaveEditExam");
@@ -204,10 +202,10 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 	}
 
-	public static void setprevScreenData(Exam exam2, boolean displayPrincipalView2) {
+	public static void setprevScreenData(Exam exam2, boolean displayPrincipalView2, ObservableList<QuestionInExam> qlist) {
 		exam = exam2;
 		displayPrincipalView = displayPrincipalView2;
-
+		selectedQuestionsRows=qlist;
 	}
 
 }
