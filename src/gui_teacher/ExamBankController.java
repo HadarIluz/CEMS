@@ -354,12 +354,12 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			RequestToServer req = new RequestToServer("getStudentsInActiveExam");
 			req.setRequestData(examToLock);
 			ClientUI.cems.accept(req);
+			initTableRows();
+			textExamID.clear();
 			if (CEMSClient.responseFromServer.getResponseType().equals("EXAM LOCKED"))
 				popUp("The exam was successfully locked");
 			else
 				popUp("lock exam failed");
-			initTableRows();
-			textExamID.clear();
 		}
 	}
 }
