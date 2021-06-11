@@ -10,6 +10,7 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.Course;
 import entity.Exam;
+import entity.ExamStatus;
 import entity.Profession;
 import entity.Question;
 import entity.Teacher;
@@ -129,6 +130,7 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
     			
     			else 
     				newExam.setActiveExamType("manual");
+    			newExam.setExamStatus(ExamStatus.inActive);
     			startNextScreen(newExam);
 
     		}
@@ -143,6 +145,7 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			TeacherController.root.add(newPaneRight, 1, 0);
     		}else {
+    			UploadManualExam.setNewExam(newExam);
     			Pane newPaneRight = FXMLLoader.load(getClass().getResource("UploadManualExam.fxml"));
     			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
     			TeacherController.root.add(newPaneRight, 1, 0);
