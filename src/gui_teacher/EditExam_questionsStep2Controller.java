@@ -91,23 +91,21 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	@FXML
 	void UpdateScore(ActionEvent event) {
 		if (!(txtChangeScore.getText().trim().isEmpty())) {
-			//check valid score
-			int changeScore=Integer.parseInt(txtChangeScore.getText().trim());
-			if( changeScore > 0 && changeScore< 101) {
-			
-			Qlist.get(0).setScore(Integer.valueOf(txtChangeScore.getText().trim()));
-			updateScoreForSpecificQuestion(Integer.parseInt(txtChangeScore.getText().trim()));
-			updateTotalScore();
-			}
-			else {
+			// check valid score
+			int changeScore = Integer.parseInt(txtChangeScore.getText().trim());
+			if (changeScore > 0 && changeScore < 101) {
+
+				Qlist.get(0).setScore(Integer.valueOf(txtChangeScore.getText().trim()));
+				updateScoreForSpecificQuestion(Integer.parseInt(txtChangeScore.getText().trim()));
+				updateTotalScore();
+			} else {
 				popUp("Invalid Score");
 			}
 		}
 	}
-	
 
 	private void updateScoreForSpecificQuestion(int changeScore) {
-		
+
 		for (QuestionInExam q : existsQuestions) {
 			if (q.getQuestionID().equals(ChosenQuestionID.getText().trim())) {
 				q.setScore(changeScore);
@@ -215,6 +213,10 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 			ChosenQuestionID.setDisable(false);
 			ChosenQuestionID.setVisible(false);
 			textNavigation.setVisible(true);
+			// verify teacher not delete all of this questions before she edit this exam!
+			if (exam.getExamQuestionsWithScores() != null) {
+				initTable();
+			}
 
 		}
 
