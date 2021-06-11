@@ -1773,25 +1773,26 @@ public class DBController {
 	public ResponseFromServer updateScoresOfEditExam(ArrayList<QuestionInExam> updatedQuestions) {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
+		try {
+			for (QuestionInExam qID : updatedQuestions) {
 
-		for (QuestionInExam qID : updatedQuestions) {
-			try {
-				pstmt = conn.prepareStatement("UPDATE question_in_exam SET score=? WHERE exam=? AND question=?");
+				pstmt = conn.prepareStatement("UPDATE question_in_exam SET score=? WHERE question=?");
 				pstmt.setInt(1, qID.getScore());
-				pstmt.setString(2, qID.getExam().getExamID());
-				pstmt.setString(3, qID.getQuestion().getQuestionID() );
+				pstmt.setString(2, qID.getQuestionID());
+
+				System.out.println(pstmt);
 				if (pstmt.executeUpdate() == 1) {
 					System.out.println("Edit Exam Saved");
 					response = new ResponseFromServer("Edit Exam Scores Updated");
-					return response;
 				} else {
 					response = new ResponseFromServer("Edit_Exam_Scores_NOT_Updated");
 				}
-
-			} catch (SQLException ex) {
-				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			}
+
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
+
 		return response;
 
 	}

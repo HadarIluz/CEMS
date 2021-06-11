@@ -108,8 +108,6 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	private void updateScoreForSpecificQuestion(int changeScore) {
 		
-		
-		
 		for (QuestionInExam q : existsQuestions) {
 			if (q.getQuestionID().equals(ChosenQuestionID.getText().trim())) {
 				q.setScore(changeScore);
