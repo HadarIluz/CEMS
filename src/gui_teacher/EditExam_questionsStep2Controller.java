@@ -102,7 +102,7 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	void btnBack(ActionEvent event) {
 		//bring to the prev screen all the existsQuestions if the new  after update!.
 		//when teacher will press on the save edit exam the data will saved in the DB by server.
-		EditExamController.setprevScreenData(exam, displayPrincipalView, Qlist );
+		EditExamController.setprevScreenData(exam, displayPrincipalView, existsQuestions );
 		if (!displayPrincipalView) {
 			displayNextScreen(teacher, "/gui_teacher/EditExam.fxml");
 					
@@ -128,6 +128,14 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 			btnBack.setDisable(true);
 		}
 
+	}
+	
+	private String calcTotalScore() {
+		int sum = 0;
+		for (QuestionInExam q : existsQuestions) {
+			sum += q.getScore();
+		}
+		return Integer.toString(sum);
 	}
 
 
@@ -163,14 +171,16 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		existsQuestions = exam.getExamQuestionsWithScores(); // Return ArrayList<QuestionInExam>
 
 		if (!displayPrincipalView) {
-			teacher = (Teacher) ClientUI.loggedInUser.getUser();
-			txtChangeScore.setText("0");
-			textErrorMsg.setVisible(false); // when exam open at first for edit the total score is 100 !.
+			teacher = (Teacher) ClientUI.loggedInUser.getUser();		
 
 			//verify teacher not delete all of this questions before she edit this exam!
 			if (exam.getExamQuestionsWithScores() != null) {
 				initTable(); 
 			}
+			// when exam open at first for edit the total score is 100 !.
+			textTotalScore.setText(calcTotalScore());
+			System.out.println(calcTotalScore());
+			textErrorMsg.setVisible(false); 
 
 
 		} else if (ClientUI.loggedInUser.getUser() instanceof User) {

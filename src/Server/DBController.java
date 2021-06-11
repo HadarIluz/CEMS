@@ -29,6 +29,7 @@ import entity.Profession;
 import entity.ProfessionCourseName;
 import entity.Question;
 import entity.QuestionInExam;
+import entity.QuestionInExamRow;
 import entity.QuestionRow;
 import entity.Student;
 import entity.Teacher;
@@ -1407,47 +1408,6 @@ public class DBController {
 		return false;
 	}
 
-//	public ResponseFromServer GetAllQuestionsData() {
-//		ArrayList<Question> qList = new ArrayList<Question>();
-//		ResponseFromServer response = null;
-//		/*** Question Bank-Principal ***/
-//		try {
-//			PreparedStatement pstmt;
-//			pstmt = conn.prepareStatement("SELECT * FROM cems.question");
-//			ResultSet rs = pstmt.executeQuery();
-//			while (rs.next()) {
-//				Question q = new Question();
-//				q.setQuestionID(rs.getString(2));
-//				q.setQuestion(rs.getString(4));
-//				
-//				Profession p = new Profession(null);
-//				p.setProfessionID(rs.getString(3));
-//				q.setProfession(p);
-//				
-//				String[] answers = new String[4];
-//				answers[0] = rs.getString(5);
-//				answers[1] = rs.getString(6);
-//				answers[2] = rs.getString(7);
-//				answers[3] = rs.getString(8);
-//				q.setAnswers(answers);
-//				q.setCorrectAnswerIndex(rs.getInt(9));
-//				q.setDescription(rs.getString(10));
-//
-//				qList.add(q);
-//			}
-//			rs.close();
-//		} catch (SQLException ex) {
-//			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-//		}
-//		if (qList.size() > 0) {
-//			response = new ResponseFromServer("Question bank FOUND");
-//			response.setResponseData(qList);
-//		} else {
-//			response = new ResponseFromServer("No Question Bank");
-//		}
-//		return response;
-//	}
-
 	public Boolean verifyExamOfStudentByExamID(ExamOfStudent examOfStudent) {
 		/*** EnterToExam ***/
 		try {
@@ -1808,6 +1768,32 @@ public class DBController {
 		suspectedInCopy = (ArrayList<Integer>) suspectedInCopy.stream().distinct();
 
 		return suspectedInCopy;
+	}
+
+	public ResponseFromServer updateScoresOfEditExam(ArrayList<QuestionInExam> updatedQuestions) {
+		ResponseFromServer response = null;
+		PreparedStatement pstmt;
+
+		for (QuestionInExam qID : updatedQuestions) {
+			try {
+				pstmt = conn.prepareStatement("UPDATE question_in_exam SET score=? WHERE exam=? AND question=?");
+				pstmt.setInt(1, qID.getScore());
+				pstmt.setString(2, qID.getExam().getExamID());
+				pstmt.setString(3, qID.getQuestion().getQuestionID() );
+				if (pstmt.executeUpdate() == 1) {
+					System.out.println("Edit Exam Saved");
+					response = new ResponseFromServer("Edit Exam Scores Updated");
+					return response;
+				} else {
+					response = new ResponseFromServer("Edit_Exam_Scores_NOT_Updated");
+				}
+
+			} catch (SQLException ex) {
+				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+			}
+		}
+		return response;
+
 	}
 
 }

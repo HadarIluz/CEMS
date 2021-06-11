@@ -428,6 +428,12 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
+		
+		case "updateScoresOfEditExam":{
+			updateScoresOfEditExam((ArrayList<QuestionInExam>)req.getRequestData(), client);
+		}
+		break; 
+		
 		}
 
 	}
@@ -440,7 +446,6 @@ public class CEMSserver extends AbstractServer {
 
 	
 
-	
 
 	/**
 	 * @param studentExam
@@ -1302,7 +1307,18 @@ public class CEMSserver extends AbstractServer {
 	}
 
 
-	
+	private void updateScoresOfEditExam(ArrayList<QuestionInExam> updatedQuestions, ConnectionToClient client) {
+		/* logic for EditExam */
+		ResponseFromServer response = null;
+		response = dbController.updateScoresOfEditExam(updatedQuestions);
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+		
+	}
 	
 	
 	//

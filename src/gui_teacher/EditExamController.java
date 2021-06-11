@@ -76,9 +76,9 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private static boolean displayPrincipalView = false;
 
 	// var for BroweQestuion functionality:
-	private static ArrayList<Question> availableQuestions;
-	private static ObservableList<QuestionInExam> selectedQuestionsRows = FXCollections.observableArrayList();
-	private ObservableList<QuestionRow> data;
+	private static ArrayList<QuestionInExam> updatedQuestions;
+	//private static ObservableList<QuestionInExam> selectedQuestionsRows = FXCollections.observableArrayList();
+
 
 	@FXML
 	void btnBack(ActionEvent event) {
@@ -115,15 +115,23 @@ public class EditExamController extends GuiCommon implements Initializable {
 			exam.setCommentForTeacher(teacherComment);
 			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
 
-			// Request from server to update data of this exam.
-			RequestToServer req = new RequestToServer("SaveEditExam");
-			req.setRequestData(exam);
-			ClientUI.cems.accept(req);
+			// Request from server to update scores Of edited Exam.			
+			RequestToServer reqUpdate = new RequestToServer("updateScoresOfEditExam"); //TODO: CHECK DEBUG
+			reqUpdate.setRequestData(updatedQuestions);
+			ClientUI.cems.accept(reqUpdate);
+			
+			if ((CEMSClient.responseFromServer.getResponseType()).equals("Edit Exam Scores Updated")) {
 
-			if ((CEMSClient.responseFromServer.getResponseType()).equals("Edit Exam Saved")) {
-				popUp("The exam you edit has been successfully created into the system !");
-			} else {
-				popUp("Update failed.");
+				// Request from server to update data of this exam.
+				RequestToServer req = new RequestToServer("SaveEditExam");
+				req.setRequestData(exam);
+				ClientUI.cems.accept(req);
+
+				if ((CEMSClient.responseFromServer.getResponseType()).equals("Edit Exam Saved")) {
+					popUp("The exam you edit has been successfully created into the system !");
+				} else {
+					popUp("Update failed.");
+				}
 			}
 
 		}
@@ -142,7 +150,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 			flag = false;
 		}
 		int time = Integer.parseInt(timeAllocateForExam);
-		if (timeAllocateForExam.matches("[0-9]+") == false || time <=0) {
+		if (timeAllocateForExam.matches("[0-9]+") == false || time <= 0) {
 			strBuilder.append("Time allocate for exam must set in minuse.\n");
 		}
 		if (time <= 29) {
@@ -153,7 +161,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 			strBuilder.append("Exam time too short.\n");
 			flag = false;
 		}
- 
+
 		if (!flag) {
 			popUp(strBuilder.toString());
 		}
@@ -202,10 +210,10 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 	}
 
-	public static void setprevScreenData(Exam exam2, boolean displayPrincipalView2, ObservableList<QuestionInExam> qlist) {
+	public static void setprevScreenData(Exam exam2, boolean displayPrincipalView2, ArrayList<QuestionInExam> qlist) {
 		exam = exam2;
 		displayPrincipalView = displayPrincipalView2;
-		selectedQuestionsRows=qlist;
+		updatedQuestions = qlist;
 	}
 
 }
