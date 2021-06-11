@@ -3,12 +3,10 @@ package gui_principal;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
-import entity.ExtensionRequest;
 import entity.User;
 import gui_cems.LoginController;
 import javafx.application.Application;
@@ -32,6 +30,10 @@ import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
+ * The class included in the diagrams and contains all the functionality
+ * that the principal has, manages the left menu in the system and describes the
+ * privileges that the principal has in the system.
+ * 
  * @author Hadar_Iluz
  *
  */
@@ -77,6 +79,9 @@ public class PrincipalController extends Application implements Initializable {
 	private static int newRequest;
 	static ColorAdjust colorAdjust = new ColorAdjust();
 
+	/**
+	 * The method that initializes the screen is currently loading
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		principal = ClientUI.loggedInUser.getUser();
@@ -218,16 +223,21 @@ public class PrincipalController extends Application implements Initializable {
 
 	}
 
+	/**
+	 * FIXME: ADDJAVADOC
+	 * 
+	 * @param temp
+	 */
 	public static void getExtensionRequest(int temp) {
 		newRequest = temp;
-		
-		//where and how ???
+
+		// where and how ???
 		// if (newRequest == 1) {
 		// colorAdjust.setBrightness(0.0);//
 		// colorAdjust.setSaturation(0.0);//
 		// msgRequest.setEffect(colorAdjust);//
 		// }
-		//lblNew.setVisible(true);
+		// lblNew.setVisible(true);
 	}
 
 }

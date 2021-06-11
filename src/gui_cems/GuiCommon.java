@@ -21,8 +21,8 @@ import javafx.stage.Stage;
 import logic.ResponseFromServer;
 
 /**
- * This class contains functions common to different classes that inherit from
- * it. With the help of this department the reuse mechanism is implemented.
+ * This class contains functions common to different classes that inherit from it. 
+ * With the help of this department the reuse mechanism is implemented.
  * 
  * @author Hadar Iluz
  *
@@ -34,8 +34,7 @@ public class GuiCommon {
 
 	/**
 	 * create a popUp with a given message.
-	 * 
-	 * @param msg
+	 * @param msg string text input to method to display in popUp message.
 	 */
 	public static void popUp(String msg) {
 		final Stage dialog = new Stage();
@@ -53,7 +52,7 @@ public class GuiCommon {
 	/**
 	 * this method checks if the given string includes letters.
 	 * 
-	 * @param str
+	 * @param str input to method to check if legal
 	 * @return true if the String contains only digits.
 	 */
 	public boolean isOnlyDigits(String str) {
@@ -69,6 +68,12 @@ public class GuiCommon {
 		return onlyDigits;
 	}
 
+	/**
+	 * The method loads the desired right screen to which you want to move.
+	 * @param userObj  input to identify the user who wants to switch to the screen
+	 * @param fxmlName input is the screen Name of the XML file of the screen to
+	 *                 which you are moving by loading it
+	 */
 	public void displayNextScreen(User userObj, String fxmlName) {
 
 		if (userObj instanceof Teacher) {
@@ -106,13 +111,14 @@ public class GuiCommon {
 		}
 	}
 
+	/**
+	 * FIXME: ADD JAVADOC
+	 * 
+	 * @param res
+	 */
 	public static void handleNotifications(ResponseFromServer res) {
 		if (res.getResponseType().startsWith("NOTIFICATION_STUDENT"))
 			handleStudentNotifications(res);
-		//else if (res.getResponseType().startsWith("NOTIFICATION_PRINCIPAL"))
-		//	handlePrincipalNotifications(res);
-		//else if (res.getResponseType().startsWith("NOTIFICATION_TEACHER"))
-		//	handleTeacherNotifications(res);
 	}
 
 	private static void handleStudentNotifications(ResponseFromServer res) {
@@ -126,21 +132,10 @@ public class GuiCommon {
 		}
 	}
 
-	//private static void handlePrincipalNotifications(ResponseFromServer res) {
-	//	if (res.getResponseType().equals("NOTIFICATION_PRINCIPAL_GET_REQUEST")) {
-	//		System.out.println("get request to extension time for exam");
-	//		PrincipalController.getExtensionRequest(1);
-	//	}
-	//}
-
-	//private static void handleTeacherNotifications(ResponseFromServer res) {
-	//	if (res.getResponseType().equals("NOTIFICATION_TEACHER_APPROVE_REQUEST")) {
-	//		System.out.println("added time to exam");
-	//		// StartManualExamController.setFlagToLockExam(1);
-	//		// to show nitification to the screen
-	//	}
-	//}
-
+	/**
+	 * @param ExamID input to method to check if legal
+	 * @return true if legal, else false
+	 */
 	public static boolean checkForLegalID(String ExamID) {
 		if (ExamID.length() != 6) {
 			popUp("Exam ID Must be 6 digits.");
@@ -157,10 +152,9 @@ public class GuiCommon {
 	/**
 	 * Method that check if the givenQuestion ID is legal
 	 * 
-	 * @param QuestionID send to method to check if legal
+	 * @param QuestionID input to method to check if legal
 	 * @return true if legal, else false
 	 */
-
 	public static boolean checkForLegalquestionID(String QuestionID) {
 
 		if (QuestionID.length() != 5) {

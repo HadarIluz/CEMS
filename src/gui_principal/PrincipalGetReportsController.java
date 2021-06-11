@@ -1,8 +1,8 @@
 package gui_principal;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import client.CEMSClient;
 import client.ClientUI;
 import entity.Course;
@@ -14,14 +14,13 @@ import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
-import javafx.scene.layout.Pane;
 import logic.RequestToServer;
 
 /**
+ * FIXME:ADD JAVADOC
  * 
  * @author Yadin Amsalem
  * @author Nadav Dery

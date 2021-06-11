@@ -21,11 +21,12 @@ import javafx.scene.control.TextArea;
 import logic.RequestToServer;
 
 /**
+ *FIXME: ADDJAVADOC HERE
  * @author Matar
  *
  */
 
-public class ApprovalTimeExtensionController extends GuiCommon implements Initializable {
+public class ApprovalTimeExtensionController implements Initializable {
 
 	@FXML
 	private ComboBox<String> selectExamExtension;
@@ -42,7 +43,6 @@ public class ApprovalTimeExtensionController extends GuiCommon implements Initia
 	@FXML
 	private Button btnApprove;
 
-	// private static PrincipalController principalController;
 	private static HashMap<String, ExtensionRequest> extensionRequestMap = new HashMap<String, ExtensionRequest>();
 	private static ArrayList<ExtensionRequest> extensionRequestList = new ArrayList<ExtensionRequest>();
 	private ArrayList<String> examIdList = new ArrayList<String>();
@@ -125,17 +125,27 @@ public class ApprovalTimeExtensionController extends GuiCommon implements Initia
 		selectExamExtension.setItems(FXCollections.observableList(examIdList));
 	}
 
+	/**
+	 *The method initializes the screen is currently loading.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		refreshFunc(); 
 	}
 
+	/**
+	 * FIXME: ADD JAVADOC HERE
+	 * @param extensionRequestList
+	 */
 	public static void setExtensionRequestMap(ArrayList<ExtensionRequest> extensionRequestList) {
 		for (ExtensionRequest ex : extensionRequestList) {
 			extensionRequestMap.put(ex.getActiveExam().getExam().getExamID(), ex);
 		}
 	}
 	
+	/**
+	 * FIXME: ADD JAVADOC HERE
+	 */
 	@SuppressWarnings("unchecked")
 	void refreshFunc() {
 		selectExamExtension.getItems().clear();
