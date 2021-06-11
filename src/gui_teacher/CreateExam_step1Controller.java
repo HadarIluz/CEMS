@@ -10,6 +10,7 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.Course;
 import entity.Exam;
+import entity.ExamStatus;
 import entity.Profession;
 import entity.Question;
 import entity.Teacher;
@@ -25,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -66,6 +68,14 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
     @FXML
     private Label noQbankError;
     
+    @FXML
+    private RadioButton btnComputerized;
+
+    @FXML
+    private RadioButton btnManual;
+
+  
+    
     private HashMap<String, Profession> professionsMap = null;
     private Profession selectedProfession;
     private ArrayList<Course> courseList;
@@ -73,7 +83,18 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
     private HashMap<String, Course> courseMap = null;
     private static Exam newExam = null;
 
+    @FXML
+    void btnComputerizedPress(ActionEvent event) {
+    	btnComputerized.setSelected(true);
+    	btnManual.setSelected(false);
+    }
 
+    @FXML
+    void btnManualPress(ActionEvent event) {
+    	btnComputerized.setSelected(false);
+    	btnManual.setSelected(true);
+    }
+    
     @FXML
     void btnNext(ActionEvent event) {
     	// check all fields:
@@ -82,6 +103,10 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
     	}
     	else if (textExamDuration.getText().trim().length() == 0) {
     		popUp("You must enter exam duration");
+    	}
+    	else if(!btnComputerized.isSelected() & !btnManual.isSelected()) {
+    		popUp("You must choose the type of exam you are creating");
+
     	}
     	else {
     		int time = Integer.parseInt(textExamDuration.getText().trim());
@@ -100,17 +125,31 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
     				newExam.setCommentForStudents(textStudent_Instructions.getText().trim());
     			}
     			newExam.setAuthor((Teacher)ClientUI.loggedInUser.getUser());
+    			if(btnComputerized.isSelected()) 
+    				newExam.setActiveExamType("computerized");
+    			
+    			else 
+    				newExam.setActiveExamType("manual");
+    			newExam.setExamStatus(ExamStatus.inActive);
     			startNextScreen(newExam);
+
     		}
     	}
     }
 
     private void startNextScreen(Exam newExam) {
     	try {
+    		if(newExam.getActiveExamType().equals("computerized")) {
 			CreateExam_addQ_step2Controller.setExamState(newExam);
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_addQ_step2.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			TeacherController.root.add(newPaneRight, 1, 0);
+    		}else {
+    			UploadManualExam.setNewExam(newExam);
+    			Pane newPaneRight = FXMLLoader.load(getClass().getResource("UploadManualExam.fxml"));
+    			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+    			TeacherController.root.add(newPaneRight, 1, 0);
+    		}
 
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");

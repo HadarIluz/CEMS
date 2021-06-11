@@ -999,14 +999,21 @@ public class CEMSserver extends AbstractServer {
 			stat.setDescription("There was a problem with saving the new exam in DB!");
 			res.setStatusMsg(stat);
 		}
+		//in case of computerized exam
+		if(examData.getActiveExamType().equals("manual")) {
+			//there is no question in this case to sace in DB
+		}
 		// add questions and scores to DB
-		if (!dbController.addQuestionsInExam(examID, examData.getExamQuestionsWithScores())) {
+		else{
+			
+		if(!dbController.addQuestionsInExam(examID, examData.getExamQuestionsWithScores())) {
 			// return error
 			ResponseFromServer res = new ResponseFromServer("Error creating new Exam");
 			StatusMsg stat = new StatusMsg();
 			stat.setStatus("ERROR");
 			stat.setDescription("There was a problem with saving the questions for new exam in DB!");
 			res.setStatusMsg(stat);
+		}
 
 		}
 		ResponseFromServer res = new ResponseFromServer("Success Create New Exam");

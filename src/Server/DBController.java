@@ -304,7 +304,7 @@ public class DBController {
 	public boolean createNewExam(Exam exam) {
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("INSERT INTO exam VALUES(?, ?, ?, ?, ?, ?, ?,?);");// matar
+			pstmt = conn.prepareStatement("INSERT INTO exam VALUES(?, ?, ?, ?, ?, ?, ?,?,?);");// matar
 			pstmt.setString(1, exam.getExamID());
 			pstmt.setString(2, exam.getProfession().getProfessionID());
 			pstmt.setString(3, exam.getCourse().getCourseID());
@@ -312,7 +312,8 @@ public class DBController {
 			pstmt.setString(5, exam.getCommentForTeacher());
 			pstmt.setString(6, exam.getCommentForStudents());
 			pstmt.setInt(7, exam.getAuthor().getId());
-
+			pstmt.setObject(8,exam.getExamStatus().toString());
+			pstmt.setString(9, exam.getActiveExamType());
 			if (pstmt.executeUpdate() == 1) {
 				return true;
 			}
