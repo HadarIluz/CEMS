@@ -34,25 +34,24 @@ import logic.RequestToServer;
  */
 public class EditExam_questionsStep2Controller extends GuiCommon implements Initializable {
 
+	@FXML
+	private Text textTitalScreen_step2;
 
-    @FXML
-    private Text textTitalScreen_step2;
+	@FXML
+	private ImageView imgStep1;
 
-    @FXML
-    private ImageView imgStep1;
+	@FXML
+	private ImageView imgStep2;
 
-    @FXML
-    private ImageView imgStep2;
+	@FXML
+	private Button btnBack;
 
-    @FXML
-    private Button btnBack;
+	@FXML
+	private Text textTotalScore;
 
-    @FXML
-    private Text textTotalScore;
+	@FXML
+	private Label textErrorMsg;
 
-    @FXML
-    private Label textErrorMsg;
-	
 	@FXML
 	private TableView<QuestionInExam> tableQuestion;
 
@@ -65,21 +64,20 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	@FXML
 	private TableColumn<QuestionInExam, String> question;
 
-    @FXML
-    private Text textQid;
+	@FXML
+	private Text textQid;
 
-    @FXML
-    private Text ChosenQuestionID;
+	@FXML
+	private Text ChosenQuestionID;
 
-    @FXML
-    private TextField txtChangeScore;
+	@FXML
+	private TextField txtChangeScore;
 
-    @FXML
-    private Button btnUpdateScore;
+	@FXML
+	private Button btnUpdateScore;
 
-    @FXML
-    private Text textNavigation;
-
+	@FXML
+	private Text textNavigation;
 
 	public static Exam exam;
 	private static Teacher teacher;
@@ -92,33 +90,38 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	@FXML
 	void UpdateScore(ActionEvent event) {
-		if (!Qlist.isEmpty()) {
+		if (!(txtChangeScore.getText().trim().isEmpty())) {
 			Qlist.get(0).setScore(Integer.valueOf(txtChangeScore.getText().trim()));
+			updateScoreForSpecificQuestion(Integer.parseInt(txtChangeScore.getText().trim()));
 			updateTotalScore();
 		}
 	}
 
+	private void updateScoreForSpecificQuestion(int parseInt) {
+		for (QuestionInExam q : existsQuestions) {
+			if (q.getQuestionID().equals(ChosenQuestionID.getText().trim())) {
+				q.setScore(parseInt);
+			}
+		}
+		initTable();
+	}
+
 	@FXML
 	void btnBack(ActionEvent event) {
-		//bring to the prev screen all the existsQuestions if the new  after update!.
-		//when teacher will press on the save edit exam the data will saved in the DB by server.
-		EditExamController.setprevScreenData(exam, displayPrincipalView, existsQuestions );
+		// bring to the prev screen all the existsQuestions if the new after update!.
+		// when teacher will press on the save edit exam the data will saved in the DB
+		// by server.
+		EditExamController.setprevScreenData(exam, displayPrincipalView, existsQuestions);
 		if (!displayPrincipalView) {
 			displayNextScreen(teacher, "/gui_teacher/EditExam.fxml");
-					
-			
+
 		} else {
 			displayNextScreen(principal, "/gui_teacher/EditExam.fxml");
 		}
 	}
-	
 
 	private void updateTotalScore() {
-		int sum = 0;
-		for (QuestionInExam q : selectedQuestionsRows) {
-			sum += q.getScore();
-		}
-
+		int sum = calcTotalScore();
 		textTotalScore.setText(String.valueOf(sum));
 		if (sum == 100) {
 			textErrorMsg.setVisible(false);
@@ -129,15 +132,14 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		}
 
 	}
-	
-	private String calcTotalScore() {
+
+	private int calcTotalScore() {
 		int sum = 0;
 		for (QuestionInExam q : existsQuestions) {
 			sum += q.getScore();
 		}
-		return Integer.toString(sum);
+		return sum;
 	}
-
 
 	/**
 	 * method set text of questionID when user select a question row from table
@@ -171,17 +173,16 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		existsQuestions = exam.getExamQuestionsWithScores(); // Return ArrayList<QuestionInExam>
 
 		if (!displayPrincipalView) {
-			teacher = (Teacher) ClientUI.loggedInUser.getUser();		
+			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 
-			//verify teacher not delete all of this questions before she edit this exam!
+			// verify teacher not delete all of this questions before she edit this exam!
 			if (exam.getExamQuestionsWithScores() != null) {
-				initTable(); 
+				initTable();
 			}
 			// when exam open at first for edit the total score is 100 !.
-			textTotalScore.setText(calcTotalScore());
+			textTotalScore.setText(Integer.toString(calcTotalScore()));
 			System.out.println(calcTotalScore());
-			textErrorMsg.setVisible(false); 
-
+			textErrorMsg.setVisible(false);
 
 		} else if (ClientUI.loggedInUser.getUser() instanceof User) {
 			// setUp before load screen.
@@ -209,20 +210,19 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	}
 
-
 	@SuppressWarnings("unchecked")
 	public void initTable() {
-		for(QuestionInExam curr:existsQuestions) { 
+		for (QuestionInExam curr : existsQuestions) {
 			curr.setQuestionID();
 			curr.setQuestionDescription();
 		}
 		Qlist = FXCollections.observableArrayList(existsQuestions);
-		
-		tableQuestion.getColumns().clear(); //DEBUG
+
+		tableQuestion.getColumns().clear(); // DEBUG
 		questionID.setCellValueFactory(new PropertyValueFactory<>("questionID"));
 		questionScore.setCellValueFactory(new PropertyValueFactory<>("score"));
 		question.setCellValueFactory(new PropertyValueFactory<>("questionDescription"));
-		
+
 		tableQuestion.setItems(Qlist);
 		tableQuestion.getColumns().addAll(questionID, questionScore, question);
 
