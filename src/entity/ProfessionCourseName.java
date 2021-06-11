@@ -3,6 +3,8 @@ package entity;
 import java.io.Serializable;
 import java.util.HashMap;
 
+//FIXME: add JAVADOC
+
 @SuppressWarnings("serial")
 public class ProfessionCourseName implements Serializable {
 	

@@ -25,7 +25,7 @@ public class Exam implements Serializable {
 	private String commentForTeacher;
 	private String commentForStudents;
 	private Teacher author;
-	private String ProfessionName;
+	private String ProfessionName;   //FIXME: need this?
 	private String activeExamType; // {manual \ computerized}
 	private ArrayList<QuestionInExam> examQuestionsWithScores;
 	private ExamStatus examStatus;

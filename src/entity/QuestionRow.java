@@ -2,6 +2,9 @@ package entity;
 
 import java.io.Serializable;
 
+//FIXME: ADD JAVADOC
+
+@SuppressWarnings("serial")
 public class QuestionRow implements Serializable {
 
 	private String QuestionID;

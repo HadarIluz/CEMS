@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Entity class - define Course in the CEMS system.
  * The department and all its fields were included in the diagrams.
- * The class is used to store data for a course that an associate associate or course instructor teaches
+ * The class is used to store data for a course that an associate to student or course that teacher teaching.
  * @author Hadar Iluz
  *
  */
