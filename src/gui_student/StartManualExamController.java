@@ -34,6 +34,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
+//FIXME: ADD JAVADOC
+
 public class StartManualExamController extends GuiCommon implements Initializable {
 
 	@FXML
@@ -81,7 +83,6 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	@FXML
 	private Text txtDownloadSucceed;
 
-	private static StudentController studentController;
 	private static ActiveExam newActiveExam;
 	private static Boolean lockBecauseTeacher;
 	private Boolean lockBecauseTime;
@@ -186,14 +187,13 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	void checkBoxShowTime(ActionEvent event) {
 		textTimeLeft.setVisible(!textTimeLeft.visibleProperty().get());
 	}
-	
-	 @FXML
-	    void clickImgNotification(MouseEvent event) {
-		 imgNotification.setVisible(false);
-		 txtMessageFrom.setVisible(false);
-		 textNotificationMsg.setVisible(false);
-	    }
 
+	@FXML
+	void clickImgNotification(MouseEvent event) {
+		imgNotification.setVisible(false);
+		txtMessageFrom.setVisible(false);
+		textNotificationMsg.setVisible(false);
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -211,7 +211,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					newActiveExam.setExtraTime(addTime);
 					timeLeft = timeForTimer.get() + (addTime * 60);
 					timeForTimer.set(timeLeft);
-					Platform.runLater(() -> textNotificationMsg.setText("Please note, the exam time\nwas extended by " + newActiveExam.getExtraTime() + " minutes."));
+					Platform.runLater(() -> textNotificationMsg.setText("Please note, the exam time\nwas extended by "
+							+ newActiveExam.getExtraTime() + " minutes."));
 					imgNotification.setVisible(true);
 					txtMessageFrom.setVisible(true);
 					textNotificationMsg.setVisible(true);
@@ -223,7 +224,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				String str = String.format("Time left: %02d:%02d:%02d", hours, minutes, seconds);
 				Platform.runLater(() -> textTimeLeft.setText(str));
 				timeForTimer.decrementAndGet();
-				if (timeForTimer.get() == 0 || lockBecauseTeacher ) {
+				if (timeForTimer.get() == 0 || lockBecauseTeacher) {
 					if (timeForTimer.get() == 0)
 						lockBecauseTime = true;
 					Platform.runLater(() -> lockExam());

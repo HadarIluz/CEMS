@@ -30,8 +30,11 @@ import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
+ * The class included in the diagrams and contains all the functionality
+ * that the start has, manages the left menu in the system and describes the
+ * privileges that the student has in the system.
+ * 
  * @author Hadar Iluz
- *
  */
 public class StudentController extends Application implements Initializable {
 
@@ -77,8 +80,8 @@ public class StudentController extends Application implements Initializable {
 	}
 
 	/**
-	 * @param primaryStage
-	 * @throws Exception
+	 * @param primaryStage that display the screen and load fxml.
+	 * @throws Exception which thrown in case the screen cannot be loaded.
 	 */
 	public void start(Stage primaryStage) throws Exception {
 		root = new GridPane();
@@ -194,11 +197,5 @@ public class StudentController extends Application implements Initializable {
 		return activeExamList;
 	}
 		
-
-	// TODO:
-	/*
-	 * שאילתה שמוצאת מבחן שתואם בתאריך ולבדוק האם האם הסטודנט רשום לקורס הזה ואם וכן
-	 * אז להוציא את הexamID אם לא חלון שאומר לו שאין לו מבחן פעיל עכשיו.
-	 */
 
 }
