@@ -17,10 +17,19 @@ public class Exam implements Serializable {
 	private String commentForStudents;
 	private Teacher author; 
 	private String ProfessionName;
+	private String activeExamType; //{manual \ computerized}
 
 	
 	
 	
+
+	public String getActiveExamType() {
+		return activeExamType;
+	}
+
+	public void setActiveExamType(String activeExamType) {
+		this.activeExamType = activeExamType;
+	}
 
 	private ArrayList<QuestionInExam> examQuestionsWithScores;
 	private ExamStatus examStatus;

@@ -203,11 +203,13 @@ public class CEMSserver extends AbstractServer {
 			declineTimeExtension((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-
+			
 		case "getAllExams": {
 			getAllExams(client);
 		}
 			break;
+			
+			
 
 		case "getStudents": {
 			getStudents(client);
@@ -437,11 +439,13 @@ public class CEMSserver extends AbstractServer {
 		}
 	}
 
+	
+
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
 	private void checkIfTheLastStudent(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer response = null;
-		if (checkIfExamFinished(activeExam))
+		if(checkIfExamFinished(activeExam))
 			response = new ResponseFromServer("LAST STUDENT");
 		try {
 			client.sendToClient(response);
@@ -459,9 +463,9 @@ public class CEMSserver extends AbstractServer {
 		}
 		try {
 			client.sendToClient(response);
-			// HERE CLOSE CILENT!! NEED TO FIX!
-			// if (checkIfExamFinished(studentExam.getActiveExam()))
-			// lockActiveExam(studentExam, client);
+			//HERE CLOSE CILENT!! NEED TO FIX!
+			//if (checkIfExamFinished(studentExam.getActiveExam()))
+			//	lockActiveExam(studentExam, client);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -507,7 +511,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private void getAllExams(ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Edit Question Update");
@@ -515,7 +519,7 @@ public class CEMSserver extends AbstractServer {
 			client.sendToClient(Res);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}		
 	}
 
 	/**
@@ -696,15 +700,16 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
-
-	private void CheckSameMistakeOfStudent(ArrayList<ExamOfStudent> exams, ConnectionToClient client) {
+	
+	private void CheckSameMistakeOfStudent(ArrayList<ExamOfStudent> exams,ConnectionToClient client)
+	{
 		try {
-			ResponseFromServer Res = new ResponseFromServer("Check Copy of Exam");
-			Res.setResponseData(dbController.getPotentialCopyList(exams));
-			client.sendToClient(Res);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		ResponseFromServer Res = new ResponseFromServer("Check Copy of Exam");
+		Res.setResponseData(dbController.getPotentialCopyList(exams));
+		client.sendToClient(Res);
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
 
 	}
 
@@ -993,14 +998,21 @@ public class CEMSserver extends AbstractServer {
 			stat.setDescription("There was a problem with saving the new exam in DB!");
 			res.setStatusMsg(stat);
 		}
+		//in case of computerized exam
+		if(examData.getActiveExamType().equals("manual")) {
+			//there is no question in this case to sace in DB
+		}
 		// add questions and scores to DB
-		if (!dbController.addQuestionsInExam(examID, examData.getExamQuestionsWithScores())) {
+		else{
+			
+		if(!dbController.addQuestionsInExam(examID, examData.getExamQuestionsWithScores())) {
 			// return error
 			ResponseFromServer res = new ResponseFromServer("Error creating new Exam");
 			StatusMsg stat = new StatusMsg();
 			stat.setStatus("ERROR");
 			stat.setDescription("There was a problem with saving the questions for new exam in DB!");
 			res.setStatusMsg(stat);
+		}
 
 		}
 		ResponseFromServer res = new ResponseFromServer("Success Create New Exam");
@@ -1188,10 +1200,6 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void createNewActiveExam(ActiveExam newActiveExam, ConnectionToClient client) {
-		
-		
-		
-		
 		ResponseFromServer response = dbController.createNewActiveExam(newActiveExam);
 		Boolean ans = dbController.updateExamStatus(newActiveExam.getExam());
 		if (ans) {
