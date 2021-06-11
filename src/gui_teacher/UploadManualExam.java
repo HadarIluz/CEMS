@@ -28,7 +28,7 @@ public class UploadManualExam extends GuiCommon{
     private TextField txtPath;
 
     @FXML
-    private Button btnNext;
+    private Button btnUpload;
 
     @FXML
     private Button btnBack;
@@ -47,7 +47,7 @@ public class UploadManualExam extends GuiCommon{
     }
 
     @FXML
-    void btnNext(ActionEvent event) {
+    void btnUploadPress(ActionEvent event) {
 
     }
 
