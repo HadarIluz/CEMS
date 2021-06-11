@@ -210,7 +210,7 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 			//(TEST IT:)verify teacher not delete all of this questions before she edit this exam!
 			if (exam.getExamQuestionsWithScores() != null) {
-				initTableCols(); 
+				initTable(); 
 			}
 //			if (exam.getExamQuestionsWithScores() != null) {
 //				for (QuestionInExam q : exam.getExamQuestionsWithScores()) {
@@ -245,19 +245,19 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	}
 
-	private void insertRow(QuestionInExam q) {
-		selectedQuestionsRows.add(
-				new QuestionInExamRow(q.getQuestion().getQuestionID(), q.getScore(), q.getQuestion().getQuestion(), q));
-		// tableQuestion.refresh();
-		existsQuestions.add(q);
-		// existsQuestions.remove(q.getQuestion());
-		updateTotalScore();
-	}
+//	private void insertRow(QuestionInExam q) {
+//		selectedQuestionsRows.add(
+//				new QuestionInExamRow(q.getQuestion().getQuestionID(), q.getScore(), q.getQuestion().getQuestion(), q));
+//		// tableQuestion.refresh();
+//		existsQuestions.add(q);
+//		// existsQuestions.remove(q.getQuestion());
+//		updateTotalScore();
+//	}
 
 	@SuppressWarnings("unchecked")
-	public void initTableCols() {
+	public void initTable() {
 
-		// tableQuestion.getColumns().clear(); //DEBUG
+		//tableQuestion.getColumns().clear(); //DEBUG
 		questionID.setCellValueFactory(new PropertyValueFactory<>("questionID"));
 		questionScore.setCellValueFactory(new PropertyValueFactory<>("score"));
 		question.setCellValueFactory(new PropertyValueFactory<>("question"));
@@ -265,13 +265,16 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		// create QuestionInExamRowToInsertIntoTable:
 		// run on all ArrayList<QuestionInExam> of the exists questions that inckude in
 		// this exam!
+		//insertRow:
 		for (QuestionInExam q : existsQuestions) {
 			QuestionInExamRow newQuestionInExamRow = new QuestionInExamRow(q.getQuestion().getQuestionID(),
 					q.getScore(), q.getQuestion().getQuestion(), q);
 			selectedQuestionsRows.add(newQuestionInExamRow);
+			//tableQuestion.refresh();
+			updateTotalScore();
 		}
 
-		//tableQuestion.setItems(selectedQuestionsRows);
+		tableQuestion.setItems(selectedQuestionsRows);
 		tableQuestion.getColumns().addAll(questionID, questionScore, question);
 
 	}
