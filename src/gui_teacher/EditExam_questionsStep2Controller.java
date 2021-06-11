@@ -39,53 +39,54 @@ import logic.RequestToServer;
  */
 public class EditExam_questionsStep2Controller extends GuiCommon implements Initializable {
 
+
+    @FXML
+    private Text textTitalScreen_step2;
+
+    @FXML
+    private ImageView imgStep1;
+
+    @FXML
+    private ImageView imgStep2;
+
+    @FXML
+    private Button btnBack;
+
+    @FXML
+    private Text textTotalScore;
+
+    @FXML
+    private Label textErrorMsg;
+
+//	@FXML
+//	private TableView<QuestionInExamRow> tableQuestion;
+	
 	@FXML
-	private Text textTotal;
+	private TableView<QuestionInExam> tableQuestion;
 
 	@FXML
-	private Text textTitalScreen_step2;
+	private TableColumn<QuestionInExam, String> questionID;
 
 	@FXML
-	private ImageView imgStep1;
+	private TableColumn<QuestionInExam, String> questionScore;
 
 	@FXML
-	private ImageView imgStep2;
+	private TableColumn<QuestionInExam, String> question;
 
-	@FXML
-	private Button btnBack;
+    @FXML
+    private Text textQid;
 
-	@FXML
-	private Text textTotalScore;
+    @FXML
+    private Text ChosenQuestionID;
 
-	@FXML
-	private Label textErrorMsg;
+    @FXML
+    private TextField txtChangeScore;
 
-	@FXML
-	private TableView<QuestionInExamRow> tableQuestion;
+    @FXML
+    private Button btnUpdateScore;
 
-	@FXML
-	private TableColumn<QuestionInExamRow, String> questionID;
-
-	@FXML
-	private TableColumn<QuestionInExamRow, String> questionScore;
-
-	@FXML
-	private TableColumn<QuestionInExamRow, String> question;
-
-	@FXML
-	private Text textQid;
-
-	@FXML
-	private Text ChosenQuestionID;
-
-	@FXML
-	private TextField txtChangeScore;
-
-	@FXML
-	private Button btnUpdateScore;
-
-	@FXML
-	private Text textNavigation;
+    @FXML
+    private Text textNavigation;
 
 //	@FXML
 //	private Button btnDelete;
@@ -97,8 +98,8 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	//
 	private static ArrayList<QuestionInExam> existsQuestions;
-	private ObservableList<QuestionInExamRow> selectedQuestionsRows = FXCollections.observableArrayList();
-	private ObservableList<QuestionInExamRow> Qlist;
+	private ObservableList<QuestionInExam> selectedQuestionsRows = FXCollections.observableArrayList();
+	private ObservableList<QuestionInExam> Qlist;
 
 //	@FXML
 //	void DeleteFromExam(ActionEvent event) {
@@ -195,7 +196,7 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	public void initialize(URL location, ResourceBundle resources) {
 		// bring all exam details (also questions and scores)
 
-		selectedQuestionsRows = FXCollections.observableArrayList();// NEW
+		//selectedQuestionsRows = FXCollections.observableArrayList();// NEW
 		RequestToServer req = new RequestToServer("getFullExamDetails");
 		req.setRequestData(exam);
 		ClientUI.cems.accept(req);
@@ -231,8 +232,8 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 			textErrorMsg.setDisable(false);
 			textErrorMsg.setVisible(false);
 			textTitalScreen_step2.setText("Exams Details");
-			textTotal.setDisable(false);
-			textTotal.setVisible(false);
+			textTotalScore.setDisable(false);
+			textTotalScore.setVisible(false);
 			textTotalScore.setDisable(false);
 			textTotalScore.setVisible(false);
 			textQid.setDisable(false);
@@ -256,26 +257,47 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	@SuppressWarnings("unchecked")
 	public void initTable() {
-
-		//tableQuestion.getColumns().clear(); //DEBUG
-		questionID.setCellValueFactory(new PropertyValueFactory<>("questionID"));
-		questionScore.setCellValueFactory(new PropertyValueFactory<>("score"));
-		question.setCellValueFactory(new PropertyValueFactory<>("question"));
+//		tableQuestion.getColumns().clear(); //DEBUG
+//		questionID.setCellValueFactory(new PropertyValueFactory<>("questionID"));
+//		questionScore.setCellValueFactory(new PropertyValueFactory<>("score"));
+//		question.setCellValueFactory(new PropertyValueFactory<>("question"));
 
 		// create QuestionInExamRowToInsertIntoTable:
 		// run on all ArrayList<QuestionInExam> of the exists questions that inckude in
 		// this exam!
 		//insertRow:
-		for (QuestionInExam q : existsQuestions) {
-			QuestionInExamRow newQuestionInExamRow = new QuestionInExamRow(q.getQuestion().getQuestionID(),
-					q.getScore(), q.getQuestion().getQuestion(), q);
-			selectedQuestionsRows.add(newQuestionInExamRow);
-			//tableQuestion.refresh();
-			updateTotalScore();
-		}
+		
+		
+//		for (QuestionInExam q : existsQuestions) {
+//			QuestionInExamRow newQuestionInExamRow = new QuestionInExamRow(q.getQuestion().getQuestionID(),
+//					q.getScore(), q.getQuestion().getQuestion(), q);
+//			selectedQuestionsRows.add(newQuestionInExamRow);
+//			//tableQuestion.refresh();
+//			updateTotalScore();
+//		}
 
-		tableQuestion.setItems(selectedQuestionsRows);
+		
+		
+		for(QuestionInExam curr:existsQuestions) { 
+			curr.setQuestionID();
+			curr.setQuestionDescription();
+		}
+		//getProfession().setProfessionID(profName.get(curr.getExamID().substring(0,2)));
+		
+		Qlist = FXCollections.observableArrayList(existsQuestions);
+		
+		tableQuestion.getColumns().clear(); //DEBUG
+		questionID.setCellValueFactory(new PropertyValueFactory<>("questionID"));
+		questionScore.setCellValueFactory(new PropertyValueFactory<>("score"));
+		question.setCellValueFactory(new PropertyValueFactory<>("questionDescription"));
+		
+		tableQuestion.setItems(Qlist);
 		tableQuestion.getColumns().addAll(questionID, questionScore, question);
+		
+		
+		//OLD:
+//		tableQuestion.setItems(selectedQuestionsRows);
+//		tableQuestion.getColumns().addAll(questionID, questionScore, question);
 
 	}
 

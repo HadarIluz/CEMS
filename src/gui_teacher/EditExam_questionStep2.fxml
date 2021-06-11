@@ -44,7 +44,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TableView fx:id="tableAddedQuestions" layoutX="59.0" layoutY="143.0" onMouseClicked="#chooseQ" prefHeight="252.0" prefWidth="648.0">
+      <TableView fx:id="tableQuestion" layoutX="59.0" layoutY="143.0" onMouseClicked="#chooseQ" prefHeight="252.0" prefWidth="648.0">
         <columns>
           <TableColumn fx:id="questionID" prefWidth="75.0" text="QuestionID" />
           <TableColumn fx:id="questionScore" prefWidth="75.0" text="Score" />

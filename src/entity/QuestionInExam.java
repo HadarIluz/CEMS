@@ -7,7 +7,28 @@ public class QuestionInExam implements Serializable {
 	private int score;
 	private Question question;
 	private Exam exam;
+	private String questionID;
+	private String questionDescription;
 	
+	
+	public String getQuestionDescription() {
+		return questionDescription;
+	}
+
+	public void setQuestionDescription() {
+		questionDescription = question.getQuestion();
+	}
+
+	//new
+	public String getQuestionID() {
+		return questionID;
+	}
+
+	public void setQuestionID() {
+		questionID=question.getQuestionID();
+	}
+	//end new
+
 	public QuestionInExam(int score,Question question,Exam exam ) {
 		super();
 		this.score=score;
