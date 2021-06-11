@@ -173,7 +173,6 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				}
 			} else { // because teacher || THE LAST STUDENT + TIME OVER
 				btnDownload.setDisable(true);
-				//btnSubmit.setDisable(true);
 				examOfStudent.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
 				RequestToServer req2 = new RequestToServer("lockActiveExam");
 				req2.setRequestData(examOfStudent);

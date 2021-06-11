@@ -109,10 +109,10 @@ public class GuiCommon {
 	public static void handleNotifications(ResponseFromServer res) {
 		if (res.getResponseType().startsWith("NOTIFICATION_STUDENT"))
 			handleStudentNotifications(res);
-		else if (res.getResponseType().startsWith("NOTIFICATION_PRINCIPAL"))
-			handlePrincipalNotifications(res);
-		else if (res.getResponseType().startsWith("NOTIFICATION_TEACHER"))
-			handleTeacherNotifications(res);
+		//else if (res.getResponseType().startsWith("NOTIFICATION_PRINCIPAL"))
+		//	handlePrincipalNotifications(res);
+		//else if (res.getResponseType().startsWith("NOTIFICATION_TEACHER"))
+		//	handleTeacherNotifications(res);
 	}
 
 	private static void handleStudentNotifications(ResponseFromServer res) {
@@ -126,20 +126,20 @@ public class GuiCommon {
 		}
 	}
 
-	private static void handlePrincipalNotifications(ResponseFromServer res) {
-		if (res.getResponseType().equals("NOTIFICATION_PRINCIPAL_GET_REQUEST")) {
-			System.out.println("get request to extension time for exam");
-			PrincipalController.getExtensionRequest(1);
-		}
-	}
+	//private static void handlePrincipalNotifications(ResponseFromServer res) {
+	//	if (res.getResponseType().equals("NOTIFICATION_PRINCIPAL_GET_REQUEST")) {
+	//		System.out.println("get request to extension time for exam");
+	//		PrincipalController.getExtensionRequest(1);
+	//	}
+	//}
 
-	private static void handleTeacherNotifications(ResponseFromServer res) {
-		if (res.getResponseType().equals("NOTIFICATION_TEACHER_APPROVE_REQUEST")) {
-			System.out.println("added time to exam");
-			// StartManualExamController.setFlagToLockExam(1);
-			// to show nitification to the screen
-		}
-	}
+	//private static void handleTeacherNotifications(ResponseFromServer res) {
+	//	if (res.getResponseType().equals("NOTIFICATION_TEACHER_APPROVE_REQUEST")) {
+	//		System.out.println("added time to exam");
+	//		// StartManualExamController.setFlagToLockExam(1);
+	//		// to show nitification to the screen
+	//	}
+	//}
 
 	public static boolean checkForLegalID(String ExamID) {
 		if (ExamID.length() != 6) {

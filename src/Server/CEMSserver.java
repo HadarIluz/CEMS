@@ -465,8 +465,9 @@ public class CEMSserver extends AbstractServer {
 		}
 		try {
 			client.sendToClient(response);
-			if (checkIfExamFinished(studentExam.getActiveExam()))
-				lockActiveExam(studentExam, client);
+			//HERE CLOSE CILENT!! NEED TO FIX!
+			//if (checkIfExamFinished(studentExam.getActiveExam()))
+			//	lockActiveExam(studentExam, client);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -1021,15 +1022,15 @@ public class CEMSserver extends AbstractServer {
 
 	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {
 		ResponseFromServer res;
-		ResponseFromServer res2 = new ResponseFromServer("NOTIFICATION_PRINCIPAL_GET_REQUEST");
-		int principalId = 0;
+		//ResponseFromServer res2 = new ResponseFromServer("NOTIFICATION_PRINCIPAL_GET_REQUEST");
+		//int principalId = 0;
 		if (!dbController.checkIfExtensionRequestExists(extensionRequest)) {
 			res = dbController.createNewExtensionRequest(extensionRequest);
-			principalId = dbController.getPrincipalId();
+			//principalId = dbController.getPrincipalId();
 		} else
 			res = new ResponseFromServer("EXTENSION REQUEST DIDN'T CREATED");
 		try {
-			loogedClients.get(principalId).sendToClient(res2);
+			//loogedClients.get(principalId).sendToClient(res2);
 			client.sendToClient(res);
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -1052,11 +1053,11 @@ public class CEMSserver extends AbstractServer {
 		// update time alloted for test in active exam after the principal approves the
 		// request.
 		ArrayList<Integer> students = dbController.getStudentsInActiveExam(activeExam.getExam());
-		int teacherId = dbController.getTeacherOfExam(activeExam.getExam());
+		//int teacherId = dbController.getTeacherOfExam(activeExam.getExam());
 		ResponseFromServer respon = null;
 		ResponseFromServer respon2 = new ResponseFromServer("NOTIFICATION_STUDENT_ADDED_TIME");
 		respon2.setResponseData(activeExam.getExtraTime());
-		ResponseFromServer respon3 = new ResponseFromServer("NOTIFICATION_TEACHER_APPROVE_REQUEST");
+		//ResponseFromServer respon3 = new ResponseFromServer("NOTIFICATION_TEACHER_APPROVE_REQUEST");
 
 		try {
 			respon = dbController.setTimeForActiveTest(activeExam);

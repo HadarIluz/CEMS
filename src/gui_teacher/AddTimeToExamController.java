@@ -15,7 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import logic.RequestToServer;
 
-public class AddTimeToExamController extends GuiCommon{
+public class AddTimeToExamController extends GuiCommon {
 
 	@FXML
 	private Button btnSubmitTimeExtentionRequest;
@@ -90,22 +90,25 @@ public class AddTimeToExamController extends GuiCommon{
 						RequestToServer extReq = new RequestToServer("createNewExtensionRequest");
 						extReq.setRequestData(newExtensionReq);
 						ClientUI.cems.accept(extReq);
+						textAdditionalTime.clear();
+						textReqReason.clear();
+						textExamCode.clear();
+						textExamID.clear();
 						// the extension didn't sent to the principal.
-						if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("EXTENSION REQUEST DIDN'T CREATED")) {
-							System.out.println("press on submit button and server returns: -->EXTENSION REQUEST DIDN'T CREATED");
-							popUp("The request to add time for the exam was not sent to the principal.");
-						}
-						else {	// the extension sent to the principal.
-							popUp("The request to add time for the exam was sent to the principal.\nPlease wait for approval.");	
+						if (CEMSClient.responseFromServer.getStatusMsg().getStatus()
+								.equals("EXTENSION REQUEST DIDN'T CREATED")) {
+							System.out.println(
+									"press on submit button and server returns: -->EXTENSION REQUEST DIDN'T CREATED");
+							popUp("There is an open request to this exam,\ncan't open another rquest untill principal close current request.");
+
+						} else { // the extension sent to the principal.
+							popUp("The request to add time for the exam was sent to the principal.\nPlease wait for approval.");
 						}
 					}
 				}
-			} else 
+			} else
 				popUp("At least one of the fields was not entered as required.\nExam ID number: 6 digits\nExam code number: 4 digits or letters\nExtra time for the exam: A positive number");
 		}
 	}
-
-
-
 
 }
