@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import com.sun.org.glassfish.gmbal.Description;
+//import com.sun.org.glassfish.gmbal.Description;
 
 import client.CEMSClient;
 import client.ClientUI;
