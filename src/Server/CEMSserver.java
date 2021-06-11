@@ -203,13 +203,11 @@ public class CEMSserver extends AbstractServer {
 			declineTimeExtension((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-			
+
 		case "getAllExams": {
 			getAllExams(client);
 		}
 			break;
-			
-			
 
 		case "getStudents": {
 			getStudents(client);
@@ -439,13 +437,11 @@ public class CEMSserver extends AbstractServer {
 		}
 	}
 
-	
-
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
 	private void checkIfTheLastStudent(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer response = null;
-		if(checkIfExamFinished(activeExam))
+		if (checkIfExamFinished(activeExam))
 			response = new ResponseFromServer("LAST STUDENT");
 		try {
 			client.sendToClient(response);
@@ -463,9 +459,9 @@ public class CEMSserver extends AbstractServer {
 		}
 		try {
 			client.sendToClient(response);
-			//HERE CLOSE CILENT!! NEED TO FIX!
-			//if (checkIfExamFinished(studentExam.getActiveExam()))
-			//	lockActiveExam(studentExam, client);
+			// HERE CLOSE CILENT!! NEED TO FIX!
+			// if (checkIfExamFinished(studentExam.getActiveExam()))
+			// lockActiveExam(studentExam, client);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -511,7 +507,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void getAllExams(ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Edit Question Update");
@@ -519,7 +515,7 @@ public class CEMSserver extends AbstractServer {
 			client.sendToClient(Res);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	/**
@@ -700,18 +696,16 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
-	
-	private void CheckSameMistakeOfStudent(ArrayList<ExamOfStudent> exams,ConnectionToClient client)
-	{
-		try {
-		ResponseFromServer Res = new ResponseFromServer("Check Copy of Exam");
-		Res.setResponseData(dbController.getPotentialCopyList(exams));
-		client.sendToClient(Res);
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
 
-		
+	private void CheckSameMistakeOfStudent(ArrayList<ExamOfStudent> exams, ConnectionToClient client) {
+		try {
+			ResponseFromServer Res = new ResponseFromServer("Check Copy of Exam");
+			Res.setResponseData(dbController.getPotentialCopyList(exams));
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -1043,15 +1037,11 @@ public class CEMSserver extends AbstractServer {
 
 	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {
 		ResponseFromServer res;
-		//ResponseFromServer res2 = new ResponseFromServer("NOTIFICATION_PRINCIPAL_GET_REQUEST");
-		//int principalId = 0;
 		if (!dbController.checkIfExtensionRequestExists(extensionRequest)) {
 			res = dbController.createNewExtensionRequest(extensionRequest);
-			//principalId = dbController.getPrincipalId();
 		} else
 			res = new ResponseFromServer("EXTENSION REQUEST DIDN'T CREATED");
 		try {
-			//loogedClients.get(principalId).sendToClient(res2);
 			client.sendToClient(res);
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -1074,20 +1064,15 @@ public class CEMSserver extends AbstractServer {
 		// update time alloted for test in active exam after the principal approves the
 		// request.
 		ArrayList<Integer> students = dbController.getStudentsInActiveExam(activeExam.getExam());
-		//int teacherId = dbController.getTeacherOfExam(activeExam.getExam());
 		ResponseFromServer respon = null;
 		ResponseFromServer respon2 = new ResponseFromServer("NOTIFICATION_STUDENT_ADDED_TIME");
 		respon2.setResponseData(activeExam.getExtraTime());
-		//ResponseFromServer respon3 = new ResponseFromServer("NOTIFICATION_TEACHER_APPROVE_REQUEST");
-
 		try {
 			respon = dbController.setTimeForActiveTest(activeExam);
 			client.sendToClient(respon);
 			for (Integer id : students) {
 				(loogedClients.get(id)).sendToClient(respon2);
 			}
-
-			// loogedClients.get(teacherId).sendToClient(respon3);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -1120,7 +1105,8 @@ public class CEMSserver extends AbstractServer {
 			bis.read(exam.getMybytearray(), 0, mybytearray.length);
 			fis.close();
 			client.sendToClient(exam);
-		} catch (Exception ex) {
+		} catch (IOException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			ex.printStackTrace();
 		}
 	}
@@ -1202,6 +1188,10 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void createNewActiveExam(ActiveExam newActiveExam, ConnectionToClient client) {
+		
+		
+		
+		
 		ResponseFromServer response = dbController.createNewActiveExam(newActiveExam);
 		Boolean ans = dbController.updateExamStatus(newActiveExam.getExam());
 		if (ans) {
@@ -1249,19 +1239,35 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void getStudentsInActiveExam(Exam exam, ConnectionToClient client) {
-		ResponseFromServer respon = new ResponseFromServer("NOTIFICATION_STUDENT_EXAM_LOCKED");
-		ResponseFromServer respon2 = null;
+		ResponseFromServer responForStudents = new ResponseFromServer("NOTIFICATION_STUDENT_EXAM_LOCKED");
+		ResponseFromServer responForTeacher = null;
 		ArrayList<Integer> students = dbController.getStudentsInActiveExam(exam);
 		try {
-			for (Integer id : students) {
-				(loogedClients.get(id)).sendToClient(respon);
-				respon2 = new ResponseFromServer("EXAM LOCKED");
+			if (students.isEmpty()) {
+				ActiveExam activeExam = new ActiveExam(exam);
+				if (dbController.activeExamExists(activeExam)) {
+					if (dbController.deleteActiveExam(activeExam)) {
+						exam.setExamStatus(ExamStatus.inActive);
+						Boolean ans = dbController.updateExamStatus(exam);
+						// if (dbController.documentExam(examOfStudent.getActiveExam())) {
+						// enter all relavent data to record_exam table
+						// printMessageInLogFramServer("document exam suceeded", null);
+						// }
+						if (ans)
+							responForTeacher = new ResponseFromServer("EXAM LOCKED");
+					}
+				}
+			} else {
+				for (Integer id : students) {
+					(loogedClients.get(id)).sendToClient(responForStudents);
+					responForTeacher = new ResponseFromServer("EXAM LOCKED");
+				}
 			}
-			client.sendToClient(respon2);
+			client.sendToClient(responForTeacher);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", respon); // print to server log.
+		printMessageInLogFramServer("Message to Client:", responForStudents); // print to server log.
 	}
 
 	private void InsertExamOfStudent(ExamOfStudent examOfStudent, ConnectionToClient client) {

@@ -1728,7 +1728,7 @@ public class DBController {
 		}
 		return 0;
 	}
-	
+
 	public int getPrincipalId() {
 		PreparedStatement pstmt;
 		try {
@@ -1744,7 +1744,7 @@ public class DBController {
 		}
 		return 0;
 	}
-	
+
 	public ArrayList<String> getAllExams() {
 		ArrayList<String> examsID = new ArrayList<String>();
 		PreparedStatement pstmt;
@@ -1856,4 +1856,22 @@ public class DBController {
 
 		return suspectedInCopy;
 	}
+
+	public void deleteFinishedActiveExam() {
+		PreparedStatement pstmt;
+		try {
+
+			pstmt = conn.prepareStatement("DELETE FROM active_exam WHERE exam =?");
+
+			pstmt = conn.prepareStatement("SELECT id FROM user WHERE userType = ?;");
+			pstmt.setString(1, "Principal");
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				int principalId = rs.getInt(1);
+			}
+		} catch (SQLException ex) {
+			ex.getMessage();
+		}
+	}
+
 }
