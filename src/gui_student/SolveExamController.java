@@ -35,7 +35,7 @@ import logic.RequestToServer;
 
 //FIXME: ADD JAVADOC
 
-public class SolveExamController implements Initializable{
+public class SolveExamController implements Initializable {
 
 	@FXML
 	private Button btnSubmitExam;
@@ -44,10 +44,10 @@ public class SolveExamController implements Initializable{
 	private CheckBox checkBoxShowTime;
 
 	@FXML
-    private Button btnNext;
+	private Button btnNext;
 
-    @FXML
-    private Button btnPrev;
+	@FXML
+	private Button btnPrev;
 
 	@FXML
 	private Label lblTimeLeft;
@@ -87,20 +87,21 @@ public class SolveExamController implements Initializable{
 
 	@FXML
 	private Label lblnotificationMsg;
-	
-	
-    private static StudentController studentController;
-    private static ActiveExam newActiveExam;  //check if needed.
-    private Timer timer;
-    private int currentQuestion;
-    private int[] studentAnswers;
-    private AtomicInteger timeForTimer;
 
-    
+	private static StudentController studentController;
+	private static ActiveExam newActiveExam; // check if needed.
+	private static Boolean lock;
+	private static int addTime;
+	private Timer timer;
+	private int currentQuestion;
+	private int[] studentAnswers;
+	private AtomicInteger timeForTimer;
+	private int timeLeft;
+
 	@FXML
 	void btnAnswer1(ActionEvent event) {
 		studentAnswers[currentQuestion] = 1;
-		
+
 	}
 
 	@FXML
@@ -122,7 +123,7 @@ public class SolveExamController implements Initializable{
 	void btnSubmitExam(ActionEvent event) {
 		submitExam(ReasonOfSubmit.initiated);
 	}
-	
+
 	private void submitExam(ReasonOfSubmit reasonOfSubmit) {
 		btnSubmitExam.setDisable(true);
 		timer.cancel();
@@ -132,69 +133,67 @@ public class SolveExamController implements Initializable{
 		btnAnswer4.setDisable(true);
 		btnNext.setDisable(true);
 		btnPrev.setDisable(true);
-		
+
 		HashMap<QuestionInExam, Integer> studentQuestions = new HashMap<>();
-		for (int i = 0; i<studentAnswers.length; i++) {
+		for (int i = 0; i < studentAnswers.length; i++) {
 			studentQuestions.put(newActiveExam.getExam().getExamQuestionsWithScores().get(i), studentAnswers[i]);
 		}
 
-		ExamOfStudent examOfStudent = new ExamOfStudent(newActiveExam, (Student)ClientUI.loggedInUser.getUser());
+		ExamOfStudent examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
 		examOfStudent.setQuestionsAndAnswers(studentQuestions);
-		examOfStudent.setTotalTime((newActiveExam.getTimeAllotedForTest()*60 - timeForTimer.get())/60);
+		examOfStudent.setTotalTime((newActiveExam.getTimeAllotedForTest() * 60 - timeForTimer.get()) / 60);
 		examOfStudent.setExamType("computerized");
 		examOfStudent.setReasonOfSubmit(reasonOfSubmit);
-		
+
 		RequestToServer req = new RequestToServer("StudentFinishExam");
 		req.setRequestData(examOfStudent);
 		ClientUI.cems.accept(req);
-		
+
 		if (CEMSClient.responseFromServer.getResponseType().equals("Success student finish exam")) {
 			GuiCommon.popUp("Submit was successfull. You may exit the exam");
-		}
-		else {
+		} else {
 			GuiCommon.popUp("There has been an error. please contact your teacher");
 		}
 	}
 
 	@FXML
-    void btnNext(ActionEvent event) {
+	void btnNext(ActionEvent event) {
 		currentQuestion++;
 		loadQuestion(currentQuestion);
 		unselectRadioButton();
-    }
+	}
 
-    @FXML
-    void btnPrev(ActionEvent event) {
-    	currentQuestion--;
-    	loadQuestion(currentQuestion);
-    	unselectRadioButton();
-    }
-    
-    private void unselectRadioButton() {
-    	btnAnswer1.setSelected(false);
-    	btnAnswer2.setSelected(false);
-    	btnAnswer3.setSelected(false);
-    	btnAnswer4.setSelected(false);
-    	
-    	if (studentAnswers[currentQuestion] != 0) {
-    		switch(studentAnswers[currentQuestion]) {
-    		case 1:
-    			btnAnswer1.setSelected(true);
-        		break;
-    		case 2:
-    			btnAnswer2.setSelected(true);
-        		break;
-    		case 3:
-    			btnAnswer3.setSelected(true);
-        		break;
-    		case 4:
-    			btnAnswer4.setSelected(true);
-        		break;
-    		}
-    		
-    	}
-    }
+	@FXML
+	void btnPrev(ActionEvent event) {
+		currentQuestion--;
+		loadQuestion(currentQuestion);
+		unselectRadioButton();
+	}
 
+	private void unselectRadioButton() {
+		btnAnswer1.setSelected(false);
+		btnAnswer2.setSelected(false);
+		btnAnswer3.setSelected(false);
+		btnAnswer4.setSelected(false);
+
+		if (studentAnswers[currentQuestion] != 0) {
+			switch (studentAnswers[currentQuestion]) {
+			case 1:
+				btnAnswer1.setSelected(true);
+				break;
+			case 2:
+				btnAnswer2.setSelected(true);
+				break;
+			case 3:
+				btnAnswer3.setSelected(true);
+				break;
+			case 4:
+				btnAnswer4.setSelected(true);
+				break;
+			}
+
+		}
+	}
 
 	@FXML
 	void checkBoxShowTime(MouseEvent event) {
@@ -203,50 +202,63 @@ public class SolveExamController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		//bring all exam details (also questions and scores)
+
+		// bring all exam details (also questions and scores)
 		RequestToServer req = new RequestToServer("getFullExamDetails");
 		req.setRequestData(newActiveExam.getExam());
 		ClientUI.cems.accept(req);
-		
-		newActiveExam.setExam((Exam)CEMSClient.responseFromServer.getResponseData());
-		
+
+		newActiveExam.setExam((Exam) CEMSClient.responseFromServer.getResponseData());
+		lock = false;
+		addTime = 0;
 		// set the timer
 		LocalTime currentTime = (new Time(System.currentTimeMillis())).toLocalTime();
 		int timeToDeduct = (currentTime.toSecondOfDay() - newActiveExam.getStartTime().toLocalTime().toSecondOfDay())
 				/ 60;
-		int timeForStudent = (newActiveExam.getTimeAllotedForTest() - timeToDeduct)*60;
+		int timeForStudent = (newActiveExam.getTimeAllotedForTest() - timeToDeduct) * 60;
 		timeForTimer = new AtomicInteger(timeForStudent);
-		 timer = new Timer();
-		    timer.scheduleAtFixedRate(new TimerTask(){
-		        @Override
-		        public void run(){
-		        	int hours = timeForTimer.get() / 3600;
-					int minutes = (timeForTimer.get() % 3600) / 60;
-					int seconds = timeForTimer.get() % 60;
-					String str = String.format("Time left: %02d:%02d:%02d", hours, minutes, seconds);
-					Platform.runLater(() -> lblTimeLeft.setText(str));
-		          timeForTimer.decrementAndGet();
-		          if (timeForTimer.get() == 0) {
-			          Platform.runLater(() -> stopExam());
-		          }
-		        }
-		    }, 0, 1000);
-		    
-		    ToggleGroup group = new ToggleGroup();
-		    btnAnswer1.setToggleGroup(group);
-		    btnAnswer2.setToggleGroup(group);
-		    btnAnswer3.setToggleGroup(group);
-		    btnAnswer4.setToggleGroup(group);
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				// When extra time is received updates the timer and notifies the student
+				if (addTime != 0) {
+					newActiveExam.setExtraTime(addTime);
+					timeLeft = timeForTimer.get() + (addTime * 60);
+					timeForTimer.set(timeLeft);
+					Platform.runLater(() -> lblnotificationMsg.setText("Please note, the exam time\nwas extended by "
+							+ newActiveExam.getExtraTime() + " minutes."));
+					notificationIcon.setVisible(true);
+					lblnotificationName.setVisible(true);
+					lblnotificationMsg.setVisible(true);
+					addTime = 0;
+				}
+				int hours = timeForTimer.get() / 3600;
+				int minutes = (timeForTimer.get() % 3600) / 60;
+				int seconds = timeForTimer.get() % 60;
+				String str = String.format("Time left: %02d:%02d:%02d", hours, minutes, seconds);
+				Platform.runLater(() -> lblTimeLeft.setText(str));
+				timeForTimer.decrementAndGet();
+				if (timeForTimer.get() == 0 || lock) {
+					Platform.runLater(() -> stopExam());
+				}
+			}
+		}, 0, 1000);
 
-		    studentAnswers = new int[newActiveExam.getExam().getExamQuestionsWithScores().size()];
-		    
-		    currentQuestion = 0;
-		    loadQuestion(currentQuestion);
+		ToggleGroup group = new ToggleGroup();
+		btnAnswer1.setToggleGroup(group);
+		btnAnswer2.setToggleGroup(group);
+		btnAnswer3.setToggleGroup(group);
+		btnAnswer4.setToggleGroup(group);
+
+		studentAnswers = new int[newActiveExam.getExam().getExamQuestionsWithScores().size()];
+
+		currentQuestion = 0;
+		loadQuestion(currentQuestion);
 	}
-	
+
 	private void loadQuestion(int i) {
-		int qNum = i+1;
+		int qNum = i + 1;
 		lblQuestionNumber.setText("Question " + qNum + " / 10");
 		QuestionInExam q = newActiveExam.getExam().getExamQuestionsWithScores().get(i);
 		lblPoints.setText("<" + q.getScore() + "> Points");
@@ -259,23 +271,45 @@ public class SolveExamController implements Initializable{
 
 		if (currentQuestion == 0) {
 			btnPrev.setVisible(false);
-		}
-		else if (currentQuestion == studentAnswers.length-1) {
+		} else if (currentQuestion == studentAnswers.length - 1) {
 			btnNext.setVisible(false);
-		}
-		else {
+		} else {
 			btnPrev.setVisible(true);
 			btnNext.setVisible(true);
 		}
 	}
 
 	private void stopExam() {
-		GuiCommon.popUp("Time for exam is over!");
+		btnSubmitExam.setDisable(true);
+		GuiCommon.popUp("The exam is locked!");
 		submitExam(ReasonOfSubmit.forced);
 	}
-	
+
+	/**
+	 * Receive ActiveExam from the previous screen.
+	 * 
+	 * @param newActiveExamInProgress
+	 */
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
 		newActiveExam = newActiveExamInProgress;
+	}
+
+	/**
+	 * Receive temp = true from the server when a teacher locks up the test
+	 * 
+	 * @param Boolean temp
+	 */
+	public static void setFlagToLockExam(Boolean temp) {
+		lock = temp;
+	}
+
+	/**
+	 * Receives from the server the time the teacher added to the test
+	 * 
+	 * @param time
+	 */
+	public static void addTimeToExam(int time) {
+		addTime = time;
 	}
 
 }

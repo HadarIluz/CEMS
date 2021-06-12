@@ -389,7 +389,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
-		if (checkIfExamFinished(studentExam.getActiveExam()))
+		if (studentExam.getReasonOfSubmit() == ReasonOfSubmit.forced || checkIfExamFinished(studentExam.getActiveExam()))
 			documentExam(studentExam.getActiveExam());
 	}
 
