@@ -17,6 +17,9 @@ public class QuestionInExam implements Serializable {
 	private int score;
 	private Question question;
 	private Exam exam;
+	
+	private String questionID;
+	private String questionDescription;
 
 	/* constructor */
 	public QuestionInExam(int score, Question question, Exam exam) {
@@ -55,4 +58,22 @@ public class QuestionInExam implements Serializable {
 	public void setExam(Exam exam) {
 		this.exam = exam;
 	}
+	/*---Getters and setters for display data in table view---*/
+	/*get QuestionDescription */
+	public String getQuestionDescription() {
+		return questionDescription;
+	}
+	/*set QuestionDescription */
+	public void setQuestionDescription() {
+		questionDescription = question.getQuestion();
+	}
+	/*get QuestionID*/
+	public String getQuestionID() {
+		return questionID;
+	}
+	/*set QuestionID*/
+	public void setQuestionID() {
+		questionID=question.getQuestionID();
+	}
+	
 }

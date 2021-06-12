@@ -7,15 +7,10 @@ import java.util.ResourceBundle;
 import client.CEMSClient;
 import client.ClientUI;
 import entity.Exam;
-import entity.Question;
 import entity.QuestionInExam;
-import entity.QuestionInExamRow;
-import entity.QuestionRow;
 import entity.Teacher;
 import entity.User;
 import gui_cems.GuiCommon;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -112,6 +107,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnSaveEditeExam(ActionEvent event) {
+		StringBuilder msgUpdateStatus = new StringBuilder();
 		String teacherComment = textTeacherComment.getText().trim();
 		String studentComment = textStudentComment.getText().trim();
 		String timeAllocateForExam = textTimeAllocateForExam.getText().trim();
@@ -124,12 +120,11 @@ public class EditExamController extends GuiCommon implements Initializable {
 			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
 
 			// Request from server to update scores Of edited Exam.
-			RequestToServer reqUpdate = new RequestToServer("updateScoresOfEditExam"); // TODO: CHECK DEBUG
+			RequestToServer reqUpdate = new RequestToServer("updateScoresOfEditExam");
 			reqUpdate.setRequestData(updatedQuestions);
 			ClientUI.cems.accept(reqUpdate);
 
 			if ((CEMSClient.responseFromServer.getResponseType()).equals("Edit Exam Scores Updated")) {
-
 				// Request from server to update data of this exam.
 				RequestToServer req = new RequestToServer("SaveEditExam");
 				req.setRequestData(exam);
@@ -143,6 +138,10 @@ public class EditExamController extends GuiCommon implements Initializable {
 			}
 
 		}
+		else {
+			popUp("Update failed.");
+		}
+		
 	}
 
 	private boolean checkConditionToStart(String teacherComment, String StudentComment, String timeAllocateForExam) {
@@ -157,21 +156,22 @@ public class EditExamController extends GuiCommon implements Initializable {
 			strBuilder.append("Exam time must contains only digits.\n");
 			flag = false;
 		}
-		int time = Integer.parseInt(timeAllocateForExam);
-		if (timeAllocateForExam.matches("[0-9]+") == false || time <= 0) {
-			strBuilder.append("Time allocate for exam must set in minuse.\n");
-			textTimeAllocateForExam.clear();
-			flag = false;
-		}
-		if (time <= 29) {
-			strBuilder.append("Exam time too short.\n");
-			textTimeAllocateForExam.clear();
-			flag = false;
-		}
-		if (time > 240) {
-			strBuilder.append("Exam time too short.\n");
-			textTimeAllocateForExam.clear();
-			flag = false;
+		if (textTimeAllocateForExam.getText().isEmpty() == false) {
+			int time = Integer.parseInt(timeAllocateForExam);
+			
+			if (timeAllocateForExam.matches("[0-9]+") == false || time <= 0) {
+				strBuilder.append("Time allocate for exam must set in minuse.\n");
+				textTimeAllocateForExam.clear();
+				flag = false;
+			}
+			if (time <= 29) {
+				strBuilder.append("Exam time too short.\n");
+				flag = false;
+			}
+			if (time > 240) {
+				strBuilder.append("Exam time too short.\n");
+				flag = false;
+			}
 		}
 
 		if (!flag) {
