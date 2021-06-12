@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -228,7 +230,11 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		lockBecauseTime = false;
 		addTime = 0;
 		// set the timer
-		timeForTimer = new AtomicInteger(newActiveExam.getTimeAllotedForTest() * 60);
+		LocalTime currentTime = (new Time(System.currentTimeMillis())).toLocalTime();
+		int timeToDeduct = (currentTime.toSecondOfDay() - newActiveExam.getStartTime().toLocalTime().toSecondOfDay())
+				/ 60;
+		int timeForStudent = (newActiveExam.getTimeAllotedForTest() - timeToDeduct)*60;
+		timeForTimer = new AtomicInteger(timeForStudent);
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
