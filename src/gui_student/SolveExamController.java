@@ -90,6 +90,9 @@ public class SolveExamController implements Initializable{
 	
     private static StudentController studentController;
     private static ActiveExam newActiveExam;  //check if needed.
+    private static Boolean lockBecauseTeacher;
+	private static int addTime;
+	private Boolean lockBecauseTime;
     private Timer timer;
     private int currentQuestion;
     private int[] studentAnswers;
@@ -271,6 +274,14 @@ public class SolveExamController implements Initializable{
 	
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
 		newActiveExam = newActiveExamInProgress;
+	}
+	
+	public static void setFlagToLockExam(Boolean temp) {
+		lockBecauseTeacher = temp;
+	}
+	
+	public static void addTimeToExam(int time) {
+		addTime = time;
 	}
 
 }

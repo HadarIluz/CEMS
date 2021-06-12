@@ -87,10 +87,11 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	@FXML
 	private Text txtDownloadSucceed;
 
+    private static StudentController studentController;
 	private static ActiveExam newActiveExam;
 	private static Boolean lockBecauseTeacher;
-	private Boolean lockBecauseTime;
 	private static int addTime;
+	private Boolean lockBecauseTime;
 	private AtomicInteger timeForTimer;
 	private Timer timer;
 	private ExamOfStudent examOfStudent;

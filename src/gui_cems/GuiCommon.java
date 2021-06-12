@@ -9,6 +9,7 @@ import entity.Student;
 import entity.Teacher;
 import entity.User;
 import gui_principal.PrincipalController;
+import gui_student.SolveExamController;
 import gui_student.StartManualExamController;
 import gui_student.StudentController;
 import gui_teacher.TeacherController;
@@ -144,24 +145,21 @@ public class GuiCommon {
 	}
 
 	private static void handleStudentNotifications(ResponseFromServer res) {
-		if (res.getResponseType().equals("NOTIFICATION_STUDENT_EXAM_LOCKED"))
-			// {
+		if (res.getResponseType().equals("NOTIFICATION_STUDENT_EXAM_LOCKED")) {
 			System.out.println("notification exam locked");
-		if (((Exam) res.getResponseData()).getActiveExamType().equals("manual"))
-			StartManualExamController.setFlagToLockExam((Boolean) true);
-		// else
-		// SolveExamController.setFlagToLockExam((Boolean) true);
-		// }
-		if (res.getResponseType().equals("NOTIFICATION_STUDENT_ADDED_TIME"))
-			// {
+			if (((Exam) res.getResponseData()).getActiveExamType().equals("manual"))
+				StartManualExamController.setFlagToLockExam((Boolean) true);
+			else
+				SolveExamController.setFlagToLockExam((Boolean) true);
+		}
+		if (res.getResponseType().equals("NOTIFICATION_STUDENT_ADDED_TIME")) {
 			System.out.println("added time to exam");
-		StartManualExamController.addTimeToExam((int) res.getResponseData());
-		if (((ActiveExam) res.getResponseData()).getActiveExamType().equals("manual"))
-			StartManualExamController.addTimeToExam(((ActiveExam) res.getResponseData()).getExtraTime());
-		// else
-		// SolveExamController.addTimeToExam(((ActiveExam)
-		// res.getResponseData()).getExtraTime());
-		// }
+			StartManualExamController.addTimeToExam((int) res.getResponseData());
+			if (((ActiveExam) res.getResponseData()).getActiveExamType().equals("manual"))
+				StartManualExamController.addTimeToExam(((ActiveExam) res.getResponseData()).getExtraTime());
+			else
+				SolveExamController.addTimeToExam(((ActiveExam) res.getResponseData()).getExtraTime());
+		}
 	}
 
 	/**

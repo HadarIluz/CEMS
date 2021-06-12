@@ -22,6 +22,7 @@ import entity.ExtensionRequest;
 import entity.Profession;
 import entity.Question;
 import entity.QuestionInExam;
+import entity.ReasonOfSubmit;
 import entity.Student;
 import entity.Teacher;
 import entity.UpdateScoreRequest;
@@ -388,7 +389,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
-		if (checkIfExamFinished(studentExam.getActiveExam()))
+		if (studentExam.getReasonOfSubmit() == ReasonOfSubmit.forced || checkIfExamFinished(studentExam.getActiveExam()))
 			documentExam(studentExam.getActiveExam());
 	}
 
@@ -418,7 +419,7 @@ public class CEMSserver extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (checkIfExamFinished(studentExam.getActiveExam()))
+		if (studentExam.getReasonOfSubmit() == ReasonOfSubmit.forced || checkIfExamFinished(studentExam.getActiveExam()))
 			documentExam(studentExam.getActiveExam());
 	}
 
