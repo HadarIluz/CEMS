@@ -138,9 +138,6 @@ public class EditExamController extends GuiCommon implements Initializable {
 			}
 
 		}
-		else {
-			popUp("Update failed.");
-		}
 		
 	}
 
