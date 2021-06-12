@@ -49,7 +49,7 @@ public class TeacherController extends Application implements Initializable {
 	private ImageView imgLogo;
 
 	@FXML
-	private ImageView imgNotificationOFF;
+	private static ImageView imgNotificationOFF;
 
 	@FXML
 	private Label textTeacherName;
@@ -88,16 +88,15 @@ public class TeacherController extends Application implements Initializable {
 	private static HashMap<String, Profession> professionsMap = null;
 
 	private static boolean toggleFlag = false;
-	
-	private static boolean notifiction;
+	private static boolean alert=false;
 
 	/**
 	 * method open the screen for manage question bank of teacher
 	 * 
 	 * @param event occurs when User press Manage Questions Bank
 	 */
-    @FXML
-    void btnManageQuestionsBank(ActionEvent event) {
+	@FXML
+	void btnManageQuestionsBank(ActionEvent event) {
 		try {
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("QuestionBank.fxml"));
@@ -243,10 +242,9 @@ public class TeacherController extends Application implements Initializable {
 		teacher = ClientUI.loggedInUser.getUser();
 		textTeacherName.setText(teacher.getFirstName() + " " + teacher.getLastName());
 		setProfessionMap(((Teacher) ClientUI.loggedInUser.getUser()).getProfessions());
-		// imgNotificationON.setVisible(false);//TODO false
-		// imgNotificationOFF.setVisible(true);//TODO true
-//		imgOFF = imgNotificationOFF;
-//		imgON = imgNotificationON;
+//		 imgNotificationON.setVisible(false);
+//		 imgNotificationOFF.setVisible(true);
+
 	}
 
 	/**
@@ -294,22 +292,11 @@ public class TeacherController extends Application implements Initializable {
 
 	}
 
-	// TODO: HADAR NEW
-	public void newNotifictionToTeacher(){
-		System.out.println("!!!!! I am in theacher!!!!!");
-		imgNotificationON.setVisible(true);
-		imgNotificationOFF.setVisible(true);
-		
-	}
-	
-	
-
-
 	@FXML
 	void clickImgNotification(MouseEvent event) {
+		imgNotificationON.setVisible(toggleFlagStatus()); 
+		imgNotificationOFF.setVisible(toggleFlagStatus()); 
 		
-		imgNotificationOFF.setVisible(!toggleFlagStatus()); // true
-		imgNotificationON.setVisible(toggleFlagStatus()); // false
 	}
 
 	private boolean toggleFlagStatus() {
@@ -319,26 +306,11 @@ public class TeacherController extends Application implements Initializable {
 			return toggleFlag = false;
 	}
 
-	public static void newNotifiction(boolean alret) {
-		System.out.println("!!!!! I am in theacher!!!!!");
+	public static void newNotifiction(boolean f) {
+		imgNotificationON.setVisible(true);
+		imgNotificationOFF.setVisible(false);
 		
-		notifiction=alret;
-		System.out.println(alret);
-		if(notifiction==true) {
-			showImg(imgNotificationON);
-			
-//			imgNotificationON.setVisible(true);
-//			imgNotificationOFF.setVisible(true);
-		}
-		
-	}
-	
-	private static void showImg(ImageView image) {
-		image.setImage(new Image("emailNotification_ON.png"));
-		
-//		   @FXML
-//		    private ImageView setUSPImage;
-//		setUSPImage.setImage(new Image("AWPCase.png"));
+		//alert=f;
 	}
 
 }

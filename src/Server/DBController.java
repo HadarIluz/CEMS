@@ -1719,9 +1719,10 @@ public class DBController {
 	}
 
 	public int getTeacherOfExam(Exam exam) {
+	
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("SELECT author FROM exam WHERE exam = ?;");
+			pstmt = conn.prepareStatement("SELECT author FROM exam WHERE examID=?;");
 			pstmt.setString(1, exam.getExamID());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {

@@ -1009,12 +1009,21 @@ public class CEMSserver extends AbstractServer {
 		ResponseFromServer responForPrincipal = null;
 		ResponseFromServer responForStudent = new ResponseFromServer("NOTIFICATION_STUDENT_ADDED_TIME");
 		responForStudent.setResponseData((ActiveExam) activeExam);
+		
+		int teacherID= dbController.getTeacherOfExam((Exam) activeExam.getExam());
+		
 		try {
 			responForPrincipal = dbController.setTimeForActiveTest(activeExam);
 			client.sendToClient(responForPrincipal);
 			for (Integer id : students) {
 				(loogedClients.get(id)).sendToClient(responForStudent);
 			}
+			
+			ResponseFromServer responForteacher = new ResponseFromServer("NOTIFICATION_TEACHER_PRINCIPAL_ANSWER");
+			(loogedClients.get(teacherID)).sendToClient(responForteacher);
+
+			
+			
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

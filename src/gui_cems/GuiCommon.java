@@ -140,7 +140,10 @@ public class GuiCommon {
 	}
 
 	private static void handleTeacherNotifications(ResponseFromServer res) {
-		// TODO Auto-generated method stub
+		if (res.getResponseType().equals("NOTIFICATION_TEACHER_PRINCIPAL_ANSWER")) {
+			TeacherController.newNotifiction(true);
+		}
+		
 
 	}
 
@@ -159,10 +162,6 @@ public class GuiCommon {
 				StartManualExamController.addTimeToExam(((ActiveExam) res.getResponseData()).getExtraTime());
 			else
 				SolveExamController.addTimeToExam(((ActiveExam) res.getResponseData()).getExtraTime());
-		}
-		if(res.getResponseType().equals("NOTIFICATION_TEACHER")) {
-			System.out.println("added time to exam");
-			TeacherController.newNotifiction(true);
 		}
 		
 		

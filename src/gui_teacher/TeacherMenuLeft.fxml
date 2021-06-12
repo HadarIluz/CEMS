@@ -100,6 +100,9 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <ImageView fx:id="imgNotificationON" fitHeight="25.0" fitWidth="40.0" layoutX="177.0" layoutY="171.0" onMouseClicked="#clickImgNotification" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imgNotificationON" fitHeight="25.0" fitWidth="40.0" layoutX="177.0" layoutY="171.0" onMouseClicked="#clickImgNotification" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@emailNotification_ON.png" />
+         </image></ImageView>
    </children>
 </AnchorPane>

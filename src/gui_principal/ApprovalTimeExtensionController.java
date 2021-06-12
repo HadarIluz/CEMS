@@ -69,7 +69,6 @@ public class ApprovalTimeExtensionController implements Initializable {
 					.setExtraTime(Integer.parseInt(selectedExtensionRequest.getAdditionalTime()));
 			// Update the exam time and delete the extension Request in the database
 			RequestToServer req = new RequestToServer("approvalTimeExtension");
-			(selectedExtensionRequest.getActiveExam().getExam()).setAuthor( //???);
 			req.setRequestData(selectedExtensionRequest.getActiveExam());
 			ClientUI.cems.accept(req);
 			if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("EXTENSION REMOVED")) {
