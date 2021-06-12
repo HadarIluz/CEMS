@@ -1033,15 +1033,29 @@ public class CEMSserver extends AbstractServer {
 	private void approvalTimeExtension(ActiveExam activeExam, ConnectionToClient client) {
 		// update time alloted for test in active exam after the principal approves the
 		// request.
+		System.out.println("HERE");
 		ArrayList<Integer> students = dbController.getStudentsInActiveExam(activeExam.getExam());
 		ResponseFromServer respon = null;
-		ResponseFromServer respon2 = new ResponseFromServer("NOTIFICATION_STUDENT_ADDED_TIME");
-		respon2.setResponseData(activeExam.getExtraTime());
+		ResponseFromServer responToStudentFromPrincipal = new ResponseFromServer("NOTIFICATION_STUDENT_ADDED_TIME");	
+		
+		//TODO:
+		ResponseFromServer responToTeacherFromPrincipal = new ResponseFromServer("NOTIFICATION_TEACHER");
+		responToStudentFromPrincipal.setResponseData(activeExam.getExtraTime());
 		try {
 			respon = dbController.setTimeForActiveTest(activeExam);
 			client.sendToClient(respon);
 			for (Integer id : students) {
-				(loogedClients.get(id)).sendToClient(respon2);
+				(loogedClients.get(id)).sendToClient(responToStudentFromPrincipal);
+			}
+			
+			
+			//Search the id of the teacher who is the author of this exam. and send alret.
+			int teacherID= activeExam.getExam().getAuthor().getId();
+			System.out.println(teacherID);
+			for (Integer id : loogedClients.keySet()) {
+				if(id == teacherID) {
+					(loogedClients.get(id)).sendToClient(responToTeacherFromPrincipal);
+				}
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();

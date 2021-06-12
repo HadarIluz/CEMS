@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane layoutX="1.0" prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_student.StartManualExamController">
+<AnchorPane layoutX="1.0" prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_student.StartManualExamController">
    <children>
       <Text fill="RED" layoutX="72.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Attention! You must solve the test in the same file that was downloaded to your computer when you clicked &quot;Download&quot;. " wrappingWidth="311.3999732732773">
          <font>
@@ -61,9 +61,9 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Text>
-      <ImageView fx:id="imgNotification" fitHeight="50.0" fitWidth="50.0" layoutX="583.0" layoutY="23.0" onMouseClicked="#clickImgNotification" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="imgNotificationOFF" fitHeight="45.0" fitWidth="37.0" layoutX="583.0" layoutY="41.0" onMouseClicked="#clickImgNotification" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@notification.png" />
+            <Image url="@notification_OFF.png" />
          </image>
       </ImageView>
       <Label fx:id="textTimeLeft" layoutX="611.0" layoutY="373.0" prefHeight="20.0" prefWidth="127.0" textFill="#e40909">
@@ -87,5 +87,10 @@
          </font>
       </Text>
       <Label fx:id="textNotificationMsg" layoutX="524.0" layoutY="78.0" pickOnBounds="false" prefHeight="64.0" prefWidth="172.0" visible="false" />
+      <ImageView fx:id="imgNotificationON" fitHeight="45.0" fitWidth="37.0" layoutX="583.0" layoutY="41.0" onMouseClicked="#clickImgNotification" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@notification_ON.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

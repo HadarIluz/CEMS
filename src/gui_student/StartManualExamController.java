@@ -3,6 +3,7 @@ package gui_student;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -17,6 +18,7 @@ import client.ClientUI;
 import common.MyFile;
 import entity.ActiveExam;
 import gui_cems.GuiCommon;
+import gui_teacher.TeacherController;
 import entity.ExamOfStudent;
 import entity.ExamStatus;
 import entity.ReasonOfSubmit;
@@ -67,8 +69,11 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	@FXML
 	private Text txtMessageFrom;
 
-	@FXML
-	private ImageView imgNotification;
+    @FXML
+    private ImageView imgNotificationOFF;
+
+    @FXML
+    private ImageView imgNotificationON;
 
 	@FXML
 	private Label textNotificationMsg;
@@ -96,6 +101,9 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	private Timer timer;
 	private ExamOfStudent examOfStudent;
 	private int timeLeft;
+	private static boolean toggleFlag=false;
+
+	private static TeacherController teacherController;
 
 	/**
 	 * The method downloads the test form to the Downloads folder on the student's
@@ -221,10 +229,23 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	 */
 	@FXML
 	void clickImgNotification(MouseEvent event) {
-		imgNotification.setVisible(false);
-		txtMessageFrom.setVisible(false);
-		textNotificationMsg.setVisible(false);
+		imgNotificationON.setVisible(!toggleFlagStatus());
+		imgNotificationOFF.setVisible(!toggleFlagStatus());
+		boolean change=toggleFlagStatus();
+		txtMessageFrom.setVisible(change);
+		textNotificationMsg.setVisible(change);
+		//toggleFlag= !toggleFlag;
 	}
+	
+	
+	private boolean toggleFlagStatus() {
+		if (toggleFlag == false)
+			return toggleFlag = true;
+		else
+			return toggleFlag = false;
+	}
+	
+	
 
 	/**
 	 * initialize function to prepare the screen after it is loaded. Runs a timer
@@ -238,6 +259,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
 		lockBecauseTeacher = false;
 		lockBecauseTime = false;
+		imgNotificationON.setVisible(false);
+		imgNotificationOFF.setVisible(true);
 		addTime = 0;
 		// set the timer
 		timeForTimer = new AtomicInteger(newActiveExam.getTimeAllotedForTest() * 60);
@@ -252,7 +275,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					timeForTimer.set(timeLeft);
 					Platform.runLater(() -> textNotificationMsg.setText("Please note, the exam time\nwas extended by "
 							+ newActiveExam.getExtraTime() + " minutes."));
-					imgNotification.setVisible(true);
+					imgNotificationON.setVisible(true);
+					imgNotificationOFF.setVisible(false);
 					txtMessageFrom.setVisible(true);
 					textNotificationMsg.setVisible(true);
 					addTime = 0;
@@ -274,7 +298,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	}
 
 	private void lockExam() {
-		//btnDownload.setDisable(true);
+		// btnDownload.setDisable(true);
 		btnSubmit.setDisable(true);
 		popUp("The exam is locked!");
 		btnSubmit(null);

@@ -24,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -32,8 +33,8 @@ import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
- * The class included in the diagrams and contains all the functionality
- * that the start has, manages the left menu in the system and describes the
+ * The class included in the diagrams and contains all the functionality that
+ * the start has, manages the left menu in the system and describes the
  * privileges that the Teacher has in the system.
  * 
  * @author Yadin
@@ -46,6 +47,9 @@ public class TeacherController extends Application implements Initializable {
 
 	@FXML
 	private ImageView imgLogo;
+
+	@FXML
+	private ImageView imgNotificationOFF;
 
 	@FXML
 	private Label textTeacherName;
@@ -74,19 +78,26 @@ public class TeacherController extends Application implements Initializable {
 	@FXML
 	private Label pressLogout;
 
+	@FXML
+	private static ImageView imgNotificationON;
+
 	public LoginController loginController;
 	public static GridPane root;
 	public Scene scene;
 	protected User teacher;
 	private static HashMap<String, Profession> professionsMap = null;
 
+	private static boolean toggleFlag = false;
+	
+	private static boolean notifiction;
+
 	/**
 	 * method open the screen for manage question bank of teacher
 	 * 
 	 * @param event occurs when User press Manage Questions Bank
 	 */
-	@FXML
-	void btnManageQuestionsBank(ActionEvent event) {
+    @FXML
+    void btnManageQuestionsBank(ActionEvent event) {
 		try {
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("QuestionBank.fxml"));
@@ -215,7 +226,6 @@ public class TeacherController extends Application implements Initializable {
 		primaryStage.setTitle("CEMS-Computerized Exam Management System");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-
 		listenToCloseWindow(primaryStage);
 
 	}
@@ -233,6 +243,10 @@ public class TeacherController extends Application implements Initializable {
 		teacher = ClientUI.loggedInUser.getUser();
 		textTeacherName.setText(teacher.getFirstName() + " " + teacher.getLastName());
 		setProfessionMap(((Teacher) ClientUI.loggedInUser.getUser()).getProfessions());
+		// imgNotificationON.setVisible(false);//TODO false
+		// imgNotificationOFF.setVisible(true);//TODO true
+//		imgOFF = imgNotificationOFF;
+//		imgON = imgNotificationON;
 	}
 
 	/**
@@ -278,6 +292,53 @@ public class TeacherController extends Application implements Initializable {
 
 		});
 
+	}
+
+	// TODO: HADAR NEW
+	public void newNotifictionToTeacher(){
+		System.out.println("!!!!! I am in theacher!!!!!");
+		imgNotificationON.setVisible(true);
+		imgNotificationOFF.setVisible(true);
+		
+	}
+	
+	
+
+
+	@FXML
+	void clickImgNotification(MouseEvent event) {
+		
+		imgNotificationOFF.setVisible(!toggleFlagStatus()); // true
+		imgNotificationON.setVisible(toggleFlagStatus()); // false
+	}
+
+	private boolean toggleFlagStatus() {
+		if (toggleFlag == false)
+			return toggleFlag = true;
+		else
+			return toggleFlag = false;
+	}
+
+	public static void newNotifiction(boolean alret) {
+		System.out.println("!!!!! I am in theacher!!!!!");
+		
+		notifiction=alret;
+		System.out.println(alret);
+		if(notifiction==true) {
+			showImg(imgNotificationON);
+			
+//			imgNotificationON.setVisible(true);
+//			imgNotificationOFF.setVisible(true);
+		}
+		
+	}
+	
+	private static void showImg(ImageView image) {
+		image.setImage(new Image("emailNotification_ON.png"));
+		
+//		   @FXML
+//		    private ImageView setUSPImage;
+//		setUSPImage.setImage(new Image("AWPCase.png"));
 	}
 
 }

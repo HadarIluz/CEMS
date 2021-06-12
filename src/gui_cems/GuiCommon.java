@@ -129,6 +129,14 @@ public class GuiCommon {
 			System.out.println("added time to exam");
 			StartManualExamController.addTimeToExam((int) res.getResponseData());
 		}
+		if(res.getResponseType().equals("NOTIFICATION_TEACHER")) {
+			System.out.println("added time to exam");
+			TeacherController.newNotifiction(true);
+		}
+		
+		
+		
+		
 	}
 
 	/**
