@@ -120,7 +120,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 			btnDeleteQuestion.setDisable(true);
 		} else {
 
-			if (!checkForLegalID(textQuestionID.getText()))
+			if (!checkForLegalquestionID(textQuestionID.getText()))
 				return;
 
 			ObservableList<QuestionRow> Qlist;
