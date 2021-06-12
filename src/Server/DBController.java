@@ -1889,4 +1889,45 @@ public class DBController {
 
 	}
 
+	public ArrayList<ExamOfStudent> getExamsOfStudentsByExamID(ActiveExam activeExam) {
+		ArrayList<ExamOfStudent> examList = new ArrayList<>();
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT student FROM exam_of_student WHERE exam=?;");
+			pstmt.setString(1, activeExam.getExam().getExamID());
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				ExamOfStudent e = new ExamOfStudent(activeExam, new Student(rs.getInt(1), UserType.Student));
+				examList.add(e);
+			}
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		
+		
+		return examList;
+	}
+
+	public HashMap<QuestionInExam, Integer> getQuestionsAndAnswersByExamOfStudent(ExamOfStudent e) {
+		HashMap<QuestionInExam, Integer> qNa = new HashMap<>();
+		
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement(
+					"SELECT question,answer FROM student_answers_in_exam where student =? and exam=?;");
+			pstmt.setInt(1, e.getStudent().getId());
+			pstmt.setString(2, e.getActiveExam().getExam().getExamID());
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				QuestionInExam q = new QuestionInExam(0, new Question(rs.getString(1)));
+				qNa.put(q, rs.getInt(2));
+			}
+			rs.close();
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+		
+		return qNa;
+	}
+
 }

@@ -22,6 +22,7 @@ import entity.ExtensionRequest;
 import entity.Profession;
 import entity.Question;
 import entity.QuestionInExam;
+import entity.ReasonOfSubmit;
 import entity.Student;
 import entity.Teacher;
 import entity.UpdateScoreRequest;
@@ -418,8 +419,10 @@ public class CEMSserver extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (checkIfExamFinished(studentExam.getActiveExam()))
+		if (studentExam.getReasonOfSubmit() == ReasonOfSubmit.forced || checkIfExamFinished(studentExam.getActiveExam())) {
 			documentExam(studentExam.getActiveExam());
+			checkForCopying(studentExam.getActiveExam());
+		}
 	}
 
 	private void EditQuestion(Question question, ConnectionToClient client) {
@@ -485,7 +488,6 @@ public class CEMSserver extends AbstractServer {
 			} else
 				printMessageInLogFramServer("document exam failed");
 		}
-		// now call for method that checks copying (only if computerized)
 	}
 
 	/**
@@ -622,6 +624,27 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 
+	}
+	
+	private void checkForCopying(ActiveExam activeExam) {
+		//getTeacherOfExam
+		ArrayList<ExamOfStudent> examsOfStudent = dbController.getExamsOfStudentsByExamID(activeExam);
+		for (ExamOfStudent e : examsOfStudent) {
+			e.setQuestionsAndAnswers(dbController.getQuestionsAndAnswersByExamOfStudent(e));
+		}
+		ArrayList<Integer> suspectStudentID = dbController.getPotentialCopyList(examsOfStudent);
+		
+		int teacherID = dbController.getTeacherOfExam(activeExam.getExam());
+		// send notification to teacher
+		ResponseFromServer res = new ResponseFromServer("NOTIFICATION_TEACHER_POTENTIAL_COPY");
+		res.setResponseData(suspectStudentID);
+		try {
+			loogedClients.get(teacherID).sendToClient(res);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 	}
 
 	private void CheckSameMistakeOfStudent(ArrayList<ExamOfStudent> exams, ConnectionToClient client) {
