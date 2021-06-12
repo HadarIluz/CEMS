@@ -71,7 +71,7 @@ public class ActiveExam implements Serializable {
 		return startTime;
 	}
 
-	/* set tartTime field */
+	/* set startTime field */
 	public void setStartTime(Time startTime) {
 		this.startTime = startTime;
 	}

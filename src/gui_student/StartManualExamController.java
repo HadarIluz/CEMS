@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,7 +20,6 @@ import common.MyFile;
 import entity.ActiveExam;
 import gui_cems.GuiCommon;
 import entity.ExamOfStudent;
-import entity.ExamStatus;
 import entity.ReasonOfSubmit;
 import entity.Student;
 import javafx.application.Platform;
@@ -34,7 +35,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
-//FIXME: ADD JAVADOC
+/**
+ * FIXME: ADD JAVADOC HERE
+ * 
+ * @author Matar Asaf
+ *
+ */
 
 public class StartManualExamController extends GuiCommon implements Initializable {
 
@@ -83,15 +89,21 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	@FXML
 	private Text txtDownloadSucceed;
 
+    private static StudentController studentController;
 	private static ActiveExam newActiveExam;
-	private static Boolean lockBecauseTeacher;
-	private Boolean lockBecauseTime;
+	private static Boolean lock;
 	private static int addTime;
 	private AtomicInteger timeForTimer;
 	private Timer timer;
 	private ExamOfStudent examOfStudent;
 	private int timeLeft;
 
+	/**
+	 * The method downloads the test form to the Downloads folder on the student's
+	 * computer.
+	 * 
+	 * @param event that occurs when clicking on 'Download' button.
+	 */
 	@FXML
 	void btnDownload(ActionEvent event) {
 		// Download the exam from the database to the student's computer
@@ -103,9 +115,22 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		txtDownloadSucceed.setVisible(true);
 	}
 
+	/**
+	 * If the student press Submit the method saves the test that the student solved
+	 * in the files folder in the system. The file name consists of examID and
+	 * studentID. else, the exam locked and the test is not submitted.
+	 * 
+	 * @param event that occurs when clicking on 'Submit' button.
+	 */
 	@FXML
 	void btnSubmit(ActionEvent event) {
-		if (!lockBecauseTime && !lockBecauseTeacher) {
+		submitExam(ReasonOfSubmit.initiated);
+	}
+	
+	private void submitExam(ReasonOfSubmit reasonOfSubmit) {
+		examOfStudent.setReasonOfSubmit(reasonOfSubmit);
+		// When the student clicks Submit
+		if (reasonOfSubmit == ReasonOfSubmit.initiated ) {
 			Object[] options = { " Cancel ", " Submit " };
 			JFrame frame = new JFrame("Submit Exam");
 			int dialogResult = JOptionPane.showOptionDialog(frame,
@@ -113,81 +138,80 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					JOptionPane.WARNING_MESSAGE, null, // do not use a custom Icon
 					options, // the titles of buttons
 					null); // default button title
+			// When the student clicks Submit. the test is saved in the files folder in the
+			// system
 			if (dialogResult == 1) {
-				String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_"
-						+ examOfStudent.getStudent().getId() + ".docx";
-				String home = System.getProperty("user.home");
-				String LocalfilePath = home + "/Downloads/" + examOfStudent.getActiveExam().getExam().getExamID()
-						+ "_exam.docx";
-				MyFile submitExam = new MyFile(fileName);
-				try {
-					File newFile = new File(LocalfilePath);
-					byte[] mybytearray = new byte[(int) newFile.length()];
-					FileInputStream fis = new FileInputStream(newFile);
-					BufferedInputStream bis = new BufferedInputStream(fis);
-					submitExam.initArray(mybytearray.length);
-					submitExam.setSize(mybytearray.length);
-					bis.read(submitExam.getMybytearray(), 0, mybytearray.length);
-					fis.close();
-					RequestToServer req = new RequestToServer("submitManualExam");
-					req.setRequestData(submitExam);
-					ClientUI.cems.accept(req);
-
-					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) {
-						timer.cancel();
-						examOfStudent.setScore(0);
-						examOfStudent.setReasonOfSubmit(ReasonOfSubmit.initiated);
-						txtUploadSucceed.setVisible(true);
-						btnSubmit.setDisable(true);
-						RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
-						examOfStudent.setExamType("manual");
-						examOfStudent.setTotalTime(
-								((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60
-										- timeForTimer.get()) / 60);
-						req2.setRequestData(examOfStudent);
-						ClientUI.cems.accept(req2);
+				if (((newActiveExam.getTimeAllotedForTest() - timeForTimer.get()) / 60) < 30)
+					popUp("The test was not submitted!\nA test can only be submitted after half an hour has passed since you started it.");
+				else {
+					String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_"
+							+ examOfStudent.getStudent().getId() + ".docx";
+					String home = System.getProperty("user.home");
+					String LocalfilePath = home + "/Downloads/" + examOfStudent.getActiveExam().getExam().getExamID()
+							+ "_exam.docx";
+					MyFile submitExam = new MyFile(fileName);
+					try {
+						File newFile = new File(LocalfilePath);
+						byte[] mybytearray = new byte[(int) newFile.length()];
+						FileInputStream fis = new FileInputStream(newFile);
+						BufferedInputStream bis = new BufferedInputStream(fis);
+						submitExam.initArray(mybytearray.length);
+						submitExam.setSize(mybytearray.length);
+						bis.read(submitExam.getMybytearray(), 0, mybytearray.length);
+						fis.close();
+						RequestToServer req = new RequestToServer("submitManualExam");
+						req.setRequestData(submitExam);
+						ClientUI.cems.accept(req);
+						if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) {
+							timer.cancel();
+							examOfStudent.setScore(0);
+							txtUploadSucceed.setVisible(true);
+							btnSubmit.setDisable(true);
+							// Update the details in the exam_of_student table in DB
+							RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
+							examOfStudent.setExamType("manual");
+							examOfStudent.setTotalTime(
+									((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60
+											- timeForTimer.get()) / 60);
+							req2.setRequestData(examOfStudent);
+							ClientUI.cems.accept(req2);
+						}
+					} catch (Exception ex) {
+						txtError1.setVisible(true);
+						txtError2.setVisible(true);
+						txtError3.setVisible(true);
+						ex.printStackTrace();
 					}
-				} catch (Exception ex) {
-					txtError1.setVisible(true);
-					txtError2.setVisible(true);
-					txtError3.setVisible(true);
-					ex.printStackTrace();
 				}
 			}
-		} else {
+		} else { // When the exam is locked
 			timer.cancel();
 			examOfStudent.setExamType("manual");
 			examOfStudent.setScore(0);
 			examOfStudent.setTotalTime(
 					((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60 - timeForTimer.get())
 							/ 60);
-			examOfStudent.setReasonOfSubmit(ReasonOfSubmit.forced);
-
-			if (timeForTimer.get() == 0) { // need to check if the last (what yuval did)
-				RequestToServer req = new RequestToServer("checkIfTheLastStudent");
-				req.setRequestData(examOfStudent.getActiveExam());
-				ClientUI.cems.accept(req);
-				if (!CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("LAST STUDENT")) {
-					RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
-					req2.setRequestData(examOfStudent);
-					ClientUI.cems.accept(req2);
-				}
-			} else { // because teacher || THE LAST STUDENT + TIME OVER
-				btnDownload.setDisable(true);
-				examOfStudent.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
-				RequestToServer req2 = new RequestToServer("lockActiveExam");
-				req2.setRequestData(examOfStudent);
-				ClientUI.cems.accept(req2);
-			}
+			RequestToServer req = new RequestToServer("StudentFinishManualExam");
+			req.setRequestData(examOfStudent);
+			ClientUI.cems.accept(req);
 		}
-
 	}
 
+	/**
+	 * if the checkBox selected show the timer of time left to solve the exam.
+	 * 
+	 * @param event that occurs when clicking on 'checkBoxShowTime' checkBox
+	 */
 	@FXML
 	void checkBoxShowTime(ActionEvent event) {
 		textTimeLeft.setVisible(!textTimeLeft.visibleProperty().get());
 	}
 
+	/**
+	 * Clicking on the notification disappears it from the screen.
+	 *
+	 * @param event that occurs when clicking on 'imgNotification' ImageView
+	 */
 	@FXML
 	void clickImgNotification(MouseEvent event) {
 		imgNotification.setVisible(false);
@@ -195,18 +219,29 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		textNotificationMsg.setVisible(false);
 	}
 
+	/**
+	 * initialize function to prepare the screen after it is loaded. Runs a timer
+	 * that shows the time left to solve the test. When receiving test lock
+	 * information stops the timer, notifies the student and executes the btnSubmit
+	 * method. When receives information about extra time, updates the timer and
+	 * informs the student.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
-		lockBecauseTeacher = false;
-		lockBecauseTime = false;
+		lock = false;
 		addTime = 0;
 		// set the timer
-		timeForTimer = new AtomicInteger(newActiveExam.getTimeAllotedForTest() * 60);
+		LocalTime currentTime = (new Time(System.currentTimeMillis())).toLocalTime();
+		int timeToDeduct = (currentTime.toSecondOfDay() - newActiveExam.getStartTime().toLocalTime().toSecondOfDay())
+				/ 60;
+		int timeForStudent = (newActiveExam.getTimeAllotedForTest() - timeToDeduct)*60;
+		timeForTimer = new AtomicInteger(timeForStudent);
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
-			public void run() {
+			public void run() { 
+				// When extra time is received updates the timer and notifies the student
 				if (addTime != 0) {
 					newActiveExam.setExtraTime(addTime);
 					timeLeft = timeForTimer.get() + (addTime * 60);
@@ -224,29 +259,43 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				String str = String.format("Time left: %02d:%02d:%02d", hours, minutes, seconds);
 				Platform.runLater(() -> textTimeLeft.setText(str));
 				timeForTimer.decrementAndGet();
-				if (timeForTimer.get() == 0 || lockBecauseTeacher) {
-					if (timeForTimer.get() == 0)
-						lockBecauseTime = true;
-					Platform.runLater(() -> lockExam());
+				if (timeForTimer.get() == 0 || lock) {
+					Platform.runLater(() -> stopExam());
 				}
 			}
 		}, 0, 1000);
+
 	}
 
-	private void lockExam() {
+	private void stopExam() {
+		btnSubmit.setDisable(true);
 		popUp("The exam is locked!");
-		btnSubmit(null);
+		submitExam(ReasonOfSubmit.forced);
 	}
 
+	/**
+	 * Receive ActiveExam from the previous screen.
+	 * 
+	 * @param newActiveExamInProgress
+	 */
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
 		newActiveExam = newActiveExamInProgress;
-
 	}
 
+	/**
+	 * Receive temp = true from the server when a teacher locks up the test
+	 * 
+	 * @param Boolean temp
+	 */
 	public static void setFlagToLockExam(Boolean temp) {
-		lockBecauseTeacher = temp;
+		lock = temp;
 	}
 
+	/**
+	 * Receives from the server the time the teacher added to the test
+	 * 
+	 * @param time
+	 */
 	public static void addTimeToExam(int time) {
 		addTime = time;
 	}

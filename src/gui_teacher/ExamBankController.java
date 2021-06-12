@@ -46,6 +46,7 @@ import logic.RequestToServer;
  * 
  * @author Yadin Amsalem
  * @author Nadav Dery
+ * @author Matar Asaf
  * @author Hadar Iluz
  * @version 1.0
  *
@@ -371,9 +372,12 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	}
 
 	/**
-	 * @param event occurs when user press on "Lock" FIXME: NEED FIX??
+	 * This method locks the test and sends all students who solve it a message that
+	 * the test is locked and prevents them from submitting or downloading the test.
+	 * 
+	 * @param event occurs when user press on "Lock"
+	 * 
 	 */
-
 	@FXML
 	void btnLockExam(ActionEvent event) {
 		if (textExamID.getText().isEmpty())
@@ -386,15 +390,12 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			req.setRequestData(examToLock);
 			ClientUI.cems.accept(req);
 			if (CEMSClient.responseFromServer.getResponseType().equals("EXAM LOCKED")) {
-				initTableRows(); // NEED FIX
-				textExamID.clear();
 				popUp("The exam was successfully locked");
 			} else {
-				initTableRows(); // NEED FIX
-				textExamID.clear();
 				popUp("lock exam failed");
 			}
-
+			initTableRows(); // NEED FIX
+			textExamID.clear();
 		}
 	}
 }

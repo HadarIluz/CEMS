@@ -16,10 +16,7 @@ import java.io.*;
  * This class overrides some of the methods defined in the abstract superclass
  * in order to give more functionality to the client.
  *
- * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;
- * @author Fran&ccedil;ois B&eacute;langer
- * @version July 2000
+ * @author CEMS TEAM
  */
 public class CEMSClient extends AbstractClient {
 	// Instance variables **********************************************
@@ -71,6 +68,8 @@ public class CEMSClient extends AbstractClient {
 		if (msg instanceof ResponseFromServer) {
 			responseFromServer = (ResponseFromServer) msg;
 			awaitResponse = false;
+			// If the data is an NOTIFICATION type we will send it to the appropriate client
+			// we want to receive the notification
 			if (responseFromServer.getResponseType().startsWith("NOTIFICATION"))
 				GuiCommon.handleNotifications(responseFromServer);
 			responseFromServer.getStatusMsg().setStatus(responseFromServer.getResponseType());

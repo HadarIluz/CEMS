@@ -1,6 +1,5 @@
 package gui_principal;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +20,9 @@ import javafx.scene.control.TextArea;
 import logic.RequestToServer;
 
 /**
- *FIXME: ADDJAVADOC HERE
- * @author Matar
+ * FIXME: ADD JAVADOC HERE
+ * 
+ * @author Matar Asaf
  *
  */
 
@@ -51,7 +51,6 @@ public class ApprovalTimeExtensionController implements Initializable {
 
 	/**
 	 * @param event that occurs when clicking on 'Approve' button
-	 * @throws IOException if failed.
 	 */
 	@FXML
 	void btnApprove(ActionEvent event) {
@@ -61,11 +60,12 @@ public class ApprovalTimeExtensionController implements Initializable {
 		}
 		// When a test is selected
 		else {
-			// Adding the time required for the test time
+			// Adding the time required for the exam time
 			timeOfExam = selectedExtensionRequest.getActiveExam().getTimeAllotedForTest();
 			timeOfExam += Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
 			selectedExtensionRequest.getActiveExam().setTimeAllotedForTest("" + timeOfExam);
-			selectedExtensionRequest.getActiveExam().setExtraTime(Integer.parseInt(selectedExtensionRequest.getAdditionalTime()));
+			selectedExtensionRequest.getActiveExam()
+					.setExtraTime(Integer.parseInt(selectedExtensionRequest.getAdditionalTime()));
 			// Update the exam time and delete the extension Request in the database
 			RequestToServer req = new RequestToServer("approvalTimeExtension");
 			req.setRequestData(selectedExtensionRequest.getActiveExam());
@@ -79,7 +79,6 @@ public class ApprovalTimeExtensionController implements Initializable {
 
 	/**
 	 * @param event that occurs when clicking on 'Decline' button
-	 * @throws IOException if failed.
 	 */
 	@FXML
 	void btnDecline(ActionEvent event) {
@@ -100,8 +99,8 @@ public class ApprovalTimeExtensionController implements Initializable {
 	}
 
 	/**
-	 * @param event that occurs when clicking on 'selectExamExtension' ComboBox
-	 * @throws IOException if failed.
+	 * @param event that occurs when principal select test with extension request
+	 *              from the comboBox.
 	 */
 	@FXML
 	void selectExamExtension(ActionEvent event) {
@@ -113,9 +112,8 @@ public class ApprovalTimeExtensionController implements Initializable {
 	}
 
 	/**
-	 * @param This method is performed when the screen is initialized and it loads
-	 *             the comboBox with all the extension request in Data Base
-	 * @throws IOException if failed.
+	 * The method prepares the list of extension requests and loads them into the
+	 * comboBox.
 	 */
 	@FXML
 	public void loadExamExtensionsToCombobox() {
@@ -126,30 +124,29 @@ public class ApprovalTimeExtensionController implements Initializable {
 	}
 
 	/**
-	 *The method initializes the screen is currently loading.
+	 * initialize function to prepare the screen after it is loaded.
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		refreshFunc(); 
+		refreshFunc();
 	}
 
 	/**
-	 * FIXME: ADD JAVADOC HERE
-	 * @param extensionRequestList
+	 * @param extensionRequestList containing all the extension requests in the DB.
 	 */
 	public static void setExtensionRequestMap(ArrayList<ExtensionRequest> extensionRequestList) {
 		for (ExtensionRequest ex : extensionRequestList) {
 			extensionRequestMap.put(ex.getActiveExam().getExam().getExamID(), ex);
 		}
 	}
-	
+
 	/**
-	 * FIXME: ADD JAVADOC HERE
+	 * when principal approves or rejects a request this function deletes the
+	 * information of the previous request and updates the comboBox.
 	 */
 	@SuppressWarnings("unchecked")
 	void refreshFunc() {
 		selectExamExtension.getItems().clear();
-		selectExamExtension.setPromptText("Click to see exams");
 		RequestToServer req = new RequestToServer("getExtensionRequests");
 		ClientUI.cems.accept(req);
 		extensionRequestList = (ArrayList<ExtensionRequest>) CEMSClient.responseFromServer.getResponseData();

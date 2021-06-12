@@ -1,7 +1,5 @@
 package gui_teacher;
 
-import java.io.IOException;
-
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
@@ -14,6 +12,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import logic.RequestToServer;
+
+/**
+ * FIXME: ADD JAVADOC HERE
+ *
+ * @author Matar Asaf
+ *
+ */
 
 public class AddTimeToExamController extends GuiCommon {
 
@@ -39,11 +44,16 @@ public class AddTimeToExamController extends GuiCommon {
 	public static Exam exam;
 
 	/**
+	 * The method checks that all the conditions for submit extension request have
+	 * been approved and verifies the details entered by the teacher. Verifies that
+	 * there is an active exam with the details of the test that the teacher has
+	 * entered and checks that there is no request that has not yet been answered
+	 * for this test.
+	 * 
 	 * @param event that occurs when clicking on 'Submit' button
-	 * @throws IOException if failed.
 	 */
 	@FXML
-	void btnSubmitTimeExtentionRequest(ActionEvent event) throws IOException {
+	void btnSubmitTimeExtentionRequest(ActionEvent event) {
 		String examID = textExamID.getText();
 		String examCode = textExamCode.getText();
 		String additionalTime = textAdditionalTime.getText();
@@ -60,7 +70,7 @@ public class AddTimeToExamController extends GuiCommon {
 		} else if (textReqReason.getText().trim().isEmpty()) {
 			popUp("Please fill the Request reason Field");
 		}
-		// in case fields not empty checks if exist in DB
+		// in case fields not empty checks if exist activeExam with this details in DB
 		else {
 			if (examID.length() == 6 && isOnlyDigits(examID) && examCode.length() == 4
 					&& isOnlyDigits(additionalTime)) {
@@ -94,7 +104,8 @@ public class AddTimeToExamController extends GuiCommon {
 						textReqReason.clear();
 						textExamCode.clear();
 						textExamID.clear();
-						// the extension didn't sent to the principal.
+						// When there is already a request for a test that has not yet been answered by
+						// the principal then the new request is not sent to the principal.
 						if (CEMSClient.responseFromServer.getStatusMsg().getStatus()
 								.equals("EXTENSION REQUEST DIDN'T CREATED")) {
 							System.out.println(
