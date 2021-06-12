@@ -201,6 +201,7 @@ public class DBController {
 		}
 		return "TRUE";
 	}
+	
 
 	public HashMap<String, Integer> SetDetailsForScoreApprovel(String examID) {
 		HashMap<String, Integer> stdScore = new HashMap<>();
