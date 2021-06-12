@@ -127,8 +127,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	/**
 	 * If the student press Submit the method saves the test that the student solved
 	 * in the files folder in the system. The file name consists of examID and
-	 * studentID. 
-	 * else, the exam locked and the test is not submitted.
+	 * studentID. else, the exam locked and the test is not submitted.
 	 * 
 	 * @param reasonOfSubmit.
 	 */
@@ -146,6 +145,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 			// When the student clicks Submit. the test is saved in the files folder in the
 			// system
 			if (dialogResult == 1) {
+				timer.cancel();
 				String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_"
 						+ examOfStudent.getStudent().getId() + ".docx";
 				String home = System.getProperty("user.home");
@@ -165,7 +165,6 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					req.setRequestData(submitExam);
 					ClientUI.cems.accept(req);
 					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) {
-						timer.cancel();
 						examOfStudent.setScore(0);
 						txtUploadSucceed.setVisible(true);
 						btnSubmit.setDisable(true);
@@ -186,7 +185,6 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				}
 			}
 		} else { // When the exam is locked
-			timer.cancel();
 			examOfStudent.setExamType("manual");
 			examOfStudent.setScore(0);
 			examOfStudent.setTotalTime(
@@ -261,6 +259,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				Platform.runLater(() -> textTimeLeft.setText(str));
 				timeForTimer.decrementAndGet();
 				if (timeForTimer.get() == 0 || lock) {
+					timer.cancel();
 					Platform.runLater(() -> stopExam());
 				}
 			}
@@ -270,8 +269,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	private void stopExam() {
 		btnSubmit.setDisable(true);
-		popUp("The exam is locked!");
 		submitExam(ReasonOfSubmit.forced);
+		popUp("The exam is locked!");
 	}
 
 	/**

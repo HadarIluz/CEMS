@@ -150,6 +150,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 				exam = new Exam(ExamID);
 				exam.setCourse(new Course(e.getCourse().getCourseID()));
 				exam.setProfession(e.getProfession());
+				exam.setActiveExamType(e.getActiveExamType());
 				return exam;
 			}
 		}

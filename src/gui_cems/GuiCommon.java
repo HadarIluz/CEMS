@@ -147,7 +147,7 @@ public class GuiCommon {
 	private static void handleStudentNotifications(ResponseFromServer res) {
 		if (res.getResponseType().equals("NOTIFICATION_STUDENT_EXAM_LOCKED")) {
 			System.out.println("notification exam locked");
-			if (((Exam) res.getResponseData()).getActiveExamType().equals("manual"))
+			if ((((Exam) res.getResponseData()).getActiveExamType()).equals("manual"))
 				StartManualExamController.setFlagToLockExam((Boolean) true);
 			else
 				SolveExamController.setFlagToLockExam((Boolean) true);
@@ -155,7 +155,7 @@ public class GuiCommon {
 		if (res.getResponseType().equals("NOTIFICATION_STUDENT_ADDED_TIME")) {
 			System.out.println("added time to exam");
 			StartManualExamController.addTimeToExam((int) res.getResponseData());
-			if (((ActiveExam) res.getResponseData()).getActiveExamType().equals("manual"))
+			if ((((ActiveExam) res.getResponseData()).getActiveExamType()).equals("manual"))
 				StartManualExamController.addTimeToExam(((ActiveExam) res.getResponseData()).getExtraTime());
 			else
 				SolveExamController.addTimeToExam(((ActiveExam) res.getResponseData()).getExtraTime());
