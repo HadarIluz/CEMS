@@ -82,61 +82,42 @@ public class CEMSserver extends AbstractServer {
 
 		case "getUser": {
 			getUser((User) req.getRequestData(), client);
-
 		}
-
 			break;
 		case "UpdateUserLoggedIn": {
 			UpdateUserLoggedIn((User) req.getRequestData(), client);
-
 		}
 			break;
-
 		case "UpdateUserLoggedOut": {
 			UpdateUserLoggedOut((User) req.getRequestData(), client);
-
 		}
 			break;
-
 		case "getStudentData_Login": {
 			getStudentData_Login((Student) req.getRequestData(), client);
-
 		}
 			break;
-
 		case "getTeacherData_Login": {
 			getTeacherData_Login((Teacher) req.getRequestData(), client);
 		}
 			break;
-
 		case "getStudentGrades": {
 			getStudentGrades((int) req.getRequestData(), client);
 		}
 			break;
-
 		case "getAllStudentsExams": {
 			getAllStudentsExams(client);
 		}
 			break;
-
 		case "createNewQuestion": {
 			createNewQuestion((Question) req.getRequestData(), client);
 		}
 			break;
-
-		case "teacherStatistics": {
-
-		}
-			break;
-
 		case "getTeachers": {
 			getTeachers(client);
-
 		}
 			break;
 		case "StudentView grade": {
 			getStudentGrade(client, (String[]) req.getRequestData());
-
 		}
 			break;
 		case "getProfNames": {
@@ -147,7 +128,6 @@ public class CEMSserver extends AbstractServer {
 			getCoursesNames(client);
 		}
 			break;
-
 		case "createNewExam": {
 			try {
 				client.sendToClient(createNewExam((Exam) req.getRequestData()));
@@ -156,91 +136,56 @@ public class CEMSserver extends AbstractServer {
 			}
 		}
 			break;
-
 		case "addTimeToExam": {
 			addTimeToExam((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-
 		case "getQuestionBank": {
 			getQuestionBank((Question) req.getRequestData(), client);
 		}
 			break;
-
 		case "createNewExtensionRequest": {
 			createNewExtensionRequest((ExtensionRequest) req.getRequestData(), client);
 		}
 			break;
-
 		case "downloadSolvedManualExam": {
 			downloadSolvedManualExam((ExamOfStudent) req.getRequestData(), client);
 		}
 			break;
-
 		case "isActiveExamExist": {
 			isActiveExamExist((ActiveExam) req.getRequestData(), client);
-
 		}
 			break;
-
 		case "getAllActiveExamBeforEnterToExam": {
 			getAllActiveExamBeforEnterToExam(client);
 		}
 			break;
-
 		case "approvalTimeExtension": {
 			approvalTimeExtension((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-
 		case "gradesAverageCalc": {
 			gradesAverageCalc((String) req.getRequestData(), client);
-
 		}
 			break;
-
 		case "declineTimeExtension": {
 			declineTimeExtension((ActiveExam) req.getRequestData(), client);
 		}
 			break;
-			
 		case "getAllExams": {
 			getAllExams(client);
 		}
 			break;
-			
-			
-
 		case "getStudents": {
 			getStudents(client);
 		}
 			break;
-
 		case "getStudentsByExamID": {
-			try {
-				ResponseFromServer Res = new ResponseFromServer("SCORE APPROVAL");
-				Res.setResponseData(dbController.SetDetailsForScoreApprovel((String) req.getRequestData()));
-				client.sendToClient(Res);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
+			getStudentsByExamID((String) req.getRequestData(), client);
 		}
 			break;
-
 		case "getQuestions": {
-
-			try {
-
-				ResponseFromServer respond = new ResponseFromServer("TEACHER QUESTIONS");
-				respond.setResponseData(dbController.GetTeacherQuestions((Integer) req.getRequestData()));
-
-				client.sendToClient(respond);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
+			getQuestions((Integer) req.getRequestData(), client);
 		}
 
 		case "ClientDisconected": {
@@ -435,17 +380,22 @@ public class CEMSserver extends AbstractServer {
 		}
 
 			break;
-
+		case "updateScoresOfEditExam":{
+			updateScoresOfEditExam((ArrayList<QuestionInExam>)req.getRequestData(), client);
+		}
+		break; 
 		}
 	}
 
-	
-
 	/*------------------------------------Private Methods-------------------------------------------------*/
+
+
+
+
 
 	private void checkIfTheLastStudent(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer response = null;
-		if(checkIfExamFinished(activeExam))
+		if (checkIfExamFinished(activeExam))
 			response = new ResponseFromServer("LAST STUDENT");
 		try {
 			client.sendToClient(response);
@@ -457,15 +407,15 @@ public class CEMSserver extends AbstractServer {
 
 	private void StudentFinishManualExam(ExamOfStudent studentExam, ConnectionToClient client) {
 		ResponseFromServer response = null;
-		//studentExam.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
+		studentExam.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
 		if (dbController.updateStudentExam(studentExam)) {
 			response = new ResponseFromServer("EXAM OF STUDENT UPDATE");
 		}
 		try {
 			client.sendToClient(response);
-			//HERE CLOSE CILENT!! NEED TO FIX!
-			//if (checkIfExamFinished(studentExam.getActiveExam()))
-			//	lockActiveExam(studentExam, client);
+			// HERE CLOSE CILENT!! NEED TO FIX!
+			// if (checkIfExamFinished(studentExam.getActiveExam()))
+			// lockActiveExam(studentExam, client);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -498,8 +448,8 @@ public class CEMSserver extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// if (checkIfExamFinished(studentExam.getActiveExam()))
-		// documentExam(studentExam.getActiveExam());
+		if (checkIfExamFinished(studentExam.getActiveExam()))
+			documentExam(studentExam.getActiveExam());
 	}
 
 	private void EditQuestion(Question question, ConnectionToClient client) {
@@ -511,7 +461,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void getAllExams(ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Edit Question Update");
@@ -519,7 +469,7 @@ public class CEMSserver extends AbstractServer {
 			client.sendToClient(Res);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	/**
@@ -531,7 +481,7 @@ public class CEMSserver extends AbstractServer {
 		// first check if it's after half an hour of beginning of exam
 		Time time = dbController.getStartTimeOfActiveExam(activeExam.getExam().getExamID());
 		if (time == null) {
-			printMessageInLogFramServer("There was a problem getting the start time", null);
+			printMessageInLogFramServer("There was a problem getting the start time");
 			return false;
 		}
 		activeExam.setStartTime(time);
@@ -552,15 +502,17 @@ public class CEMSserver extends AbstractServer {
 	private void documentExam(ActiveExam activeExam) {
 		// delete the active exam and document it
 		if (!dbController.deleteActiveExam(activeExam)) {
-			printMessageInLogFramServer("There was a problem with deleteing the active exam", null);
+			printMessageInLogFramServer("There was a problem with deleteing the active exam");
 		}
+		activeExam.getExam().setExamStatus(ExamStatus.inActive);
 		if (!dbController.updateExamStatus(activeExam.getExam())) {
-			printMessageInLogFramServer("There was a problem with update exam status", null);
+			printMessageInLogFramServer("There was a problem with update exam status");
 		}
 
 		if (dbController.documentExam(activeExam)) { // enter all relavent data to record_exam table
-			printMessageInLogFramServer("document exam suceeded", null);
+			printMessageInLogFramServer("document exam suceeded");
 		}
+		else printMessageInLogFramServer("document exam failed");
 		// now call for method that checks copying (only if computerized)
 
 	}
@@ -700,16 +652,15 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
-	
-	private void CheckSameMistakeOfStudent(ArrayList<ExamOfStudent> exams,ConnectionToClient client)
-	{
+
+	private void CheckSameMistakeOfStudent(ArrayList<ExamOfStudent> exams, ConnectionToClient client) {
 		try {
-		ResponseFromServer Res = new ResponseFromServer("Check Copy of Exam");
-		Res.setResponseData(dbController.getPotentialCopyList(exams));
-		client.sendToClient(Res);
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
+			ResponseFromServer Res = new ResponseFromServer("Check Copy of Exam");
+			Res.setResponseData(dbController.getPotentialCopyList(exams));
+			client.sendToClient(Res);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -819,6 +770,13 @@ public class CEMSserver extends AbstractServer {
 	 */
 	private void printMessageInLogFramServer(String str, ResponseFromServer response) {
 		serverFrame.printToTextArea("--->" + str + " " + response.toString());
+	}
+	
+	/**
+	 * @param str      is a message which displayed in server`s log.f
+	 */
+	private void printMessageInLogFramServer(String str) {
+		serverFrame.printToTextArea("--->" + str + " ");
 	}
 
 	//
@@ -998,21 +956,21 @@ public class CEMSserver extends AbstractServer {
 			stat.setDescription("There was a problem with saving the new exam in DB!");
 			res.setStatusMsg(stat);
 		}
-		//in case of computerized exam
-		if(examData.getActiveExamType().equals("manual")) {
-			//there is no question in this case to sace in DB
+		// in case of computerized exam
+		if (examData.getActiveExamType().equals("manual")) {
+			// there is no question in this case to sace in DB
 		}
 		// add questions and scores to DB
-		else{
-			
-		if(!dbController.addQuestionsInExam(examID, examData.getExamQuestionsWithScores())) {
-			// return error
-			ResponseFromServer res = new ResponseFromServer("Error creating new Exam");
-			StatusMsg stat = new StatusMsg();
-			stat.setStatus("ERROR");
-			stat.setDescription("There was a problem with saving the questions for new exam in DB!");
-			res.setStatusMsg(stat);
-		}
+		else {
+
+			if (!dbController.addQuestionsInExam(examID, examData.getExamQuestionsWithScores())) {
+				// return error
+				ResponseFromServer res = new ResponseFromServer("Error creating new Exam");
+				StatusMsg stat = new StatusMsg();
+				stat.setStatus("ERROR");
+				stat.setDescription("There was a problem with saving the questions for new exam in DB!");
+				res.setStatusMsg(stat);
+			}
 
 		}
 		ResponseFromServer res = new ResponseFromServer("Success Create New Exam");
@@ -1369,5 +1327,45 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 	}
+	
+	
+	private void getStudentsByExamID(String requestData, ConnectionToClient client) {
+		ResponseFromServer response = new ResponseFromServer("SCORE APPROVAL");
+		try {
+			response.setResponseData(dbController.SetDetailsForScoreApprovel(requestData));
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+
+	}
+	
+	private void getQuestions(Integer requestData, ConnectionToClient client) {
+		ResponseFromServer response = new ResponseFromServer("TEACHER QUESTIONS");
+		try {
+			response.setResponseData(dbController.GetTeacherQuestions(requestData));
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+		
+	}
+	
+	
+	private void updateScoresOfEditExam(ArrayList<QuestionInExam> updatedQuestions, ConnectionToClient client) {
+		/* logic for EditExam */
+		ResponseFromServer response = null;
+		response = dbController.updateScoresOfEditExam(updatedQuestions);
+		try {
+			client.sendToClient(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		printMessageInLogFramServer("Message to Client:", response);
+		
+	}
 
 }
+

@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import client.CEMSClient;
 import client.ClientUI;
-import entity.Exam;
 import entity.UpdateScoreRequest;
 import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
@@ -19,7 +18,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import logic.RequestToServer;
 
-//
+/**
+ * The class contains the functionality for certifying scores of a exam
+ * completed in the system. The system displays for each student his or her own
+ * command and allows the teacher to make a change. 
+ * If a change has been made in the order, the system requires writing a reason for the change and only then
+ * saves the new score in the system.
+ * 
+ * @author Yadin Amsalem
+ * @author Nadav Dery
+ *
+ */
 public class ScoreApprovalController extends GuiCommon {
 
 	@FXML
@@ -151,12 +160,12 @@ public class ScoreApprovalController extends GuiCommon {
 		RequestToServer req = new RequestToServer("getAllExams");
 		ClientUI.cems.accept(req);
 		ArrayList<String> exams = (ArrayList<String>) CEMSClient.responseFromServer.getResponseData();
-		boolean examexist=false;
-		for (String curr : exams) 
+		boolean examexist = false;
+		for (String curr : exams)
 			if (curr.equals(ExamID)) {
-				examexist=true;
+				examexist = true;
 			}
-		if(examexist==false) {
+		if (examexist == false) {
 			popUp("Exam Doesn't Exist, Try Again.");
 			return;
 		}

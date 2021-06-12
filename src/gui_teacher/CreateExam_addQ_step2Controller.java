@@ -95,15 +95,17 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 
 	@FXML
 	void DeleteFromExam(ActionEvent event) {
+
 		selectedQuestionsRows.remove(Qlist.get(0));
 		updateTotalScore();
 	}
 
 	@FXML
 	void UpdateScore(ActionEvent event) {
-		Qlist.get(0).setScore(Integer.valueOf(txtChangeScore.getText().trim()));
-		updateTotalScore();
-
+		if (!(txtChangeScore.getText().trim().isEmpty())) {
+			Qlist.get(0).setScore(Integer.valueOf(txtChangeScore.getText().trim()));
+			updateTotalScore();
+		}
 	}
 
 	@FXML
@@ -193,8 +195,8 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 	void chooseQ(MouseEvent event) {
 		Qlist = tableAddedQuestions.getSelectionModel().getSelectedItems();
 		if (!Qlist.isEmpty()) {
-		txtChangeScore.setText(String.valueOf(Qlist.get(0).getScore()));
-		ChosenQuestionID.setText(Qlist.get(0).getQuestionID());
+			txtChangeScore.setText(String.valueOf(Qlist.get(0).getScore()));
+			ChosenQuestionID.setText(Qlist.get(0).getQuestionID());
 		}
 
 	}

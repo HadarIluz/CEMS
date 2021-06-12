@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -870,7 +871,8 @@ public class DBController {
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
 				exam.setCommentForTeacher(rs.getString(5));
 				exam.setCommentForStudents(rs.getString(6));
-				exam.setExamStatus(ExamStatus.valueOf((String) rs.getObject(8)));
+				exam.setExamStatus(ExamStatus.valueOf((String)rs.getObject(8)));
+				exam.setActiveExamType((String) rs.getObject(9));
 				rs.close();
 			}
 		} catch (SQLException ex) {
@@ -1608,9 +1610,10 @@ public class DBController {
 			pstmt = conn.prepareStatement("INSERT INTO exam_records VALUES(?, ?, ?, ?, ?, ?, ?);");
 			pstmt.setString(1, activeExam.getExam().getExamID());
 			pstmt.setTime(2, new Time(System.currentTimeMillis()));
-			pstmt.setInt(3, activeExam.getExam().getTimeOfExam());
-			int actualTime = (int) ((System.currentTimeMillis() - activeExam.getStartTime().toLocalTime().toNanoOfDay())
-					/ 60000);
+			pstmt.setInt(3, activeExam.getTimeAllotedForTest());
+			LocalTime currentTime = (new Time(System.currentTimeMillis())).toLocalTime();
+			int actualTime = (currentTime.toSecondOfDay() - activeExam.getStartTime().toLocalTime().toSecondOfDay())
+					/ 60;
 			pstmt.setInt(4, actualTime);
 			pstmt.setInt(5, initiated);
 			pstmt.setInt(6, forced);
@@ -1857,4 +1860,34 @@ public class DBController {
 
 		return suspectedInCopy;
 	}
+	
+	
+	public ResponseFromServer updateScoresOfEditExam(ArrayList<QuestionInExam> updatedQuestions) {
+		ResponseFromServer response = null;
+		PreparedStatement pstmt;
+		try {
+			for (QuestionInExam qID : updatedQuestions) {
+
+				pstmt = conn.prepareStatement("UPDATE question_in_exam SET score=? WHERE question=?");
+				pstmt.setInt(1, qID.getScore());
+				pstmt.setString(2, qID.getQuestionID());
+
+				System.out.println(pstmt);
+				if (pstmt.executeUpdate() == 1) {
+					System.out.println("Edit Exam Saved");
+					response = new ResponseFromServer("Edit Exam Scores Updated");
+				} else {
+					response = new ResponseFromServer("Edit_Exam_Scores_NOT_Updated");
+				}
+			}
+
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+
+		return response;
+
+	}
+	
 }
+

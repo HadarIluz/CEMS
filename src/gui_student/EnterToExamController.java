@@ -89,10 +89,10 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 			 * exam`s start time.
 			 */
 			long now = System.currentTimeMillis();
-			Time sqlTime = new Time(now);
+			Time sqlEndRangeTimeToTakeExam = new Time(now);
 			// now add half an hour, 1 800 000 miliseconds = 30 minutes
-			long halfAnHourLater = (long) now + 1800000;
-			Time sqlEndRangeTimeToTakeExam = new Time(halfAnHourLater);
+			long halfAnHourBefore = (long) now - 1800000;
+			Time sqlTime = new Time(halfAnHourBefore);
 			System.out.println(sqlTime);
 			System.out.println(sqlEndRangeTimeToTakeExam);
 
