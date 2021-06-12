@@ -8,7 +8,6 @@ import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
 import entity.Exam;
-import entity.ExamStatus;
 import entity.Teacher;
 import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
@@ -17,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import logic.RequestToServer;
@@ -53,6 +53,9 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 
 	@FXML
 	private TextField textProfession;
+	
+    @FXML
+    private Label examType;
 
 	private static Exam exam;
 	private final String activeExamType = "computerized";
@@ -73,7 +76,7 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 		if (checkConditionToSaveActiveExam(examCode)) {
 
 			exam.setAuthor((Teacher) ClientUI.loggedInUser.getUser());
-			exam.setExamStatus(ExamStatus.active);
+			//exam.setExamStatus(ExamStatus.active);
 			ActiveExam newActiveExam = new ActiveExam(selectedTime, exam, examCode, activeExamType,
 					exam.getTimeOfExam());
 
@@ -151,6 +154,7 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 		textExamID.setText(exam.getExamID());
 		textCourse.setText(exam.getCourse().getCourseID());
 		textProfession.setText(exam.getProfession().getProfessionID());
+		examType.setText(exam.getActiveExamType()+"");
 		selectTime.setItems(FXCollections.observableArrayList(startTimeArr)); // load time to combo Box.
 
 	}

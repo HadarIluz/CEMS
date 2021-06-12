@@ -870,7 +870,8 @@ public class DBController {
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
 				exam.setCommentForTeacher(rs.getString(5));
 				exam.setCommentForStudents(rs.getString(6));
-				exam.setExamStatus(ExamStatus.valueOf((String) rs.getObject(8)));
+				exam.setExamStatus(ExamStatus.valueOf((String)rs.getObject(8)));
+				exam.setActiveExamType((String) rs.getObject(9));
 				rs.close();
 			}
 		} catch (SQLException ex) {
