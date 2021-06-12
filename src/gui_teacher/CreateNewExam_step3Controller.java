@@ -51,7 +51,7 @@ public class CreateNewExam_step3Controller implements Initializable{
     	CreateExam_addQ_step2Controller.setExamState(newExam);
     	try {
 
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_addQ_step2.fxml.fxml"));
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_addQ_step2.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			TeacherController.root.add(newPaneRight, 1, 0);
 			CreateExam_addQ_step2Controller.setExamState(newExam);
@@ -69,6 +69,7 @@ public class CreateNewExam_step3Controller implements Initializable{
 		ClientUI.cems.accept(req);
 		if (CEMSClient.responseFromServer.getResponseType().equals("Success Create New Exam")) {
 			textExamID.setText((String)CEMSClient.responseFromServer.getResponseData());
+			textMsg_newExam.setVisible(true);
 	    	btnBack.setDisable(true);
 		}
 		else {
@@ -85,6 +86,7 @@ public class CreateNewExam_step3Controller implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		textExamID.setText("");
+		textMsg_newExam.setVisible(false);
 		
 	}
 
