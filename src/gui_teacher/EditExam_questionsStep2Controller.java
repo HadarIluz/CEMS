@@ -28,6 +28,17 @@ import javafx.scene.text.Text;
 import logic.RequestToServer;
 
 /**
+ * Class contains functionality for edit exam as part of 2 main steps.
+ * This screen describes the second stage where the teacher sees all the
+ * questions that appears in the exam she has chosen and she can update the score
+ * of all the questions in table.
+ * 
+ * We reuse the screen to display all the question details of any exam in the
+ * system that the principal has chosen to see what exam bank is. T
+ * Therefore the screen distinguishes between 2 types of users: 
+ * Manager - viewing permissions only.
+ * Teacher - editing permissions as described.
+ * 
  * @author Hadar Iluz
  *
  */
@@ -86,6 +97,12 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	private static ArrayList<QuestionInExam> existsQuestions;
 	private ObservableList<QuestionInExam> Qlist;
 
+	/**
+	 * @param event that occurs when the teacher selects a question from the table
+	 *              and updates its score. The update is saved in the list of
+	 *              questions with the score. The method displays a message if the
+	 *              value is incorrect.
+	 */
 	@FXML
 	void UpdateScore(ActionEvent event) {
 		if (!(txtChangeScore.getText().trim().isEmpty())) {
@@ -102,8 +119,11 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		}
 	}
 
+	/**
+	 * @param changeScore input set into existsQuestions list in order to display
+	 *                    the new score after update.
+	 */
 	private void updateScoreForSpecificQuestion(int changeScore) {
-
 		for (QuestionInExam q : existsQuestions) {
 			if (q.getQuestionID().equals(ChosenQuestionID.getText().trim())) {
 				q.setScore(changeScore);
@@ -112,9 +132,15 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		initTable();
 	}
 
+	/**
+	 * @param event that occurs when user press on back button, he return to step 1
+	 *              of Edit Exam / Exam Details according to user Permissions,
+	 *              teacher or principal.
+	 */
 	@FXML
 	void btnBack(ActionEvent event) {
-		// bring to the prev screen all the existsQuestions if the new after update!.
+		// bring to the previous screen all the existsQuestions if the new after
+		// update!.
 		// when teacher will press on the save edit exam the data will saved in the DB
 		// by server.
 		EditExamController.setprevScreenData(exam, displayPrincipalView, existsQuestions);
@@ -126,6 +152,10 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		}
 	}
 
+	/**
+	 * The function use calcTotalScore and display the total exam score with error
+	 * message in case the exam total score is nor equal to 100 after edit
+	 */
 	private void updateTotalScore() {
 		int sum = calcTotalScore();
 		textTotalScore.setText(String.valueOf(sum));
@@ -139,6 +169,10 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	}
 
+	/**
+	 * @return total score of exam by calculation of adding the score of each
+	 *         questions in the exam.
+	 */
 	private int calcTotalScore() {
 		int sum = 0;
 		for (QuestionInExam q : existsQuestions) {
@@ -150,7 +184,7 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	/**
 	 * method set text of questionID when user select a question row from table
 	 * 
-	 * @param event occurs when User press on a selected row from table
+	 * @param event that occurs when User press on a selected row from table
 	 */
 	@FXML
 	void chooseQ(MouseEvent event) {
@@ -163,14 +197,21 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	}
 
+	/**
+	 * @param newExamInProgress include all data from previous screen.
+	 */
 	public static void setExamState(Exam newExamInProgress) {
 		exam = newExamInProgress;
 	}
 
+	/**
+	 * initialize function to prepare the screen after it is loaded. Tack user data
+	 * according to screen status from the previous action.
+	 *
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// bring all exam details (also questions and scores)
-
 		RequestToServer req = new RequestToServer("getFullExamDetails");
 		req.setRequestData(exam);
 		ClientUI.cems.accept(req);
@@ -220,6 +261,10 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	}
 
+	/**
+	 * Initializes the table with all the latest data of the existing questions in
+	 * the exam, display the question, question id and its current score.
+	 */
 	@SuppressWarnings("unchecked")
 	public void initTable() {
 		for (QuestionInExam curr : existsQuestions) {
@@ -238,6 +283,11 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	}
 
+	/**
+	 * @param examData with all updated details.
+	 * @param displayPrincipalView2 the current screen mode according to logged user.
+	 * 
+	 */
 	public static void setnextScreenData(Exam examData, boolean displayPrincipalView2) {
 		exam = examData;
 		displayPrincipalView = displayPrincipalView2;
