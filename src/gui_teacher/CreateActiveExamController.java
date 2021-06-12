@@ -22,6 +22,12 @@ import javafx.scene.image.ImageView;
 import logic.RequestToServer;
 
 /**
+ * The class contains the functionality for creating a new active exam that
+ * exists within the exam bank. The teacher switches to this screen after
+ * clicking Create an active test and selecting the test as inactive. The
+ * controller displays details of the selected test and allows to select an
+ * hour, checks for no conflicts and adds the test as active in the system.
+ * 
  * @author Hadar Iluz
  *
  */
@@ -49,7 +55,7 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 	private TextField textProfession;
 
 	private static Exam exam;
-	private final String activeExamType="computerized";
+	private final String activeExamType = "computerized";
 	private String[] startTimeArr = { "08:00:00", "08:30:00", "09:00:00", "09:30:00", "10:00:00", "10:30:00",
 			"11:00:00", "11:30:00", "12:00:00", "12:30:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00", "15:00:00",
 			"15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00" };
@@ -70,7 +76,7 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 			exam.setExamStatus(ExamStatus.active);
 			ActiveExam newActiveExam = new ActiveExam(selectedTime, exam, examCode, activeExamType,
 					exam.getTimeOfExam());
-			
+
 			// Request from server to insert new active exam into DB.
 			// Request from server to update status filed for this exam: [ENUM('active')].
 			RequestToServer reqCreateExam = new RequestToServer("createNewActiveExam");
@@ -115,7 +121,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 		return flag;
 	}
 
-
 	/**
 	 * //Allows you to select a single type of exam
 	 * 
@@ -143,8 +148,6 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedTime = null;
-		// TODO: get proffe..Name and set into examID label teacher.getProfessions()
-		// the same for Course.
 		textExamID.setText(exam.getExamID());
 		textCourse.setText(exam.getCourse().getCourseID());
 		textProfession.setText(exam.getProfession().getProfessionID());

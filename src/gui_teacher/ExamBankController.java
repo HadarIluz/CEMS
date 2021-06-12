@@ -7,12 +7,10 @@ import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
-import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
 import entity.ExamStatus;
 import entity.ProfessionCourseName;
-import entity.QuestionRow;
 import entity.Teacher;
 import entity.User;
 import gui_cems.GuiCommon;
@@ -31,9 +29,24 @@ import javafx.scene.text.Text;
 import logic.RequestToServer;
 
 /**
+ * The class contains the functionality for various operations that can be
+ * performed in the system in the context of exams that are in the database: 
+ * 		- Conducting an existing test that is in inactive status. 
+ * 		- Lock an active exam. 
+ * 		- Deleting an existing exam from the database. 
+ * 		- Creating an active test in cems system. 
+ * This screen combines the various operations and allows you to
+ * centralize all the operations in a simple and convenient way for the user.
+ * The operations are not lost between the various screens.
+ * 
+ * In addition, the screen was used by us for the reuse of displaying all the tests that are in the system 
+ * for the principal, the identification is done by the user who logs in to the system so that the screen is 
+ * displayed to the administrator without editing permissions, and contains all the tests.
+ * The teacher can see all the exams she has created only.
  * 
  * @author Yadin Amsalem
  * @author Nadav Dery
+ * @author Hadar Iluz
  * @version 1.0
  *
  */
@@ -358,8 +371,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	}
 
 	/**
-	 * @param event occurs when user press on "Lock"
-	 * 
+	 * @param event occurs when user press on "Lock" FIXME: NEED FIX??
 	 */
 
 	@FXML
