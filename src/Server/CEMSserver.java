@@ -1110,7 +1110,6 @@ public class CEMSserver extends AbstractServer {
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			// GuiCommon.popUp("Failed.");
 		}
 
 	}
