@@ -27,6 +27,13 @@ import javafx.scene.layout.Pane;
 import logic.RequestToServer;
 
 /**
+ * The class included in the diagrams and contains functionality that supports
+ * entry to the test, when the student wants to start a test he is required to
+ * confirm conditions and can enter a test created as an active test within half
+ * an hour from the start of the test. The department makes sure that all the
+ * parameters entered are correct for the student connected to the system and
+ * assigns the test he solves to the student.
+ * 
  * @author Hadar Iluz
  *
  */
@@ -106,10 +113,11 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 				// message in console
 				System.out.println("Respont: there is active examID: " + existExamID + " type: " + ActiveExamType);
 
-				// ---Request server to check if this test is already associated to this student.-----//
+				// ---Request server to check if this test is already associated to this
+				// student.-----//
 				boolean allowedToStartExam = checkExam_of_student_NotExists(activeExam, student);
 				if (allowedToStartExam) {
-					
+
 					// -------Request from server to insert new row to student of exam.--------//
 					RequestToServer reqStusentInExam = new RequestToServer("InsertExamOfStudent");
 					ExamOfStudent examOfStudent = new ExamOfStudent(activeExam, student);
@@ -204,6 +212,16 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 		return flag;
 	}
 
+	/**
+	 * The method verifies that there is an active exam in the system that the
+	 * student can begin to solve. Prevents entry to any test for which the student
+	 * is not registered. The test is performed by a corrupt request to the server
+	 * that returns an answer whether it is possible or not.
+	 * 
+	 * @param activeExam that the student want to start and solve.
+	 * @param student input indicates the identifying details of the student.
+	 * @return True if the student may begin to solve the exam.
+	 */
 	private boolean checkExam_of_student_NotExists(ActiveExam activeExam, Student student) {
 		ExamOfStudent examOfStudent = new ExamOfStudent(activeExam, student);
 		RequestToServer req = new RequestToServer("checkExam_of_student_NotExistsBeforeStartExam");
@@ -242,6 +260,9 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 		selectActiveExamFromCB.setDisable(false);
 	}
 
+	/**
+	 * @param activeExamtList containing all the active tests in the student's exam system.
+	 */
 	public static void setActiveExamtMap(ArrayList<ActiveExam> activeExamtList) {
 		for (ActiveExam ae : activeExamtList) {
 			activeExamtMap.put(ae.getExam().getExamID(), ae);
@@ -262,7 +283,6 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 
 	/**
 	 * Receive the list of active tests from the previous screen.
-	 * 
 	 * @param activeExamListFromDB
 	 */
 	public static void setAllActiveExamBeforEnterToExam(ArrayList<ActiveExam> activeExamListFromDB) {

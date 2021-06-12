@@ -32,6 +32,10 @@ import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
+ * The class included in the diagrams and contains all the functionality
+ * that the start has, manages the left menu in the system and describes the
+ * privileges that the Teacher has in the system.
+ * 
  * @author Yadin
  * @author Nadav Dery
  */
@@ -77,7 +81,7 @@ public class TeacherController extends Application implements Initializable {
 	private static HashMap<String, Profession> professionsMap = null;
 
 	/**
-	 * method open the screnn for manage question bank of teacher
+	 * method open the screen for manage question bank of teacher
 	 * 
 	 * @param event occurs when User press Manage Questions Bank
 	 */
@@ -198,11 +202,14 @@ public class TeacherController extends Application implements Initializable {
 		});
 	}
 
-	@Override
+	/**
+	 * @param primaryStage that display the screen and load fxml.
+	 * @throws Exception which thrown in case the screen cannot be loaded.
+	 */
 	public void start(Stage primaryStage) throws Exception {
 
 		root = new GridPane();
-		scene = new Scene(root, 980, 580); // Login
+		scene = new Scene(root, 980, 580);
 		Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
 		root.add(newMnueLeft, 0, 0);
 		primaryStage.setTitle("CEMS-Computerized Exam Management System");
@@ -229,9 +236,9 @@ public class TeacherController extends Application implements Initializable {
 	}
 
 	/**
-	 * method insert professions of teacher to his Proffession Mapp
+	 * method insert professions of teacher to his Profession Mapp
 	 * 
-	 * @param professionsList for proffession input
+	 * @param professionsList for profession input
 	 */
 
 	public void setProfessionMap(ArrayList<Profession> professionsList) {

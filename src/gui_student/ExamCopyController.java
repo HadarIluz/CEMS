@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import client.ClientUI;
-import entity.Exam;
 import entity.Question;
 import entity.User;
 import gui_cems.GuiCommon;
@@ -19,37 +18,37 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
-public class ExamCopyController extends GuiCommon implements Initializable{
+//FIXME: ADD JAVADOC
 
-    @FXML
-    private TableView<Question> tableQuestion;
+public class ExamCopyController extends GuiCommon implements Initializable {
 
-   
-    @FXML
-    private TableColumn<Question, String> Question;
+	@FXML
+	private TableView<Question> tableQuestion;
 
-    @FXML
-    private TableColumn<Question, String> YourAnswer;
+	@FXML
+	private TableColumn<Question, String> Question;
 
-    @FXML
-    private TableColumn<Question, String> CorrectAns;
-    
-    @FXML
-    private TableColumn<Question, String> ResAns;
+	@FXML
+	private TableColumn<Question, String> YourAnswer;
 
-    @FXML
-    private Text textNavigation;
-    @FXML
-    private Button backBtn;
-    
+	@FXML
+	private TableColumn<Question, String> CorrectAns;
+
+	@FXML
+	private TableColumn<Question, String> ResAns;
+
+	@FXML
+	private Text textNavigation;
+	@FXML
+	private Button backBtn;
+
 	private ObservableList<Question> data;
 
-   
+	@FXML
+	void BackBtn(ActionEvent event) {
+		displayNextScreen((User) ClientUI.loggedInUser.getUser(), "ViewExam.fxml");
+	}
 
-    @FXML
-    void BackBtn(ActionEvent event) {
-    	displayNextScreen((User)ClientUI.loggedInUser.getUser(), "ViewExam.fxml");
-    }
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -60,10 +59,8 @@ public class ExamCopyController extends GuiCommon implements Initializable{
 		CorrectAns.setCellValueFactory(new PropertyValueFactory<>("correctAns"));
 		ResAns.setCellValueFactory(new PropertyValueFactory<>("description"));
 		tableQuestion.setItems(data);
-		tableQuestion.getColumns().addAll(Question, YourAnswer, CorrectAns,ResAns);
+		tableQuestion.getColumns().addAll(Question, YourAnswer, CorrectAns, ResAns);
 
 	}
-
-   
 
 }

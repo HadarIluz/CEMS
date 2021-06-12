@@ -5,13 +5,20 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+//FIXME:ADD JAVADOC
+
+/**
+ *
+ * @author Yuval Hayam
+ *
+ */
 public class QuestionInExamRow {
 
 	private final StringProperty questionID = new SimpleStringProperty();
 	private final IntegerProperty score = new SimpleIntegerProperty();
 	private final StringProperty question = new SimpleStringProperty();
 	private QuestionInExam questionObject;
-
+	/* constructor */
 	public QuestionInExamRow(String questionID, Integer score, String question, QuestionInExam questionObj) {
 		this.questionID.set(questionID);
 		this.question.set(question);

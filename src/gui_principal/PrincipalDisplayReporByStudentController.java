@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+//import com.sun.org.glassfish.gmbal.Description;
+
 import client.CEMSClient;
 import client.ClientUI;
 import gui_cems.GuiCommon;
@@ -16,10 +18,18 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Data;
 import javafx.scene.control.Label;
 import logic.RequestToServer;
 
+/*
+ * The department is included in the diagrams and contains all the functionality
+ * that the principal needs to do to see the requested report. This class
+ * conducts various calculations for presenting the report.
+ * 
+ * @author Yadin Amsalem
+ * @author Nadav Dery
+ *
+ */
 public class PrincipalDisplayReporByStudentController extends GuiCommon implements Initializable {
 
 	@FXML
@@ -42,9 +52,17 @@ public class PrincipalDisplayReporByStudentController extends GuiCommon implemen
 
 	@FXML
 	private Label StudentMedianLabel;
-	
+
 	HashMap<String, Integer> ExamGrades;
 
+	/**
+	 * This method initialize the histogram of specific student with the grades of
+	 * all the exam he took.
+	 * 
+	 * @param location
+	 * @param resources
+	 * 
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -56,20 +74,23 @@ public class PrincipalDisplayReporByStudentController extends GuiCommon implemen
 		ExamGrades = new HashMap<String, Integer>();
 		ExamGrades = (HashMap<String, Integer>) CEMSClient.responseFromServer.getResponseData();
 		XYChart.Series chart = new XYChart.Series();
-		if(!ExamGrades.isEmpty()) {
-		calcAvgAndMedian();
-		chart.setName("Score");
-		for (String curr : ExamGrades.keySet())
-			chart.getData().add(new XYChart.Data(curr, ExamGrades.get(curr)));
-		}else
+		if (!ExamGrades.isEmpty()) {
+			calcAvgAndMedian();
+			chart.setName("Score");
+			for (String curr : ExamGrades.keySet())
+				chart.getData().add(new XYChart.Data(curr, ExamGrades.get(curr)));
+		} else
 			popUp("This Student Doesn't Have Any Solved Exam");
 		ExamsHisto.getData().add(chart);
 	}
 
+	/**
+	 * This method calculate the average and the median of the student grades.
+	 */
 	private void calcAvgAndMedian() {
-		
-		ArrayList<Integer> grades=new ArrayList<Integer>();
-		for(Integer curr:ExamGrades.values())
+
+		ArrayList<Integer> grades = new ArrayList<Integer>();
+		for (Integer curr : ExamGrades.values())
 			grades.add(curr);
 		Collections.sort(grades);
 
@@ -80,12 +101,11 @@ public class PrincipalDisplayReporByStudentController extends GuiCommon implemen
 			StudentMedianLabel.setText(String.valueOf(((float) grades.get(first) + grades.get(second)) / 2));
 		} else
 			StudentMedianLabel.setText(String.valueOf((float) grades.get((grades.size() + 1) / 2 - 1)));
-		float sum=0;
+		float sum = 0;
 		for (Integer a : grades)
 			sum += a;
 		sum /= grades.size();
-		StudentAvgLabel.setText(new DecimalFormat("##.##").format(sum)); //way to show only 2 digits after the decimal point
+		StudentAvgLabel.setText(new DecimalFormat("##.##").format(sum)); //shows only 2 digits after the decimal point
 	}
-	
 
 }

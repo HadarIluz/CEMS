@@ -82,7 +82,6 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 
 	private static Teacher teacher;
 	private static User principal;
-	private static String screenStatus;
 	private static boolean displayPrincipalView;
 
 	private static QuestionBankController questionBankController; // will be needed for btnBack button (for root, to

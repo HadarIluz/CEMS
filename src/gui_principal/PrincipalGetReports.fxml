@@ -31,19 +31,19 @@
             <Font size="18.0" />
          </font>
       </RadioButton>
-      <ComboBox fx:id="selectTeacher" layoutX="448.0" layoutY="210.0" onAction="#selectTeacher" prefHeight="25.0" prefWidth="244.0" promptText="Select Teacher from list" visibleRowCount="5" />
+      <ComboBox fx:id="selectTeacher" layoutX="448.0" layoutY="210.0" prefHeight="25.0" prefWidth="244.0" promptText="Select Teacher from list" visibleRowCount="5" />
       <RadioButton fx:id="radioBtnStudent" layoutX="73.0" layoutY="266.0" mnemonicParsing="false" onAction="#reportByStudent" text="Generate report by student">
          <font>
             <Font size="18.0" />
          </font>
       </RadioButton>
-      <ComboBox fx:id="selectStudent" layoutX="448.0" layoutY="266.0" onAction="#selectStudent" prefHeight="25.0" prefWidth="244.0" promptText="Select Student from list" visibleRowCount="5" />
+      <ComboBox fx:id="selectStudent" layoutX="448.0" layoutY="266.0" prefHeight="25.0" prefWidth="244.0" promptText="Select Student from list" visibleRowCount="5" />
       <RadioButton fx:id="radioBtnCourse" layoutX="73.0" layoutY="319.0" mnemonicParsing="false" onAction="#reportByCourse" text="Generate report by course">
          <font>
             <Font size="18.0" />
          </font>
       </RadioButton>
-      <ComboBox fx:id="selectCourse" disable="true" layoutX="448.0" layoutY="368.0" onAction="#selectCourse" prefHeight="25.0" prefWidth="244.0" promptText="Select Course from list" visibleRowCount="5" />
+      <ComboBox fx:id="selectCourse" disable="true" layoutX="448.0" layoutY="368.0" prefHeight="25.0" prefWidth="244.0" promptText="Select Course from list" visibleRowCount="5" />
       <Separator layoutY="248.0" prefHeight="0.0" prefWidth="761.0" />
       <Separator layoutY="310.0" prefHeight="0.0" prefWidth="761.0" />
       <ComboBox fx:id="selectProfession" layoutX="448.0" layoutY="328.0" onAction="#selectProfession" prefHeight="25.0" prefWidth="244.0" promptText="Select Profession from list" visibleRowCount="5" />
