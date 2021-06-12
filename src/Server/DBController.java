@@ -202,7 +202,11 @@ public class DBController {
 		}
 		return "TRUE";
 	}
-	
+	/**
+	 *  Method return all students scores by examID given from User
+	 * @param examID the Exam we return his scores
+	 * @return hashmap with a key of stuidents id and exam score in value
+	 */
 
 	public HashMap<String, Integer> SetDetailsForScoreApprovel(String examID) {
 		HashMap<String, Integer> stdScore = new HashMap<>();
@@ -412,6 +416,11 @@ public class DBController {
 		}
 		return response;
 	}
+	/**
+	 * method return all teacher's exams
+	 * @param obj is the id of the teacher(User)
+	 * @return  A list og all teacher's exams
+	 */
 
 	public ArrayList<Exam> GetTeacherExams(Object obj) {
 
@@ -445,6 +454,11 @@ public class DBController {
 		return examsOfTeacher;
 
 	}
+	/**
+	 * Method Delete question from DB
+	 * @param question we delete
+	 * @return true if deleted, else false
+	 */
 
 	public Boolean DeleteQuestion(Question question) {
 		try {
@@ -460,6 +474,11 @@ public class DBController {
 		return true;
 
 	}
+	/**
+	 * method return all teacher's questions
+	 * @param obj for given techer ID
+	 * @return list of all teacher's questions
+	 */
 
 	public ArrayList<QuestionRow> GetTeacherQuestions(Object obj) {
 
@@ -578,6 +597,11 @@ public class DBController {
 		return response;
 
 	}
+	/**
+	 * method return proffession instance by proffession ID
+	 * @param id
+	 * @return
+	 */
 
 	public Profession getProfessionByID(String id) {
 		Profession p = new Profession(id);
@@ -655,6 +679,11 @@ public class DBController {
 		}
 		return activeExam;
 	}
+	/**
+	 * mesthod delete exam from DB
+	 * @param exam  the exam that delete from DB
+	 * @return true if deleted' else false
+	 */
 
 	public boolean DeleteExam(Exam exam) {
 
@@ -673,7 +702,8 @@ public class DBController {
 	}
 
 	/**
-	 * @return
+	 * method return from DB all active exams
+	 * @return data of all active exams
 	 */
 	public ResponseFromServer getAllActiveExam() {
 
@@ -706,6 +736,11 @@ public class DBController {
 
 		return response;
 	}
+	/**
+	 * method for send question of teacher
+	 * @param requestData will give data of teacher and proffession
+	 * @return questions of techer
+	 */
 
 	public ResponseFromServer getQuestionByProfessionAndTeacher(Question requestData) {
 		ArrayList<Question> qList = new ArrayList<Question>();
@@ -745,6 +780,11 @@ public class DBController {
 		}
 		return response;
 	}
+	/**
+	 *  method return us the courses by proffession 
+	 * @param requestData data of profession that courses presented in him
+	 * @return all courses in the proffession
+	 */
 
 	public ResponseFromServer getCoursesByProfession(Profession requestData) {
 		ArrayList<Course> cList = new ArrayList<Course>();
@@ -773,6 +813,10 @@ public class DBController {
 		}
 		return response;
 	}
+	/**
+	 * 
+	 * @return HashMap of all proffession Id as Key and name as Value
+	 */
 
 	public HashMap<String, String> getProfNames() {
 		HashMap<String, String> profName = new HashMap<String, String>();
@@ -788,6 +832,11 @@ public class DBController {
 		}
 		return profName;
 	}
+	/**
+	 * method return Map og all courses by Proffession ID
+	 * @return HashMap of profession as Key and Value as Cousrse name
+	 * 
+	 */
 
 	public HashMap<String, ProfessionCourseName> getCoursesNames() {
 		HashMap<String, ProfessionCourseName> courseMap = new HashMap<String, ProfessionCourseName>();
@@ -820,6 +869,11 @@ public class DBController {
 
 		return courseMap;
 	}
+	/**
+	 * method check if exam exist in DB
+	 * @param ExamID given to check if exist
+	 * @return "TRUE" if exist, "FALSE" else
+	 */
 
 	public String chechExamExist(String ExamID) {
 		String answer = null;
@@ -837,6 +891,12 @@ public class DBController {
 		return "TRUE";
 	}
 
+	/**
+	 * method gets all scores from Exam given as input
+	 * @param examID exam given to check her average score 
+	 * @return  array list of grades
+	 */
+	
 	public ArrayList<Integer> gradesAverageCalc(String examID) {
 		ArrayList<Integer> grades = new ArrayList<Integer>();
 		PreparedStatement pstmt;
@@ -852,6 +912,11 @@ public class DBController {
 		return grades;
 	}
 
+	/**
+	 * method get all exam details
+	 * @param exam data of selected exam
+	 * @return all exam given's data
+	 */
 	public ResponseFromServer getSelectedExamData_byID(Exam exam) {
 		ResponseFromServer response = null;
 		try {
@@ -885,6 +950,11 @@ public class DBController {
 
 		return response;
 	}
+	/**
+	 * method create new Active exam
+	 * @param newActiveExam insrted to DB
+	 * @return respond that create exam succes, else it will return exception
+	 */
 
 	public ResponseFromServer createNewActiveExam(ActiveExam newActiveExam) {
 		ResponseFromServer response = null;
@@ -905,6 +975,9 @@ public class DBController {
 		return response;
 
 	}
+	/*
+	 * method return all exams in an ArrayList
+	 */
 
 	public ArrayList<Exam> GetAllExams() {
 		ArrayList<Exam> examsList = new ArrayList<Exam>();
@@ -941,6 +1014,11 @@ public class DBController {
 		return examsList;
 
 	}
+	/**
+	 * method save exam that edited
+	 * @param exam to be insrt after edited
+	 * @return massage if insert edired exam success or not
+	 */
 
 	public ResponseFromServer SaveEditExam(Exam exam) {
 		ResponseFromServer response = null;
@@ -967,7 +1045,11 @@ public class DBController {
 		}
 		return response;
 	}
-
+/**
+ * delete active exam from db
+ * @param exam to be deleted
+ * @return true if success/ else false
+ */
 	public boolean deleteActiveExam(ActiveExam exam) {
 		PreparedStatement pstmt;
 		try {
@@ -981,6 +1063,11 @@ public class DBController {
 		}
 		return false;
 	}
+	/**
+	 * method Update exam in db
+	 * @param exam exam that Updated
+	 * @return true if success, else false
+	 */
 
 	public Boolean updateExamStatus(Exam exam) {
 		/* createNewActiveExam */
@@ -997,6 +1084,12 @@ public class DBController {
 		}
 		return false;
 	}
+	/**
+	 * mestods check if there any Extenssion request 
+	 * @param extensionRequest for extention request of principal
+	 * @return true is there is, else false
+	 */
+	
 
 	public boolean checkIfExtensionRequestExists(ExtensionRequest extensionRequest) {
 		PreparedStatement pstmt;
@@ -1012,6 +1105,10 @@ public class DBController {
 		}
 		return true;
 	}
+	/**
+	 * method gets all teachers details
+	 * @return  list of all teachers
+	 */
 
 	public ArrayList<Teacher> getTeachers() {
 		ArrayList<Teacher> teachers = new ArrayList<Teacher>();
@@ -1034,7 +1131,10 @@ public class DBController {
 		}
 		return teachers;
 	}
-
+	/**
+	 * method gets all students details
+	 * @return  list of all students
+	 */
 	public ArrayList<Student> getStudents() {
 		ArrayList<Student> students = new ArrayList<Student>();
 		PreparedStatement pstmt;
@@ -1056,6 +1156,11 @@ public class DBController {
 		}
 		return students;
 	}
+	/**
+	 * method return all Student grades
+	 * @param id for Students ID
+	 * @return HashMap of all student scores
+	 */
 
 	public HashMap<String, Integer> getStudentGrades(int id) {
 		HashMap<String, Integer> ExamGrades = new HashMap<String, Integer>();
@@ -1074,6 +1179,10 @@ public class DBController {
 		}
 		return ExamGrades;
 	}
+	/**
+	 * give all student's exams
+	 * @return  hash Map of all exams of student
+	 */
 
 	public HashMap<String, ArrayList<Integer>> getAllStudentsExams() {
 		HashMap<String, ArrayList<Integer>> exams = new HashMap<String, ArrayList<Integer>>();
@@ -1101,6 +1210,12 @@ public class DBController {
 		}
 		return exams;
 	}
+	/**
+	 * method check students in active Exam 
+	 * @param exam to check Students in the exam
+	 * @return arrayList of students ID's 
+	 */ 
+	
 
 	public ArrayList<Integer> getStudentsInActiveExam(Exam exam) {
 		ArrayList<Integer> students = new ArrayList<Integer>();
@@ -1119,7 +1234,11 @@ public class DBController {
 		}
 		return students;
 	}
-
+/**
+ * 
+ * @param examOfStudent details of Exam Of Student to ne insert to DB
+ * @return if inserted to DB or not
+ */
 	public ResponseFromServer InsertExamOfStudent(ExamOfStudent examOfStudent) {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
@@ -1233,7 +1352,11 @@ public class DBController {
 
 		return response;
 	}
-
+/**
+ * 
+ * @param questionID to get al question data
+ * @return question with all data
+ */
 	public Question getQuestionDataBy_questionID(String questionID) {
 		/*** Question Bank-Principal step2 ***/
 		Question q = new Question();
@@ -1451,6 +1574,12 @@ public class DBController {
 //		}
 //		return response;
 //	}
+	
+	/**
+	 * 
+	 * @param examOfStudent for verify exam
+	 * @return true if vrified. else,false
+	 */
 
 	public Boolean verifyExamOfStudentByExamID(ExamOfStudent examOfStudent) {
 		/*** EnterToExam ***/
@@ -1470,7 +1599,11 @@ public class DBController {
 		}
 		return true;
 	}
-
+/**
+ * 
+ * @param requestData array with all student and examID
+ * @return  arrayList of all scores
+ */
 	public ArrayList<String> getStudentScore(String[] requestData) {
 		PreparedStatement pstmt;
 		ArrayList<String> Details = new ArrayList<>();
@@ -1507,6 +1640,12 @@ public class DBController {
 
 		return Details;
 	}
+	/**
+	 * 
+	 * @param details of student that  would like so see his solved exam
+	 * @return array list with all qustions
+	 */
+	 
 
 	public ArrayList<QuestionRow> getSolvedComputerizedExam(String[] details) {
 		ArrayList<QuestionRow> questionsOfExam = new ArrayList<QuestionRow>();
@@ -1530,6 +1669,11 @@ public class DBController {
 		}
 		return questionsOfExam;
 	}
+	/**
+	 * return the correct answer for question
+	 * @param questionID for answer
+	 * @return question with right answer
+	 */
 
 	public Question correctAnswerForQuestion(String questionID) {
 
@@ -1675,6 +1819,11 @@ public class DBController {
 		}
 		return sum;
 	}
+	/**
+	 * 
+	 * @param question to be edited
+	 * @return "true" if updated' "false" else
+	 */
 
 	public String EditQuestion(Question question) {
 		PreparedStatement pstmt;
@@ -1702,6 +1851,11 @@ public class DBController {
 
 		return "true";
 	}
+	/**
+	 *  check if active exam is exist
+	 * @param activeExam to check if exust
+	 * @return true if exist, else else
+	 */
 
 	public boolean activeExamExists(ActiveExam activeExam) {
 		PreparedStatement pstmt;
@@ -1717,6 +1871,11 @@ public class DBController {
 		}
 		return true;
 	}
+	/**
+	 * 
+	 * @param exam that belongs to the techer we return
+	 * @return id of teacher the create that exam
+	 */
 
 	public int getTeacherOfExam(Exam exam) {
 		PreparedStatement pstmt;
@@ -1733,7 +1892,10 @@ public class DBController {
 		}
 		return 0;
 	}
-	
+	/**
+	 * 
+	 * @return id of principal
+	 */
 	public int getPrincipalId() {
 		PreparedStatement pstmt;
 		try {
@@ -1765,6 +1927,11 @@ public class DBController {
 
 		return examsID;
 	}
+	/**
+	 * method retirn list of students thet solve the test and suspected with copy
+	 * @param exams arrayList of exams of student 
+	 * @return array list with students that might br copy
+	 */
 
 	public ArrayList<Integer> getPotentialCopyList(ArrayList<ExamOfStudent> exams) {
 		PreparedStatement pstmt;
@@ -1862,7 +2029,11 @@ public class DBController {
 		return suspectedInCopy;
 	}
 	
-	
+	/**
+	 * method update scores of question
+	 * @param updatedQuestions array of question
+	 * @return if updated or not
+	 */
 	public ResponseFromServer updateScoresOfEditExam(ArrayList<QuestionInExam> updatedQuestions) {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
