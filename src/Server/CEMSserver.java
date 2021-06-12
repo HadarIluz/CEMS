@@ -457,7 +457,7 @@ public class CEMSserver extends AbstractServer {
 
 	private void StudentFinishManualExam(ExamOfStudent studentExam, ConnectionToClient client) {
 		ResponseFromServer response = null;
-		studentExam.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
+		//studentExam.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
 		if (dbController.updateStudentExam(studentExam)) {
 			response = new ResponseFromServer("EXAM OF STUDENT UPDATE");
 		}

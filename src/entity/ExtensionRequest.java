@@ -3,9 +3,12 @@ package entity;
 import java.io.Serializable;
 
 /**
- * @author Matar
+ * FIXME: ADD JAVADOC HERE
+ * 
+ * @author Matar Asaf
  *
  */
+
 @SuppressWarnings("serial")
 //Entity class - define Extension Request in the CEMS system.
 public class ExtensionRequest implements Serializable {
@@ -26,7 +29,7 @@ public class ExtensionRequest implements Serializable {
 	public ActiveExam getActiveExam() {
 		return activeExam;
 	}
-	/*set ActiveExam object to field*/
+	/*set ActiveExam field*/
 	public void setActiveExam(ActiveExam activeExam) {
 		this.activeExam = activeExam;
 	}
@@ -34,7 +37,7 @@ public class ExtensionRequest implements Serializable {
 	public String getAdditionalTime() {
 		return additionalTime;
 	}
-	/*get AdditionalTime field*/
+	/*set AdditionalTime to field*/
 	public void setAdditionalTime(String additionalTime) {
 		this.additionalTime = additionalTime;
 	}

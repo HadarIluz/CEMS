@@ -21,8 +21,8 @@ import javafx.stage.Stage;
 import logic.ResponseFromServer;
 
 /**
- * This class contains functions common to different classes that inherit from it. 
- * With the help of this department the reuse mechanism is implemented.
+ * This class contains functions common to different classes that inherit from
+ * it. With the help of this department the reuse mechanism is implemented.
  * 
  * @author Hadar Iluz
  *
@@ -34,6 +34,7 @@ public class GuiCommon {
 
 	/**
 	 * create a popUp with a given message.
+	 * 
 	 * @param msg string text input to method to display in popUp message.
 	 */
 	public static void popUp(String msg) {
@@ -70,6 +71,7 @@ public class GuiCommon {
 
 	/**
 	 * The method loads the desired right screen to which you want to move.
+	 * 
 	 * @param userObj  input to identify the user who wants to switch to the screen
 	 * @param fxmlName input is the screen Name of the XML file of the screen to
 	 *                 which you are moving by loading it
@@ -112,7 +114,9 @@ public class GuiCommon {
 	}
 
 	/**
-	 * FIXME: ADD JAVADOC
+	 * This method sends information to all students who solve a particular exam
+	 * when the exam is locked or time has been added to solve the exam. Depending
+	 * on the information in res
 	 * 
 	 * @param res
 	 */

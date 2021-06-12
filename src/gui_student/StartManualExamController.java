@@ -34,7 +34,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
-//FIXME: ADD JAVADOC
+/**
+ * FIXME: ADD JAVADOC HERE
+ * 
+ * @author Matar Asaf
+ *
+ */
 
 public class StartManualExamController extends GuiCommon implements Initializable {
 
@@ -92,6 +97,12 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	private ExamOfStudent examOfStudent;
 	private int timeLeft;
 
+	/**
+	 * The method downloads the test form to the Downloads folder on the student's
+	 * computer.
+	 * 
+	 * @param event that occurs when clicking on 'Download' button.
+	 */
 	@FXML
 	void btnDownload(ActionEvent event) {
 		// Download the exam from the database to the student's computer
@@ -103,8 +114,16 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		txtDownloadSucceed.setVisible(true);
 	}
 
+	/**
+	 * If the student press Submit the method saves the test that the student solved
+	 * in the files folder in the system. The file name consists of examID and
+	 * studentID. else, the exam locked and the test is not submitted.
+	 * 
+	 * @param event that occurs when clicking on 'Submit' button.
+	 */
 	@FXML
 	void btnSubmit(ActionEvent event) {
+		// When the student clicks Submit
 		if (!lockBecauseTime && !lockBecauseTeacher) {
 			Object[] options = { " Cancel ", " Submit " };
 			JFrame frame = new JFrame("Submit Exam");
@@ -113,6 +132,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					JOptionPane.WARNING_MESSAGE, null, // do not use a custom Icon
 					options, // the titles of buttons
 					null); // default button title
+			// When the student clicks Submit. the test is saved in the files folder in the
+			// system
 			if (dialogResult == 1) {
 				String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_"
 						+ examOfStudent.getStudent().getId() + ".docx";
@@ -132,13 +153,13 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					RequestToServer req = new RequestToServer("submitManualExam");
 					req.setRequestData(submitExam);
 					ClientUI.cems.accept(req);
-
 					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) {
 						timer.cancel();
 						examOfStudent.setScore(0);
 						examOfStudent.setReasonOfSubmit(ReasonOfSubmit.initiated);
 						txtUploadSucceed.setVisible(true);
 						btnSubmit.setDisable(true);
+						// Update the details in the exam_of_student table in DB
 						RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
 						examOfStudent.setExamType("manual");
 						examOfStudent.setTotalTime(
@@ -154,7 +175,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					ex.printStackTrace();
 				}
 			}
-		} else {
+		} else { // When the exam is locked
 			timer.cancel();
 			examOfStudent.setExamType("manual");
 			examOfStudent.setScore(0);
@@ -163,7 +184,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 							/ 60);
 			examOfStudent.setReasonOfSubmit(ReasonOfSubmit.forced);
 
-			if (timeForTimer.get() == 0) { // need to check if the last (what yuval did)
+			if (timeForTimer.get() == 0) { // When the time for solving the test is over
 				RequestToServer req = new RequestToServer("checkIfTheLastStudent");
 				req.setRequestData(examOfStudent.getActiveExam());
 				ClientUI.cems.accept(req);
@@ -172,8 +193,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					req2.setRequestData(examOfStudent);
 					ClientUI.cems.accept(req2);
 				}
-			} else { // because teacher || THE LAST STUDENT + TIME OVER
-				btnDownload.setDisable(true);
+			} else { // When the teacher locked the test or when the time for the last student runs
+						// out
 				examOfStudent.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
 				RequestToServer req2 = new RequestToServer("lockActiveExam");
 				req2.setRequestData(examOfStudent);
@@ -183,11 +204,21 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	}
 
+	/**
+	 * if the checkBox selected show the timer of time left to solve the exam.
+	 * 
+	 * @param event that occurs when clicking on 'checkBoxShowTime' checkBox
+	 */
 	@FXML
 	void checkBoxShowTime(ActionEvent event) {
 		textTimeLeft.setVisible(!textTimeLeft.visibleProperty().get());
 	}
 
+	/**
+	 * Clicking on the notification disappears it from the screen.
+	 *
+	 * @param event that occurs when clicking on 'imgNotification' ImageView
+	 */
 	@FXML
 	void clickImgNotification(MouseEvent event) {
 		imgNotification.setVisible(false);
@@ -195,6 +226,13 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		textNotificationMsg.setVisible(false);
 	}
 
+	/**
+	 * initialize function to prepare the screen after it is loaded. Runs a timer
+	 * that shows the time left to solve the test. When receiving test lock
+	 * information stops the timer, notifies the student and executes the btnSubmit
+	 * method. When receives information about extra time, updates the timer and
+	 * informs the student.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
@@ -206,7 +244,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
-			public void run() {
+			public void run() { // When extra time was received
+				// When extra time is received updates the timer and notifies the student
 				if (addTime != 0) {
 					newActiveExam.setExtraTime(addTime);
 					timeLeft = timeForTimer.get() + (addTime * 60);
@@ -231,22 +270,39 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				}
 			}
 		}, 0, 1000);
+
 	}
 
 	private void lockExam() {
+		//btnDownload.setDisable(true);
+		btnSubmit.setDisable(true);
 		popUp("The exam is locked!");
 		btnSubmit(null);
 	}
 
+	/**
+	 * Receive ActiveExam from the previous screen.
+	 * 
+	 * @param newActiveExamInProgress
+	 */
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
 		newActiveExam = newActiveExamInProgress;
-
 	}
 
+	/**
+	 * Receive temp = true from the server when a teacher locks up the test
+	 * 
+	 * @param Boolean temp
+	 */
 	public static void setFlagToLockExam(Boolean temp) {
 		lockBecauseTeacher = temp;
 	}
 
+	/**
+	 * Receives from the server the time the teacher added to the test
+	 * 
+	 * @param time
+	 */
 	public static void addTimeToExam(int time) {
 		addTime = time;
 	}
