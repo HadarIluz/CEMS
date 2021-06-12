@@ -448,8 +448,8 @@ public class CEMSserver extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// if (checkIfExamFinished(studentExam.getActiveExam()))
-		// documentExam(studentExam.getActiveExam());
+		if (checkIfExamFinished(studentExam.getActiveExam()))
+			documentExam(studentExam.getActiveExam());
 	}
 
 	private void EditQuestion(Question question, ConnectionToClient client) {
@@ -481,7 +481,7 @@ public class CEMSserver extends AbstractServer {
 		// first check if it's after half an hour of beginning of exam
 		Time time = dbController.getStartTimeOfActiveExam(activeExam.getExam().getExamID());
 		if (time == null) {
-			printMessageInLogFramServer("There was a problem getting the start time", null);
+			printMessageInLogFramServer("There was a problem getting the start time");
 			return false;
 		}
 		activeExam.setStartTime(time);
@@ -502,15 +502,17 @@ public class CEMSserver extends AbstractServer {
 	private void documentExam(ActiveExam activeExam) {
 		// delete the active exam and document it
 		if (!dbController.deleteActiveExam(activeExam)) {
-			printMessageInLogFramServer("There was a problem with deleteing the active exam", null);
+			printMessageInLogFramServer("There was a problem with deleteing the active exam");
 		}
+		activeExam.getExam().setExamStatus(ExamStatus.inActive);
 		if (!dbController.updateExamStatus(activeExam.getExam())) {
-			printMessageInLogFramServer("There was a problem with update exam status", null);
+			printMessageInLogFramServer("There was a problem with update exam status");
 		}
 
 		if (dbController.documentExam(activeExam)) { // enter all relavent data to record_exam table
-			printMessageInLogFramServer("document exam suceeded", null);
+			printMessageInLogFramServer("document exam suceeded");
 		}
+		else printMessageInLogFramServer("document exam failed");
 		// now call for method that checks copying (only if computerized)
 
 	}
@@ -768,6 +770,13 @@ public class CEMSserver extends AbstractServer {
 	 */
 	private void printMessageInLogFramServer(String str, ResponseFromServer response) {
 		serverFrame.printToTextArea("--->" + str + " " + response.toString());
+	}
+	
+	/**
+	 * @param str      is a message which displayed in server`s log.f
+	 */
+	private void printMessageInLogFramServer(String str) {
+		serverFrame.printToTextArea("--->" + str + " ");
 	}
 
 	//

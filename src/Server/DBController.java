@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -1609,9 +1610,10 @@ public class DBController {
 			pstmt = conn.prepareStatement("INSERT INTO exam_records VALUES(?, ?, ?, ?, ?, ?, ?);");
 			pstmt.setString(1, activeExam.getExam().getExamID());
 			pstmt.setTime(2, new Time(System.currentTimeMillis()));
-			pstmt.setInt(3, activeExam.getExam().getTimeOfExam());
-			int actualTime = (int) ((System.currentTimeMillis() - activeExam.getStartTime().toLocalTime().toNanoOfDay())
-					/ 60000);
+			pstmt.setInt(3, activeExam.getTimeAllotedForTest());
+			LocalTime currentTime = (new Time(System.currentTimeMillis())).toLocalTime();
+			int actualTime = (currentTime.toSecondOfDay() - activeExam.getStartTime().toLocalTime().toSecondOfDay())
+					/ 60;
 			pstmt.setInt(4, actualTime);
 			pstmt.setInt(5, initiated);
 			pstmt.setInt(6, forced);
