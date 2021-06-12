@@ -117,11 +117,6 @@ public class GuiCommon {
 	 * @param res
 	 */
 	public static void handleNotifications(ResponseFromServer res) {
-		if (res.getResponseType().startsWith("NOTIFICATION_STUDENT"))
-			handleStudentNotifications(res);
-	}
-
-	private static void handleStudentNotifications(ResponseFromServer res) {
 		if (res.getResponseType().equals("NOTIFICATION_STUDENT_EXAM_LOCKED")) {
 			System.out.println("notification exam locked");
 			StartManualExamController.setFlagToLockExam((Boolean) true);
