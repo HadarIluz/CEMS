@@ -7,12 +7,10 @@ import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
-import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
 import entity.ExamStatus;
 import entity.ProfessionCourseName;
-import entity.QuestionRow;
 import entity.Teacher;
 import entity.User;
 import gui_cems.GuiCommon;
@@ -34,6 +32,7 @@ import logic.RequestToServer;
  * 
  * @author Yadin Amsalem
  * @author Nadav Dery
+ * @author Matar Asaf
  * @version 1.0
  *
  */
@@ -358,10 +357,12 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	}
 
 	/**
+	 * This method locks the test and sends all students who solve it a message that
+	 * the test is locked and prevents them from submitting or downloading the test.
+	 * 
 	 * @param event occurs when user press on "Lock"
 	 * 
 	 */
-
 	@FXML
 	void btnLockExam(ActionEvent event) {
 		if (textExamID.getText().isEmpty())
@@ -374,15 +375,12 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			req.setRequestData(examToLock);
 			ClientUI.cems.accept(req);
 			if (CEMSClient.responseFromServer.getResponseType().equals("EXAM LOCKED")) {
-				initTableRows(); // NEED FIX
-				textExamID.clear();
 				popUp("The exam was successfully locked");
 			} else {
-				initTableRows(); // NEED FIX
-				textExamID.clear();
 				popUp("lock exam failed");
 			}
-
+			initTableRows(); // NEED FIX
+			textExamID.clear();
 		}
 	}
 }
