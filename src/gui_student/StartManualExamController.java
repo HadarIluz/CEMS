@@ -3,8 +3,9 @@ package gui_student;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.URL;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,9 +19,7 @@ import client.ClientUI;
 import common.MyFile;
 import entity.ActiveExam;
 import gui_cems.GuiCommon;
-import gui_teacher.TeacherController;
 import entity.ExamOfStudent;
-import entity.ExamStatus;
 import entity.ReasonOfSubmit;
 import entity.Student;
 import javafx.application.Platform;
@@ -69,11 +68,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	@FXML
 	private Text txtMessageFrom;
 
-    @FXML
-    private ImageView imgNotificationOFF;
-
-    @FXML
-    private ImageView imgNotificationON;
+	@FXML
+	private ImageView imgNotification;
 
 	@FXML
 	private Label textNotificationMsg;
@@ -93,17 +89,14 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	@FXML
 	private Text txtDownloadSucceed;
 
+    private static StudentController studentController;
 	private static ActiveExam newActiveExam;
-	private static Boolean lockBecauseTeacher;
-	private Boolean lockBecauseTime;
+	private static Boolean lock;
 	private static int addTime;
 	private AtomicInteger timeForTimer;
 	private Timer timer;
 	private ExamOfStudent examOfStudent;
 	private int timeLeft;
-	private static boolean toggleFlag=false;
-
-	private static TeacherController teacherController;
 
 	/**
 	 * The method downloads the test form to the Downloads folder on the student's
@@ -131,8 +124,13 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	 */
 	@FXML
 	void btnSubmit(ActionEvent event) {
+		submitExam(ReasonOfSubmit.initiated);
+	}
+	
+	private void submitExam(ReasonOfSubmit reasonOfSubmit) {
+		examOfStudent.setReasonOfSubmit(reasonOfSubmit);
 		// When the student clicks Submit
-		if (!lockBecauseTime && !lockBecauseTeacher) {
+		if (reasonOfSubmit == ReasonOfSubmit.initiated ) {
 			Object[] options = { " Cancel ", " Submit " };
 			JFrame frame = new JFrame("Submit Exam");
 			int dialogResult = JOptionPane.showOptionDialog(frame,
@@ -143,44 +141,47 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 			// When the student clicks Submit. the test is saved in the files folder in the
 			// system
 			if (dialogResult == 1) {
-				String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_"
-						+ examOfStudent.getStudent().getId() + ".docx";
-				String home = System.getProperty("user.home");
-				String LocalfilePath = home + "/Downloads/" + examOfStudent.getActiveExam().getExam().getExamID()
-						+ "_exam.docx";
-				MyFile submitExam = new MyFile(fileName);
-				try {
-					File newFile = new File(LocalfilePath);
-					byte[] mybytearray = new byte[(int) newFile.length()];
-					FileInputStream fis = new FileInputStream(newFile);
-					BufferedInputStream bis = new BufferedInputStream(fis);
-					submitExam.initArray(mybytearray.length);
-					submitExam.setSize(mybytearray.length);
-					bis.read(submitExam.getMybytearray(), 0, mybytearray.length);
-					fis.close();
-					RequestToServer req = new RequestToServer("submitManualExam");
-					req.setRequestData(submitExam);
-					ClientUI.cems.accept(req);
-					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) {
-						timer.cancel();
-						examOfStudent.setScore(0);
-						examOfStudent.setReasonOfSubmit(ReasonOfSubmit.initiated);
-						txtUploadSucceed.setVisible(true);
-						btnSubmit.setDisable(true);
-						// Update the details in the exam_of_student table in DB
-						RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
-						examOfStudent.setExamType("manual");
-						examOfStudent.setTotalTime(
-								((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60
-										- timeForTimer.get()) / 60);
-						req2.setRequestData(examOfStudent);
-						ClientUI.cems.accept(req2);
+				if (((newActiveExam.getTimeAllotedForTest() - timeForTimer.get()) / 60) < 30)
+					popUp("The test was not submitted!\nA test can only be submitted after half an hour has passed since you started it.");
+				else {
+					String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_"
+							+ examOfStudent.getStudent().getId() + ".docx";
+					String home = System.getProperty("user.home");
+					String LocalfilePath = home + "/Downloads/" + examOfStudent.getActiveExam().getExam().getExamID()
+							+ "_exam.docx";
+					MyFile submitExam = new MyFile(fileName);
+					try {
+						File newFile = new File(LocalfilePath);
+						byte[] mybytearray = new byte[(int) newFile.length()];
+						FileInputStream fis = new FileInputStream(newFile);
+						BufferedInputStream bis = new BufferedInputStream(fis);
+						submitExam.initArray(mybytearray.length);
+						submitExam.setSize(mybytearray.length);
+						bis.read(submitExam.getMybytearray(), 0, mybytearray.length);
+						fis.close();
+						RequestToServer req = new RequestToServer("submitManualExam");
+						req.setRequestData(submitExam);
+						ClientUI.cems.accept(req);
+						if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) {
+							timer.cancel();
+							examOfStudent.setScore(0);
+							txtUploadSucceed.setVisible(true);
+							btnSubmit.setDisable(true);
+							// Update the details in the exam_of_student table in DB
+							RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
+							examOfStudent.setExamType("manual");
+							examOfStudent.setTotalTime(
+									((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60
+											- timeForTimer.get()) / 60);
+							req2.setRequestData(examOfStudent);
+							ClientUI.cems.accept(req2);
+						}
+					} catch (Exception ex) {
+						txtError1.setVisible(true);
+						txtError2.setVisible(true);
+						txtError3.setVisible(true);
+						ex.printStackTrace();
 					}
-				} catch (Exception ex) {
-					txtError1.setVisible(true);
-					txtError2.setVisible(true);
-					txtError3.setVisible(true);
-					ex.printStackTrace();
 				}
 			}
 		} else { // When the exam is locked
@@ -190,26 +191,10 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 			examOfStudent.setTotalTime(
 					((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60 - timeForTimer.get())
 							/ 60);
-			examOfStudent.setReasonOfSubmit(ReasonOfSubmit.forced);
-
-			if (timeForTimer.get() == 0) { // When the time for solving the test is over
-				RequestToServer req = new RequestToServer("checkIfTheLastStudent");
-				req.setRequestData(examOfStudent.getActiveExam());
-				ClientUI.cems.accept(req);
-				if (!CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("LAST STUDENT")) {
-					RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
-					req2.setRequestData(examOfStudent);
-					ClientUI.cems.accept(req2);
-				}
-			} else { // When the teacher locked the test or when the time for the last student runs
-						// out
-				examOfStudent.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
-				RequestToServer req2 = new RequestToServer("lockActiveExam");
-				req2.setRequestData(examOfStudent);
-				ClientUI.cems.accept(req2);
-			}
+			RequestToServer req = new RequestToServer("StudentFinishManualExam");
+			req.setRequestData(examOfStudent);
+			ClientUI.cems.accept(req);
 		}
-
 	}
 
 	/**
@@ -229,23 +214,10 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	 */
 	@FXML
 	void clickImgNotification(MouseEvent event) {
-		imgNotificationON.setVisible(!toggleFlagStatus());
-		imgNotificationOFF.setVisible(!toggleFlagStatus());
-		boolean change=toggleFlagStatus();
-		txtMessageFrom.setVisible(change);
-		textNotificationMsg.setVisible(change);
-		//toggleFlag= !toggleFlag;
+		imgNotification.setVisible(false);
+		txtMessageFrom.setVisible(false);
+		textNotificationMsg.setVisible(false);
 	}
-	
-	
-	private boolean toggleFlagStatus() {
-		if (toggleFlag == false)
-			return toggleFlag = true;
-		else
-			return toggleFlag = false;
-	}
-	
-	
 
 	/**
 	 * initialize function to prepare the screen after it is loaded. Runs a timer
@@ -257,17 +229,18 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
-		lockBecauseTeacher = false;
-		lockBecauseTime = false;
-		imgNotificationON.setVisible(false);
-		imgNotificationOFF.setVisible(true);
+		lock = false;
 		addTime = 0;
 		// set the timer
-		timeForTimer = new AtomicInteger(newActiveExam.getTimeAllotedForTest() * 60);
+		LocalTime currentTime = (new Time(System.currentTimeMillis())).toLocalTime();
+		int timeToDeduct = (currentTime.toSecondOfDay() - newActiveExam.getStartTime().toLocalTime().toSecondOfDay())
+				/ 60;
+		int timeForStudent = (newActiveExam.getTimeAllotedForTest() - timeToDeduct)*60;
+		timeForTimer = new AtomicInteger(timeForStudent);
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
-			public void run() { // When extra time was received
+			public void run() { 
 				// When extra time is received updates the timer and notifies the student
 				if (addTime != 0) {
 					newActiveExam.setExtraTime(addTime);
@@ -275,8 +248,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					timeForTimer.set(timeLeft);
 					Platform.runLater(() -> textNotificationMsg.setText("Please note, the exam time\nwas extended by "
 							+ newActiveExam.getExtraTime() + " minutes."));
-					imgNotificationON.setVisible(true);
-					imgNotificationOFF.setVisible(false);
+					imgNotification.setVisible(true);
 					txtMessageFrom.setVisible(true);
 					textNotificationMsg.setVisible(true);
 					addTime = 0;
@@ -287,21 +259,18 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				String str = String.format("Time left: %02d:%02d:%02d", hours, minutes, seconds);
 				Platform.runLater(() -> textTimeLeft.setText(str));
 				timeForTimer.decrementAndGet();
-				if (timeForTimer.get() == 0 || lockBecauseTeacher) {
-					if (timeForTimer.get() == 0)
-						lockBecauseTime = true;
-					Platform.runLater(() -> lockExam());
+				if (timeForTimer.get() == 0 || lock) {
+					Platform.runLater(() -> stopExam());
 				}
 			}
 		}, 0, 1000);
 
 	}
 
-	private void lockExam() {
-		// btnDownload.setDisable(true);
+	private void stopExam() {
 		btnSubmit.setDisable(true);
 		popUp("The exam is locked!");
-		btnSubmit(null);
+		submitExam(ReasonOfSubmit.forced);
 	}
 
 	/**
@@ -319,7 +288,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	 * @param Boolean temp
 	 */
 	public static void setFlagToLockExam(Boolean temp) {
-		lockBecauseTeacher = temp;
+		lock = temp;
 	}
 
 	/**
@@ -332,3 +301,4 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	}
 
 }
+
