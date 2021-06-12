@@ -183,22 +183,14 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60 - timeForTimer.get())
 							/ 60);
 			examOfStudent.setReasonOfSubmit(ReasonOfSubmit.forced);
-
 			if (timeForTimer.get() == 0) { // When the time for solving the test is over
-				RequestToServer req = new RequestToServer("checkIfTheLastStudent");
-				req.setRequestData(examOfStudent.getActiveExam());
+				RequestToServer req = new RequestToServer("StudentFinishManualExam");
+				req.setRequestData(examOfStudent);
 				ClientUI.cems.accept(req);
-				if (!CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("LAST STUDENT")) {
-					RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
-					req2.setRequestData(examOfStudent);
-					ClientUI.cems.accept(req2);
-				}
-			} else { // When the teacher locked the test or when the time for the last student runs
-						// out
-				examOfStudent.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
-				RequestToServer req2 = new RequestToServer("lockActiveExam");
-				req2.setRequestData(examOfStudent);
-				ClientUI.cems.accept(req2);
+			} else { // When the teacher locked the test
+				RequestToServer req = new RequestToServer("lockActiveExam");
+				req.setRequestData(examOfStudent);
+				ClientUI.cems.accept(req);
 			}
 		}
 
@@ -274,7 +266,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	}
 
 	private void lockExam() {
-		//btnDownload.setDisable(true);
+		// btnDownload.setDisable(true);
 		btnSubmit.setDisable(true);
 		popUp("The exam is locked!");
 		btnSubmit(null);

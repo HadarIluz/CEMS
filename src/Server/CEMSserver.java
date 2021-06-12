@@ -374,52 +374,29 @@ public class CEMSserver extends AbstractServer {
 			checkExam_of_student_NotExistsBeforeStartExam((ExamOfStudent) req.getRequestData(), client);
 		}
 			break;
-
-		case "checkIfTheLastStudent": {
-			checkIfTheLastStudent((ActiveExam) req.getRequestData(), client);
+		case "updateScoresOfEditExam": {
+			updateScoresOfEditExam((ArrayList<QuestionInExam>) req.getRequestData(), client);
 		}
-
 			break;
-		case "updateScoresOfEditExam":{
-			updateScoresOfEditExam((ArrayList<QuestionInExam>)req.getRequestData(), client);
-		}
-		break; 
 		}
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
 
-
-
-
-	private void checkIfTheLastStudent(ActiveExam activeExam, ConnectionToClient client) {
-		ResponseFromServer response = null;
-		if (checkIfExamFinished(activeExam))
-			response = new ResponseFromServer("LAST STUDENT");
-		try {
-			client.sendToClient(response);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		printMessageInLogFramServer("Message to Client:", response);
-	}
-
 	private void StudentFinishManualExam(ExamOfStudent studentExam, ConnectionToClient client) {
 		ResponseFromServer response = null;
-		studentExam.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
 		if (dbController.updateStudentExam(studentExam)) {
 			response = new ResponseFromServer("EXAM OF STUDENT UPDATE");
 		}
 		try {
 			client.sendToClient(response);
-			// HERE CLOSE CILENT!! NEED TO FIX!
-			// if (checkIfExamFinished(studentExam.getActiveExam()))
-			// lockActiveExam(studentExam, client);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
+		if (checkIfExamFinished(studentExam.getActiveExam()))
+			documentExam(studentExam.getActiveExam());
 	}
 
 	/**
@@ -511,8 +488,8 @@ public class CEMSserver extends AbstractServer {
 
 		if (dbController.documentExam(activeExam)) { // enter all relavent data to record_exam table
 			printMessageInLogFramServer("document exam suceeded");
-		}
-		else printMessageInLogFramServer("document exam failed");
+		} else
+			printMessageInLogFramServer("document exam failed");
 		// now call for method that checks copying (only if computerized)
 
 	}
@@ -771,9 +748,9 @@ public class CEMSserver extends AbstractServer {
 	private void printMessageInLogFramServer(String str, ResponseFromServer response) {
 		serverFrame.printToTextArea("--->" + str + " " + response.toString());
 	}
-	
+
 	/**
-	 * @param str      is a message which displayed in server`s log.f
+	 * @param str is a message which displayed in server`s log.f
 	 */
 	private void printMessageInLogFramServer(String str) {
 		serverFrame.printToTextArea("--->" + str + " ");
@@ -1185,18 +1162,12 @@ public class CEMSserver extends AbstractServer {
 	private void lockActiveExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
 		ResponseFromServer respon = null;
 		try {
-			if (dbController.activeExamExists(examOfStudent.getActiveExam())) {
-				if (dbController.deleteActiveExam(examOfStudent.getActiveExam())) {
-					Boolean ans = dbController.updateExamStatus(examOfStudent.getActiveExam().getExam());
-					// if (dbController.documentExam(examOfStudent.getActiveExam())) {
-					// enter all relavent data to record_exam table
-					// printMessageInLogFramServer("document exam suceeded", null);
-					// }
-					if (ans)
-						respon = new ResponseFromServer("EXAM LOCKED");
-				}
-			}
 			StudentFinishManualExam(examOfStudent, client);
+			if (dbController.activeExamExists(examOfStudent.getActiveExam())) { 
+				examOfStudent.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
+				documentExam(examOfStudent.getActiveExam());
+				respon = new ResponseFromServer("EXAM LOCKED");
+			}
 			client.sendToClient(respon);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -1211,18 +1182,8 @@ public class CEMSserver extends AbstractServer {
 		try {
 			if (students.isEmpty()) {
 				ActiveExam activeExam = new ActiveExam(exam);
-				if (dbController.activeExamExists(activeExam)) {
-					if (dbController.deleteActiveExam(activeExam)) {
-						exam.setExamStatus(ExamStatus.inActive);
-						Boolean ans = dbController.updateExamStatus(exam);
-						// if (dbController.documentExam(examOfStudent.getActiveExam())) {
-						// enter all relavent data to record_exam table
-						// printMessageInLogFramServer("document exam suceeded", null);
-						// }
-						if (ans)
-							responForTeacher = new ResponseFromServer("EXAM LOCKED");
-					}
-				}
+				documentExam(activeExam);
+				responForTeacher = new ResponseFromServer("EXAM LOCKED");
 			} else {
 				for (Integer id : students) {
 					(loogedClients.get(id)).sendToClient(responForStudents);
@@ -1327,8 +1288,7 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 	}
-	
-	
+
 	private void getStudentsByExamID(String requestData, ConnectionToClient client) {
 		ResponseFromServer response = new ResponseFromServer("SCORE APPROVAL");
 		try {
@@ -1340,7 +1300,7 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
-	
+
 	private void getQuestions(Integer requestData, ConnectionToClient client) {
 		ResponseFromServer response = new ResponseFromServer("TEACHER QUESTIONS");
 		try {
@@ -1350,10 +1310,9 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
-		
+
 	}
-	
-	
+
 	private void updateScoresOfEditExam(ArrayList<QuestionInExam> updatedQuestions, ConnectionToClient client) {
 		/* logic for EditExam */
 		ResponseFromServer response = null;
@@ -1364,8 +1323,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
-		
+
 	}
 
 }
-
