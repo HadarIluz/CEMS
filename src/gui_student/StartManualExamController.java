@@ -18,7 +18,6 @@ import common.MyFile;
 import entity.ActiveExam;
 import gui_cems.GuiCommon;
 import entity.ExamOfStudent;
-import entity.ExamStatus;
 import entity.ReasonOfSubmit;
 import entity.Student;
 import javafx.application.Platform;
@@ -187,17 +186,10 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 					((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60 - timeForTimer.get())
 							/ 60);
 			examOfStudent.setReasonOfSubmit(ReasonOfSubmit.forced);
-			if (timeForTimer.get() == 0) { // When the time for solving the test is over
-				RequestToServer req = new RequestToServer("StudentFinishManualExam");
-				req.setRequestData(examOfStudent);
-				ClientUI.cems.accept(req);
-			} else { // When the teacher locked the test
-				RequestToServer req = new RequestToServer("lockActiveExam");
-				req.setRequestData(examOfStudent);
-				ClientUI.cems.accept(req);
-			}
+			RequestToServer req = new RequestToServer("StudentFinishManualExam");
+			req.setRequestData(examOfStudent);
+			ClientUI.cems.accept(req);
 		}
-
 	}
 
 	/**

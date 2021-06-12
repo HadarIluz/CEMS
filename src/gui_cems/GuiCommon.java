@@ -3,6 +3,8 @@ package gui_cems;
 
 import java.io.IOException;
 
+import entity.ActiveExam;
+import entity.Exam;
 import entity.Student;
 import entity.Teacher;
 import entity.User;
@@ -25,7 +27,9 @@ import logic.ResponseFromServer;
  * it. With the help of this department the reuse mechanism is implemented.
  * 
  * @author Hadar Iluz
+ * @author Matar Asaf
  *
+ * 
  */
 public class GuiCommon {
 
@@ -121,14 +125,43 @@ public class GuiCommon {
 	 * @param res
 	 */
 	public static void handleNotifications(ResponseFromServer res) {
-		if (res.getResponseType().equals("NOTIFICATION_STUDENT_EXAM_LOCKED")) {
+		if (res.getResponseType().startsWith("NOTIFICATION_STUDENT"))
+			handleStudentNotifications(res);
+		else if (res.getResponseType().startsWith("NOTIFICATION_TEACHER"))
+			handleTeacherNotifications(res);
+		else if (res.getResponseType().startsWith("NOTIFICATION_PRINCIPAL"))
+			handlePrincipalNotifications(res);
+	}
+
+	private static void handlePrincipalNotifications(ResponseFromServer res) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private static void handleTeacherNotifications(ResponseFromServer res) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private static void handleStudentNotifications(ResponseFromServer res) {
+		if (res.getResponseType().equals("NOTIFICATION_STUDENT_EXAM_LOCKED"))
+			// {
 			System.out.println("notification exam locked");
+		if (((Exam) res.getResponseData()).getActiveExamType().equals("manual"))
 			StartManualExamController.setFlagToLockExam((Boolean) true);
-		}
-		if (res.getResponseType().equals("NOTIFICATION_STUDENT_ADDED_TIME")) {
+		// else
+		// SolveExamController.setFlagToLockExam((Boolean) true);
+		// }
+		if (res.getResponseType().equals("NOTIFICATION_STUDENT_ADDED_TIME"))
+			// {
 			System.out.println("added time to exam");
-			StartManualExamController.addTimeToExam((int) res.getResponseData());
-		}
+		StartManualExamController.addTimeToExam((int) res.getResponseData());
+		if (((ActiveExam) res.getResponseData()).getActiveExamType().equals("manual"))
+			StartManualExamController.addTimeToExam(((ActiveExam) res.getResponseData()).getExtraTime());
+		// else
+		// SolveExamController.addTimeToExam(((ActiveExam)
+		// res.getResponseData()).getExtraTime());
+		// }
 	}
 
 	/**

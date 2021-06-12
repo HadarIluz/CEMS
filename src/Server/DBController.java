@@ -313,7 +313,7 @@ public class DBController {
 			pstmt.setString(5, exam.getCommentForTeacher());
 			pstmt.setString(6, exam.getCommentForStudents());
 			pstmt.setInt(7, exam.getAuthor().getId());
-			pstmt.setObject(8,exam.getExamStatus().toString());
+			pstmt.setObject(8, exam.getExamStatus().toString());
 			pstmt.setString(9, exam.getActiveExamType());
 			if (pstmt.executeUpdate() == 1) {
 				return true;
@@ -547,7 +547,7 @@ public class DBController {
 		try {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement(
-					"SELECT exam, timeAllotedForTest, examType FROM active_exam WHERE examCode=? and startTime>=? and startTime<?;");
+					"SELECT exam,startTime, timeAllotedForTest, examType FROM active_exam WHERE examCode=? and startTime>=? and startTime<?;");
 			pstmt.setString(1, activeExam.getExamCode());
 			pstmt.setTime(2, activeExam.getStartTime());
 			pstmt.setTime(3, activeExam.getEndTimeToTakeExam());
@@ -558,8 +558,9 @@ public class DBController {
 			if (rs.next()) {
 				exam.setExamID(rs.getString(1));
 				activeExam.setExam(exam);
-				activeExam.setTimeAllotedForTest(rs.getString(2));
-				activeExam.setActiveExamType(rs.getString(3));
+				activeExam.setStartTime(rs.getTime(2));
+				activeExam.setTimeAllotedForTest(rs.getString(3));
+				activeExam.setActiveExamType(rs.getString(4));
 				rs.close();
 			}
 
@@ -871,7 +872,7 @@ public class DBController {
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
 				exam.setCommentForTeacher(rs.getString(5));
 				exam.setCommentForStudents(rs.getString(6));
-				exam.setExamStatus(ExamStatus.valueOf((String)rs.getObject(8)));
+				exam.setExamStatus(ExamStatus.valueOf((String) rs.getObject(8)));
 				exam.setActiveExamType((String) rs.getObject(9));
 				rs.close();
 			}
@@ -1732,7 +1733,7 @@ public class DBController {
 		}
 		return 0;
 	}
-	
+
 	public int getPrincipalId() {
 		PreparedStatement pstmt;
 		try {
@@ -1748,7 +1749,7 @@ public class DBController {
 		}
 		return 0;
 	}
-	
+
 	public ArrayList<String> getAllExams() {
 		ArrayList<String> examsID = new ArrayList<String>();
 		PreparedStatement pstmt;
@@ -1860,8 +1861,7 @@ public class DBController {
 
 		return suspectedInCopy;
 	}
-	
-	
+
 	public ResponseFromServer updateScoresOfEditExam(ArrayList<QuestionInExam> updatedQuestions) {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
@@ -1888,6 +1888,5 @@ public class DBController {
 		return response;
 
 	}
-	
-}
 
+}

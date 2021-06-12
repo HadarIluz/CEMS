@@ -327,12 +327,6 @@ public class CEMSserver extends AbstractServer {
 
 		}
 			break;
-
-		case "lockActiveExam": {
-			lockActiveExam((ExamOfStudent) req.getRequestData(), client);
-		}
-			break;
-
 		case "getStudentsInActiveExam": {
 			getStudentsInActiveExam((Exam) req.getRequestData(), client);
 		}
@@ -382,7 +376,6 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
-
 
 	private void StudentFinishManualExam(ExamOfStudent studentExam, ConnectionToClient client) {
 		ResponseFromServer response = null;
@@ -477,21 +470,22 @@ public class CEMSserver extends AbstractServer {
 	 * @param activeExam this method documents a finished exam in the db
 	 */
 	private void documentExam(ActiveExam activeExam) {
-		// delete the active exam and document it
-		if (!dbController.deleteActiveExam(activeExam)) {
-			printMessageInLogFramServer("There was a problem with deleteing the active exam");
-		}
-		activeExam.getExam().setExamStatus(ExamStatus.inActive);
-		if (!dbController.updateExamStatus(activeExam.getExam())) {
-			printMessageInLogFramServer("There was a problem with update exam status");
-		}
+		if (dbController.activeExamExists(activeExam)) {
+			// delete the active exam and document it
+			if (!dbController.deleteActiveExam(activeExam)) {
+				printMessageInLogFramServer("There was a problem with deleteing the active exam");
+			}
+			activeExam.getExam().setExamStatus(ExamStatus.inActive);
+			if (!dbController.updateExamStatus(activeExam.getExam())) {
+				printMessageInLogFramServer("There was a problem with update exam status");
+			}
 
-		if (dbController.documentExam(activeExam)) { // enter all relavent data to record_exam table
-			printMessageInLogFramServer("document exam suceeded");
-		} else
-			printMessageInLogFramServer("document exam failed");
+			if (dbController.documentExam(activeExam)) { // enter all relavent data to record_exam table
+				printMessageInLogFramServer("document exam suceeded");
+			} else
+				printMessageInLogFramServer("document exam failed");
+		}
 		// now call for method that checks copying (only if computerized)
-
 	}
 
 	/**
@@ -1011,19 +1005,19 @@ public class CEMSserver extends AbstractServer {
 		// update time alloted for test in active exam after the principal approves the
 		// request.
 		ArrayList<Integer> students = dbController.getStudentsInActiveExam(activeExam.getExam());
-		ResponseFromServer respon = null;
-		ResponseFromServer respon2 = new ResponseFromServer("NOTIFICATION_STUDENT_ADDED_TIME");
-		respon2.setResponseData(activeExam.getExtraTime());
+		ResponseFromServer responForPrincipal = null;
+		ResponseFromServer responForStudent = new ResponseFromServer("NOTIFICATION_STUDENT_ADDED_TIME");
+		responForStudent.setResponseData((ActiveExam) activeExam);
 		try {
-			respon = dbController.setTimeForActiveTest(activeExam);
-			client.sendToClient(respon);
+			responForPrincipal = dbController.setTimeForActiveTest(activeExam);
+			client.sendToClient(responForPrincipal);
 			for (Integer id : students) {
-				(loogedClients.get(id)).sendToClient(respon2);
+				(loogedClients.get(id)).sendToClient(responForStudent);
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+		printMessageInLogFramServer("Message to Client:", responForPrincipal);// print to server log.
 	}
 
 	private void declineTimeExtension(ActiveExam activeExam, ConnectionToClient client) {
@@ -1159,24 +1153,9 @@ public class CEMSserver extends AbstractServer {
 		}
 	}
 
-	private void lockActiveExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
-		ResponseFromServer respon = null;
-		try {
-			StudentFinishManualExam(examOfStudent, client);
-			if (dbController.activeExamExists(examOfStudent.getActiveExam())) { 
-				examOfStudent.getActiveExam().getExam().setExamStatus(ExamStatus.inActive);
-				documentExam(examOfStudent.getActiveExam());
-				respon = new ResponseFromServer("EXAM LOCKED");
-			}
-			client.sendToClient(respon);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
-	}
-
 	private void getStudentsInActiveExam(Exam exam, ConnectionToClient client) {
 		ResponseFromServer responForStudents = new ResponseFromServer("NOTIFICATION_STUDENT_EXAM_LOCKED");
+		responForStudents.setResponseData(exam);
 		ResponseFromServer responForTeacher = null;
 		ArrayList<Integer> students = dbController.getStudentsInActiveExam(exam);
 		try {
