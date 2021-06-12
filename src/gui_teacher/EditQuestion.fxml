@@ -21,7 +21,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="textExamID" editable="false" layoutX="245.0" layoutY="109.0" prefHeight="25.0" prefWidth="135.0" promptText="QuestionID shown here" />
+      <TextField fx:id="textExamID" layoutX="245.0" layoutY="109.0" prefHeight="25.0" prefWidth="135.0" promptText="QuestionID shown here" />
       <Label fx:id="textTimeForExam" layoutX="281.0" layoutY="163.0" prefHeight="30.0" prefWidth="135.0" text="120 minutes" textFill="#6a6868" visible="false">
          <font>
             <Font name="System Bold" size="20.0" />

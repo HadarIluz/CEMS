@@ -5,14 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
-
-import Server.CEMSserver;
 import client.CEMSClient;
 import client.ClientUI;
-import entity.Course;
-
-import entity.Exam;
 import entity.Question;
 import entity.QuestionRow;
 import entity.Teacher;
@@ -31,7 +25,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
-import logic.ResponseFromServer;
 
 /**
  * 
@@ -83,7 +76,6 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	private static boolean displayPrincipalView = false;
 	private static Teacher teacher;
 	private static User principal;
-	private static String screenStatus;
 	protected static String chosenQuestionID;
 	private HashMap<String, String> profName;
 	/**
@@ -189,6 +181,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	 * 
 	 */
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		textQuestionID.setEditable(false);
@@ -249,23 +242,17 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	 * initTableRows get from server all exams of the logged teacher and insert into
 	 * the table.
 	 */
-
 	@SuppressWarnings("unchecked")
 	public void initTableRows() {
 		textQuestionID.setEditable(true);
-
 		RequestToServer req = new RequestToServer("getQuestions");
-
 		req.setRequestData(ClientUI.loggedInUser.getUser().getId());
-
 		ArrayList<QuestionRow> questionList = new ArrayList<QuestionRow>();
 
 		ClientUI.cems.accept(req);
-
 		questionList = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
 		for(QuestionRow curr:questionList) 
-			curr.setProfession(profName.get(curr.getQuestionID().substring(0,2)));
-		
+			curr.setProfession(profName.get(curr.getQuestionID().substring(0,2)));		
 
 		data = FXCollections.observableArrayList(questionList);
 
@@ -275,20 +262,20 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		Question.setCellValueFactory(new PropertyValueFactory<>("Question"));
 
 		tableQuestion.setItems(data);
-
-		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);
-		
+		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);		
 	}
 
 	
 
 	
-	
-	private Boolean isExistQuestion(String questionID) {
-	
+	//FIXME: NEED THIS?
+	/**
+	 * @param questionID
+	 * @return
+	 */
+	private Boolean isExistQuestion(String questionID) {	
 		for (QuestionRow q : data) {
-			if (q.getQuestionID().equals(questionID)) {
-				
+			if (q.getQuestionID().equals(questionID)) {				
 				return true;
 			}
 		}

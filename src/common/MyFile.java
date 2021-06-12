@@ -2,19 +2,38 @@ package common;
 
 import java.io.Serializable;
 
+/**
+ * The department defines all the parameters required for sending and
+ * transferring a file between client and server.
+ * The department was not included
+ * in the diagrams and was added to support a file download mechanism and upload
+ * a student test solution file. Upload a file when creating a manual test by
+ * the teacher.
+ * 
+ * @author Matar
+ *
+ */
 public class MyFile implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private String Description = null;
 	private String fileName = null;
 	private int size = 0;
 	public byte[] mybytearray;
 
-	public void initArray(int size) {
-		mybytearray = new byte[size];
-	}
 
+	/**
+	 * @param fileName for constructor.
+	 */
 	public MyFile(String fileName) {
 		this.fileName = fileName;
+	}
+	
+	/**
+	 * @param size of file.
+	 */
+	public void initArray(int size) {
+		mybytearray = new byte[size];
 	}
 
 	public String getFileName() {

@@ -1,7 +1,6 @@
 package gui_principal;
 
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,13 +20,17 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import logic.RequestToServer;
+
 /**
+ * The department is included in the diagrams and contains all the functionality
+ * that the principal needs to do to see the requested report. This class
+ * conducts various calculations for presenting the report.
  * 
  * @author Yadin Amsalem
  * @author Nadav Dery
  *
  */
-public class PrincipalDisplayReportByTeacherController extends GuiCommon implements Initializable {
+public class PrincipalDisplayReportByTeacherController implements Initializable {
 
 	@FXML
 	private BarChart<?, ?> ExamsHisto;
@@ -46,12 +49,13 @@ public class PrincipalDisplayReportByTeacherController extends GuiCommon impleme
 
 	ArrayList<Integer> gradesOfExam;
 	HashMap<String, String> idNamecourses = new HashMap<String, String>();
-	// <id,name>
-/** initialize the screen with the chosen teacher ID & Name and the histogram
- * of the exams he created and their median and average.
- * 
- */
-	@SuppressWarnings({ "unchecked", "rawtypes", "unused" })
+
+	/**
+	 * initialize the screen with the chosen teacher ID & Name and the histogram of
+	 * the exams he created and their median and average.
+	 * 
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		TeacherIDLabel.setText(String.valueOf(PrincipalGetReportsController.Id));
@@ -75,24 +79,29 @@ public class PrincipalDisplayReportByTeacherController extends GuiCommon impleme
 			req2.setRequestData(curr.getExamID());
 			ClientUI.cems.accept(req2);
 			gradesOfExam = (ArrayList<Integer>) CEMSClient.responseFromServer.getResponseData();
-			if (gradesOfExam.isEmpty()) {//if we want to change that we see only the exam that student did, just erase the 2 lines in this if
-				avg.getData().add(new XYChart.Data(idNamecourses.get(curr.getCourse().getCourseID())+"-"+curr.getExamID().charAt(4)+curr.getExamID().charAt(5), 0));
-				median.getData().add(new XYChart.Data(idNamecourses.get(curr.getCourse().getCourseID())+"-"+curr.getExamID().charAt(4)+curr.getExamID().charAt(5), 0));
+			if (gradesOfExam.isEmpty()) {// if we want to change that we see only the exam that student did, just erase
+											// the 2 lines in this if
+				avg.getData().add(new XYChart.Data(idNamecourses.get(curr.getCourse().getCourseID()) + "-"
+						+ curr.getExamID().charAt(4) + curr.getExamID().charAt(5), 0));
+				median.getData().add(new XYChart.Data(idNamecourses.get(curr.getCourse().getCourseID()) + "-"
+						+ curr.getExamID().charAt(4) + curr.getExamID().charAt(5), 0));
 			} else {
-				avg.getData().add(new XYChart.Data(idNamecourses.get(curr.getCourse().getCourseID())+"-"+curr.getExamID().charAt(4)+curr.getExamID().charAt(5),
-						calcAvg()));
+				avg.getData().add(new XYChart.Data(idNamecourses.get(curr.getCourse().getCourseID()) + "-"
+						+ curr.getExamID().charAt(4) + curr.getExamID().charAt(5), calcAvg()));
 				// way to show only 2 digits after the decimal point
-				median.getData().add(new XYChart.Data(idNamecourses.get(curr.getCourse().getCourseID())+"-"+curr.getExamID().charAt(4)+curr.getExamID().charAt(5),
-						calcMedian()));
+				median.getData().add(new XYChart.Data(idNamecourses.get(curr.getCourse().getCourseID()) + "-"
+						+ curr.getExamID().charAt(4) + curr.getExamID().charAt(5), calcMedian()));
 			} // new DecimalFormat("##.##").format(calcMedian()))
 		}
 		ExamsHisto.getData().addAll(avg, median);
 
 	}
-/**calculate the average of every exam of the chosen teachr
- * 
- * @return returning the average calculation 
- */
+
+	/**
+	 * calculate the average of every exam of the chosen teacher
+	 * 
+	 * @return returning the average calculation
+	 */
 	private float calcAvg() {
 		float sum = 0;
 		for (Integer a : gradesOfExam)
@@ -101,7 +110,8 @@ public class PrincipalDisplayReportByTeacherController extends GuiCommon impleme
 		return sum;
 	}
 
-	/** calculate the median of the specific exam of the teacher
+	/**
+	 * calculate the median of the specific exam of the teacher
 	 * 
 	 * @return returning the median calculation
 	 */
@@ -116,15 +126,18 @@ public class PrincipalDisplayReportByTeacherController extends GuiCommon impleme
 			return (float) gradesOfExam.get((gradesOfExam.size() + 1) / 2 - 1);
 
 	}
-/**get the courses names that belong to specific profession
- * 
- * @param id the profession ID
- */
+
+	/**
+	 * get the courses names that belong to specific profession
+	 * 
+	 * @param id the profession ID
+	 */
 	public void getCoursesNames(String id) {
 		Profession prof = new Profession(id);
 		RequestToServer req = new RequestToServer("getCoursesByProfession");
 		req.setRequestData(prof);
 		ClientUI.cems.accept(req);
+		@SuppressWarnings("unchecked")
 		ArrayList<Course> courses = (ArrayList<Course>) CEMSClient.responseFromServer.getResponseData();
 		for (Course curr : courses)
 			idNamecourses.put(curr.getCourseID(), curr.getCourseName());

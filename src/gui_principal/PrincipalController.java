@@ -3,12 +3,10 @@ package gui_principal;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
-import entity.ExtensionRequest;
 import entity.User;
 import gui_cems.LoginController;
 import javafx.application.Application;
@@ -23,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -31,6 +30,10 @@ import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
+ * The class included in the diagrams and contains all the functionality
+ * that the principal has, manages the left menu in the system and describes the
+ * privileges that the principal has in the system.
+ * 
  * @author Hadar_Iluz
  *
  */
@@ -63,11 +66,22 @@ public class PrincipalController extends Application implements Initializable {
 	@FXML
 	private Label pressLogout;
 
+	@FXML
+	private static ImageView msgRequest;
+
+	@FXML
+	private static Label lblNew;
+
 	public LoginController loginController;
 	protected User principal;
 	public static GridPane root;
 	public Scene scene;
+	private static int newRequest;
+	static ColorAdjust colorAdjust = new ColorAdjust();
 
+	/**
+	 * The method that initializes the screen is currently loading
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		principal = ClientUI.loggedInUser.getUser();
@@ -109,23 +123,14 @@ public class PrincipalController extends Application implements Initializable {
 			}
 
 		});
-
 	}
 
-	@SuppressWarnings("unchecked")
 	/**
 	 * @param event that loading the principal right screen after pressing a button.
 	 */
 	@FXML
 	void btnApproveTimeExtension(ActionEvent event) {
-		//Reading the information from the table extension_request in the database
-		RequestToServer req = new RequestToServer("getExtensionRequests");
-		ArrayList<ExtensionRequest> extensionRequest = new ArrayList<ExtensionRequest>();
-		ClientUI.cems.accept(req);		
-		extensionRequest = (ArrayList<ExtensionRequest>) CEMSClient.responseFromServer.getResponseData();
-		//Right screen loading
 		try {
-			ApprovalTimeExtensionController.setExtensionRequestList(extensionRequest);
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("ApprovalTimeExtension.fxml"));
 			root.add(newPaneRight, 1, 0);
 		} catch (IOException e) {
@@ -157,7 +162,7 @@ public class PrincipalController extends Application implements Initializable {
 	 */
 	@FXML
 	void btnViewExamBankinfo(ActionEvent event) {
-		
+
 		try {
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("/gui_teacher/ExamBank.fxml"));
 			root.add(newPaneRight, 1, 0);
@@ -216,6 +221,23 @@ public class PrincipalController extends Application implements Initializable {
 			}
 		});
 
+	}
+
+	/**
+	 * FIXME: ADDJAVADOC
+	 * 
+	 * @param temp
+	 */
+	public static void getExtensionRequest(int temp) {
+		newRequest = temp;
+
+		// where and how ???
+		// if (newRequest == 1) {
+		// colorAdjust.setBrightness(0.0);//
+		// colorAdjust.setSaturation(0.0);//
+		// msgRequest.setEffect(colorAdjust);//
+		// }
+		// lblNew.setVisible(true);
 	}
 
 }

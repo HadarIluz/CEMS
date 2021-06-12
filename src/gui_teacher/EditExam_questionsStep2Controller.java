@@ -1,18 +1,13 @@
 package gui_teacher;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
 import entity.Exam;
-import entity.Question;
 import entity.QuestionInExam;
-import entity.QuestionInExamRow;
-import entity.QuestionRow;
 import entity.Teacher;
 import entity.User;
 import gui_cems.GuiCommon;
@@ -20,9 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -31,25 +24,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
+ * Class contains functionality for edit exam as part of 2 main steps.
+ * This screen describes the second stage where the teacher sees all the
+ * questions that appears in the exam she has chosen and she can update the score
+ * of all the questions in table.
+ * 
+ * We reuse the screen to display all the question details of any exam in the
+ * system that the principal has chosen to see what exam bank is. T
+ * Therefore the screen distinguishes between 2 types of users: 
+ * Manager - viewing permissions only.
+ * Teacher - editing permissions as described.
+ * 
  * @author Hadar Iluz
  *
  */
 public class EditExam_questionsStep2Controller extends GuiCommon implements Initializable {
-
-	@FXML
-	private Button btnCreateNewQuestion;
-
-	@FXML
-	private Text textNavigation;
-
-	@FXML
-	private Text textTotal;
 
 	@FXML
 	private Text textTitalScreen_step2;
@@ -70,16 +63,16 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	private Label textErrorMsg;
 
 	@FXML
-	private TableView<QuestionInExamRow> tableQuestion;
+	private TableView<QuestionInExam> tableQuestion;
 
 	@FXML
-	private TableColumn<QuestionInExamRow, String> questionID;
+	private TableColumn<QuestionInExam, String> questionID;
 
 	@FXML
-	private TableColumn<QuestionInExamRow, String> questionScore;
+	private TableColumn<QuestionInExam, String> questionScore;
 
 	@FXML
-	private TableColumn<QuestionInExamRow, String> question;
+	private TableColumn<QuestionInExam, String> question;
 
 	@FXML
 	private Text textQid;
@@ -94,70 +87,77 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	private Button btnUpdateScore;
 
 	@FXML
-	private Button btnDelete;
+	private Text textNavigation;
 
-//	private static TeacherController teacherController;
 	public static Exam exam;
 	private static Teacher teacher;
 	private static User principal;
-	private static boolean displayPrincipalView = false;
+	private static boolean displayPrincipalView;
 
-	//
-	private static ArrayList<Question> availableQuestions;
-	private ObservableList<QuestionInExamRow> selectedQuestionsRows = FXCollections.observableArrayList();
-	private ObservableList<QuestionInExamRow> Qlist;
+	private static ArrayList<QuestionInExam> existsQuestions;
+	private ObservableList<QuestionInExam> Qlist;
 
-	@FXML
-	void DeleteFromExam(ActionEvent event) {
-		selectedQuestionsRows.remove(Qlist.get(0));
-		updateTotalScore();
-	}
-
+	/**
+	 * @param event that occurs when the teacher selects a question from the table
+	 *              and updates its score. The update is saved in the list of
+	 *              questions with the score. The method displays a message if the
+	 *              value is incorrect.
+	 */
 	@FXML
 	void UpdateScore(ActionEvent event) {
-		if (!Qlist.isEmpty()) {
-			Qlist.get(0).setScore(Integer.valueOf(txtChangeScore.getText().trim()));
-			updateTotalScore();
+		if (!(txtChangeScore.getText().trim().isEmpty())) {
+			// check valid score
+			int changeScore = Integer.parseInt(txtChangeScore.getText().trim());
+			if (changeScore > 0 && changeScore < 101) {
+
+				Qlist.get(0).setScore(Integer.valueOf(txtChangeScore.getText().trim()));
+				updateScoreForSpecificQuestion(Integer.parseInt(txtChangeScore.getText().trim()));
+				updateTotalScore();
+			} else {
+				popUp("Invalid Score");
+			}
 		}
 	}
 
+	/**
+	 * @param changeScore input set into existsQuestions list in order to display
+	 *                    the new score after update.
+	 */
+	private void updateScoreForSpecificQuestion(int changeScore) {
+		for (QuestionInExam q : existsQuestions) {
+			if (q.getQuestionID().equals(ChosenQuestionID.getText().trim())) {
+				q.setScore(changeScore);
+			}
+		}
+		initTable();
+	}
+
+	/**
+	 * @param event that occurs when user press on back button, he return to step 1
+	 *              of Edit Exam / Exam Details according to user Permissions,
+	 *              teacher or principal.
+	 */
 	@FXML
 	void btnBack(ActionEvent event) {
-		EditExamController.setprevScreenData(exam, displayPrincipalView);
+		// bring to the previous screen all the existsQuestions if the new after
+		// update!.
+		// when teacher will press on the save edit exam the data will saved in the DB
+		// by server.
+		EditExamController.setprevScreenData(exam, displayPrincipalView, existsQuestions);
 		if (!displayPrincipalView) {
 			displayNextScreen(teacher, "/gui_teacher/EditExam.fxml");
+
 		} else {
 			displayNextScreen(principal, "/gui_teacher/EditExam.fxml");
 		}
 	}
 
-	@FXML
-	void btnBrowseQuestions(ActionEvent event) {
-		BrowseQuestionController.setAvailableQuestions(availableQuestions);
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("BrowseQuestions.fxml"));
-		Scene newScene;
-		try {
-			newScene = new Scene(loader.load());
-		} catch (IOException ex) {
-			return;
-		}
-
-		Stage inputStage = new Stage();
-		inputStage.initOwner(TeacherController.root.getScene().getWindow());
-		inputStage.setScene(newScene);
-		inputStage.showAndWait();
-
-		QuestionInExam q = loader.<BrowseQuestionController>getController().getSelectedQuestion();
-		q.setExam(exam);
-		insertRow(q);
-	}
-
+	/**
+	 * The function use calcTotalScore and display the total exam score with error
+	 * message in case the exam total score is nor equal to 100 after edit
+	 */
 	private void updateTotalScore() {
-		int sum = 0;
-		for (QuestionInExamRow q : selectedQuestionsRows) {
-			sum += q.getScore();
-		}
-
+		int sum = calcTotalScore();
 		textTotalScore.setText(String.valueOf(sum));
 		if (sum == 100) {
 			textErrorMsg.setVisible(false);
@@ -169,63 +169,82 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 
 	}
 
-	@FXML
-	void btnCreateNewQuestion(ActionEvent event) {
-		// Cancel this button!!!!
+	/**
+	 * @return total score of exam by calculation of adding the score of each
+	 *         questions in the exam.
+	 */
+	private int calcTotalScore() {
+		int sum = 0;
+		for (QuestionInExam q : existsQuestions) {
+			sum += q.getScore();
+		}
+		return sum;
 	}
 
 	/**
 	 * method set text of questionID when user select a question row from table
 	 * 
-	 * @param event occurs when User press on a selected row from table
+	 * @param event that occurs when User press on a selected row from table
 	 */
 	@FXML
 	void chooseQ(MouseEvent event) {
 		Qlist = tableQuestion.getSelectionModel().getSelectedItems();
+		if (Qlist.isEmpty()) {
+			return;
+		}
 		txtChangeScore.setText(String.valueOf(Qlist.get(0).getScore()));
 		ChosenQuestionID.setText(Qlist.get(0).getQuestionID());
 
 	}
 
-	// ASK YUVAL
+	/**
+	 * @param newExamInProgress include all data from previous screen.
+	 */
 	public static void setExamState(Exam newExamInProgress) {
 		exam = newExamInProgress;
 	}
 
+	/**
+	 * initialize function to prepare the screen after it is loaded. Tack user data
+	 * according to screen status from the previous action.
+	 *
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
+		// bring all exam details (also questions and scores)
+		RequestToServer req = new RequestToServer("getFullExamDetails");
+		req.setRequestData(exam);
+		ClientUI.cems.accept(req);
+
+		exam = (Exam) CEMSClient.responseFromServer.getResponseData();
+		existsQuestions = exam.getExamQuestionsWithScores(); // Return ArrayList<QuestionInExam>
+
+		if (!displayPrincipalView) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
-			txtChangeScore.setText("0");
-			// initTableRows_getFronmServer(); //TODO: NOT WORKING!!
 
-			// initTableCols(); //ASK YUVAL
-
+			// verify teacher not delete all of this questions before she edit this exam!
 			if (exam.getExamQuestionsWithScores() != null) {
-				for (QuestionInExam q : exam.getExamQuestionsWithScores()) {
-					availableQuestions.remove(q.getQuestion());
-					insertRow(q);
-				}
+				initTable();
 			}
+			// when exam open at first for edit the total score is 100 !.
+			textTotalScore.setText(Integer.toString(calcTotalScore()));
+			System.out.println(calcTotalScore());
+			textErrorMsg.setVisible(false);
 
 		} else if (ClientUI.loggedInUser.getUser() instanceof User) {
 			// setUp before load screen.
 			principal = (User) ClientUI.loggedInUser.getUser();
 			displayPrincipalView = true;
 
-			btnDelete.setDisable(false);
-			btnDelete.setVisible(false);
 			btnUpdateScore.setDisable(false);
 			btnUpdateScore.setVisible(false);
-			btnCreateNewQuestion.setDisable(false);
-			btnCreateNewQuestion.setVisible(false);
 			txtChangeScore.setDisable(false);
 			txtChangeScore.setVisible(false);
 			textErrorMsg.setDisable(false);
 			textErrorMsg.setVisible(false);
 			textTitalScreen_step2.setText("Exams Details");
-			textTotal.setDisable(false);
-			textTotal.setVisible(false);
+			textTotalScore.setDisable(false);
+			textTotalScore.setVisible(false);
 			textTotalScore.setDisable(false);
 			textTotalScore.setVisible(false);
 			textQid.setDisable(false);
@@ -233,53 +252,42 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 			ChosenQuestionID.setDisable(false);
 			ChosenQuestionID.setVisible(false);
 			textNavigation.setVisible(true);
+			// verify teacher not delete all of this questions before she edit this exam!
+			if (exam.getExamQuestionsWithScores() != null) {
+				initTable();
+			}
 
 		}
 
 	}
 
-	private void insertRow(QuestionInExam q) {
-		selectedQuestionsRows.add(
-				new QuestionInExamRow(q.getQuestion().getQuestionID(), q.getScore(), q.getQuestion().getQuestion(), q));
-		tableQuestion.refresh();
-		availableQuestions.remove(q.getQuestion());
-		updateTotalScore();
-	}
+	/**
+	 * Initializes the table with all the latest data of the existing questions in
+	 * the exam, display the question, question id and its current score.
+	 */
+	@SuppressWarnings("unchecked")
+	public void initTable() {
+		for (QuestionInExam curr : existsQuestions) {
+			curr.setQuestionID();
+			curr.setQuestionDescription();
+		}
+		Qlist = FXCollections.observableArrayList(existsQuestions);
 
-	public void initTableCols() {
-		tableQuestion.getColumns().clear();
+		tableQuestion.getColumns().clear(); // DEBUG
 		questionID.setCellValueFactory(new PropertyValueFactory<>("questionID"));
 		questionScore.setCellValueFactory(new PropertyValueFactory<>("score"));
-		question.setCellValueFactory(new PropertyValueFactory<>("question"));
+		question.setCellValueFactory(new PropertyValueFactory<>("questionDescription"));
 
-		tableQuestion.setItems(selectedQuestionsRows);
+		tableQuestion.setItems(Qlist);
 		tableQuestion.getColumns().addAll(questionID, questionScore, question);
-	}
-
-	public static void setExamData(Exam examData) {
 
 	}
 
-	// TODO : !!!!!!!!!!
-	public void initTableRows_getFronmServer() {
-		// get Questions for the examID that teacher selected in the Exam Back.
-		RequestToServer req = new RequestToServer("getQuestionsByIDForEditExam");
-		req.setRequestData(exam.getExamID());
-		HashMap<String, Question> allQuestionInExam = new HashMap<String, Question>();
-
-		ClientUI.cems.accept(req);
-		allQuestionInExam = ((HashMap<String, Question>) CEMSClient.responseFromServer.getResponseData());
-
-//
-		ArrayList<QuestionInExam> finaleQusetionOfExamList = new ArrayList();
-		for (QuestionInExamRow q : selectedQuestionsRows) {
-			// allQuestionInExam.getOrDefault(finaleQusetionOfExamList, null)
-
-			finaleQusetionOfExamList.add(q.getQuestionObject());
-		}
-		exam.setExamQuestionsWithScores(finaleQusetionOfExamList);
-	}
-
+	/**
+	 * @param examData with all updated details.
+	 * @param displayPrincipalView2 the current screen mode according to logged user.
+	 * 
+	 */
 	public static void setnextScreenData(Exam examData, boolean displayPrincipalView2) {
 		exam = examData;
 		displayPrincipalView = displayPrincipalView2;

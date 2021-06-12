@@ -11,7 +11,6 @@ import entity.Course;
 import entity.Exam;
 import entity.ExamStatus;
 import entity.ProfessionCourseName;
-import entity.QuestionRow;
 import entity.Teacher;
 import entity.User;
 import gui_cems.GuiCommon;
@@ -30,9 +29,24 @@ import javafx.scene.text.Text;
 import logic.RequestToServer;
 
 /**
+ * The class contains the functionality for various operations that can be
+ * performed in the system in the context of exams that are in the database: 
+ * 		- Conducting an existing test that is in inactive status. 
+ * 		- Lock an active exam. 
+ * 		- Deleting an existing exam from the database. 
+ * 		- Creating an active test in cems system. 
+ * This screen combines the various operations and allows you to
+ * centralize all the operations in a simple and convenient way for the user.
+ * The operations are not lost between the various screens.
+ * 
+ * In addition, the screen was used by us for the reuse of displaying all the tests that are in the system 
+ * for the principal, the identification is done by the user who logs in to the system so that the screen is 
+ * displayed to the administrator without editing permissions, and contains all the tests.
+ * The teacher can see all the exams she has created only.
  * 
  * @author Yadin Amsalem
  * @author Nadav Dery
+ * @author Hadar Iluz
  * @version 1.0
  *
  */
@@ -87,7 +101,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	private static Teacher teacher;
 	private static User principal;
 	private boolean displayPrincipalView = false;
-	private HashMap<String, String> profName ;
+	private HashMap<String, String> profName;
 
 	/**
 	 * method selectExamFromTable return selected exam from combo box.
@@ -100,7 +114,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	void selectExamFromTable(MouseEvent event) {
 		ObservableList<Exam> Qlist;
 		Qlist = tableExam.getSelectionModel().getSelectedItems();
-		if(Qlist.isEmpty()) {
+		if (Qlist.isEmpty()) {
 			return;
 		}
 		textExamID.setText(Qlist.get(0).getExamID());
@@ -109,15 +123,14 @@ public class ExamBankController extends GuiCommon implements Initializable {
 				btnLockExam.setDisable(false);
 				btnDeleteExam.setDisable(true);
 				btnCreateActiveExam.setDisable(true);
-				btnEditExam.setDisable(true); //can't edit exam in status active
+				btnEditExam.setDisable(true); // can't edit exam in status active
 			} else {
 				btnLockExam.setDisable(true);
 				btnDeleteExam.setDisable(false);
 				btnCreateActiveExam.setDisable(false);
 				btnEditExam.setDisable(false);
 			}
-		}
-		else {
+		} else {
 			btnExamInfoPrincipal.setDisable(false);
 		}
 	}
@@ -142,7 +155,6 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		return null;
 	}
 
-
 	/**
 	 * Method use to delete data of exam from the teacher's exam bank
 	 * 
@@ -158,7 +170,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			ObservableList<Exam> Qlist;
 
 			Exam ExamToDelete = GetTableDetails(textExamID.getText());
-			if(ExamToDelete==null) {
+			if (ExamToDelete == null) {
 				popUp("Exam Id is not exist!");
 				return;
 			}
@@ -219,7 +231,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		tableExam.setEditable(false);
 		RequestToServer req = new RequestToServer("getProfNames");
 		ClientUI.cems.accept(req);
-		profName =(HashMap<String, String>) CEMSClient.responseFromServer.getResponseData();
+		profName = (HashMap<String, String>) CEMSClient.responseFromServer.getResponseData();
 
 		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
@@ -275,8 +287,8 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		ArrayList<Exam> ExamsOfTeacher = new ArrayList<Exam>();
 		ClientUI.cems.accept(req);
 		ExamsOfTeacher = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
-		for(Exam curr:ExamsOfTeacher) 
-			curr.getProfession().setProfessionID(profName.get(curr.getExamID().substring(0,2)));
+		for (Exam curr : ExamsOfTeacher)
+			curr.getProfession().setProfessionID(profName.get(curr.getExamID().substring(0, 2)));
 		data = FXCollections.observableArrayList(ExamsOfTeacher);
 		tableExam.getColumns().clear();
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
@@ -290,8 +302,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	/**
 	 * btnCreateActiveExam open screen of exam info of teacher with the chosen
-	 * ExamID. 
-	 * It is allowed to perform the same exam but NOT in the same time
+	 * ExamID. It is allowed to perform the same exam but NOT in the same time
 	 * checks by req to server in CreateActiveExamController.
 	 * 
 	 * @param event occurs when User press On "Create Active Exam"
@@ -299,11 +310,11 @@ public class ExamBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnCreateActiveExam(ActionEvent event) {
-		//can not create active exam for exam in status: active.
+		// can not create active exam for exam in status: active.
 		Exam selectedExam = getExistExamDetails(textExamID.getText());
 		if ((textExamID.getText().isEmpty())) {
 			btnCreateActiveExam.setDisable(true);
-			
+
 		} else {
 			CreateActiveExamController.setActiveExamState(selectedExam);
 			displayNextScreen(teacher, "CreateActiveExam.fxml");
@@ -338,16 +349,17 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		examsList = (ArrayList<Exam>) CEMSClient.responseFromServer.getResponseData();
 		TableColumn<Exam, String> course = new TableColumn<>("Course");
 
-		for(Exam curr:examsList) 
-			curr.getProfession().setProfessionID(profName.get(curr.getExamID().substring(0,2)));
+		for (Exam curr : examsList)
+			curr.getProfession().setProfessionID(profName.get(curr.getExamID().substring(0, 2)));
 		RequestToServer req2 = new RequestToServer("getCoursesNames");
-		HashMap<String, ProfessionCourseName> coursesNames ;
+		HashMap<String, ProfessionCourseName> coursesNames;
 		ClientUI.cems.accept(req2);
-		coursesNames= (HashMap<String, ProfessionCourseName>) CEMSClient.responseFromServer.getResponseData();
-		
-		for(Exam curr:examsList)
-			curr.getCourse().setCourseID(coursesNames.get(curr.getExamID().substring(0, 2)).getCourses().get(curr.getExamID().substring(2, 4)));
-		
+		coursesNames = (HashMap<String, ProfessionCourseName>) CEMSClient.responseFromServer.getResponseData();
+
+		for (Exam curr : examsList)
+			curr.getCourse().setCourseID(coursesNames.get(curr.getExamID().substring(0, 2)).getCourses()
+					.get(curr.getExamID().substring(2, 4)));
+
 		data = FXCollections.observableArrayList(examsList);
 		tableExam.getColumns().clear();
 		ExamID.setCellValueFactory(new PropertyValueFactory<>("examID"));
@@ -359,29 +371,30 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	}
 
 	/**
-	 * @param event occurs when user press on "Lock"
-	 * 
+	 * @param event occurs when user press on "Lock" FIXME: NEED FIX??
 	 */
 
 	@FXML
 	void btnLockExam(ActionEvent event) {
+		if (textExamID.getText().isEmpty())
+			popUp("Please select a exam.");
+		else {
+			ObservableList<Exam> Qlist;
+			Exam examToLock = GetTableDetails(textExamID.getText());
+			Qlist = tableExam.getSelectionModel().getSelectedItems();
+			RequestToServer req = new RequestToServer("getStudentsInActiveExam");
+			req.setRequestData(examToLock);
+			ClientUI.cems.accept(req);
+			if (CEMSClient.responseFromServer.getResponseType().equals("EXAM LOCKED")) {
+				initTableRows(); // NEED FIX
+				textExamID.clear();
+				popUp("The exam was successfully locked");
+			} else {
+				initTableRows(); // NEED FIX
+				textExamID.clear();
+				popUp("lock exam failed");
+			}
 
-		ObservableList<Exam> Qlist;
-		Exam examToLock = GetTableDetails(textExamID.getText());
-		Qlist = tableExam.getSelectionModel().getSelectedItems();
-		examToLock.setExamStatus(ExamStatus.inActive);
-		RequestToServer req = new RequestToServer("lockActiveExam");
-		req.setRequestData(examToLock);
-		ClientUI.cems.accept(req);
-
-		if (CEMSClient.responseFromServer.getResponseData().equals(false)) // ????
-			System.out.println("lock exam failed");
-		// else
-		// need to delete. to check with yadin.
-		// send lock to all students
-		// ExamToLock.setStatus(Status.inActive); //matar
-		// RequestToServer req = new RequestToServer("deleteActiveExam");//matar
-		// req.setRequestData(ExamToLock);//matar
+		}
 	}
-
 }

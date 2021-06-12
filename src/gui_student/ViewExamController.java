@@ -1,10 +1,8 @@
 package gui_student;
 
 import java.util.ArrayList;
-
 import client.CEMSClient;
 import client.ClientUI;
-import common.MyFile;
 import entity.ActiveExam;
 import entity.Exam;
 import entity.ExamOfStudent;
@@ -22,6 +20,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
+
+//FIXME: ADD JAVADOC
 
 public class ViewExamController extends GuiCommon {
 
@@ -67,9 +67,7 @@ public class ViewExamController extends GuiCommon {
 	@FXML
 	private ImageView imgRefresh;
 
-	private static StudentController studentController;
-
-	private  User student = (User) ClientUI.loggedInUser.getUser();
+	private User student = (User) ClientUI.loggedInUser.getUser();
 	static ArrayList<QuestionRow> questionsID;
 	static ArrayList<Question> questions;
 	private String examType;

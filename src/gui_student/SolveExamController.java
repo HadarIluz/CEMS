@@ -32,6 +32,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
+//FIXME: ADD JAVADOC
+
 public class SolveExamController implements Initializable{
 
 	@FXML

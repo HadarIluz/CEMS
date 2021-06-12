@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -305,7 +306,7 @@ public class DBController {
 	public boolean createNewExam(Exam exam) {
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("INSERT INTO exam VALUES(?, ?, ?, ?, ?, ?, ?,?);");// matar
+			pstmt = conn.prepareStatement("INSERT INTO exam VALUES(?, ?, ?, ?, ?, ?, ?,?,?);");// matar
 			pstmt.setString(1, exam.getExamID());
 			pstmt.setString(2, exam.getProfession().getProfessionID());
 			pstmt.setString(3, exam.getCourse().getCourseID());
@@ -313,7 +314,8 @@ public class DBController {
 			pstmt.setString(5, exam.getCommentForTeacher());
 			pstmt.setString(6, exam.getCommentForStudents());
 			pstmt.setInt(7, exam.getAuthor().getId());
-
+			pstmt.setObject(8,exam.getExamStatus().toString());
+			pstmt.setString(9, exam.getActiveExamType());
 			if (pstmt.executeUpdate() == 1) {
 				return true;
 			}
@@ -870,7 +872,8 @@ public class DBController {
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
 				exam.setCommentForTeacher(rs.getString(5));
 				exam.setCommentForStudents(rs.getString(6));
-				exam.setExamStatus(ExamStatus.valueOf((String) rs.getObject(8)));
+				exam.setExamStatus(ExamStatus.valueOf((String)rs.getObject(8)));
+				exam.setActiveExamType((String) rs.getObject(9));
 				rs.close();
 			}
 		} catch (SQLException ex) {
@@ -1099,13 +1102,13 @@ public class DBController {
 		return exams;
 	}
 
-	public ArrayList<Integer> getStudentsInActiveExam(ActiveExam activeExam) {
+	public ArrayList<Integer> getStudentsInActiveExam(Exam exam) {
 		ArrayList<Integer> students = new ArrayList<Integer>();
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("SELECT * FROM exam_of_student WHERE exam = ? AND totalTime = ?;");
-			pstmt.setString(1, activeExam.getExam().getExamID());
-			pstmt.setString(2, null);
+			pstmt.setString(1, exam.getExamID());
+			pstmt.setInt(2, 0);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				students.add(rs.getInt(1));
@@ -1608,9 +1611,10 @@ public class DBController {
 			pstmt = conn.prepareStatement("INSERT INTO exam_records VALUES(?, ?, ?, ?, ?, ?, ?);");
 			pstmt.setString(1, activeExam.getExam().getExamID());
 			pstmt.setTime(2, new Time(System.currentTimeMillis()));
-			pstmt.setInt(3, activeExam.getExam().getTimeOfExam());
-			int actualTime = (int) ((System.currentTimeMillis() - activeExam.getStartTime().toLocalTime().toNanoOfDay())
-					/ 60000);
+			pstmt.setInt(3, activeExam.getTimeAllotedForTest());
+			LocalTime currentTime = (new Time(System.currentTimeMillis())).toLocalTime();
+			int actualTime = (currentTime.toSecondOfDay() - activeExam.getStartTime().toLocalTime().toSecondOfDay())
+					/ 60;
 			pstmt.setInt(4, actualTime);
 			pstmt.setInt(5, initiated);
 			pstmt.setInt(6, forced);
@@ -1699,6 +1703,53 @@ public class DBController {
 		return "true";
 	}
 
+	public boolean activeExamExists(ActiveExam activeExam) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam = ?;");
+			pstmt.setString(1, activeExam.getExam().getExamID());
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			if (rs.first() == false)
+				return false;
+		} catch (SQLException ex) {
+			ex.getMessage();
+		}
+		return true;
+	}
+
+	public int getTeacherOfExam(Exam exam) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT author FROM exam WHERE exam = ?;");
+			pstmt.setString(1, exam.getExamID());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				int teacherId = rs.getInt(1);
+				return teacherId;
+			}
+		} catch (SQLException ex) {
+			ex.getMessage();
+		}
+		return 0;
+	}
+	
+	public int getPrincipalId() {
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("SELECT id FROM user WHERE userType = ?;");
+			pstmt.setString(1, "Principal");
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				int principalId = rs.getInt(1);
+				return principalId;
+			}
+		} catch (SQLException ex) {
+			ex.getMessage();
+		}
+		return 0;
+	}
+	
 	public ArrayList<String> getAllExams() {
 		ArrayList<String> examsID = new ArrayList<String>();
 		PreparedStatement pstmt;
@@ -1810,5 +1861,34 @@ public class DBController {
 
 		return suspectedInCopy;
 	}
+	
+	
+	public ResponseFromServer updateScoresOfEditExam(ArrayList<QuestionInExam> updatedQuestions) {
+		ResponseFromServer response = null;
+		PreparedStatement pstmt;
+		try {
+			for (QuestionInExam qID : updatedQuestions) {
 
+				pstmt = conn.prepareStatement("UPDATE question_in_exam SET score=? WHERE question=?");
+				pstmt.setInt(1, qID.getScore());
+				pstmt.setString(2, qID.getQuestionID());
+
+				System.out.println(pstmt);
+				if (pstmt.executeUpdate() == 1) {
+					System.out.println("Edit Exam Saved");
+					response = new ResponseFromServer("Edit Exam Scores Updated");
+				} else {
+					response = new ResponseFromServer("Edit_Exam_Scores_NOT_Updated");
+				}
+			}
+
+		} catch (SQLException ex) {
+			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
+		}
+
+		return response;
+
+	}
+	
 }
+

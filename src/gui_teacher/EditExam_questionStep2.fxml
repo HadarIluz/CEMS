@@ -13,11 +13,6 @@
 
 <AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_teacher.EditExam_questionsStep2Controller">
    <children>
-      <Button fx:id="btnCreateNewQuestion" layoutX="330.0" layoutY="515.0" mnemonicParsing="false" onAction="#btnCreateNewQuestion" text="Create new question">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
       <Text fx:id="textTotal" layoutX="86.0" layoutY="493.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Exam Score : ">
          <font>
             <Font name="System Bold" size="16.0" />
@@ -49,7 +44,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TableView fx:id="tableAddedQuestions" layoutX="59.0" layoutY="143.0" onMouseClicked="#chooseQ" prefHeight="252.0" prefWidth="648.0">
+      <TableView fx:id="tableQuestion" layoutX="59.0" layoutY="143.0" onMouseClicked="#chooseQ" prefHeight="252.0" prefWidth="648.0">
         <columns>
           <TableColumn fx:id="questionID" prefWidth="75.0" text="QuestionID" />
           <TableColumn fx:id="questionScore" prefWidth="75.0" text="Score" />
@@ -68,7 +63,6 @@
       </Text>
       <TextField fx:id="txtChangeScore" layoutX="300.0" layoutY="425.0" prefHeight="25.0" prefWidth="92.0" promptText="Change Score" />
       <Button fx:id="btnUpdateScore" layoutX="403.0" layoutY="425.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#UpdateScore" prefHeight="25.0" prefWidth="122.0" text="Update Score" />
-      <Button fx:id="btnDelete" layoutX="570.0" layoutY="425.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#DeleteFromExam" prefHeight="25.0" prefWidth="122.0" text="Delete From Exam" />
       <Text fx:id="textNavigation" fill="#5e057e" layoutX="37.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAVIGATION: Exam Bank &gt; Exam Detailes: Step1 &gt; Step2" underline="true" visible="false" wrappingWidth="575.5537109375">
          <font>
             <Font name="System Italic" size="14.0" />
