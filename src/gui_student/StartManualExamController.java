@@ -91,9 +91,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
     private static StudentController studentController;
 	private static ActiveExam newActiveExam;
-	private static Boolean lockBecauseTeacher;
+	private static Boolean lock;
 	private static int addTime;
-	private Boolean lockBecauseTime;
 	private AtomicInteger timeForTimer;
 	private Timer timer;
 	private ExamOfStudent examOfStudent;
@@ -125,8 +124,13 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	 */
 	@FXML
 	void btnSubmit(ActionEvent event) {
+		submitExam(ReasonOfSubmit.initiated);
+	}
+	
+	private void submitExam(ReasonOfSubmit reasonOfSubmit) {
+		examOfStudent.setReasonOfSubmit(reasonOfSubmit);
 		// When the student clicks Submit
-		if (!lockBecauseTime && !lockBecauseTeacher) {
+		if (reasonOfSubmit == ReasonOfSubmit.initiated ) {
 			Object[] options = { " Cancel ", " Submit " };
 			JFrame frame = new JFrame("Submit Exam");
 			int dialogResult = JOptionPane.showOptionDialog(frame,
@@ -161,7 +165,6 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 						if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) {
 							timer.cancel();
 							examOfStudent.setScore(0);
-							examOfStudent.setReasonOfSubmit(ReasonOfSubmit.initiated);
 							txtUploadSucceed.setVisible(true);
 							btnSubmit.setDisable(true);
 							// Update the details in the exam_of_student table in DB
@@ -188,7 +191,6 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 			examOfStudent.setTotalTime(
 					((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60 - timeForTimer.get())
 							/ 60);
-			examOfStudent.setReasonOfSubmit(ReasonOfSubmit.forced);
 			RequestToServer req = new RequestToServer("StudentFinishManualExam");
 			req.setRequestData(examOfStudent);
 			ClientUI.cems.accept(req);
@@ -227,8 +229,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
-		lockBecauseTeacher = false;
-		lockBecauseTime = false;
+		lock = false;
 		addTime = 0;
 		// set the timer
 		LocalTime currentTime = (new Time(System.currentTimeMillis())).toLocalTime();
@@ -239,7 +240,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
-			public void run() { // When extra time was received
+			public void run() { 
 				// When extra time is received updates the timer and notifies the student
 				if (addTime != 0) {
 					newActiveExam.setExtraTime(addTime);
@@ -258,21 +259,18 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				String str = String.format("Time left: %02d:%02d:%02d", hours, minutes, seconds);
 				Platform.runLater(() -> textTimeLeft.setText(str));
 				timeForTimer.decrementAndGet();
-				if (timeForTimer.get() == 0 || lockBecauseTeacher) {
-					if (timeForTimer.get() == 0)
-						lockBecauseTime = true;
-					Platform.runLater(() -> lockExam());
+				if (timeForTimer.get() == 0 || lock) {
+					Platform.runLater(() -> stopExam());
 				}
 			}
 		}, 0, 1000);
 
 	}
 
-	private void lockExam() {
-		// btnDownload.setDisable(true);
+	private void stopExam() {
 		btnSubmit.setDisable(true);
 		popUp("The exam is locked!");
-		btnSubmit(null);
+		submitExam(ReasonOfSubmit.forced);
 	}
 
 	/**
@@ -290,7 +288,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	 * @param Boolean temp
 	 */
 	public static void setFlagToLockExam(Boolean temp) {
-		lockBecauseTeacher = temp;
+		lock = temp;
 	}
 
 	/**
