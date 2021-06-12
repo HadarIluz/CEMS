@@ -31,190 +31,206 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
-public class CreateExam_step1Controller extends GuiCommon implements Initializable{
+public class CreateExam_step1Controller extends GuiCommon implements Initializable {
 
-    @FXML
-    private TextArea textLecturers_Instructions;
-    
-    @FXML
-    private TextArea textStudent_Instructions;
+	@FXML
+	private TextArea textLecturers_Instructions;
 
-    @FXML
-    private Button btnNext;
+	@FXML
+	private TextArea textStudent_Instructions;
 
-    @FXML
-    private ComboBox<String> selectProffessionList;
+	@FXML
+	private Button btnNext;
 
-    @FXML
-    private ComboBox<String> selectCourseList;
+	@FXML
+	private ComboBox<String> selectProffessionList;
 
-    @FXML
-    private TextField textExamDuration;
+	@FXML
+	private ComboBox<String> selectCourseList;
 
-    @FXML
-    private ImageView imgStep1;
+	@FXML
+	private TextField textExamDuration;
 
-    @FXML
-    private Text textAuthor;
+	@FXML
+	private ImageView imgStep1;
 
-    @FXML
-    private ImageView imgComputer;
-    
-    @FXML
-    private Label noQbankError;
-    
-    @FXML
-    private RadioButton btnComputerized;
+	@FXML
+	private Text textAuthor;
 
-    @FXML
-    private RadioButton btnManual;
+	@FXML
+	private ImageView imgComputer;
 
-  
-    
-    private HashMap<String, Profession> professionsMap = null;
-    private Profession selectedProfession;
-    private ArrayList<Course> courseList;
-    private Course selectedCourse = null;
-    private HashMap<String, Course> courseMap = null;
-    private static Exam newExam = null;
+	@FXML
+	private Label noQbankError;
 
-    @FXML
-    void btnComputerizedPress(ActionEvent event) {
-    	btnComputerized.setSelected(true);
-    	btnManual.setSelected(false);
-    }
+	@FXML
+	private RadioButton btnComputerized;
 
-    @FXML
-    void btnManualPress(ActionEvent event) {
-    	btnComputerized.setSelected(false);
-    	btnManual.setSelected(true);
-    }
-    
-    @FXML
-    void btnNext(ActionEvent event) {
-    	// check all fields:
-    	if (selectedCourse == null) {
-    		popUp("You must select a course");
-    	}
-    	else if (textExamDuration.getText().trim().length() == 0) {
-    		popUp("You must enter exam duration");
-    	}
-    	else if(!(btnComputerized.isSelected()) & !(btnManual.isSelected())) {
-    		popUp("You must choose the type of exam you are creating");
+	@FXML
+	private RadioButton btnManual;
 
-    	}
-    	else {
-    		int time = Integer.parseInt(textExamDuration.getText().trim());
-    		if (time <= 0) {
-    			popUp("Invalid time");
-    			//flag = false;
-    		}
-    		else if (time <= 29 && time > 0) {
-    			popUp("Exam time too short");
-    			//flag = false;
-    		}
-    		else if (time > 240) {
-    			popUp("Exam time too long");
-//				flag = false;
+	private HashMap<String, Profession> professionsMap = null;
+	private Profession selectedProfession;
+	private ArrayList<Course> courseList;
+	private Course selectedCourse = null;
+	private HashMap<String, Course> courseMap = null;
+	private static Exam newExam = null;
+
+	@FXML
+	void btnComputerizedPress(ActionEvent event) {
+		btnComputerized.setSelected(true);
+		btnManual.setSelected(false);
+		selectProffessionList.setDisable(false);
+	}
+
+	@FXML
+	void btnManualPress(ActionEvent event) {
+		btnComputerized.setSelected(false);
+		btnManual.setSelected(true);
+		selectProffessionList.setDisable(false);
+	}
+
+	@FXML
+	void btnNext(ActionEvent event) {
+		// check all fields:
+		if (selectedCourse == null) {
+			popUp("You must select a course");
+		} else if (textExamDuration.getText().trim().length() == 0) {
+			popUp("You must enter exam duration");
+		} else if (!(btnComputerized.isSelected()) & !(btnManual.isSelected())) {
+			popUp("You must choose the type of exam you are creating");
+		} else {
+			String t= textExamDuration.getText().trim();
+			if(!t.matches("[0-9]+")) {
+				popUp("Exam time must be set in minutes.");
 			}
-//    		if (!flag) {
-//    			popUp(strBuilder.toString());
-//    		}
-    		
-    		else {
-    			if (newExam == null) {
-        			newExam = new Exam(selectedProfession, selectedCourse, time);
+			int time = Integer.parseInt(textExamDuration.getText().trim());
+			if (time <= 0) {
+				popUp("Invalid time");
+			} else if (time <= 29 && time > 0) {
+				popUp("Exam time too short");
 
-    			}
-    			if (textLecturers_Instructions.getText().trim().length() > 0) {
-    				newExam.setCommentForTeacher(textLecturers_Instructions.getText().trim());
-    			}
-    			if (textStudent_Instructions.getText().trim().length() > 0) {
-    				newExam.setCommentForStudents(textStudent_Instructions.getText().trim());
-    			}
-    			newExam.setAuthor((Teacher)ClientUI.loggedInUser.getUser());
-    			if(btnComputerized.isSelected()) 
-    				newExam.setActiveExamType("computerized");
-    			
-    			else {
-    				newExam.setActiveExamType("manual");
-    			}
-    			newExam.setExamStatus(ExamStatus.inActive);
-    			startNextScreen(newExam);
+			} else if (time > 240) {
+				popUp("Exam time too long");
+			} else {
+				if (newExam == null) {
+					newExam = new Exam(selectedProfession, selectedCourse, time);
+				}
+				if (textLecturers_Instructions.getText().trim().length() > 0) {
+					newExam.setCommentForTeacher(textLecturers_Instructions.getText().trim());
+				}
+				if (textStudent_Instructions.getText().trim().length() > 0) {
+					newExam.setCommentForStudents(textStudent_Instructions.getText().trim());
+				}
+				newExam.setAuthor((Teacher) ClientUI.loggedInUser.getUser());
+				
+				//in case teacher change here choice from manual to computerized, 
+				//need to check if there is exam back for this exam!
+				boolean continueNextScreen = true;
+				if (btnComputerized.isSelected()) {
+					if(isQuestionBank_NOT_Exists()) {
+						noQbankError.setText("No question bank was found for this profession");
+						noQbankError.setVisible(true);
+						btnNext.setDisable(false);
+						popUp("To continue creating a computerized exam, please select\n"
+								+ "a profession and course that have a quiz of questions.");
+						continueNextScreen=false;
+					}
+					else {
+						newExam.setActiveExamType("computerized");	
+					}
+				}
+				else {
+					newExam.setActiveExamType("manual");
+				}
+				newExam.setExamStatus(ExamStatus.inActive);
+				if(continueNextScreen) {
+					startNextScreen(newExam);
+				}
 
-    		}
-    	}
-    }
+			}
+		}
+	}
 
-    private void startNextScreen(Exam newExam) {
-    	try {
-    		if(newExam.getActiveExamType().equals("computerized")) {
-			CreateExam_addQ_step2Controller.setExamState(newExam);
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_addQ_step2.fxml"));
-			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-			TeacherController.root.add(newPaneRight, 1, 0);
-    		}else {
-    			UploadManualExam.setNewExam(newExam);
-    			Pane newPaneRight = FXMLLoader.load(getClass().getResource("UploadManualExam.fxml"));
-    			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-    			TeacherController.root.add(newPaneRight, 1, 0);
-    		}
+	private void startNextScreen(Exam newExam) {
+		try {
+			if (newExam.getActiveExamType().equals("computerized")) {
+				CreateExam_addQ_step2Controller.setExamState(newExam);
+				Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_addQ_step2.fxml"));
+				newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+				TeacherController.root.add(newPaneRight, 1, 0);
+			} else {
+				UploadManualExam.setNewExam(newExam);
+				Pane newPaneRight = FXMLLoader.load(getClass().getResource("UploadManualExam.fxml"));
+				newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+				TeacherController.root.add(newPaneRight, 1, 0);
+			}
 
 		} catch (IOException e) {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
 
-		
 	}
 
 	@FXML
-    void selectCourseList(ActionEvent event) {
+	void selectCourseList(ActionEvent event) {
 		if (courseMap.containsKey(selectCourseList.getValue())) {
 			selectedCourse = courseMap.get(selectCourseList.getValue());
 		}
-    }
+	}
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	@FXML
-    void selectProffessionList(ActionEvent event) {
+	void selectProffessionList(ActionEvent event) {
 		noQbankError.setVisible(false);
+		if (professionsMap.containsKey(selectProffessionList.getValue())) {
+			selectedProfession = professionsMap.get(selectProffessionList.getValue());
 
-    	if (professionsMap.containsKey(selectProffessionList.getValue())) {
-    		selectedProfession = professionsMap.get(selectProffessionList.getValue());
-    		
-    		RequestToServer req = new RequestToServer("getQuestionBank");
-    		Question q = new Question();
-    		q.setTeacher((Teacher)ClientUI.loggedInUser.getUser());
-    		q.setProfession(selectedProfession);
-    		req.setRequestData(q);
-    		ClientUI.cems.accept(req);
-    		
-    		if (CEMSClient.responseFromServer.getResponseType().equals("No Question Bank")) {
-    			noQbankError.setText("No question bank was found for this profession");
-    			noQbankError.setVisible(true);
-    		}
-    		else {
-    			CreateExam_addQ_step2Controller.loadAvailableQuestions((ArrayList<Question>) CEMSClient.responseFromServer.getResponseData());
-    			req = new RequestToServer("getCoursesByProfession");
-    			req.setRequestData(selectedProfession);
-        		ClientUI.cems.accept(req);
-        		
-        		if (CEMSClient.responseFromServer.getResponseType().equals("No Courses")) {
-        			noQbankError.setText("There are no courses available for this profession");
-        			noQbankError.setVisible(true);
-        		}
-        		else {
-        			courseList = (ArrayList<Course>)CEMSClient.responseFromServer.getResponseData();
-        			loadCourseListIntoComboBox();
-        		}
-    		}
-    	}
-    }
+
+			if (isQuestionBank_NOT_Exists() && btnComputerized.isSelected()) {
+				noQbankError.setText("No question bank was found for this profession");
+				noQbankError.setVisible(true);
+
+			} else {
+				CreateExam_addQ_step2Controller
+						.loadAvailableQuestions((ArrayList<Question>) CEMSClient.responseFromServer.getResponseData());
+				RequestToServer req = new RequestToServer("getCoursesByProfession");
+				req.setRequestData(selectedProfession);
+				ClientUI.cems.accept(req);
+
+				if (CEMSClient.responseFromServer.getResponseType().equals("No Courses")) {
+					noQbankError.setText("There are no courses available for this profession");
+					noQbankError.setVisible(true);
+				} else {
+					courseList = (ArrayList<Course>) CEMSClient.responseFromServer.getResponseData();
+					loadCourseListIntoComboBox();
+				}
+			}
+		}
+	}
+
+	/**
+	 * @return true if QuestionBank NOT Exists for this exam.
+	 */
+	private boolean isQuestionBank_NOT_Exists() {
+		RequestToServer req = new RequestToServer("getQuestionBank");
+		Question q = new Question();
+		q.setTeacher((Teacher) ClientUI.loggedInUser.getUser());
+		q.setProfession(selectedProfession);
+		req.setRequestData(q);
+		ClientUI.cems.accept(req);
+		
+		if (CEMSClient.responseFromServer.getResponseType().equals("No Question Bank")) {
+			return true;
+		}
+		return false;
+		
+	}
 
 	private void loadCourseListIntoComboBox() {
 		courseMap = new HashMap<>();
-		for (Course c: courseList) {
+		for (Course c : courseList) {
 			courseMap.put(c.getCourseName(), c);
 		}
 		selectCourseList.setItems(FXCollections.observableArrayList(courseMap.keySet()));
@@ -223,12 +239,13 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		textAuthor.setText(ClientUI.loggedInUser.getUser().getFirstName() + " " + ClientUI.loggedInUser.getUser().getLastName());
+		textAuthor.setText(
+				ClientUI.loggedInUser.getUser().getFirstName() + " " + ClientUI.loggedInUser.getUser().getLastName());
 		noQbankError.setVisible(false);
-		
+
 		professionsMap = TeacherController.getProfessionsMap();
 		loadProfessionsToCombobox();
-		
+
 		if (newExam != null) {
 			selectedProfession = newExam.getProfession();
 			selectProffessionList.getSelectionModel().select(selectedProfession.getProfessionName());
@@ -239,21 +256,21 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 			if (newExam.getCommentForTeacher() != null) {
 				textLecturers_Instructions.setText(String.valueOf(newExam.getCommentForTeacher()));
 			}
-			
+
 			if (newExam.getCommentForStudents() != null) {
 				textStudent_Instructions.setText(String.valueOf(newExam.getCommentForStudents()));
 			}
-			
+
+		} else {
+			selectProffessionList.setDisable(true);
 		}
 
-
 	}
-	
+
 	private void loadProfessionsToCombobox() {
 		selectProffessionList.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
-    
-    }
-	
+
+	}
 
 	public static void setExamState(Exam newExam2) {
 		newExam = newExam2;
