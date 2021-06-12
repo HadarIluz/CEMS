@@ -20,9 +20,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -31,9 +28,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import logic.RequestToServer;
 
 public class CreateExam_step1Controller extends GuiCommon implements Initializable{
@@ -104,18 +99,28 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
     	else if (textExamDuration.getText().trim().length() == 0) {
     		popUp("You must enter exam duration");
     	}
-    	else if(!btnComputerized.isSelected() & !btnManual.isSelected()) {
+    	else if(!(btnComputerized.isSelected()) & !(btnManual.isSelected())) {
     		popUp("You must choose the type of exam you are creating");
 
     	}
     	else {
     		int time = Integer.parseInt(textExamDuration.getText().trim());
-    		if (time <= 29) {
-        		popUp("Exam time too short");
-    		}
     		if (time <= 0) {
-        		popUp("Invalid time");
+    			popUp("Invalid time");
+    			//flag = false;
     		}
+    		else if (time <= 29 && time > 0) {
+    			popUp("Exam time too short");
+    			//flag = false;
+    		}
+    		else if (time > 240) {
+    			popUp("Exam time too long");
+//				flag = false;
+			}
+//    		if (!flag) {
+//    			popUp(strBuilder.toString());
+//    		}
+    		
     		else {
     			if (newExam == null) {
         			newExam = new Exam(selectedProfession, selectedCourse, time);
@@ -131,8 +136,9 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
     			if(btnComputerized.isSelected()) 
     				newExam.setActiveExamType("computerized");
     			
-    			else 
+    			else {
     				newExam.setActiveExamType("manual");
+    			}
     			newExam.setExamStatus(ExamStatus.inActive);
     			startNextScreen(newExam);
 
@@ -169,7 +175,8 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 		}
     }
 
-    @FXML
+    @SuppressWarnings("unchecked")
+	@FXML
     void selectProffessionList(ActionEvent event) {
 		noQbankError.setVisible(false);
 

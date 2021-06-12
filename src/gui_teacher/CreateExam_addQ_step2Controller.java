@@ -5,10 +5,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import client.CEMSClient;
+import client.ClientUI;
 import entity.Exam;
 import entity.Question;
 import entity.QuestionInExam;
 import entity.QuestionInExamRow;
+import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,6 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import logic.RequestToServer;
 
 public class CreateExam_addQ_step2Controller implements Initializable {
 
@@ -95,16 +99,25 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 
 	@FXML
 	void DeleteFromExam(ActionEvent event) {
-
-		selectedQuestionsRows.remove(Qlist.get(0));
-		updateTotalScore();
+		if (Qlist != null) {
+			selectedQuestionsRows.remove(Qlist.get(0));
+			updateTotalScore();
+		}
 	}
 
 	@FXML
 	void UpdateScore(ActionEvent event) {
 		if (!(txtChangeScore.getText().trim().isEmpty())) {
-			Qlist.get(0).setScore(Integer.valueOf(txtChangeScore.getText().trim()));
-			updateTotalScore();
+			// check valid score
+			int changeScore = Integer.parseInt(txtChangeScore.getText().trim());
+			if (changeScore > 0 && changeScore < 101) {
+				if (Qlist != null) {
+					Qlist.get(0).setScore(Integer.valueOf(txtChangeScore.getText().trim()));
+					updateTotalScore();
+				}
+			} else {
+				GuiCommon.popUp("Invalid Score");
+			}
 		}
 	}
 
@@ -141,8 +154,24 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 		inputStage.showAndWait();
 
 		QuestionInExam q = loader.<BrowseQuestionController>getController().getSelectedQuestion();
-		q.setExam(newExam);
-		insertRow(q);
+		if (q != null) {
+			q.setExam(newExam);
+			insertRow(q);
+		}
+		listenToCloseWindow(inputStage);
+	}
+
+	/**
+	 * listen for close events on a JavaFX Stage, notified when the user clicks the
+	 * button with the X on, in the upper right corner of the Stage
+	 * 
+	 * @param primaryStage
+	 */
+	private void listenToCloseWindow(Stage inputStage) {
+		inputStage.setOnCloseRequest((event) -> {
+			System.out.println("Closing Stage");
+		});
+
 	}
 
 	private void updateTotalScore() {
@@ -163,11 +192,6 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 	}
 
 	@FXML
-	void btnCreateNewQuestion(ActionEvent event) {
-
-	}
-
-	@FXML
 	void btnNext(ActionEvent event) {
 		setQuestionsInNewExam();
 		CreateNewExam_step3Controller.setExamState(newExam);
@@ -184,7 +208,7 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 	}
 
 	private void setQuestionsInNewExam() {
-		ArrayList<QuestionInExam> finaleQusetionList = new ArrayList();
+		ArrayList<QuestionInExam> finaleQusetionList = new ArrayList<QuestionInExam>();
 		for (QuestionInExamRow q : selectedQuestionsRows) {
 			finaleQusetionList.add(q.getQuestionObject());
 		}
@@ -232,8 +256,8 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 		availableQuestions = questionBank;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void initTableCols() {
-
 		tableAddedQuestions.getColumns().clear();
 		questionID.setCellValueFactory(new PropertyValueFactory<>("questionID"));
 		questionScore.setCellValueFactory(new PropertyValueFactory<>("score"));
