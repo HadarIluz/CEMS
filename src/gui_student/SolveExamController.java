@@ -33,8 +33,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
-//FIXME: ADD JAVADOC
-
 public class SolveExamController implements Initializable {
 
 	@FXML
@@ -98,32 +96,56 @@ public class SolveExamController implements Initializable {
 	private AtomicInteger timeForTimer;
 	private int timeLeft;
 
+	/**
+	 * @param event
+	 * the method handles click on btnAnswer1
+	 */
 	@FXML
 	void btnAnswer1(ActionEvent event) {
 		studentAnswers[currentQuestion] = 1;
 
 	}
 
+	/**
+	 * @param event
+	 * the method handles click on btnAnswer2
+	 */
 	@FXML
 	void btnAnswer2(ActionEvent event) {
 		studentAnswers[currentQuestion] = 2;
 	}
 
+	/**
+	 * @param event
+	 * the method handles click on btnAnswer3
+	 */
 	@FXML
 	void btnAnswer3(ActionEvent event) {
 		studentAnswers[currentQuestion] = 3;
 	}
 
+	/**
+	 * @param event
+	 * the method handles click on btnAnswer4
+	 */
 	@FXML
 	void btnAnswer4(ActionEvent event) {
 		studentAnswers[currentQuestion] = 4;
 	}
 
+	/**
+	 * @param event
+	 * the method handles click on btnSubmitExam
+	 */
 	@FXML
 	void btnSubmitExam(ActionEvent event) {
 		submitExam(ReasonOfSubmit.initiated);
 	}
 
+	/**
+	 * @param reasonOfSubmit
+	 * this method handles the submit of exam (if it's forced or initiated)
+	 */
 	private void submitExam(ReasonOfSubmit reasonOfSubmit) {
 		btnSubmitExam.setDisable(true);
 		timer.cancel();
@@ -156,6 +178,10 @@ public class SolveExamController implements Initializable {
 		}
 	}
 
+	/**
+	 * @param event
+	 * the method handles click on btnNext
+	 */
 	@FXML
 	void btnNext(ActionEvent event) {
 		currentQuestion++;
@@ -163,6 +189,10 @@ public class SolveExamController implements Initializable {
 		unselectRadioButton();
 	}
 
+	/**
+	 * @param event
+	 * the method handles click on btnPrev
+	 */
 	@FXML
 	void btnPrev(ActionEvent event) {
 		currentQuestion--;
@@ -170,6 +200,10 @@ public class SolveExamController implements Initializable {
 		unselectRadioButton();
 	}
 
+	
+	/**
+	 * When moving between questions, this cleans the picking of answers. only if the it was not answered before
+	 */
 	private void unselectRadioButton() {
 		btnAnswer1.setSelected(false);
 		btnAnswer2.setSelected(false);
@@ -195,11 +229,18 @@ public class SolveExamController implements Initializable {
 		}
 	}
 
+	/**
+	 * @param event
+	 * the method handles click on checkBoxShowTime
+	 */
 	@FXML
 	void checkBoxShowTime(MouseEvent event) {
 		lblTimeLeft.setVisible(!lblTimeLeft.visibleProperty().get());
 	}
 
+	/**
+	 * This method initializes the screen
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -257,6 +298,11 @@ public class SolveExamController implements Initializable {
 		loadQuestion(currentQuestion);
 	}
 
+	
+	/**
+	 * @param i
+	 * this method loads question i to the screen
+	 */
 	private void loadQuestion(int i) {
 		int qNum = i + 1;
 		lblQuestionNumber.setText("Question " + qNum + " / 10");
@@ -279,6 +325,10 @@ public class SolveExamController implements Initializable {
 		}
 	}
 
+	
+	/**
+	 * This method stops the exam in a case it's forced
+	 */
 	private void stopExam() {
 		btnSubmitExam.setDisable(true);
 		GuiCommon.popUp("The exam is locked!");

@@ -95,12 +95,7 @@ public class UploadManualExam extends GuiCommon {
 				uploadFile.setSize(bytes.length);
 				bis.read(uploadFile.getMybytearray(), 0, bytes.length);
 				fis.close();
-				//
-//				FileInputStream fis = null;
-//				fis = new FileInputStream(selectedExamFile);
-//				fis.read(bytes);
-//				uploadFile.initArray((int)selectedExamFile.length());
-//				uploadFile.setMybytearray(bytes);
+
 			} catch (IOException e) {
 			popUp("Upload Failed.");
 			return;
@@ -117,6 +112,8 @@ public class UploadManualExam extends GuiCommon {
 			ExamIDLAbel.setText(NewExamID);
 			ExamIDLAbel.setVisible(true);
 			btnBack.setDisable(true);
+			btnBrowse.setDisable(true);
+			btnUpload.setDisable(true);
 			}else {
 				msgLabel.setTextFill(Color.RED);
 				msgLabel.setText("File Upload Failed");

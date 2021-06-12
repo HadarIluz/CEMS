@@ -378,6 +378,11 @@ public class CEMSserver extends AbstractServer {
 
 	/*------------------------------------Private Methods-------------------------------------------------*/
 
+	/**
+	 * @param studentExam
+	 * @param client
+	 * update that the student finished the manual exam
+	 */
 	private void StudentFinishManualExam(ExamOfStudent studentExam, ConnectionToClient client) {
 		ResponseFromServer response = null;
 		if (dbController.updateStudentExam(studentExam)) {
@@ -395,7 +400,8 @@ public class CEMSserver extends AbstractServer {
 
 	/**
 	 * @param studentExam
-	 * @param client      inserts all student exam data to DB
+	 * @param client      
+	 * inserts all student exam data to DB
 	 */
 	private void StudentFinishExam(ExamOfStudent studentExam, ConnectionToClient client) {
 		ResponseFromServer res = null;
@@ -419,8 +425,10 @@ public class CEMSserver extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (studentExam.getReasonOfSubmit() == ReasonOfSubmit.forced || checkIfExamFinished(studentExam.getActiveExam()))
+		if (studentExam.getReasonOfSubmit() == ReasonOfSubmit.forced || checkIfExamFinished(studentExam.getActiveExam())) {
 			documentExam(studentExam.getActiveExam());
+			checkForCopying(studentExam.getActiveExam());
+		}
 	}
 
 	private void EditQuestion(Question question, ConnectionToClient client) {
@@ -468,7 +476,8 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/**
-	 * @param activeExam this method documents a finished exam in the db
+	 * @param activeExam 
+	 * this method documents a finished exam in the db
 	 */
 	private void documentExam(ActiveExam activeExam) {
 		if (dbController.activeExamExists(activeExam)) {
@@ -486,7 +495,6 @@ public class CEMSserver extends AbstractServer {
 			} else
 				printMessageInLogFramServer("document exam failed");
 		}
-		// now call for method that checks copying (only if computerized)
 	}
 
 	/**
@@ -624,17 +632,41 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
-
-	private void CheckSameMistakeOfStudent(ArrayList<ExamOfStudent> exams, ConnectionToClient client) {
-		try {
-			ResponseFromServer Res = new ResponseFromServer("Check Copy of Exam");
-			Res.setResponseData(dbController.getPotentialCopyList(exams));
-			client.sendToClient(Res);
-		} catch (IOException e) {
-			e.printStackTrace();
+	
+	/**
+	 * @param activeExam
+	 * get all details about solutions of students for an exam, and check if suspected for copying
+	 */
+	private void checkForCopying(ActiveExam activeExam) {
+		ArrayList<ExamOfStudent> examsOfStudent = dbController.getExamsOfStudentsByExamID(activeExam);
+		for (ExamOfStudent e : examsOfStudent) {
+			e.setQuestionsAndAnswers(dbController.getQuestionsAndAnswersByExamOfStudent(e));
 		}
-
+		ArrayList<Integer> suspectStudentID = dbController.getPotentialCopyList(examsOfStudent);
+		
+		int teacherID = dbController.getTeacherOfExam(activeExam.getExam());
+		// send notification to teacher
+		ResponseFromServer res = new ResponseFromServer("NOTIFICATION_TEACHER_POTENTIAL_COPY");
+		res.setResponseData(suspectStudentID);
+		try {
+			loogedClients.get(teacherID).sendToClient(res);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 	}
+
+//	private void CheckSameMistakeOfStudent(ArrayList<ExamOfStudent> exams, ConnectionToClient client) {
+//		try {
+//			ResponseFromServer Res = new ResponseFromServer("Check Copy of Exam");
+//			Res.setResponseData(dbController.getPotentialCopyList(exams));
+//			client.sendToClient(Res);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 	/**
 	 * Verify if activeExam exist at this time, set ActiveExam object if found.
@@ -884,8 +916,9 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/**
-	 * @param questionData this method creates the question ID and then inserts the
-	 *                     new question into the DB.
+	 * @param questionData 
+	 * this method creates the question ID and then inserts the
+	 * new question into the DB.
 	 */
 	private void createNewQuestion(Question questionData, ConnectionToClient client) {
 		int numOfQuestions = dbController.getNumOfQuestionsInProfession(questionData.getProfession().getProfessionID());
@@ -909,10 +942,10 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/**
-	 * TODO: add comment
 	 * 
 	 * @param examData
-	 * @return
+	 * @return a response to the client
+	 * this method gets all details of a new exam and inserts it to the DB
 	 */
 	private ResponseFromServer createNewExam(Exam examData) {
 		// create the exam ID by number of exams in this profession and course
@@ -1077,7 +1110,6 @@ public class CEMSserver extends AbstractServer {
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			// GuiCommon.popUp("Failed.");
 		}
 
 	}

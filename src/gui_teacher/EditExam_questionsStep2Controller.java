@@ -34,7 +34,7 @@ import logic.RequestToServer;
  * of all the questions in table.
  * 
  * We reuse the screen to display all the question details of any exam in the
- * system that the principal has chosen to see what exam bank is. T
+ * system that the principal has chosen to see what exam bank is. 
  * Therefore the screen distinguishes between 2 types of users: 
  * Manager - viewing permissions only.
  * Teacher - editing permissions as described.
@@ -273,7 +273,7 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		}
 		Qlist = FXCollections.observableArrayList(existsQuestions);
 
-		tableQuestion.getColumns().clear(); // DEBUG
+		tableQuestion.getColumns().clear(); 
 		questionID.setCellValueFactory(new PropertyValueFactory<>("questionID"));
 		questionScore.setCellValueFactory(new PropertyValueFactory<>("score"));
 		question.setCellValueFactory(new PropertyValueFactory<>("questionDescription"));

@@ -88,6 +88,10 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 																	// dispaly the prev screen)
 	private static String questionID;
 
+	/**
+	 * @param event
+	 * this method handles the click on btnBack
+	 */
 	@FXML
 	void btnBack(ActionEvent event) {
 		if (!displayPrincipalView) {
@@ -97,6 +101,10 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 		}
 	}
 
+	/**
+	 * @param event
+	 * this method handles the click on btnSaveQuestion
+	 */
 	@FXML
 	void btnSaveQuestion(ActionEvent event) {
 		// go through all inputs
@@ -149,11 +157,19 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 
 	}
 
+	/**
+	 * @param event
+	 * this method handles the click on selectCorrectAnswer
+	 */
 	@FXML
 	void selectCorrectAnswer(ActionEvent event) {
 		selectedIndex = selectCorrectAnswer.getValue();
 	}
 
+	/**
+	 * @param event
+	 * this method handles the click on selectProfession
+	 */
 	@FXML
 	void selectProfession(ActionEvent event) {
 		if (professionsMap.containsKey(selectProfession.getValue())) {
@@ -161,10 +177,21 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 		}
 	}
 
+	
+	/**
+	 * This method loads the proffesion into the combobox
+	 */
 	private void loadProfessionsToCombobox() {
 		selectProfession.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
 	}
 
+	
+	
+	/**
+	 * @param location
+	 * @param resources
+	 * this method runs when the screen is being initialized
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		selectedIndex = null;

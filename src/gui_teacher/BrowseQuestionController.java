@@ -4,8 +4,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import client.CEMSClient;
+import client.ClientUI;
 import entity.Question;
 import entity.QuestionInExam;
+import gui_cems.GuiCommon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +21,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import logic.RequestToServer;
 
 public class BrowseQuestionController implements Initializable {
 
@@ -50,22 +55,28 @@ public class BrowseQuestionController implements Initializable {
 
 	@FXML
 	void selectQuestion(ActionEvent event) {
-		if (textQuestionScore.getText().trim().length() == 0) {
-			// handle with popup
-		} else {
-			if (Qlist.isEmpty())
-				return;
-			selectedQ = new QuestionInExam(Integer.parseInt(textQuestionScore.getText()), Qlist.get(0), null);
-			btnSelectQuestion.getScene().getWindow().hide();
+		if (!textQuestionScore.getText().trim().isEmpty()) {
+			int changeScore = Integer.parseInt(textQuestionScore.getText().trim());
+			if (changeScore > 0 && changeScore < 101) {
+				if (Qlist != null) {
+					selectedQ = new QuestionInExam(Integer.parseInt(textQuestionScore.getText()), Qlist.get(0), null);
+					btnSelectQuestion.getScene().getWindow().hide();
+				}
+			} else {
+				GuiCommon.popUp("Invalid Score");
+			}
 		}
 
 	}
 
 	public QuestionInExam getSelectedQuestion() {
-
-		return selectedQ;
+		if (selectedQ != null) {
+			return selectedQ;
+		}
+		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		tableQuestion.getColumns().clear();
