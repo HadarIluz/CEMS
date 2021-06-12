@@ -141,7 +141,7 @@ public class GuiCommon {
 
 	private static void handleTeacherNotifications(ResponseFromServer res) {
 		if (res.getResponseType().equals("NOTIFICATION_TEACHER_PRINCIPAL_ANSWER")) {
-			TeacherController.newNotifiction(true);
+			TeacherController.getInstance().newNotifiction(true);
 		}
 		
 
@@ -205,5 +205,6 @@ public class GuiCommon {
 			}
 		return true;
 	}
+	
 
 }

@@ -11,6 +11,7 @@ import client.ClientUI;
 import entity.Profession;
 import entity.Teacher;
 import entity.User;
+import gui_cems.GuiCommon;
 import gui_cems.LoginController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -31,6 +32,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import logic.RequestToServer;
+import logic.ResponseFromServer;
 
 /**
  * The class included in the diagrams and contains all the functionality that
@@ -49,7 +51,7 @@ public class TeacherController extends Application implements Initializable {
 	private ImageView imgLogo;
 
 	@FXML
-	private static ImageView imgNotificationOFF;
+	private ImageView imgNotificationOFF;
 
 	@FXML
 	private Label textTeacherName;
@@ -79,7 +81,7 @@ public class TeacherController extends Application implements Initializable {
 	private Label pressLogout;
 
 	@FXML
-	private static ImageView imgNotificationON;
+	private ImageView imgNotificationON;
 
 	public LoginController loginController;
 	public static GridPane root;
@@ -89,6 +91,8 @@ public class TeacherController extends Application implements Initializable {
 
 	private static boolean toggleFlag = false;
 	private static boolean alert=false;
+	
+	private static TeacherController instance;
 
 	/**
 	 * method open the screen for manage question bank of teacher
@@ -221,6 +225,7 @@ public class TeacherController extends Application implements Initializable {
 		root = new GridPane();
 		scene = new Scene(root, 980, 580);
 		Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
+		instance = this;
 		root.add(newMnueLeft, 0, 0);
 		primaryStage.setTitle("CEMS-Computerized Exam Management System");
 		primaryStage.setScene(scene);
@@ -306,11 +311,20 @@ public class TeacherController extends Application implements Initializable {
 			return toggleFlag = false;
 	}
 
-	public static void newNotifiction(boolean f) {
+	public void newNotifiction(boolean f) {
 		imgNotificationON.setVisible(true);
 		imgNotificationOFF.setVisible(false);
-		
 		//alert=f;
 	}
+	
+	public static TeacherController getInstance()
+	{
+		return instance;
+	}
+
+//	private void toggleNotification() {
+//		imgNotificationON.setVisible(true);
+//		imgNotificationOFF.setVisible(false);
+//	}
 
 }
