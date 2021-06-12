@@ -23,6 +23,19 @@ import javafx.scene.text.Text;
 import logic.RequestToServer;
 
 /**
+ * Class contains functionality for edit exam as part of 2 main steps.
+ * This screen describes the first stage in which the teacher sees the exam
+ * details which are not available like examID.
+ * The teacher can edit the exam time and comments.
+ * When clicking the BrowseQuestions button will take you to
+ * the next screen to view the questions. And on this screen the teacher can save the updated exam.
+ * 
+ * We reuse the screen to display any test details in the system that the
+ * principal has chosen to see what the exam bank is. Therefore the screen
+ * distinguishes between 2 types of users: 
+ * Manager - viewing permissions only.
+ * Teacher - editing permissions as described.
+ * 
  * @author Hadar Iluz
  *
  */
@@ -71,6 +84,14 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private static boolean displayPrincipalView = false;
 	private static ArrayList<QuestionInExam> updatedQuestions;
 
+	private String teacherComment;
+	private String studentComment;
+	private String timeAllocateForExam;
+
+	/**
+	 * @param event that occurs When clicking the back button, will take you to
+	 * back to exam bank screen. 
+	 */
 	@FXML
 	void btnBack(ActionEvent event) {
 		if (!displayPrincipalView) {
@@ -81,14 +102,13 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 	}
 
+	/**
+	 * @param event that occurs When clicking the BrowseQuestions button will take you to
+	 * the next screen to view questions by principal or also update by teacher. 
+	 */
 	@FXML
 	void btnBrowseQuestions(ActionEvent event) {
-		String teacherComment = textTeacherComment.getText().trim();
-		String studentComment = textStudentComment.getText().trim();
-		String timeAllocateForExam = textTimeAllocateForExam.getText().trim();
-		// Check that all fields that must be filled are filled correctly.
-		boolean condition = checkConditionToStart(teacherComment, studentComment, timeAllocateForExam);
-		if (condition) {
+		if (getExamDetailsANDcheckCOndition()) {
 			// set the new parameters into editExam
 			exam.setCommentForStudents(studentComment);
 			exam.setCommentForTeacher(teacherComment);
@@ -105,15 +125,16 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 	}
 
+	/**
+	 * @param event that occurs when the teacher makes updates to the test she has
+	 *              chosen. The function checks that all the parameters are correct
+	 *              and if so performs an update in DB by requesting from the
+	 *              server, and displays a message that the update was successful.
+	 *              Otherwise, displays the errors entered and does not update.
+	 */
 	@FXML
 	void btnSaveEditeExam(ActionEvent event) {
-		StringBuilder msgUpdateStatus = new StringBuilder();
-		String teacherComment = textTeacherComment.getText().trim();
-		String studentComment = textStudentComment.getText().trim();
-		String timeAllocateForExam = textTimeAllocateForExam.getText().trim();
-		// Check that all fields that must be filled are filled correctly.
-		boolean condition = checkConditionToStart(teacherComment, studentComment, timeAllocateForExam);
-		if (condition) {
+		if (getExamDetailsANDcheckCOndition()) {
 			// set the new parameters into editExam
 			exam.setCommentForStudents(studentComment);
 			exam.setCommentForTeacher(teacherComment);
@@ -138,9 +159,29 @@ public class EditExamController extends GuiCommon implements Initializable {
 			}
 
 		}
-		
+
 	}
 
+	/**
+	 * Check that all fields that must be filled are filled correctly.
+	 * 
+	 * @return true true if all fields are correctly filled, Otherwise returns
+	 *         false.
+	 */
+	private boolean getExamDetailsANDcheckCOndition() {
+		teacherComment = textTeacherComment.getText().trim();
+		studentComment = textStudentComment.getText().trim();
+		timeAllocateForExam = textTimeAllocateForExam.getText().trim();
+		// Check that all fields that must be filled are filled correctly.
+		return checkConditionToStart(teacherComment, studentComment, timeAllocateForExam);
+	}
+
+	/**
+	 * @param teacherComment      input that the teacher can edit
+	 * @param StudentComment      input that the teacher can edit
+	 * @param timeAllocateForExam input that the teacher can edit
+	 * @return true if all fields are correctly filled, Otherwise returns false
+	 */
 	private boolean checkConditionToStart(String teacherComment, String StudentComment, String timeAllocateForExam) {
 		StringBuilder strBuilder = new StringBuilder();
 		boolean flag = true;
@@ -155,7 +196,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 		}
 		if (textTimeAllocateForExam.getText().isEmpty() == false) {
 			int time = Integer.parseInt(timeAllocateForExam);
-			
+
 			if (timeAllocateForExam.matches("[0-9]+") == false || time <= 0) {
 				strBuilder.append("Time allocate for exam must set in minuse.\n");
 				textTimeAllocateForExam.clear();
@@ -170,20 +211,27 @@ public class EditExamController extends GuiCommon implements Initializable {
 				flag = false;
 			}
 		}
-
 		if (!flag) {
 			popUp(strBuilder.toString());
 		}
-
 		return flag;
 	}
 
+	/**
+	 * @param selectedExam with all inputs from Exam bank.
+	 * @param status       of the logged user in order to display data according to
+	 *                     user permissions.
+	 */
 	public static void setActiveExamState(Exam selectedExam, String status) {
 		screenStatus = status;
 		exam = selectedExam;
 	}
 
-	// tack user data according to screen status from the prev action.
+	/**
+	 * initialize function to prepare the screen after it is loaded. Tack user data
+	 * according to screen status from the prev action.
+	 *
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -219,6 +267,11 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 	}
 
+	/**
+	 * @param examData with all updated details.
+	 * @param displayPrincipalView2 the current screen mode according to logged user.
+	 * @param qlist list with all update score to be update in DB when teacher clicks on "save exam" button.
+	 */
 	public static void setprevScreenData(Exam exam2, boolean displayPrincipalView2, ArrayList<QuestionInExam> qlist) {
 		exam = exam2;
 		displayPrincipalView = displayPrincipalView2;
