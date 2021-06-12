@@ -135,44 +135,48 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 			// When the student clicks Submit. the test is saved in the files folder in the
 			// system
 			if (dialogResult == 1) {
-				String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_"
-						+ examOfStudent.getStudent().getId() + ".docx";
-				String home = System.getProperty("user.home");
-				String LocalfilePath = home + "/Downloads/" + examOfStudent.getActiveExam().getExam().getExamID()
-						+ "_exam.docx";
-				MyFile submitExam = new MyFile(fileName);
-				try {
-					File newFile = new File(LocalfilePath);
-					byte[] mybytearray = new byte[(int) newFile.length()];
-					FileInputStream fis = new FileInputStream(newFile);
-					BufferedInputStream bis = new BufferedInputStream(fis);
-					submitExam.initArray(mybytearray.length);
-					submitExam.setSize(mybytearray.length);
-					bis.read(submitExam.getMybytearray(), 0, mybytearray.length);
-					fis.close();
-					RequestToServer req = new RequestToServer("submitManualExam");
-					req.setRequestData(submitExam);
-					ClientUI.cems.accept(req);
-					if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) {
-						timer.cancel();
-						examOfStudent.setScore(0);
-						examOfStudent.setReasonOfSubmit(ReasonOfSubmit.initiated);
-						txtUploadSucceed.setVisible(true);
-						btnSubmit.setDisable(true);
-						// Update the details in the exam_of_student table in DB
-						RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
-						examOfStudent.setExamType("manual");
-						examOfStudent.setTotalTime(
-								((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60
-										- timeForTimer.get()) / 60);
-						req2.setRequestData(examOfStudent);
-						ClientUI.cems.accept(req2);
+				if (((newActiveExam.getTimeAllotedForTest() - timeForTimer.get()) / 60) < 30)
+					popUp("The test was not submitted!\nA test can only be submitted after half an hour has passed since you started it.");
+				else {
+					String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_"
+							+ examOfStudent.getStudent().getId() + ".docx";
+					String home = System.getProperty("user.home");
+					String LocalfilePath = home + "/Downloads/" + examOfStudent.getActiveExam().getExam().getExamID()
+							+ "_exam.docx";
+					MyFile submitExam = new MyFile(fileName);
+					try {
+						File newFile = new File(LocalfilePath);
+						byte[] mybytearray = new byte[(int) newFile.length()];
+						FileInputStream fis = new FileInputStream(newFile);
+						BufferedInputStream bis = new BufferedInputStream(fis);
+						submitExam.initArray(mybytearray.length);
+						submitExam.setSize(mybytearray.length);
+						bis.read(submitExam.getMybytearray(), 0, mybytearray.length);
+						fis.close();
+						RequestToServer req = new RequestToServer("submitManualExam");
+						req.setRequestData(submitExam);
+						ClientUI.cems.accept(req);
+						if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("SUBMIT EXAM")) {
+							timer.cancel();
+							examOfStudent.setScore(0);
+							examOfStudent.setReasonOfSubmit(ReasonOfSubmit.initiated);
+							txtUploadSucceed.setVisible(true);
+							btnSubmit.setDisable(true);
+							// Update the details in the exam_of_student table in DB
+							RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
+							examOfStudent.setExamType("manual");
+							examOfStudent.setTotalTime(
+									((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60
+											- timeForTimer.get()) / 60);
+							req2.setRequestData(examOfStudent);
+							ClientUI.cems.accept(req2);
+						}
+					} catch (Exception ex) {
+						txtError1.setVisible(true);
+						txtError2.setVisible(true);
+						txtError3.setVisible(true);
+						ex.printStackTrace();
 					}
-				} catch (Exception ex) {
-					txtError1.setVisible(true);
-					txtError2.setVisible(true);
-					txtError3.setVisible(true);
-					ex.printStackTrace();
 				}
 			}
 		} else { // When the exam is locked
