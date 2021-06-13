@@ -4,8 +4,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import client.CEMSClient;
-import client.ClientUI;
 import entity.Question;
 import entity.QuestionInExam;
 import gui_cems.GuiCommon;
@@ -21,8 +19,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import logic.RequestToServer;
 
 public class BrowseQuestionController implements Initializable {
 
@@ -58,7 +54,7 @@ public class BrowseQuestionController implements Initializable {
 		if (!textQuestionScore.getText().trim().isEmpty()) {
 			int changeScore = Integer.parseInt(textQuestionScore.getText().trim());
 			if (changeScore > 0 && changeScore < 101) {
-				if (Qlist != null) {
+				if (Qlist != null || selectedQ!=null) {
 					selectedQ = new QuestionInExam(Integer.parseInt(textQuestionScore.getText()), Qlist.get(0), null);
 					btnSelectQuestion.getScene().getWindow().hide();
 				}

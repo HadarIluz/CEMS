@@ -69,6 +69,9 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 	@FXML
 	private RadioButton btnManual;
 
+	@FXML
+	private Label msgErrorTime;
+
 	private HashMap<String, Profession> professionsMap = null;
 	private Profession selectedProfession;
 	private ArrayList<Course> courseList;
@@ -100,51 +103,45 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 		} else if (!(btnComputerized.isSelected()) & !(btnManual.isSelected())) {
 			popUp("You must choose the type of exam you are creating");
 		} else {
-			String t= textExamDuration.getText().trim();
-			if(!t.matches("[0-9]+")) {
-				popUp("Exam time must be set in minutes.");
-			}
-			int time = Integer.parseInt(textExamDuration.getText().trim());
-			if (time <= 0) {
-				popUp("Invalid time");
-			} else if (time <= 29 && time > 0) {
-				popUp("Exam time too short");
 
-			} else if (time > 240) {
-				popUp("Exam time too long");
-			} else {
+			String t = textExamDuration.getText().trim();
+			if (!t.matches("[0-9]+") || Integer.parseInt(t)<=0 ) {
+				msgErrorTime.setText("Exam time must be set in minutes.");
+			} else{ 
+				msgErrorTime.setText("");
+
 				if (newExam == null) {
-					newExam = new Exam(selectedProfession, selectedCourse, time);
+					newExam = new Exam(selectedProfession, selectedCourse, Integer.parseInt(t));
+				} else {
+					newExam.setAuthor((Teacher) ClientUI.loggedInUser.getUser());
 				}
+				// }
 				if (textLecturers_Instructions.getText().trim().length() > 0) {
 					newExam.setCommentForTeacher(textLecturers_Instructions.getText().trim());
 				}
 				if (textStudent_Instructions.getText().trim().length() > 0) {
 					newExam.setCommentForStudents(textStudent_Instructions.getText().trim());
 				}
-				newExam.setAuthor((Teacher) ClientUI.loggedInUser.getUser());
-				
-				//in case teacher change here choice from manual to computerized, 
-				//need to check if there is exam back for this exam!
+
+				// in case teacher change here choice from manual to computerized,
+				// need to check if there is exam back for this exam!
 				boolean continueNextScreen = true;
 				if (btnComputerized.isSelected()) {
-					if(isQuestionBank_NOT_Exists()) {
+					if (isQuestionBank_NOT_Exists()) {
 						noQbankError.setText("No question bank was found for this profession");
 						noQbankError.setVisible(true);
 						btnNext.setDisable(false);
 						popUp("To continue creating a computerized exam, please select\n"
 								+ "a profession and course that have a quiz of questions.");
-						continueNextScreen=false;
+						continueNextScreen = false;
+					} else {
+						newExam.setActiveExamType("computerized");
 					}
-					else {
-						newExam.setActiveExamType("computerized");	
-					}
-				}
-				else {
+				} else {
 					newExam.setActiveExamType("manual");
 				}
 				newExam.setExamStatus(ExamStatus.inActive);
-				if(continueNextScreen) {
+				if (continueNextScreen) {
 					startNextScreen(newExam);
 				}
 
@@ -187,7 +184,6 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 		if (professionsMap.containsKey(selectProffessionList.getValue())) {
 			selectedProfession = professionsMap.get(selectProffessionList.getValue());
 
-
 			if (isQuestionBank_NOT_Exists() && btnComputerized.isSelected()) {
 				noQbankError.setText("No question bank was found for this profession");
 				noQbankError.setVisible(true);
@@ -220,12 +216,12 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 		q.setProfession(selectedProfession);
 		req.setRequestData(q);
 		ClientUI.cems.accept(req);
-		
+
 		if (CEMSClient.responseFromServer.getResponseType().equals("No Question Bank")) {
 			return true;
 		}
 		return false;
-		
+
 	}
 
 	private void loadCourseListIntoComboBox() {
