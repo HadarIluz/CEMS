@@ -71,6 +71,7 @@ public class CreateNewExam_step3Controller implements Initializable{
 			textExamID.setText((String)CEMSClient.responseFromServer.getResponseData());
 			textMsg_newExam.setVisible(true);
 	    	btnBack.setDisable(true);
+	    	CreateExam_step1Controller.setExamState(null);
 		}
 		else {
 			textExamID.setText("There was a problem. please try again later");
