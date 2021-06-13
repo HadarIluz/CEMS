@@ -84,8 +84,8 @@ public class TeacherController extends Application implements Initializable {
 	protected User teacher;
 	private static HashMap<String, Profession> professionsMap = null;
 
-	public static String msgOfcopy = null;
-	public static String saveMsg;
+	private static String msgOfNotification = null;
+	private String saveMsg;
 	private Timer timer;
 
 	/**
@@ -248,13 +248,13 @@ public class TeacherController extends Application implements Initializable {
 			@Override
 			public void run() {
 
-				if (msgOfcopy != null) {
+				if (msgOfNotification != null) {
 					
-					saveMsg=msgOfcopy;
+					saveMsg=msgOfNotification;
 					
 					Platform.runLater(() -> GuiCommon.popUp(saveMsg));
 
-					msgOfcopy = null;
+					msgOfNotification = null;
 				}
 
 			}
@@ -308,7 +308,7 @@ public class TeacherController extends Application implements Initializable {
 
 	public static void CopyAlertNotification(String msg) {
 
-		msgOfcopy = msg;
+		msgOfNotification = msg;
 
 	}
 

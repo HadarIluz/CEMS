@@ -4,12 +4,16 @@ package gui_principal;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import client.CEMSClient;
 import client.ClientUI;
 import entity.User;
+import gui_cems.GuiCommon;
 import gui_cems.LoginController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -78,6 +82,11 @@ public class PrincipalController extends Application implements Initializable {
 	public Scene scene;
 	private static int newRequest;
 	static ColorAdjust colorAdjust = new ColorAdjust();
+	private static String msgOfNotification = null;
+	private String saveMsg;
+	private Timer timer;
+
+
 
 	/**
 	 * The method that initializes the screen is currently loading
@@ -86,6 +95,24 @@ public class PrincipalController extends Application implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		principal = ClientUI.loggedInUser.getUser();
 		lblUserName.setText(principal.getFirstName() + " " + principal.getLastName());
+		
+		timer = new Timer();
+
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+
+				if (msgOfNotification != null) {
+					
+					saveMsg=msgOfNotification;
+					
+					Platform.runLater(() -> GuiCommon.popUp(saveMsg));
+
+					msgOfNotification = null;
+				}
+
+			}
+		}, 0, 1000);
 	}
 
 	/**
@@ -238,6 +265,12 @@ public class PrincipalController extends Application implements Initializable {
 		// msgRequest.setEffect(colorAdjust);//
 		// }
 		// lblNew.setVisible(true);
+	}
+	
+	public static void CopyAlertNotification(String msg) {
+
+		msgOfNotification = msg;
+
 	}
 
 }
