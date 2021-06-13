@@ -30,8 +30,6 @@ import logic.ResponseFromServer;
  * 
  * @author Hadar Iluz
  * @author Matar Asaf
- *
- * 
  */
 public class GuiCommon {
 
@@ -135,14 +133,21 @@ public class GuiCommon {
 			handlePrincipalNotifications(res);
 	}
 
+	/**
+	 * @param res in send as input and include NOTIFICATION text
+	 * Which gives an indication that alert should be sent to principal.
+	 */
 	private static void handlePrincipalNotifications(ResponseFromServer res) {
 		if (res.getResponseType().equals("NOTIFICATION_PRINCIPAL_REQUEST_RECEIVED")) {
-			// need implement
-			// res.getResponseData() contain activeExamID
 			PrincipalController.CopyAlertNotification("You have a new extenstion request for exam: " + (String)res.getResponseData());
 		}
 	}
 
+	/**
+	 * @param res in send as input and include NOTIFICATION text
+	 * Which gives an indication that alert should be sent to teacher.
+	 */
+	@SuppressWarnings("unchecked")
 	private static void handleTeacherNotifications(ResponseFromServer res) {
 		if (res.getResponseType().equals("NOTIFICATION_TEACHER_POTENTIAL_COPY")) {
 			ArrayList<Integer> suspected = (ArrayList<Integer>) res.getResponseData();
@@ -166,6 +171,11 @@ public class GuiCommon {
 
 	}
 
+	/**
+	 * @param res in send as input and include NOTIFICATION text
+	 * Which gives an indication that alert should be sent to student about extra time when
+	 * he solve any type of exam..
+	 */
 	private static void handleStudentNotifications(ResponseFromServer res) {
 		if (res.getResponseType().equals("NOTIFICATION_STUDENT_EXAM_LOCKED")) {
 			if ((((Exam) res.getResponseData()).getActiveExamType()).equals("manual"))

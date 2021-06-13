@@ -267,6 +267,10 @@ public class PrincipalController extends Application implements Initializable {
 		// lblNew.setVisible(true);
 	}
 	
+	/**
+	 * FIXME: ADDJAVADOC
+	 * @param msg
+	 */
 	public static void CopyAlertNotification(String msg) {
 
 		msgOfNotification = msg;
