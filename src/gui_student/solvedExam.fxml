@@ -14,7 +14,7 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Text>
-      <TableView fx:id="tableQuestion" layoutX="9.0" layoutY="124.0" prefHeight="424.0" prefWidth="744.0">
+      <TableView fx:id="tableQuestion" layoutX="7.0" layoutY="124.0" prefHeight="424.0" prefWidth="744.0">
         <columns>
             <TableColumn fx:id="Question" minWidth="0.0" prefWidth="200.0" resizable="false" text="question" />
           <TableColumn fx:id="YourAnswer" prefWidth="171.0" resizable="false" text="Your Answer" />
