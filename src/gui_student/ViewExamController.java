@@ -91,8 +91,15 @@ public class ViewExamController extends GuiCommon {
 				Question question;
 				question = (Question) CEMSClient.responseFromServer.getResponseData();
 				question.setCorrectAns(question.getAnswers()[question.getCorrectAnswerIndex() - 1]);
+				if(curr.getStudentAnswer()!=0) {
 				question.setStdAns(question.getAnswers()[curr.getStudentAnswer() - 1]);
+				}
+				else
+				{
+					question.setStdAns("You didn't choose any answer for that question!");
+				}
 				if (!question.getCorrectAns().equals(question.getStdAns())) {
+					
 					question.setDescription("X");
 				} else {
 

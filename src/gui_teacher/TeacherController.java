@@ -5,14 +5,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import client.CEMSClient;
 import client.ClientUI;
 import entity.Profession;
 import entity.Teacher;
 import entity.User;
+import gui_cems.GuiCommon;
 import gui_cems.LoginController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,8 +36,8 @@ import javafx.stage.Stage;
 import logic.RequestToServer;
 
 /**
- * The class included in the diagrams and contains all the functionality
- * that the start has, manages the left menu in the system and describes the
+ * The class included in the diagrams and contains all the functionality that
+ * the start has, manages the left menu in the system and describes the
  * privileges that the Teacher has in the system.
  * 
  * @author Yadin
@@ -79,6 +83,10 @@ public class TeacherController extends Application implements Initializable {
 	public Scene scene;
 	protected User teacher;
 	private static HashMap<String, Profession> professionsMap = null;
+
+	public static String msgOfcopy = null;
+	public static String saveMsg;
+	private Timer timer;
 
 	/**
 	 * method open the screen for manage question bank of teacher
@@ -233,6 +241,24 @@ public class TeacherController extends Application implements Initializable {
 		teacher = ClientUI.loggedInUser.getUser();
 		textTeacherName.setText(teacher.getFirstName() + " " + teacher.getLastName());
 		setProfessionMap(((Teacher) ClientUI.loggedInUser.getUser()).getProfessions());
+
+		timer = new Timer();
+
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+
+				if (msgOfcopy != null) {
+					
+					saveMsg=msgOfcopy;
+					
+					Platform.runLater(() -> GuiCommon.popUp(saveMsg));
+
+					msgOfcopy = null;
+				}
+
+			}
+		}, 0, 1000);
 	}
 
 	/**
@@ -277,6 +303,12 @@ public class TeacherController extends Application implements Initializable {
 			}
 
 		});
+
+	}
+
+	public static void CopyAlertNotification(String msg) {
+
+		msgOfcopy = msg;
 
 	}
 
