@@ -965,11 +965,8 @@ public class CEMSserver extends AbstractServer {
 			res.setStatusMsg(stat);
 		}
 		// in case of computerized exam
-		if (examData.getActiveExamType().equals("manual")) {
-			// there is no question in this case to sace in DB
-		}
 		// add questions and scores to DB
-		else {
+		if (examData.getActiveExamType().equals("computerized")){
 
 			if (!dbController.addQuestionsInExam(examID, examData.getExamQuestionsWithScores())) {
 				// return error

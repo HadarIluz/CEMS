@@ -112,10 +112,11 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 
 				if (newExam == null) {
 					newExam = new Exam(selectedProfession, selectedCourse, Integer.parseInt(t));
-				} else {
+					
+				//} else {
 					newExam.setAuthor((Teacher) ClientUI.loggedInUser.getUser());
-				}
-				// }
+				//}
+				 }
 				if (textLecturers_Instructions.getText().trim().length() > 0) {
 					newExam.setCommentForTeacher(textLecturers_Instructions.getText().trim());
 				}
