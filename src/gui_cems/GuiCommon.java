@@ -2,6 +2,7 @@
 package gui_cems;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import entity.ActiveExam;
 import entity.Exam;
@@ -140,7 +141,22 @@ public class GuiCommon {
 	}
 
 	private static void handleTeacherNotifications(ResponseFromServer res) {
-		// TODO Auto-generated method stub
+		
+		if (res.getResponseType().equals("NOTIFICATION_TEACHER_POTENTIAL_COPY")) 
+		{
+			ArrayList<Integer> suspected= (ArrayList<Integer>) res.getResponseData();
+			StringBuilder SB=new StringBuilder("Suspected in copy of Exam "+ suspected.get(suspected.size()-1)+ ":\n");
+			suspected.remove(suspected.size()-1);
+			for(Integer std : suspected)
+			{
+				SB.append(String.valueOf(std)+" \n");
+								
+			}
+						
+			
+			TeacherController.CopyAlertNotification(SB.toString());
+			
+		}
 
 	}
 
