@@ -272,8 +272,6 @@ public class EditExamController extends GuiCommon implements Initializable {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 
 			// Forces the teacher to switch between the 2 screens of editing an exam.
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
-			System.out.println(backFromStep2);
 			if (backFromStep2) {
 				btnSaveEditeExam.setDisable(false);
 			} else {
