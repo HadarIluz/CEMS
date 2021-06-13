@@ -139,6 +139,7 @@ public class GuiCommon {
 		if (res.getResponseType().equals("NOTIFICATION_PRINCIPAL_REQUEST_RECEIVED")) {
 			// need implement
 			// res.getResponseData() contain activeExamID
+			PrincipalController.CopyAlertNotification("You have a new extenstion request for exam: " + (String)res.getResponseData());
 		}
 	}
 
@@ -149,7 +150,7 @@ public class GuiCommon {
 				return;
 			}
 			StringBuilder SB = new StringBuilder(
-					"Suspected in copy of Exam 0" + suspected.get(suspected.size() - 1) + ":\n");
+					"Suspected in copy of Exam " + suspected.get(suspected.size() - 1) + ":\n");
 			suspected.remove(suspected.size() - 1);
 			for (Integer std : suspected) {
 				SB.append(String.valueOf(std) + " \n");
@@ -160,6 +161,7 @@ public class GuiCommon {
 		if (res.getResponseType().equals("NOTIFICATION_TEACHER_REQUEST_APPROVED")) {
 			// need implement
 			// res.getResponseData() contain activeExamID
+			TeacherController.CopyAlertNotification("Request for time extenstion approved for exam: " + (String)res.getResponseData());
 		}
 
 	}

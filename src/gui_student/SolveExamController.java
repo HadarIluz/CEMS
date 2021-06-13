@@ -313,7 +313,7 @@ public class SolveExamController implements Initializable {
 	 */
 	private void loadQuestion(int i) {
 		int qNum = i + 1;
-		lblQuestionNumber.setText("Question " + qNum + " / 10");
+		lblQuestionNumber.setText("Question " + qNum + " / "+ newActiveExam.getExam().getExamQuestionsWithScores().size());
 		QuestionInExam q = newActiveExam.getExam().getExamQuestionsWithScores().get(i);
 		lblPoints.setText("<" + q.getScore() + "> Points");
 		txtQuestionDescription.setText(q.getQuestion().getDescription());
@@ -325,7 +325,8 @@ public class SolveExamController implements Initializable {
 
 		if (currentQuestion == 0) {
 			btnPrev.setVisible(false);
-		} else if (currentQuestion == studentAnswers.length - 1) {
+		} 
+		if (currentQuestion == newActiveExam.getExam().getExamQuestionsWithScores().size()-1 ) {
 			btnNext.setVisible(false);
 		} else {
 			btnPrev.setVisible(true);
