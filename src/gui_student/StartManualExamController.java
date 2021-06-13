@@ -139,7 +139,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 			Object[] options = { " Cancel ", " Submit " };
 			JFrame frame = new JFrame("Submit Exam");
 			int dialogResult = JOptionPane.showOptionDialog(frame,
-					"Please Note!\nOnce you click Submit you can't edit exam egain.", null, JOptionPane.YES_NO_OPTION,
+					"Please Note!\nOnce you click Submit you can't edit exam again.", null, JOptionPane.YES_NO_OPTION,
 					JOptionPane.WARNING_MESSAGE, null, // do not use a custom Icon
 					options, // the titles of buttons
 					null); // default button title
