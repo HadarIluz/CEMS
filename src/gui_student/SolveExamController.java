@@ -159,9 +159,8 @@ public class SolveExamController implements Initializable {
 
 		ExamOfStudent examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
 		examOfStudent.setQuestionsAndAnswers(studentQuestions);
-		examOfStudent.setTotalTime(
-				((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime() - timeToDeduct) * 60
-						- timeForTimer.get()) / 60);
+		examOfStudent
+				.setTotalTime(((newActiveExam.getTimeAllotedForTest() - timeToDeduct) * 60 - timeForTimer.get()) / 60);
 		examOfStudent.setExamType("computerized");
 		examOfStudent.setReasonOfSubmit(reasonOfSubmit);
 
@@ -259,6 +258,8 @@ public class SolveExamController implements Initializable {
 				// When extra time is received updates the timer and notifies the student
 				if (addTime != 0) {
 					newActiveExam.setExtraTime(addTime);
+					newActiveExam.setTimeAllotedForTest(
+							(newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) + "");
 					timeLeft = timeForTimer.get() + (addTime * 60);
 					timeForTimer.set(timeLeft);
 					Platform.runLater(() -> lblnotificationMsg.setText("Please note, the exam time\nwas extended by "

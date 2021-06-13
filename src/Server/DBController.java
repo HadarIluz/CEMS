@@ -683,6 +683,7 @@ public class DBController {
 				activeExam.setStartTime(rs.getTime(2));
 				activeExam.setTimeAllotedForTest(rs.getString(3));
 				activeExam.setExamCode(rs.getString(4));
+				activeExam.setActiveExamType(rs.getString(5));
 				rs.close();
 			}
 		} catch (SQLException ex) {

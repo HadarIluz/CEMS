@@ -154,7 +154,6 @@ public class GuiCommon {
 		}
 		if (res.getResponseType().equals("NOTIFICATION_STUDENT_ADDED_TIME")) {
 			System.out.println("added time to exam");
-			StartManualExamController.addTimeToExam((int) res.getResponseData());
 			if ((((ActiveExam) res.getResponseData()).getActiveExamType()).equals("manual"))
 				StartManualExamController.addTimeToExam(((ActiveExam) res.getResponseData()).getExtraTime());
 			else

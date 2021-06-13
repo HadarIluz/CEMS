@@ -173,8 +173,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 						RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
 						examOfStudent.setExamType("manual");
 						examOfStudent.setTotalTime(
-								((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime() - timeToDeduct) * 60
-										- timeForTimer.get()) / 60);
+								((newActiveExam.getTimeAllotedForTest() - timeToDeduct) * 60 - timeForTimer.get())
+										/ 60);
 						req2.setRequestData(examOfStudent);
 						ClientUI.cems.accept(req2);
 					}
@@ -189,8 +189,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 			examOfStudent.setExamType("manual");
 			examOfStudent.setScore(0);
 			examOfStudent.setTotalTime(
-					((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime() - timeToDeduct) * 60
-							- timeForTimer.get()) / 60);
+					((newActiveExam.getTimeAllotedForTest() - timeToDeduct) * 60 - timeForTimer.get()) / 60);
 			RequestToServer req = new RequestToServer("StudentFinishManualExam");
 			req.setRequestData(examOfStudent);
 			ClientUI.cems.accept(req);
@@ -243,6 +242,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 				// When extra time is received updates the timer and notifies the student
 				if (addTime != 0) {
 					newActiveExam.setExtraTime(addTime);
+					newActiveExam.setTimeAllotedForTest(
+							(newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) + "");
 					timeLeft = timeForTimer.get() + (addTime * 60);
 					timeForTimer.set(timeLeft);
 					Platform.runLater(() -> textNotificationMsg.setText("Please note, the exam time\nwas extended by "

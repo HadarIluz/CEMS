@@ -61,11 +61,11 @@ public class ApprovalTimeExtensionController implements Initializable {
 		// When a test is selected
 		else {
 			// Adding the time required for the exam time
-			timeOfExam = selectedExtensionRequest.getActiveExam().getTimeAllotedForTest();
-			timeOfExam += Integer.parseInt(selectedExtensionRequest.getAdditionalTime());
-			selectedExtensionRequest.getActiveExam().setTimeAllotedForTest("" + timeOfExam);
 			selectedExtensionRequest.getActiveExam()
 					.setExtraTime(Integer.parseInt(selectedExtensionRequest.getAdditionalTime()));
+			selectedExtensionRequest.getActiveExam()
+					.setTimeAllotedForTest((selectedExtensionRequest.getActiveExam().getTimeAllotedForTest()
+							+ selectedExtensionRequest.getActiveExam().getExtraTime()) + "");
 			// Update the exam time and delete the extension Request in the database
 			RequestToServer req = new RequestToServer("approvalTimeExtension");
 			req.setRequestData(selectedExtensionRequest.getActiveExam());

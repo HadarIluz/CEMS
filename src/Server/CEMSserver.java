@@ -966,7 +966,7 @@ public class CEMSserver extends AbstractServer {
 		}
 		// in case of computerized exam
 		// add questions and scores to DB
-		if (examData.getActiveExamType().equals("computerized")){
+		if (examData.getActiveExamType().equals("computerized")) {
 
 			if (!dbController.addQuestionsInExam(examID, examData.getExamQuestionsWithScores())) {
 				// return error
