@@ -119,7 +119,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnBrowseQuestions(ActionEvent event) {
-		if (getExamDetailsANDcheckCOndition()) {
+		if (getExamDetailsANDcheckCondition()) {
 			// set the new parameters into editExam
 			exam.setCommentForTeacher(teacherComment);
 			exam.setCommentForStudents(studentComment);
@@ -146,7 +146,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	@FXML
 	void btnSaveEditeExam(ActionEvent event) {
 
-		if (getExamDetailsANDcheckCOndition()) {
+		if (getExamDetailsANDcheckCondition()) {
 			// set the new parameters into editExam
 			exam.setCommentForTeacher(teacherComment);
 			if (emptyText) {
@@ -157,26 +157,35 @@ public class EditExamController extends GuiCommon implements Initializable {
 			}
 			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
 
-			// Request from server to update scores Of edited Exam.
-			RequestToServer reqUpdate = new RequestToServer("updateScoresOfEditExam");
-			reqUpdate.setRequestData(updatedQuestions);
-			ClientUI.cems.accept(reqUpdate);
+			if (displayEditManualExam == false) {
 
-			if ((CEMSClient.responseFromServer.getResponseType()).equals("Edit Exam Scores Updated")) {
-				// Request from server to update data of this exam.
-				RequestToServer req = new RequestToServer("SaveEditExam");
-				req.setRequestData(exam);
-				ClientUI.cems.accept(req);
+				// Request from server to update scores Of edited Exam.
+				RequestToServer reqUpdate = new RequestToServer("updateScoresOfEditExam");
+				reqUpdate.setRequestData(updatedQuestions);
+				ClientUI.cems.accept(reqUpdate);
 
-				if ((CEMSClient.responseFromServer.getResponseType()).equals("Edit Exam Saved")) {
-					popUp("The exam you edit has been successfully created into the system !");
-				} else {
-					popUp("Update failed.");
+				if ((CEMSClient.responseFromServer.getResponseType()).equals("Edit Exam Scores Updated")) {
+					SaveEditExamRequestToServer();
 				}
+			} else {
+				SaveEditExamRequestToServer();
 			}
 
 		}
 
+	}
+
+	private void SaveEditExamRequestToServer() {
+		// Request from server to update data of this exam.
+		RequestToServer req = new RequestToServer("SaveEditExam");
+		req.setRequestData(exam);
+		ClientUI.cems.accept(req);
+
+		if ((CEMSClient.responseFromServer.getResponseType()).equals("Edit Exam Saved")) {
+			popUp("The exam you edit has been successfully created into the system !");
+		} else {
+			popUp("Update failed.");
+		}
 	}
 
 	/**
@@ -185,7 +194,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 * @return true true if all fields are correctly filled, Otherwise returns
 	 *         false.
 	 */
-	private boolean getExamDetailsANDcheckCOndition() {
+	private boolean getExamDetailsANDcheckCondition() {
 		if ((textTeacherComment.getText().trim()).isEmpty()) {
 			teacherComment = "";
 		} else {
@@ -264,6 +273,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 
 			// Forces the teacher to switch between the 2 screens of editing an exam.
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
 			System.out.println(backFromStep2);
 			if (backFromStep2) {
 				btnSaveEditeExam.setDisable(false);
@@ -276,9 +286,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 				btnBrowseQuestions.setVisible(false);
 				btnLoadNewManualExam.setVisible(true);
 				btnLoadNewManualExam.setDisable(false);
-
 			}
-
 		}
 
 		if (screenStatus.equals(super.principalStatusScreen)) {
@@ -319,17 +327,14 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnLoadNewManualExam(ActionEvent event) {
-		// load next screen.
-		try {
-			EditManualExamStep2.setNewExam(exam);
-			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditManualExamStep2.fxml"));
-			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-			TeacherController.root.add(newPaneRight, 1, 0);
-
-		} catch (IOException e) {
-			System.out.println("Couldn't load!");
-			e.printStackTrace();
-		}
+		if (getExamDetailsANDcheckCondition()) {
+			// set the new parameters into editExam
+			exam.setCommentForTeacher(teacherComment);
+			exam.setCommentForStudents(studentComment);
+			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
+			// sent to next screen exam with data info.
+			EditManualExamStep2.setnextScreenData(exam, displayPrincipalView, updatedQuestions);
+			displayNextScreen(teacher,"EditManualExamStep2.fxml"); // load next screen.
+		}	
 	}
-
 }

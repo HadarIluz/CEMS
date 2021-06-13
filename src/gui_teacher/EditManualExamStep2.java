@@ -5,12 +5,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import client.CEMSClient;
 import client.ClientUI;
 import common.MyFile;
 import entity.Exam;
+import entity.QuestionInExam;
 import gui_cems.GuiCommon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,6 +61,10 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 		newExam = exam;
 	}
 
+	/**
+	 * @param event that occurs When clicking the back button, will take you to back
+	 *              to exam edit exam step1.
+	 */
 	@FXML
 	void btnBack(ActionEvent event) {
 		try {
@@ -70,6 +76,8 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
+		
+		EditExamController.setDataFromStep2(newExam, false, null, true);
 	}
 
 	@SuppressWarnings("resource")
@@ -92,6 +100,7 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 			popUp("Upload Failed.");
 			return;
 		}
+		EditExamController.setDataFromStep2(newExam, false, null, true);
 
 		RequestToServer req2 = new RequestToServer("submitManualExam");
 		req2.setRequestData(uploadFile);
@@ -103,7 +112,7 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 			examIDlbls.setVisible(true);
 			ExamIDLAbel.setText(newExam.getExamID());
 			ExamIDLAbel.setVisible(true);
-			btnBack.setDisable(true);
+			btnBack.setDisable(false);
 			btnBrowse.setDisable(true);
 			btnUpload.setDisable(true);
 		} else {
@@ -111,8 +120,14 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 			msgLabel.setText("File Upload Failed");
 			msgLabel.setVisible(true);
 		}
+		
+				
 	}
 
+	/**
+	 * @param event that occurs When clicking of Browse File button, the the teacher can 
+	 * choose a file and the file of the exists exam will update to the new file.
+	 */
 	@FXML
 	void onClickBroswe(ActionEvent event) {
 		FileChooser fc = new FileChooser();
@@ -127,7 +142,18 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		btnBack.setDisable(false);
 	}
+
+	public static void setnextScreenData(Exam exam, boolean displayPrincipalView,
+			ArrayList<QuestionInExam> updatedQuestions) {
+		newExam=exam;
+	}
+	
+	
+	
+	
+	
+	
 
 }
