@@ -493,7 +493,7 @@ public class CEMSserver extends AbstractServer {
 				printMessageInLogFramServer("There was a problem with update exam status");
 			}
 
-			if (dbController.documentExam(activeExam)) { // enter all relavent data to record_exam table
+			if (dbController.documentExam(activeExam)) { // enter all relevant data to record_exam table
 				printMessageInLogFramServer("document exam suceeded");
 			} else
 				printMessageInLogFramServer("document exam failed");
