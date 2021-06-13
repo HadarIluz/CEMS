@@ -141,35 +141,31 @@ public class GuiCommon {
 	}
 
 	private static void handleTeacherNotifications(ResponseFromServer res) {
-		
-		if (res.getResponseType().equals("NOTIFICATION_TEACHER_POTENTIAL_COPY")) 
-		{
-			ArrayList<Integer> suspected= (ArrayList<Integer>) res.getResponseData();
-			StringBuilder SB=new StringBuilder("Suspected in copy of Exam "+ suspected.get(suspected.size()-1)+ ":\n");
-			suspected.remove(suspected.size()-1);
-			for(Integer std : suspected)
-			{
-				SB.append(String.valueOf(std)+" \n");
-								
+		if (res.getResponseType().equals("NOTIFICATION_TEACHER_POTENTIAL_COPY")) {
+			ArrayList<Integer> suspected = (ArrayList<Integer>) res.getResponseData();
+			StringBuilder SB = new StringBuilder(
+					"Suspected in copy of Exam " + suspected.get(suspected.size() - 1) + ":\n");
+			suspected.remove(suspected.size() - 1);
+			for (Integer std : suspected) {
+				SB.append(String.valueOf(std) + " \n");
 			}
-						
-			
 			TeacherController.CopyAlertNotification(SB.toString());
-			
+		}
+
+		if (res.getResponseType().equals("NOTIFICATION_TEACHER_REQUEST_APPROVED")) {
+			//need implement
 		}
 
 	}
 
 	private static void handleStudentNotifications(ResponseFromServer res) {
 		if (res.getResponseType().equals("NOTIFICATION_STUDENT_EXAM_LOCKED")) {
-			System.out.println("notification exam locked");
 			if ((((Exam) res.getResponseData()).getActiveExamType()).equals("manual"))
 				StartManualExamController.setFlagToLockExam((Boolean) true);
 			else
 				SolveExamController.setFlagToLockExam((Boolean) true);
 		}
 		if (res.getResponseType().equals("NOTIFICATION_STUDENT_ADDED_TIME")) {
-			System.out.println("added time to exam");
 			if ((((ActiveExam) res.getResponseData()).getActiveExamType()).equals("manual"))
 				StartManualExamController.addTimeToExam(((ActiveExam) res.getResponseData()).getExtraTime());
 			else
