@@ -710,7 +710,7 @@ public class DBController {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("DELETE FROM exam WHERE examID=? AND profession=? AND course=?");
 			pstmt.setString(1, exam.getExamID());
-			pstmt.setString(2,exam.getExamID().substring(0,2));
+			pstmt.setString(2, exam.getExamID().substring(0, 2));
 			pstmt.setString(3, exam.getCourse().getCourseID());// need to be courseID
 			pstmt.executeUpdate();
 		} catch (SQLException ex) {
@@ -1537,7 +1537,7 @@ public class DBController {
 		try {
 
 			pstmt = conn.prepareStatement(
-					"SELECT question, answer1, answer2, answer3, answer4, description FROM question WHERE questionID=?;");
+					"SELECT question, answer1, answer2, answer3, answer4, correctAnswerIndex, description FROM question WHERE questionID=?;");
 			pstmt.setString(1, questionID);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -1548,7 +1548,8 @@ public class DBController {
 				answers[2] = rs.getString(4);
 				answers[3] = rs.getString(5);
 				q.setAnswers(answers);
-				q.setDescription(rs.getString(6));
+				q.setCorrectAnswerIndex(rs.getInt(6));
+				q.setDescription(rs.getString(7));
 
 			}
 			rs.close();
@@ -1942,7 +1943,7 @@ public class DBController {
 	public int getTeacherOfExam(Exam exam) {
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("SELECT author FROM exam WHERE exam = ?;");
+			pstmt = conn.prepareStatement("SELECT author FROM exam WHERE examID = ?;");
 			pstmt.setString(1, exam.getExamID());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -2012,6 +2013,10 @@ public class DBController {
 		studentsAns.put(3, Answer3);
 		studentsAns.put(4, Answer4);
 		ArrayList<Integer> suspectedInCopy = new ArrayList<Integer>();
+		if (exams.size() == 1) {
+			return suspectedInCopy;
+		}
+
 		ArrayList<String> questionOfExam = new ArrayList<String>();
 		int numberOfquestion = exams.get(0).getQuestionsAndAnswers().size();
 
@@ -2065,7 +2070,6 @@ public class DBController {
 					}
 
 					}
-					break;
 				}
 
 			} catch (
@@ -2081,18 +2085,23 @@ public class DBController {
 
 				}
 
-				Answer1.clear();
-				Answer2.clear();
-				Answer3.clear();
-				Answer4.clear();
-
 			}
 
+			Answer1.clear();
+			Answer2.clear();
+			Answer3.clear();
+			Answer4.clear();
+
 		}
-
-		suspectedInCopy = (ArrayList<Integer>) suspectedInCopy.stream().distinct();
-
-		return suspectedInCopy;
+		
+		ArrayList<Integer> suspectedInCopyDistinct = new ArrayList<Integer>();
+		for(Integer curr:suspectedInCopy)
+			if(!suspectedInCopyDistinct.contains(curr))
+				suspectedInCopyDistinct.add(curr);
+		
+		suspectedInCopyDistinct.add(Integer.parseInt(SpecificExam));
+		
+		return suspectedInCopyDistinct;
 	}
 
 	/**
