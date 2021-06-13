@@ -150,7 +150,7 @@ public class GuiCommon {
 				return;
 			}
 			StringBuilder SB = new StringBuilder(
-					"Suspected in copy of Exam 0" + suspected.get(suspected.size() - 1) + ":\n");
+					"Suspected in copy of Exam " + suspected.get(suspected.size() - 1) + ":\n");
 			suspected.remove(suspected.size() - 1);
 			for (Integer std : suspected) {
 				SB.append(String.valueOf(std) + " \n");
