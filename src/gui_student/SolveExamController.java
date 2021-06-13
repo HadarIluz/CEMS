@@ -9,6 +9,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
@@ -143,35 +146,47 @@ public class SolveExamController implements Initializable {
 	 *                       or initiated)
 	 */
 	private void submitExam(ReasonOfSubmit reasonOfSubmit) {
-		btnSubmitExam.setDisable(true);
-		timer.cancel();
-		btnAnswer1.setDisable(true);
-		btnAnswer2.setDisable(true);
-		btnAnswer3.setDisable(true);
-		btnAnswer4.setDisable(true);
-		btnNext.setDisable(true);
-		btnPrev.setDisable(true);
-
-		HashMap<QuestionInExam, Integer> studentQuestions = new HashMap<>();
-		for (int i = 0; i < studentAnswers.length; i++) {
-			studentQuestions.put(newActiveExam.getExam().getExamQuestionsWithScores().get(i), studentAnswers[i]);
+		int dialogResult = 0;
+		if (reasonOfSubmit == ReasonOfSubmit.initiated) {
+			Object[] options = { " Cancel ", " Submit " };
+			JFrame frame = new JFrame("Submit Exam");
+			dialogResult = JOptionPane.showOptionDialog(frame,
+					"Please Note!\nOnce you click Submit you can't edit exam egain.", null, JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE, null, // do not use a custom Icon
+					options, // the titles of buttons
+					null); // default button title
 		}
+		if (dialogResult == 1 || reasonOfSubmit == ReasonOfSubmit.forced) {
+			btnSubmitExam.setDisable(true);
+			timer.cancel();
+			btnAnswer1.setDisable(true);
+			btnAnswer2.setDisable(true);
+			btnAnswer3.setDisable(true);
+			btnAnswer4.setDisable(true);
+			btnNext.setDisable(true);
+			btnPrev.setDisable(true);
 
-		ExamOfStudent examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
-		examOfStudent.setQuestionsAndAnswers(studentQuestions);
-		examOfStudent
-				.setTotalTime(((newActiveExam.getTimeAllotedForTest() - timeToDeduct) * 60 - timeForTimer.get()) / 60);
-		examOfStudent.setExamType("computerized");
-		examOfStudent.setReasonOfSubmit(reasonOfSubmit);
+			HashMap<QuestionInExam, Integer> studentQuestions = new HashMap<>();
+			for (int i = 0; i < studentAnswers.length; i++) {
+				studentQuestions.put(newActiveExam.getExam().getExamQuestionsWithScores().get(i), studentAnswers[i]);
+			}
 
-		RequestToServer req = new RequestToServer("StudentFinishExam");
-		req.setRequestData(examOfStudent);
-		ClientUI.cems.accept(req);
+			ExamOfStudent examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
+			examOfStudent.setQuestionsAndAnswers(studentQuestions);
+			examOfStudent.setTotalTime(
+					((newActiveExam.getTimeAllotedForTest() - timeToDeduct) * 60 - timeForTimer.get()) / 60);
+			examOfStudent.setExamType("computerized");
+			examOfStudent.setReasonOfSubmit(reasonOfSubmit);
 
-		if (CEMSClient.responseFromServer.getResponseType().equals("Success student finish exam")) {
-			GuiCommon.popUp("Submit was successfull. You may exit the exam");
-		} else {
-			GuiCommon.popUp("There has been an error. please contact your teacher");
+			RequestToServer req = new RequestToServer("StudentFinishExam");
+			req.setRequestData(examOfStudent);
+			ClientUI.cems.accept(req);
+
+			if (CEMSClient.responseFromServer.getResponseType().equals("Success student finish exam")) {
+				GuiCommon.popUp("Submit was successfull. You may exit the exam");
+			} else {
+				GuiCommon.popUp("There has been an error. please contact your teacher");
+			}
 		}
 	}
 

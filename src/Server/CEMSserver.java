@@ -394,13 +394,10 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
-
 		if (studentExam.getReasonOfSubmit() == ReasonOfSubmit.forced)
 			notSubmitted = dbController.getNumberOfNotSubmitted(studentExam.getActiveExam().getExam().getExamID());
-
-		if (notSubmitted == 0 || checkIfExamFinished(studentExam.getActiveExam())) {
+		if (notSubmitted == 0 || checkIfExamFinished(studentExam.getActiveExam()))
 			documentExam(studentExam.getActiveExam());
-		}
 	}
 
 	/**
@@ -409,6 +406,7 @@ public class CEMSserver extends AbstractServer {
 	 */
 	private void StudentFinishExam(ExamOfStudent studentExam, ConnectionToClient client) {
 		ResponseFromServer res = null;
+		int notSubmitted = -1;
 		int finaleScore = 100;
 		for (QuestionInExam q : studentExam.getQuestionsAndAnswers().keySet()) {
 			if (studentExam.getQuestionsAndAnswers().get(q) != q.getQuestion().getCorrectAnswerIndex()) {
@@ -426,14 +424,12 @@ public class CEMSserver extends AbstractServer {
 		try {
 			client.sendToClient(res);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (studentExam.getReasonOfSubmit() == ReasonOfSubmit.forced
-				|| checkIfExamFinished(studentExam.getActiveExam())) {
+		if (studentExam.getReasonOfSubmit() == ReasonOfSubmit.forced)
+			notSubmitted = dbController.getNumberOfNotSubmitted(studentExam.getActiveExam().getExam().getExamID());
+		if (notSubmitted == 0 || checkIfExamFinished(studentExam.getActiveExam()))
 			documentExam(studentExam.getActiveExam());
-			checkForCopying(studentExam.getActiveExam());
-		}
 	}
 
 	private void EditQuestion(Question question, ConnectionToClient client) {
@@ -966,7 +962,7 @@ public class CEMSserver extends AbstractServer {
 		}
 		// in case of computerized exam
 		// add questions and scores to DB
-		if (examData.getActiveExamType().equals("computerized")){
+		if (examData.getActiveExamType().equals("computerized")) {
 
 			if (!dbController.addQuestionsInExam(examID, examData.getExamQuestionsWithScores())) {
 				// return error
@@ -1043,7 +1039,7 @@ public class CEMSserver extends AbstractServer {
 		// update time alloted for test in active exam after the principal approves the
 		// request.
 		ArrayList<Integer> students = dbController.getStudentsInActiveExam(activeExam.getExam());
-		int teacherID = dbController.getTeacherOfExam(activeExam.getExam()); //to check
+		int teacherID = dbController.getTeacherOfExam(activeExam.getExam()); // to check
 		ResponseFromServer responForPrincipal = null;
 		ResponseFromServer responForStudent = new ResponseFromServer("NOTIFICATION_STUDENT_ADDED_TIME");
 		ResponseFromServer responForTeacher = new ResponseFromServer("NOTIFICATION_TEACHER_REQUEST_APPROVED");
