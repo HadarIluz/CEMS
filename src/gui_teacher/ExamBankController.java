@@ -19,6 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -391,6 +392,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			req.setRequestData(examToLock);
 			ClientUI.cems.accept(req);
 			if (CEMSClient.responseFromServer.getResponseType().equals("EXAM LOCKED")) {
+				TeacherController.root.getChildren().remove((Node) btnCreateActiveExam.getParent());
 				popUp("The exam was successfully locked");
 			} else {
 				popUp("lock exam failed");
