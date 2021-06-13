@@ -5,9 +5,11 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-//FIXME:ADD JAVADOC
-
 /**
+ * The class contains text fields of values that are set into the table
+ * dynamically. The values can be updated in real time.
+ * The class assists in updating the addition of questions from one table to
+ * another and updating the score field for a question.
  *
  * @author Yuval Hayam
  *
@@ -18,6 +20,7 @@ public class QuestionInExamRow {
 	private final IntegerProperty score = new SimpleIntegerProperty();
 	private final StringProperty question = new SimpleStringProperty();
 	private QuestionInExam questionObject;
+
 	/* constructor */
 	public QuestionInExamRow(String questionID, Integer score, String question, QuestionInExam questionObj) {
 		this.questionID.set(questionID);
