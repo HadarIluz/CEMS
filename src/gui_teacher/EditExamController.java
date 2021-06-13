@@ -241,6 +241,8 @@ public class EditExamController extends GuiCommon implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// load data of the selected exam for edit/view according to logged user..
+		if(exam.getActiveExamType().equals("manual")) //matar
+			btnBrowseQuestions.setVisible(false); //matar
 		textExamID.setText(exam.getExamID());
 		textTimeAllocateForExam.setText(Integer.toString(exam.getTimeOfExam()));
 		textTeacherComment.setText(exam.getCommentForTeacher());
