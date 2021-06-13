@@ -25,31 +25,28 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import logic.RequestToServer;
 
-public class EditManualExamStep2 extends GuiCommon implements Initializable{
+public class EditManualExamStep2 extends GuiCommon implements Initializable {
 
 	@FXML
-    private Button btnBrowse;
+	private Button btnBrowse;
 
-    @FXML
-    private TextField txtPath;
+	@FXML
+	private TextField txtPath;
 
-    @FXML
-    private Button btnUpload;
+	@FXML
+	private Button btnUpload;
 
-    @FXML
-    private Button btnBack;
+	@FXML
+	private Button btnBack;
 
-    @FXML
-    private Label msgLabel;
+	@FXML
+	private Label msgLabel;
 
-    @FXML
-    private Label examIDlbls;
+	@FXML
+	private Label examIDlbls;
 
-    @FXML
-    private Label ExamIDLAbel;
-
-    
-    
+	@FXML
+	private Label ExamIDLAbel;
 
 	private static Exam newExam;
 	private File selectedExamFile;
@@ -58,8 +55,8 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable{
 		return newExam;
 	}
 
-	public static void setNewExam(Exam newExam) {
-		EditManualExamStep2.newExam = newExam;
+	public static void setNewExam(Exam exam) {
+		newExam = exam;
 	}
 
 	@FXML
@@ -78,45 +75,37 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable{
 	@SuppressWarnings("resource")
 	@FXML
 	void btnUploadPress(ActionEvent event) {
-		RequestToServer req = new RequestToServer("createNewExam");
-		req.setRequestData(newExam);
-		ClientUI.cems.accept(req);
-		String NewExamID = (String) CEMSClient.responseFromServer.getResponseData();
-		if (NewExamID.length() == 6) {
-			MyFile uploadFile = new MyFile(NewExamID+"_exam.docx");
-			try {
-				byte[] bytes = new byte[(int) selectedExamFile.length()];	
 
-				FileInputStream fis = new FileInputStream(selectedExamFile);
-				BufferedInputStream bis = new BufferedInputStream(fis);
-				uploadFile.initArray(bytes.length);
-				uploadFile.setSize(bytes.length);
-				bis.read(uploadFile.getMybytearray(), 0, bytes.length);
-				fis.close();
+		MyFile uploadFile = new MyFile(newExam.getExamID() + "_exam.docx");
+		File fileToDelete = new File(uploadFile.getFileName());
+		fileToDelete.delete();
 
-			} catch (IOException e) {
+		try {
+			byte[] bytes = new byte[(int) selectedExamFile.length()];
+			FileInputStream fis = new FileInputStream(selectedExamFile);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			uploadFile.initArray(bytes.length);
+			uploadFile.setSize(bytes.length);
+			bis.read(uploadFile.getMybytearray(), 0, bytes.length);
+			fis.close();
+		} catch (IOException e) {
 			popUp("Upload Failed.");
 			return;
-			}
-			
-			RequestToServer req2 = new RequestToServer("submitManualExam");
-			req2.setRequestData(uploadFile);
-			ClientUI.cems.accept(req2);
-			if(CEMSClient.responseFromServer.getResponseType().equals("SUBMIT EXAM")) {
+		}
+
+		RequestToServer req2 = new RequestToServer("submitManualExam");
+		req2.setRequestData(uploadFile);
+		ClientUI.cems.accept(req2);
+		if (CEMSClient.responseFromServer.getResponseType().equals("SUBMIT EXAM")) {
 			msgLabel.setTextFill(Color.GREEN);
 			msgLabel.setText("File Uploaded Successfully");
 			msgLabel.setVisible(true);
 			examIDlbls.setVisible(true);
-			ExamIDLAbel.setText(NewExamID);
+			ExamIDLAbel.setText(newExam.getExamID());
 			ExamIDLAbel.setVisible(true);
 			btnBack.setDisable(true);
 			btnBrowse.setDisable(true);
 			btnUpload.setDisable(true);
-			}else {
-				msgLabel.setTextFill(Color.RED);
-				msgLabel.setText("File Upload Failed");
-				msgLabel.setVisible(true);
-			}
 		} else {
 			msgLabel.setTextFill(Color.RED);
 			msgLabel.setText("File Upload Failed");
@@ -138,8 +127,7 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		
+
 	}
 
 }

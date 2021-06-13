@@ -321,7 +321,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	void btnLoadNewManualExam(ActionEvent event) {
 		// load next screen.
 		try {
-			UploadManualExam.setNewExam(exam);
+			EditManualExamStep2.setNewExam(exam);
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditManualExamStep2.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			TeacherController.root.add(newPaneRight, 1, 0);

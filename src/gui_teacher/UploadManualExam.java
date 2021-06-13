@@ -29,9 +29,6 @@ import logic.RequestToServer;
 public class UploadManualExam extends GuiCommon {
 
 	@FXML
-	private ImageView imgNotification;
-
-	@FXML
 	private Button btnBrowse;
 
 	@FXML
