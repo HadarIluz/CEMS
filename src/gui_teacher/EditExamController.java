@@ -1,5 +1,6 @@
 package gui_teacher;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -13,28 +14,28 @@ import entity.User;
 import gui_cems.GuiCommon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
 /**
- * Class contains functionality for edit exam as part of 2 main steps. 
- * This screen describes the first stage in which the teacher sees the exam details
- * which are not available like examID. 
- * The teacher can edit the exam time and
+ * Class contains functionality for edit exam as part of 2 main steps. This
+ * screen describes the first stage in which the teacher sees the exam details
+ * which are not available like examID. The teacher can edit the exam time and
  * comments. When clicking the BrowseQuestions button will take you to the next
  * screen to view the questions. And on this screen the teacher can save the
  * updated exam.
  * 
  * We reuse the screen to display any test details in the system that the
- * principal has chosen to see what the exam bank is. 
- * Therefore the screen distinguishes between 2 types of users: 
- * Manager - viewing permissions only.
+ * principal has chosen to see what the exam bank is. Therefore the screen
+ * distinguishes between 2 types of users: Manager - viewing permissions only.
  * Teacher - editing permissions as described.
  * 
  * @author Hadar Iluz
@@ -78,6 +79,9 @@ public class EditExamController extends GuiCommon implements Initializable {
 	@FXML
 	private Button btnBrowseQuestions;
 
+	@FXML
+	private Button btnLoadNewManualExam;
+
 	public static Exam exam;
 	private static Teacher teacher;
 	private static User principal;
@@ -88,8 +92,11 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private String teacherComment;
 	private String studentComment;
 	private String timeAllocateForExam;
-	private static Boolean backFromStep2=false;
-	private static boolean emptyText=false;
+	private static Boolean backFromStep2 = false;
+	private static boolean emptyText = false;
+
+	@SuppressWarnings("unused")
+	private static Boolean displayEditManualExam = null;
 
 	/**
 	 * @param event that occurs When clicking the back button, will take you to back
@@ -138,15 +145,14 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnSaveEditeExam(ActionEvent event) {
-		
+
 		if (getExamDetailsANDcheckCOndition()) {
 			// set the new parameters into editExam
 			exam.setCommentForTeacher(teacherComment);
-			if(emptyText) {
+			if (emptyText) {
 				exam.setCommentForStudents("");
 				textStudentComment.setText("");
-			}
-			else {
+			} else {
 				exam.setCommentForStudents(studentComment);
 			}
 			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
@@ -182,19 +188,17 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private boolean getExamDetailsANDcheckCOndition() {
 		if ((textTeacherComment.getText().trim()).isEmpty()) {
 			teacherComment = "";
-		} 
-		else {
+		} else {
 			teacherComment = textTeacherComment.getText().trim();
 		}
-		
+
 		if ((textStudentComment.getText().trim()).isEmpty()) {
 			studentComment = "";
-			emptyText=true;
-		} 
-		else {
+			emptyText = true;
+		} else {
 			studentComment = textStudentComment.getText().trim();
 		}
-		
+
 		timeAllocateForExam = textTimeAllocateForExam.getText().trim();
 		// Check that all fields that must be filled are filled correctly.
 		return checkConditionToStart(timeAllocateForExam);
@@ -258,16 +262,23 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 		if (screenStatus.equals(super.teacherStatusScreen)) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
-						
-			//Forces the teacher to switch between the 2 screens of editing an exam.
+
+			// Forces the teacher to switch between the 2 screens of editing an exam.
 			System.out.println(backFromStep2);
-			if(backFromStep2) {
+			if (backFromStep2) {
 				btnSaveEditeExam.setDisable(false);
-			}
-			else {
+			} else {
 				btnSaveEditeExam.setDisable(true);
-			}		
-			
+			}
+
+			if (exam.getActiveExamType().equals("manual")) {
+				displayEditManualExam = true;
+				btnBrowseQuestions.setVisible(false);
+				btnLoadNewManualExam.setVisible(true);
+				btnLoadNewManualExam.setDisable(false);
+
+			}
+
 		}
 
 		if (screenStatus.equals(super.principalStatusScreen)) {
@@ -298,11 +309,27 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 * @param qlist                 list with all update score to be update in DB
 	 *                              when teacher clicks on "save exam" button.
 	 */
-	public static void setDataFromStep2(Exam exam2, boolean displayPrincipalView2, ArrayList<QuestionInExam> qlist, boolean back) {
+	public static void setDataFromStep2(Exam exam2, boolean displayPrincipalView2, ArrayList<QuestionInExam> qlist,
+			boolean back) {
 		exam = exam2;
 		displayPrincipalView = displayPrincipalView2;
 		updatedQuestions = qlist;
-		backFromStep2=back;
+		backFromStep2 = back;
+	}
+
+	@FXML
+	void btnLoadNewManualExam(ActionEvent event) {
+		// load next screen.
+		try {
+			UploadManualExam.setNewExam(exam);
+			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditManualExamStep2.fxml"));
+			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+			TeacherController.root.add(newPaneRight, 1, 0);
+
+		} catch (IOException e) {
+			System.out.println("Couldn't load!");
+			e.printStackTrace();
+		}
 	}
 
 }

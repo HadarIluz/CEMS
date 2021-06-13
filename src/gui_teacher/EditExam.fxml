@@ -72,5 +72,6 @@
             <Image url="@step2.png" />
          </image>
       </ImageView>
+      <Button fx:id="btnLoadNewManualExam" layoutX="284.0" layoutY="449.0" mnemonicParsing="false" onAction="#btnLoadNewManualExam" prefHeight="40.0" prefWidth="159.0" text="Load New File" visible="false" />
    </children>
 </AnchorPane>
