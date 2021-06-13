@@ -23,16 +23,18 @@ import javafx.scene.text.Text;
 import logic.RequestToServer;
 
 /**
- * Class contains functionality for edit exam as part of 2 main steps. This
- * screen describes the first stage in which the teacher sees the exam details
- * which are not available like examID. The teacher can edit the exam time and
+ * Class contains functionality for edit exam as part of 2 main steps. 
+ * This screen describes the first stage in which the teacher sees the exam details
+ * which are not available like examID. 
+ * The teacher can edit the exam time and
  * comments. When clicking the BrowseQuestions button will take you to the next
  * screen to view the questions. And on this screen the teacher can save the
  * updated exam.
  * 
  * We reuse the screen to display any test details in the system that the
- * principal has chosen to see what the exam bank is. Therefore the screen
- * distinguishes between 2 types of users: Manager - viewing permissions only.
+ * principal has chosen to see what the exam bank is. 
+ * Therefore the screen distinguishes between 2 types of users: 
+ * Manager - viewing permissions only.
  * Teacher - editing permissions as described.
  * 
  * @author Hadar Iluz
@@ -87,6 +89,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private String studentComment;
 	private String timeAllocateForExam;
 	private static Boolean backFromStep2=false;
+	private static boolean emptyText=false;
 
 	/**
 	 * @param event that occurs When clicking the back button, will take you to back
@@ -138,8 +141,14 @@ public class EditExamController extends GuiCommon implements Initializable {
 		
 		if (getExamDetailsANDcheckCOndition()) {
 			// set the new parameters into editExam
-			exam.setCommentForStudents(studentComment);
 			exam.setCommentForTeacher(teacherComment);
+			if(emptyText) {
+				exam.setCommentForStudents("");
+				textStudentComment.setText("");
+			}
+			else {
+				exam.setCommentForStudents(studentComment);
+			}
 			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
 
 			// Request from server to update scores Of edited Exam.
@@ -180,6 +189,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 		
 		if ((textStudentComment.getText().trim()).isEmpty()) {
 			studentComment = "";
+			emptyText=true;
 		} 
 		else {
 			studentComment = textStudentComment.getText().trim();
