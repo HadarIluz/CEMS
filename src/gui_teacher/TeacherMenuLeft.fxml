@@ -26,12 +26,17 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
+      <ImageView fx:id="imgNotificationOFF" fitHeight="25.0" fitWidth="40.0" layoutX="177.0" layoutY="171.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@emailNotification_OFF.png" />
+         </image>
+      </ImageView>
       <Label fx:id="textTeacherName" alignment="CENTER" layoutX="54.0" layoutY="187.0" prefHeight="27.0" prefWidth="121.0" textAlignment="CENTER" textFill="#420775">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="btnManageQuestionsBank" alignment="CENTER" layoutX="3.0" layoutY="225.0" mnemonicParsing="false" onAction="#btnManageQuestionsBank" prefHeight="35.0" prefWidth="221.0" text="Manage Questions Bank">
+      <Button fx:id="brnManageQuestionsBank" alignment="CENTER" layoutX="3.0" layoutY="225.0" mnemonicParsing="false" onAction="#btnManageQuestionsBank" prefHeight="35.0" prefWidth="221.0" text="Manage Questions Bank">
          <font>
             <Font size="15.0" />
          </font>
@@ -95,6 +100,9 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
+      <ImageView fx:id="imgNotificationON" fitHeight="25.0" fitWidth="40.0" layoutX="177.0" layoutY="171.0" onMouseClicked="#clickImgNotification" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@emailNotification_ON.png" />
+         </image></ImageView>
    </children>
 </AnchorPane>
-
