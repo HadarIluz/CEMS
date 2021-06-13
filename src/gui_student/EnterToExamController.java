@@ -75,6 +75,7 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 	 * 
 	 * @param event that occurs when clicking on 'start exam' button.
 	 */
+	@SuppressWarnings("static-access")
 	@FXML
 	void btnStart(ActionEvent event) {
 		String examCode = textExamCode.getText().trim();

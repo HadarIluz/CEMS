@@ -18,8 +18,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
-//FIXME: ADD JAVADOC
-
+/**
+ * 
+ * The class contains functionality for a student to view his grade and receive
+ * a copy of the test.
+ * 
+ * @author Nadav and Yadin
+ *
+ */
 public class ExamCopyController extends GuiCommon implements Initializable {
 
 	@FXML
@@ -49,6 +55,9 @@ public class ExamCopyController extends GuiCommon implements Initializable {
 		displayNextScreen((User) ClientUI.loggedInUser.getUser(), "ViewExam.fxml");
 	}
 
+	/**
+	 * initialize function to prepare the screen after it is loaded.
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

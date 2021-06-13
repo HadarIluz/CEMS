@@ -21,8 +21,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
-//FIXME: ADD JAVADOC
+//FIXME:
 
+/**
+ * The department contains functionality for presenting the exam questions and
+ * answers solved by the student.
+ * 
+ * @author Nadav Yadin
+ *
+ */
 public class ViewExamController extends GuiCommon {
 
 	@FXML
@@ -91,15 +98,13 @@ public class ViewExamController extends GuiCommon {
 				Question question;
 				question = (Question) CEMSClient.responseFromServer.getResponseData();
 				question.setCorrectAns(question.getAnswers()[question.getCorrectAnswerIndex() - 1]);
-				if(curr.getStudentAnswer()!=0) {
-				question.setStdAns(question.getAnswers()[curr.getStudentAnswer() - 1]);
-				}
-				else
-				{
+				if (curr.getStudentAnswer() != 0) {
+					question.setStdAns(question.getAnswers()[curr.getStudentAnswer() - 1]);
+				} else {
 					question.setStdAns("You didn't choose any answer for that question!");
 				}
 				if (!question.getCorrectAns().equals(question.getStdAns())) {
-					
+
 					question.setDescription("X");
 				} else {
 
@@ -128,9 +133,7 @@ public class ViewExamController extends GuiCommon {
 
 	@FXML
 	void btnViewGrade(ActionEvent event) {
-
 		if (!checkForLegalID(txtExamID.getText())) {
-
 			return;
 
 		}
