@@ -54,7 +54,6 @@ public class PrincipalGetReportsController extends GuiCommon {
 	@FXML
 	private ComboBox<String> selectProfession;
 
-	private static PrincipalController principalController;
 	private static User principal = (User) ClientUI.loggedInUser.getUser();
 	HashMap<String, String> professions;
 	static ArrayList<Course> courses;
