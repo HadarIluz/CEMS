@@ -111,12 +111,12 @@ public class EditExamController extends GuiCommon implements Initializable {
 	void btnBrowseQuestions(ActionEvent event) {
 		if (getExamDetailsANDcheckCOndition()) {
 			// set the new parameters into editExam
-			exam.setCommentForStudents(studentComment);
 			exam.setCommentForTeacher(teacherComment);
+			exam.setCommentForStudents(studentComment);
 			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
 
 			// sent to next screen exam with data info.
-			EditExam_questionsStep2Controller.setnextScreenData(exam, displayPrincipalView);
+			EditExam_questionsStep2Controller.setnextScreenData(exam, displayPrincipalView, updatedQuestions);
 			if (!displayPrincipalView) {
 				displayNextScreen(teacher, "/gui_teacher/EditExam_questionStep2.fxml");
 			} else {
@@ -171,15 +171,15 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 *         false.
 	 */
 	private boolean getExamDetailsANDcheckCOndition() {
-		if (textTeacherComment.getText().isEmpty()) {
+		if ((textTeacherComment.getText().trim()).isEmpty()) {
 			teacherComment = "";
 		} 
 		else {
 			teacherComment = textTeacherComment.getText().trim();
 		}
 		
-		if (textStudentComment.getText().isEmpty()) {
-			studentComment = " ";
+		if ((textStudentComment.getText().trim()).isEmpty()) {
+			studentComment = "";
 		} 
 		else {
 			studentComment = textStudentComment.getText().trim();
@@ -288,7 +288,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 * @param qlist                 list with all update score to be update in DB
 	 *                              when teacher clicks on "save exam" button.
 	 */
-	public static void setprevScreenData(Exam exam2, boolean displayPrincipalView2, ArrayList<QuestionInExam> qlist, boolean back) {
+	public static void setDataFromStep2(Exam exam2, boolean displayPrincipalView2, ArrayList<QuestionInExam> qlist, boolean back) {
 		exam = exam2;
 		displayPrincipalView = displayPrincipalView2;
 		updatedQuestions = qlist;
