@@ -145,7 +145,12 @@ public class GuiCommon {
 		if (res.getResponseType().equals("NOTIFICATION_TEACHER_POTENTIAL_COPY")) 
 		{
 			ArrayList<Integer> suspected= (ArrayList<Integer>) res.getResponseData();
-			StringBuilder SB=new StringBuilder("Suspected in copy of Exam "+ suspected.get(suspected.size()-1)+ ":\n");
+			
+			if(suspected.size()==1)
+			{
+				return;
+			}
+			StringBuilder SB=new StringBuilder("Suspected in copy of Exam 0"+ suspected.get(suspected.size()-1)+ ":\n");
 			suspected.remove(suspected.size()-1);
 			for(Integer std : suspected)
 			{
@@ -170,6 +175,7 @@ public class GuiCommon {
 		}
 		if (res.getResponseType().equals("NOTIFICATION_STUDENT_ADDED_TIME")) {
 			System.out.println("added time to exam");
+			StartManualExamController.addTimeToExam((int) res.getResponseData());
 			if ((((ActiveExam) res.getResponseData()).getActiveExamType()).equals("manual"))
 				StartManualExamController.addTimeToExam(((ActiveExam) res.getResponseData()).getExtraTime());
 			else
