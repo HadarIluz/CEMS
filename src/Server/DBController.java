@@ -41,11 +41,14 @@ import logic.RequestToServer;
 import logic.ResponseFromServer;
 import logic.StatusMsg;
 
+
+
 /**
  * @author CEMS_Team
  *
  */
 public class DBController {
+
 	public Connection conn;
 	public ServerFrameController serverFrame;
 
@@ -367,13 +370,13 @@ public class DBController {
 		ResponseFromServer response = null;
 		try {
 			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT * FROM active_exam WHERE exam=?");
+			pstmt = conn.prepareStatement("SELECT startTime,timeAllotedForTest,examCode FROM active_exam WHERE exam=?");
 			pstmt.setString(1, existActiveExam.getExam().getExamID());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				existActiveExam.setStartTime(rs.getTime(2));
-				existActiveExam.setTimeAllotedForTest(rs.getString(3));
-				existActiveExam.setExamCode(rs.getString(4));
+				existActiveExam.setStartTime(rs.getTime(1));
+				existActiveExam.setTimeAllotedForTest(rs.getString(2));
+				existActiveExam.setExamCode(rs.getString(3));
 				rs.close();
 			}
 		} catch (SQLException ex) {
@@ -561,6 +564,7 @@ public class DBController {
 	 * @param activeExam object which include 2 parameters of date and examcode for
 	 *                   Query.
 	 */
+	@SuppressWarnings("deprecation")
 	public ResponseFromServer verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
 		Exam exam = new Exam();
 		ResponseFromServer response = null;
@@ -570,8 +574,8 @@ public class DBController {
 			pstmt = conn.prepareStatement(
 					"SELECT exam,startTime, timeAllotedForTest, examType FROM active_exam WHERE examCode=? and startTime>=? and startTime<?;");
 			pstmt.setString(1, activeExam.getExamCode());
-			pstmt.setTime(2, activeExam.getStartTime());
-			pstmt.setTime(3, activeExam.getEndTimeToTakeExam());
+			pstmt.setTime(2,new java.sql.Time(activeExam.getStartTime().getHours(),activeExam.getStartTime().getMinutes(),activeExam.getStartTime().getSeconds()));
+			pstmt.setTime(3, new java.sql.Time(activeExam.getEndTimeToTakeExam().getHours(),activeExam.getEndTimeToTakeExam().getMinutes(),activeExam.getEndTimeToTakeExam().getSeconds()));
 			// Time Range for start the exam:
 			System.out.println(activeExam.getStartTime() + " - " + activeExam.getEndTimeToTakeExam());
 			System.out.println(pstmt.toString());
