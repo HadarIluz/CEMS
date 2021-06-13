@@ -180,14 +180,17 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 *         false.
 	 */
 	private boolean getExamDetailsANDcheckCOndition() {
-		if ((textTeacherComment.getText().trim()).isEmpty()) {
+		if(textTeacherComment.getText()==null)
+			teacherComment = "";
+		else if ((textTeacherComment.getText().trim()).isEmpty()) {
 			teacherComment = "";
 		} 
 		else {
 			teacherComment = textTeacherComment.getText().trim();
 		}
-		
-		if ((textStudentComment.getText().trim()).isEmpty()) {
+		if(textStudentComment.getText()==null)
+			studentComment = "";
+		else if ((textStudentComment.getText().trim()).isEmpty()) {
 			studentComment = "";
 			emptyText=true;
 		} 
