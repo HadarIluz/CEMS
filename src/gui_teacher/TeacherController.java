@@ -11,6 +11,7 @@ import client.ClientUI;
 import entity.Profession;
 import entity.Teacher;
 import entity.User;
+import gui_cems.GuiCommon;
 import gui_cems.LoginController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -24,16 +25,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import logic.RequestToServer;
+import logic.ResponseFromServer;
 
 /**
- * The class included in the diagrams and contains all the functionality
- * that the start has, manages the left menu in the system and describes the
+ * The class included in the diagrams and contains all the functionality that
+ * the start has, manages the left menu in the system and describes the
  * privileges that the Teacher has in the system.
  * 
  * @author Yadin
@@ -46,6 +49,9 @@ public class TeacherController extends Application implements Initializable {
 
 	@FXML
 	private ImageView imgLogo;
+
+	@FXML
+	private ImageView imgNotificationOFF;
 
 	@FXML
 	private Label textTeacherName;
@@ -74,11 +80,19 @@ public class TeacherController extends Application implements Initializable {
 	@FXML
 	private Label pressLogout;
 
+	@FXML
+	private ImageView imgNotificationON;
+
 	public LoginController loginController;
 	public static GridPane root;
 	public Scene scene;
 	protected User teacher;
 	private static HashMap<String, Profession> professionsMap = null;
+
+	private static boolean toggleFlag = false;
+	private static boolean alert=false;
+	
+	private static TeacherController instance;
 
 	/**
 	 * method open the screen for manage question bank of teacher
@@ -211,11 +225,11 @@ public class TeacherController extends Application implements Initializable {
 		root = new GridPane();
 		scene = new Scene(root, 980, 580);
 		Pane newMnueLeft = FXMLLoader.load(getClass().getResource("TeacherMenuLeft.fxml"));
+		instance = this;
 		root.add(newMnueLeft, 0, 0);
 		primaryStage.setTitle("CEMS-Computerized Exam Management System");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-
 		listenToCloseWindow(primaryStage);
 
 	}
@@ -233,6 +247,9 @@ public class TeacherController extends Application implements Initializable {
 		teacher = ClientUI.loggedInUser.getUser();
 		textTeacherName.setText(teacher.getFirstName() + " " + teacher.getLastName());
 		setProfessionMap(((Teacher) ClientUI.loggedInUser.getUser()).getProfessions());
+//		 imgNotificationON.setVisible(false);
+//		 imgNotificationOFF.setVisible(true);
+
 	}
 
 	/**
@@ -279,5 +296,31 @@ public class TeacherController extends Application implements Initializable {
 		});
 
 	}
+
+	@FXML
+	void clickImgNotification(MouseEvent event) {
+		imgNotificationON.setVisible(toggleFlagStatus()); 
+		imgNotificationOFF.setVisible(toggleFlagStatus()); 
+		
+	}
+
+	private boolean toggleFlagStatus() {
+		if (toggleFlag == false)
+			return toggleFlag = true;
+		else
+			return toggleFlag = false;
+	}
+
+	public void newNotifiction(boolean f) {
+		imgNotificationON.setVisible(true);
+		imgNotificationOFF.setVisible(false);
+		//alert=f;
+	}
+	
+	public static TeacherController getInstance()
+	{
+		return instance;
+	}
+
 
 }

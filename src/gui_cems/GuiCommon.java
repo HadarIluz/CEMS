@@ -140,7 +140,10 @@ public class GuiCommon {
 	}
 
 	private static void handleTeacherNotifications(ResponseFromServer res) {
-		// TODO Auto-generated method stub
+		if (res.getResponseType().equals("NOTIFICATION_TEACHER_PRINCIPAL_ANSWER")) {
+			TeacherController.getInstance().newNotifiction(true);
+		}
+		
 
 	}
 
