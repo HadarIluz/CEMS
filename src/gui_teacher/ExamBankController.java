@@ -200,8 +200,15 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	void btnEditExam(ActionEvent event) {
 		if (!textExamID.getText().isEmpty()) {
 			Exam selectedExam = getExistExamDetails(textExamID.getText());
+			if(selectedExam.getActiveExamType().equals("computerized")) {
 			EditExamController.setActiveExamState(selectedExam, super.teacherStatusScreen);
 			displayNextScreen(teacher, "EditExam.fxml");
+			}
+			else
+			{
+				EditExamController.setActiveExamState(selectedExam, super.teacherStatusScreen);
+				displayNextScreen(teacher, "EditExam.fxml");
+			}
 		}
 	}
 

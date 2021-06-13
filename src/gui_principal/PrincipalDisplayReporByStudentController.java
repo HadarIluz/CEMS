@@ -22,7 +22,7 @@ import javafx.scene.control.Label;
 import logic.RequestToServer;
 
 /*
- * The department is included in the diagrams and contains all the functionality
+ * The class is included in the diagrams and contains all the functionality
  * that the principal needs to do to see the requested report. This class
  * conducts various calculations for presenting the report.
  * 

@@ -214,6 +214,15 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 			exam = (Exam) CEMSClient.responseFromServer.getResponseData();
 			existsQuestions = exam.getExamQuestionsWithScores(); // Return ArrayList<QuestionInExam>
 		}
+		if(existsQuestions!=null) {
+			RequestToServer req = new RequestToServer("getFullExamDetails");
+			req.setRequestData(exam);
+			ClientUI.cems.accept(req);
+
+			exam = (Exam) CEMSClient.responseFromServer.getResponseData();
+			existsQuestions = exam.getExamQuestionsWithScores(); 
+			initTable();
+		}
 
 		if (!displayPrincipalView) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();

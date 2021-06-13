@@ -36,6 +36,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
+/**
+ * The class contains functionality for solving a student's computerized exam.
+ * The student toggle through all the questions in the exam.
+ * Gets information of how many questions he has to answer, a timer that can be
+ * displayed and removed. 
+ * If the teacher informs the student that there is extra
+ * time for the exam, he receives a alert by real-time event.
+ * 
+ * @author Yuval Hayam
+ *
+ */
 public class SolveExamController implements Initializable {
 
 	@FXML
@@ -86,8 +97,7 @@ public class SolveExamController implements Initializable {
 	@FXML
 	private Label lblnotificationMsg;
 
-	private static StudentController studentController;
-	private static ActiveExam newActiveExam; // check if needed.
+	private static ActiveExam newActiveExam;
 	private static Boolean lock;
 	private static int addTime;
 	private Timer timer;
@@ -249,7 +259,7 @@ public class SolveExamController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		//btnPrev.setVisible(false);
+		// btnPrev.setVisible(false);
 		// bring all exam details (also questions and scores)
 		RequestToServer req = new RequestToServer("getFullExamDetails");
 		req.setRequestData(newActiveExam.getExam());
@@ -326,8 +336,7 @@ public class SolveExamController implements Initializable {
 			if (newActiveExam.getExam().getExamQuestionsWithScores().size() != 1) {
 				btnNext.setDisable(false);
 			}
-		}
-		else if (currentQuestion == newActiveExam.getExam().getExamQuestionsWithScores().size() - 1) {
+		} else if (currentQuestion == newActiveExam.getExam().getExamQuestionsWithScores().size() - 1) {
 			btnNext.setDisable(true);
 			if (newActiveExam.getExam().getExamQuestionsWithScores().size() != 1) {
 				btnPrev.setDisable(false);

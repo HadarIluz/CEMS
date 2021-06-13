@@ -77,6 +77,8 @@ public class CreateNewExam_step3Controller implements Initializable{
 			textExamID.setText("There was a problem. please try again later");
 			textExamID.setFill(javafx.scene.paint.Color.RED);
 		}
+		
+		btnCreateNewExam.setDisable(true);
 
     }
     
@@ -88,6 +90,7 @@ public class CreateNewExam_step3Controller implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		textExamID.setText("");
 		textMsg_newExam.setVisible(false);
+		btnCreateNewExam.setDisable(false);
 		
 	}
 

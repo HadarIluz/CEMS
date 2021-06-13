@@ -152,6 +152,7 @@ public class LoginController extends GuiCommon{
 
 					Stage primaryStage = new Stage();
 					GridPane root = new GridPane();
+					@SuppressWarnings("unused")
 					Scene scene = new Scene(root, 988, 586); // define screens size
 					primaryStage.setTitle("CEMS-Computerized Exam Management System");
 					user = (User) CEMSClient.responseFromServer.getResponseData();

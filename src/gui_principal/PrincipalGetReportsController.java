@@ -20,7 +20,9 @@ import javafx.scene.control.RadioButton;
 import logic.RequestToServer;
 
 /**
- * FIXME:ADD JAVADOC
+ * The class contains functionality for selecting a report type according to
+ * various parameters. The department is tested in such a way that it will be
+ * possible to update in a minimal way and thus add similar types of reports.
  * 
  * @author Yadin Amsalem
  * @author Nadav Dery
@@ -52,7 +54,6 @@ public class PrincipalGetReportsController extends GuiCommon {
 	@FXML
 	private ComboBox<String> selectProfession;
 
-	private static PrincipalController principalController;
 	private static User principal = (User) ClientUI.loggedInUser.getUser();
 	HashMap<String, String> professions;
 	static ArrayList<Course> courses;
@@ -121,8 +122,8 @@ public class PrincipalGetReportsController extends GuiCommon {
 
 	/**
 	 * called when the principal click on the report by course radio button
-	 * according to that the method would disable the other irrelevant buttons
-	 * and initialize the profession comboBox with all the option to chose from
+	 * according to that the method would disable the other irrelevant buttons and
+	 * initialize the profession comboBox with all the option to chose from
 	 * 
 	 * @param event
 	 */
@@ -175,10 +176,12 @@ public class PrincipalGetReportsController extends GuiCommon {
 
 	/**
 	 * called when the principal click on the report by student radio button
-	 * according to that, the method would disable the other irrelevant buttons
-	 * and initialize the student comboBox with all the student to chose
+	 * according to that, the method would disable the other irrelevant buttons and
+	 * initialize the student comboBox with all the student to chose
+	 * 
 	 * @param event
 	 */
+	@SuppressWarnings("unchecked")
 	@FXML
 	void reportByStudent(ActionEvent event) {
 		selectCourse.setDisable(true);
@@ -200,8 +203,9 @@ public class PrincipalGetReportsController extends GuiCommon {
 
 	/**
 	 * called when the principal click on the report by teacher radio button
-	 * according to that, the method would disable the other irrelevant buttons
-	 * and initialize the comboBox with all the teacher to chose from.
+	 * according to that, the method would disable the other irrelevant buttons and
+	 * initialize the comboBox with all the teacher to chose from.
+	 * 
 	 * @param event
 	 */
 	@SuppressWarnings("unchecked")
@@ -225,8 +229,5 @@ public class PrincipalGetReportsController extends GuiCommon {
 
 		selectTeacher.setItems(FXCollections.observableArrayList(Qlist.values()));
 	}
-
-	
-	
 
 }
