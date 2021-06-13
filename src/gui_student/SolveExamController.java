@@ -84,9 +84,6 @@ public class SolveExamController implements Initializable {
 	private ImageView notificationIcon;
 
 	@FXML
-	private Label lblnotificationName;
-
-	@FXML
 	private Label lblnotificationMsg;
 
 	private static StudentController studentController;
@@ -280,7 +277,7 @@ public class SolveExamController implements Initializable {
 					Platform.runLater(() -> lblnotificationMsg.setText("Please note, the exam time\nwas extended by "
 							+ newActiveExam.getExtraTime() + " minutes."));
 					notificationIcon.setVisible(true);
-					lblnotificationName.setVisible(true);
+					txtnotification.setVisible(true);
 					lblnotificationMsg.setVisible(true);
 					addTime = 0;
 				}
@@ -313,7 +310,8 @@ public class SolveExamController implements Initializable {
 	 */
 	private void loadQuestion(int i) {
 		int qNum = i + 1;
-		lblQuestionNumber.setText("Question " + qNum + " / "+ newActiveExam.getExam().getExamQuestionsWithScores().size());
+		lblQuestionNumber
+				.setText("Question " + qNum + " / " + newActiveExam.getExam().getExamQuestionsWithScores().size());
 		QuestionInExam q = newActiveExam.getExam().getExamQuestionsWithScores().get(i);
 		lblPoints.setText("<" + q.getScore() + "> Points");
 		txtQuestionDescription.setText(q.getQuestion().getDescription());
@@ -325,13 +323,25 @@ public class SolveExamController implements Initializable {
 
 		if (currentQuestion == 0) {
 			btnPrev.setVisible(false);
-		} 
-		if (currentQuestion == newActiveExam.getExam().getExamQuestionsWithScores().size()-1 ) {
+		}
+		if (currentQuestion == newActiveExam.getExam().getExamQuestionsWithScores().size() - 1) {
 			btnNext.setVisible(false);
 		} else {
 			btnPrev.setVisible(true);
 			btnNext.setVisible(true);
 		}
+	}
+
+	/**
+	 * Clicking on the notification disappears it from the screen.
+	 *
+	 * @param event that occurs when clicking on 'imgNotification' ImageView
+	 */
+	@FXML
+	void clickImgNotification(MouseEvent event) {
+		notificationIcon.setVisible(false);
+		txtnotification.setVisible(false);
+		lblnotificationMsg.setVisible(false);
 	}
 
 	/**
