@@ -648,8 +648,6 @@ public class CEMSserver extends AbstractServer {
 		}
 		ArrayList<Integer> suspectStudentID = dbController.getPotentialCopyList(examsOfStudent);
 
-
-
 		int teacherID = dbController.getTeacherOfExam(activeExam.getExam());
 		// send notification to teacher
 		ResponseFromServer res = new ResponseFromServer("NOTIFICATION_TEACHER_POTENTIAL_COPY");
@@ -1341,9 +1339,5 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
-	
-	
-	
-
 
 }
