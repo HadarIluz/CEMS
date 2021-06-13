@@ -173,20 +173,21 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private boolean getExamDetailsANDcheckCOndition() {
 		if (textTeacherComment.getText().isEmpty()) {
 			teacherComment = "";
-		} else 
-		{
+		} 
+		else {
 			teacherComment = textTeacherComment.getText().trim();
 		}
+		
 		if (textStudentComment.getText().isEmpty()) {
-			studentComment = "";
-		} else {
-
+			studentComment = " ";
+		} 
+		else {
 			studentComment = textStudentComment.getText().trim();
 		}
 		
 		timeAllocateForExam = textTimeAllocateForExam.getText().trim();
 		// Check that all fields that must be filled are filled correctly.
-		return checkConditionToStart(teacherComment, studentComment, timeAllocateForExam);
+		return checkConditionToStart(timeAllocateForExam);
 	}
 
 	/**
@@ -195,18 +196,9 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 * @param timeAllocateForExam input that the teacher can edit
 	 * @return true if all fields are correctly filled, Otherwise returns false
 	 */
-	private boolean checkConditionToStart(String teacherComment, String StudentComment, String timeAllocateForExam) {
+	private boolean checkConditionToStart(String timeAllocateForExam) {
 		StringBuilder strBuilder = new StringBuilder();
 		boolean flag = true;
-		if (teacherComment.length() == 0 || StudentComment.length() == 0) {
-			strBuilder.append("All fields must be filled !\n");
-			flag = false;
-		}
-		// return true if the String contains only digits.
-		if (!isOnlyDigits(timeAllocateForExam)) {
-			strBuilder.append("Exam time must contains only digits.\n");
-			flag = false;
-		}
 		if (textTimeAllocateForExam.getText().isEmpty() == false) {
 			int time = Integer.parseInt(timeAllocateForExam);
 
