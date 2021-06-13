@@ -693,7 +693,7 @@ public class DBController {
 			PreparedStatement pstmt;
 			pstmt = conn.prepareStatement("DELETE FROM exam WHERE examID=? AND profession=? AND course=?");
 			pstmt.setString(1, exam.getExamID());
-			pstmt.setString(2, exam.getProfession().getProfessionID());
+			pstmt.setString(2,exam.getExamID().substring(0,2));
 			pstmt.setString(3, exam.getCourse().getCourseID());// need to be courseID
 			pstmt.executeUpdate();
 		} catch (SQLException ex) {
