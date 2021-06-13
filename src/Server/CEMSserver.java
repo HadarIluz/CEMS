@@ -1001,13 +1001,17 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
-		ResponseFromServer respon = dbController.verifyActiveExam((ActiveExam) activeExam);
+		ResponseFromServer responForTeacher = dbController.verifyActiveExam((ActiveExam) activeExam);
+		ResponseFromServer responForPrincipal = new ResponseFromServer("NOTIFICATION_PRINCIPAL_REQUEST_RECEIVED");
+		int principalID = dbController.getPrincipalId();
+		responForPrincipal.setResponseData(activeExam.getExam().getExamID());
 		try {
-			client.sendToClient(respon);
+			client.sendToClient(responForTeacher);
+			(loogedClients.get(principalID)).sendToClient(responForPrincipal);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
+		printMessageInLogFramServer("Message to Client:", responForTeacher);// print to server log.
 	}
 
 	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {

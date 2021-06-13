@@ -136,8 +136,10 @@ public class GuiCommon {
 	}
 
 	private static void handlePrincipalNotifications(ResponseFromServer res) {
-		// TODO Auto-generated method stub
-
+		if (res.getResponseType().equals("NOTIFICATION_PRINCIPAL_REQUEST_RECEIVED")) {
+			// need implement
+			// res.getResponseData() contain activeExamID
+		}
 	}
 
 	private static void handleTeacherNotifications(ResponseFromServer res) {
@@ -154,9 +156,10 @@ public class GuiCommon {
 			}
 			TeacherController.CopyAlertNotification(SB.toString());
 		}
-		
+
 		if (res.getResponseType().equals("NOTIFICATION_TEACHER_REQUEST_APPROVED")) {
 			// need implement
+			// res.getResponseData() contain activeExamID
 		}
 
 	}
