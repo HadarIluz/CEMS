@@ -101,11 +101,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnCreateNewQuestion(ActionEvent event) {
-		if ((textQuestionID.getText().isEmpty())) {
-			btnCreateNewQuestion.setDisable(true);
-		} else {
 			displayNextScreen(teacher, "CreateQuestion.fxml");
-		}
 	}
 
 	/**

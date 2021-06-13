@@ -9,6 +9,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import client.CEMSClient;
 import client.ClientUI;
 import entity.ActiveExam;
@@ -81,9 +84,6 @@ public class SolveExamController implements Initializable {
 	private ImageView notificationIcon;
 
 	@FXML
-	private Label lblnotificationName;
-
-	@FXML
 	private Label lblnotificationMsg;
 
 	private static StudentController studentController;
@@ -143,35 +143,47 @@ public class SolveExamController implements Initializable {
 	 *                       or initiated)
 	 */
 	private void submitExam(ReasonOfSubmit reasonOfSubmit) {
-		btnSubmitExam.setDisable(true);
-		timer.cancel();
-		btnAnswer1.setDisable(true);
-		btnAnswer2.setDisable(true);
-		btnAnswer3.setDisable(true);
-		btnAnswer4.setDisable(true);
-		btnNext.setDisable(true);
-		btnPrev.setDisable(true);
-
-		HashMap<QuestionInExam, Integer> studentQuestions = new HashMap<>();
-		for (int i = 0; i < studentAnswers.length; i++) {
-			studentQuestions.put(newActiveExam.getExam().getExamQuestionsWithScores().get(i), studentAnswers[i]);
+		int dialogResult = 0;
+		if (reasonOfSubmit == ReasonOfSubmit.initiated) {
+			Object[] options = { " Cancel ", " Submit " };
+			JFrame frame = new JFrame("Submit Exam");
+			dialogResult = JOptionPane.showOptionDialog(frame,
+					"Please Note!\nOnce you click Submit you can't edit exam again.", null, JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE, null, // do not use a custom Icon
+					options, // the titles of buttons
+					null); // default button title
 		}
+		if (dialogResult == 1 || reasonOfSubmit == ReasonOfSubmit.forced) {
+			btnSubmitExam.setDisable(true);
+			timer.cancel();
+			btnAnswer1.setDisable(true);
+			btnAnswer2.setDisable(true);
+			btnAnswer3.setDisable(true);
+			btnAnswer4.setDisable(true);
+			btnNext.setDisable(true);
+			btnPrev.setDisable(true);
 
-		ExamOfStudent examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
-		examOfStudent.setQuestionsAndAnswers(studentQuestions);
-		examOfStudent
-				.setTotalTime(((newActiveExam.getTimeAllotedForTest() - timeToDeduct) * 60 - timeForTimer.get()) / 60);
-		examOfStudent.setExamType("computerized");
-		examOfStudent.setReasonOfSubmit(reasonOfSubmit);
+			HashMap<QuestionInExam, Integer> studentQuestions = new HashMap<>();
+			for (int i = 0; i < studentAnswers.length; i++) {
+				studentQuestions.put(newActiveExam.getExam().getExamQuestionsWithScores().get(i), studentAnswers[i]);
+			}
 
-		RequestToServer req = new RequestToServer("StudentFinishExam");
-		req.setRequestData(examOfStudent);
-		ClientUI.cems.accept(req);
+			ExamOfStudent examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
+			examOfStudent.setQuestionsAndAnswers(studentQuestions);
+			examOfStudent.setTotalTime(
+					((newActiveExam.getTimeAllotedForTest() - timeToDeduct) * 60 - timeForTimer.get()) / 60);
+			examOfStudent.setExamType("computerized");
+			examOfStudent.setReasonOfSubmit(reasonOfSubmit);
 
-		if (CEMSClient.responseFromServer.getResponseType().equals("Success student finish exam")) {
-			GuiCommon.popUp("Submit was successfull. You may exit the exam");
-		} else {
-			GuiCommon.popUp("There has been an error. please contact your teacher");
+			RequestToServer req = new RequestToServer("StudentFinishExam");
+			req.setRequestData(examOfStudent);
+			ClientUI.cems.accept(req);
+
+			if (CEMSClient.responseFromServer.getResponseType().equals("Success student finish exam")) {
+				GuiCommon.popUp("Submit was successfull. You may exit the exam");
+			} else {
+				GuiCommon.popUp("There has been an error. please contact your teacher");
+			}
 		}
 	}
 
@@ -237,7 +249,7 @@ public class SolveExamController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		//btnPrev.setVisible(false);
 		// bring all exam details (also questions and scores)
 		RequestToServer req = new RequestToServer("getFullExamDetails");
 		req.setRequestData(newActiveExam.getExam());
@@ -265,7 +277,7 @@ public class SolveExamController implements Initializable {
 					Platform.runLater(() -> lblnotificationMsg.setText("Please note, the exam time\nwas extended by "
 							+ newActiveExam.getExtraTime() + " minutes."));
 					notificationIcon.setVisible(true);
-					lblnotificationName.setVisible(true);
+					txtnotification.setVisible(true);
 					lblnotificationMsg.setVisible(true);
 					addTime = 0;
 				}
@@ -298,7 +310,8 @@ public class SolveExamController implements Initializable {
 	 */
 	private void loadQuestion(int i) {
 		int qNum = i + 1;
-		lblQuestionNumber.setText("Question " + qNum + " / "+ newActiveExam.getExam().getExamQuestionsWithScores().size());
+		lblQuestionNumber
+				.setText("Question " + qNum + " / " + newActiveExam.getExam().getExamQuestionsWithScores().size());
 		QuestionInExam q = newActiveExam.getExam().getExamQuestionsWithScores().get(i);
 		lblPoints.setText("<" + q.getScore() + "> Points");
 		txtQuestionDescription.setText(q.getQuestion().getDescription());
@@ -309,14 +322,32 @@ public class SolveExamController implements Initializable {
 		btnAnswer4.setText(q.getQuestion().getAnswers()[3]);
 
 		if (currentQuestion == 0) {
-			btnPrev.setVisible(false);
-		} 
-		if (currentQuestion == newActiveExam.getExam().getExamQuestionsWithScores().size()-1 ) {
-			btnNext.setVisible(false);
-		} else {
-			btnPrev.setVisible(true);
-			btnNext.setVisible(true);
+			btnPrev.setDisable(true);
+			if (newActiveExam.getExam().getExamQuestionsWithScores().size() != 1) {
+				btnNext.setDisable(false);
+			}
 		}
+		else if (currentQuestion == newActiveExam.getExam().getExamQuestionsWithScores().size() - 1) {
+			btnNext.setDisable(true);
+			if (newActiveExam.getExam().getExamQuestionsWithScores().size() != 1) {
+				btnPrev.setDisable(false);
+			}
+		} else {
+			btnPrev.setDisable(false);
+			btnNext.setDisable(false);
+		}
+	}
+
+	/**
+	 * Clicking on the notification disappears it from the screen.
+	 *
+	 * @param event that occurs when clicking on 'imgNotification' ImageView
+	 */
+	@FXML
+	void clickImgNotification(MouseEvent event) {
+		notificationIcon.setVisible(false);
+		txtnotification.setVisible(false);
+		lblnotificationMsg.setVisible(false);
 	}
 
 	/**

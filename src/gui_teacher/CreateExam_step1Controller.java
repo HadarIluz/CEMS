@@ -261,6 +261,12 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 			if (newExam.getCommentForStudents() != null) {
 				textStudent_Instructions.setText(String.valueOf(newExam.getCommentForStudents()));
 			}
+			if (newExam.getActiveExamType().equals("computerized")) {
+				btnComputerized.setSelected(true);
+			}
+			else {
+				btnManual.setSelected(true);
+			}
 
 		} else {
 			selectProffessionList.setDisable(true);
