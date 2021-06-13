@@ -257,20 +257,10 @@ public class PrincipalController extends Application implements Initializable {
 	 */
 	public static void getExtensionRequest(int temp) {
 		newRequest = temp;
-
-		// where and how ???
-		// if (newRequest == 1) {
-		// colorAdjust.setBrightness(0.0);//
-		// colorAdjust.setSaturation(0.0);//
-		// msgRequest.setEffect(colorAdjust);//
-		// }
-		// lblNew.setVisible(true);
 	}
 	
 	public static void CopyAlertNotification(String msg) {
-
 		msgOfNotification = msg;
-
 	}
 
 }

@@ -20,6 +20,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
+/**
+ * FIXME: ADD JAVADOC HERE
+ * 
+ *
+ */
+
 public class BrowseQuestionController implements Initializable {
 
 	@FXML

@@ -31,6 +31,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
+/**
+ * FIXME: ADD JAVADOC HERE
+ *
+ *
+ */
 public class CreateExam_step1Controller extends GuiCommon implements Initializable {
 
 	@FXML
@@ -105,18 +110,18 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 		} else {
 
 			String t = textExamDuration.getText().trim();
-			if (!t.matches("[0-9]+") || Integer.parseInt(t)<=0 ) {
+			if (!t.matches("[0-9]+") || Integer.parseInt(t) <= 0) {
 				msgErrorTime.setText("Exam time must be set in minutes.");
-			} else{ 
+			} else {
 				msgErrorTime.setText("");
 
 				if (newExam == null) {
 					newExam = new Exam(selectedProfession, selectedCourse, Integer.parseInt(t));
-					
-				//} else {
+
+					// } else {
 					newExam.setAuthor((Teacher) ClientUI.loggedInUser.getUser());
-				//}
-				 }
+					// }
+				}
 				if (textLecturers_Instructions.getText().trim().length() > 0) {
 					newExam.setCommentForTeacher(textLecturers_Instructions.getText().trim());
 				}
@@ -143,7 +148,7 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 				}
 				newExam.setExamStatus(ExamStatus.inActive);
 				if (continueNextScreen) {
-				
+
 					newExam.setProfession(selectedProfession);
 					newExam.setCourse(selectedCourse);
 					newExam.setTimeOfExam(Integer.parseInt(t));
@@ -263,8 +268,7 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 			}
 			if (newExam.getActiveExamType().equals("computerized")) {
 				btnComputerized.setSelected(true);
-			}
-			else {
+			} else {
 				btnManual.setSelected(true);
 			}
 

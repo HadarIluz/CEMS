@@ -22,7 +22,7 @@ import javafx.stage.Stage;
  * displaying a log to the screen, such as alerts, receiving information and
  * requesting information from the server to the client and system errors.
  * 
- * @author CEMS Team
+ * @author CEMS_TEAM
  *
  */
 public class ServerFrameController {

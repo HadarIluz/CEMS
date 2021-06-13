@@ -137,12 +137,12 @@ public class GuiCommon {
 
 	private static void handlePrincipalNotifications(ResponseFromServer res) {
 		if (res.getResponseType().equals("NOTIFICATION_PRINCIPAL_REQUEST_RECEIVED")) {
-			// need implement
-			// res.getResponseData() contain activeExamID
-			PrincipalController.CopyAlertNotification("You have a new extenstion request for exam: " + (String)res.getResponseData());
+			PrincipalController.CopyAlertNotification(
+					"You have a new extenstion request for exam: " + (String) res.getResponseData());
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void handleTeacherNotifications(ResponseFromServer res) {
 		if (res.getResponseType().equals("NOTIFICATION_TEACHER_POTENTIAL_COPY")) {
 			ArrayList<Integer> suspected = (ArrayList<Integer>) res.getResponseData();
@@ -159,9 +159,8 @@ public class GuiCommon {
 		}
 
 		if (res.getResponseType().equals("NOTIFICATION_TEACHER_REQUEST_APPROVED")) {
-			// need implement
-			// res.getResponseData() contain activeExamID
-			TeacherController.CopyAlertNotification("Request for time extenstion approved for exam: " + (String)res.getResponseData());
+			TeacherController.CopyAlertNotification(
+					"Request for time extenstion approved for exam: " + (String) res.getResponseData());
 		}
 
 	}

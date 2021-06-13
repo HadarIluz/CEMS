@@ -231,7 +231,12 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 	public static void setNextScreenData(String questionIDselected) {
 		questionID = questionIDselected;
 	}
-
+	
+	/**
+	 * FIXME: ADD JAVADOC HERE
+	 *
+	 *
+	 */
 	private void loadSelectedQuestionDataToView() {
 		RequestToServer req = new RequestToServer("getQuestionDataBy_questionID");
 		req.setRequestData(questionID);

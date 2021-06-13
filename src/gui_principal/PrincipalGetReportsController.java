@@ -121,8 +121,8 @@ public class PrincipalGetReportsController extends GuiCommon {
 
 	/**
 	 * called when the principal click on the report by course radio button
-	 * according to that the method would disable the other irrelevant buttons
-	 * and initialize the profession comboBox with all the option to chose from
+	 * according to that the method would disable the other irrelevant buttons and
+	 * initialize the profession comboBox with all the option to chose from
 	 * 
 	 * @param event
 	 */
@@ -175,10 +175,12 @@ public class PrincipalGetReportsController extends GuiCommon {
 
 	/**
 	 * called when the principal click on the report by student radio button
-	 * according to that, the method would disable the other irrelevant buttons
-	 * and initialize the student comboBox with all the student to chose
+	 * according to that, the method would disable the other irrelevant buttons and
+	 * initialize the student comboBox with all the student to chose
+	 * 
 	 * @param event
 	 */
+	@SuppressWarnings("unchecked")
 	@FXML
 	void reportByStudent(ActionEvent event) {
 		selectCourse.setDisable(true);
@@ -200,8 +202,9 @@ public class PrincipalGetReportsController extends GuiCommon {
 
 	/**
 	 * called when the principal click on the report by teacher radio button
-	 * according to that, the method would disable the other irrelevant buttons
-	 * and initialize the comboBox with all the teacher to chose from.
+	 * according to that, the method would disable the other irrelevant buttons and
+	 * initialize the comboBox with all the teacher to chose from.
+	 * 
 	 * @param event
 	 */
 	@SuppressWarnings("unchecked")
@@ -225,8 +228,5 @@ public class PrincipalGetReportsController extends GuiCommon {
 
 		selectTeacher.setItems(FXCollections.observableArrayList(Qlist.values()));
 	}
-
-	
-	
 
 }

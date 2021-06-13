@@ -1,8 +1,5 @@
 package Server;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.sql.Connection;
 
 import java.sql.DriverManager;
@@ -14,12 +11,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
-import client.CEMSClient;
-import client.ClientUI;
-import common.MyFile;
 import entity.ActiveExam;
 import entity.Course;
 import entity.Exam;
@@ -37,9 +30,7 @@ import entity.UpdateScoreRequest;
 import entity.User;
 import entity.UserType;
 import gui_server.ServerFrameController;
-import logic.RequestToServer;
 import logic.ResponseFromServer;
-import logic.StatusMsg;
 
 /**
  * @author CEMS_Team

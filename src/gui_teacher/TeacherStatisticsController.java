@@ -17,6 +17,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import logic.RequestToServer;
 
+/**
+ * FIXME: ADD JAVADOC HERE
+ *
+ *
+ */
+
 public class TeacherStatisticsController extends GuiCommon {
 
 	@FXML

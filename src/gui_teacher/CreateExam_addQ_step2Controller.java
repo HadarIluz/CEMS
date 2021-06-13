@@ -5,8 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import client.CEMSClient;
-import client.ClientUI;
 import entity.Exam;
 import entity.Question;
 import entity.QuestionInExam;
@@ -30,7 +28,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import logic.RequestToServer;
+
+/**
+ * FIXME: ADD JAVADOC HERE
+ * 
+ *
+ */
 
 public class CreateExam_addQ_step2Controller implements Initializable {
 

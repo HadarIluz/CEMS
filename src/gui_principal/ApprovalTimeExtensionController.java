@@ -47,7 +47,6 @@ public class ApprovalTimeExtensionController implements Initializable {
 	private static ArrayList<ExtensionRequest> extensionRequestList = new ArrayList<ExtensionRequest>();
 	private ArrayList<String> examIdList = new ArrayList<String>();
 	private ExtensionRequest selectedExtensionRequest;
-	private int timeOfExam;
 
 	/**
 	 * @param event that occurs when clicking on 'Approve' button

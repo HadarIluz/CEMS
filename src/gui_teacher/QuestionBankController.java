@@ -31,8 +31,12 @@ import logic.RequestToServer;
  * @author Nadav Dery
  * @author Yadin Amsalem
  * @version 1.0 build 07/07/2021
- * 
+*
+ * FIXME: ADD JAVADOC HERE
+ *
+ *
  */
+
 public class QuestionBankController extends GuiCommon implements Initializable {
 
     @FXML
@@ -212,7 +216,11 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 
 	}
 
-
+	/**
+	 * FIXME: ADD JAVADOC HERE
+	 *
+	 *
+	 */
 	@SuppressWarnings("unchecked")
 	private void fillTableForPrincipal_ALLQuestionsInSystem() {
 		RequestToServer req = new RequestToServer("getAllQuestionsStoredInSystem");

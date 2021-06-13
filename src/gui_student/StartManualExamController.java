@@ -268,6 +268,9 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 
 	}
 
+	/**
+	 * This method stops the exam in a case it's forced
+	 */
 	private void stopExam() {
 		btnSubmit.setDisable(true);
 		submitExam(ReasonOfSubmit.forced);

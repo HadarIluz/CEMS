@@ -17,39 +17,44 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
-public class CreateNewExam_step3Controller implements Initializable{
+/**
+ * FIXME: ADD JAVADOC HERE
+ * 
+ *
+ */
+
+public class CreateNewExam_step3Controller implements Initializable {
 
 	@FXML
-    private Text textMsg_newExam;
+	private Text textMsg_newExam;
 
-    @FXML
-    private Button btnCreateNewExam;
+	@FXML
+	private Button btnCreateNewExam;
 
-    @FXML
-    private ImageView imgStep1;
+	@FXML
+	private ImageView imgStep1;
 
-    @FXML
-    private ImageView imgStep2;
+	@FXML
+	private ImageView imgStep2;
 
-    @FXML
-    private ImageView imgStep3;
+	@FXML
+	private ImageView imgStep3;
 
-    @FXML
-    private Text textExamID;
+	@FXML
+	private Text textExamID;
 
-    @FXML
-    private Button btnBack;
+	@FXML
+	private Button btnBack;
 
-    @FXML
-    private ImageView imgComputer;
-    
-    private static Exam newExam;
+	@FXML
+	private ImageView imgComputer;
 
+	private static Exam newExam;
 
-    @FXML
-    void btnBack(ActionEvent event) {
-    	CreateExam_addQ_step2Controller.setExamState(newExam);
-    	try {
+	@FXML
+	void btnBack(ActionEvent event) {
+		CreateExam_addQ_step2Controller.setExamState(newExam);
+		try {
 
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("CreateExam_addQ_step2.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -60,29 +65,28 @@ public class CreateNewExam_step3Controller implements Initializable{
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-    }
+	}
 
-    @FXML
-    void btnCreateNewExam(ActionEvent event) {
-    	RequestToServer req = new RequestToServer("createNewExam");
-    	req.setRequestData(newExam);
+	@FXML
+	void btnCreateNewExam(ActionEvent event) {
+		RequestToServer req = new RequestToServer("createNewExam");
+		req.setRequestData(newExam);
 		ClientUI.cems.accept(req);
 		if (CEMSClient.responseFromServer.getResponseType().equals("Success Create New Exam")) {
-			textExamID.setText((String)CEMSClient.responseFromServer.getResponseData());
+			textExamID.setText((String) CEMSClient.responseFromServer.getResponseData());
 			textMsg_newExam.setVisible(true);
-	    	btnBack.setDisable(true);
-	    	CreateExam_step1Controller.setExamState(null);
-		}
-		else {
+			btnBack.setDisable(true);
+			CreateExam_step1Controller.setExamState(null);
+		} else {
 			textExamID.setText("There was a problem. please try again later");
 			textExamID.setFill(javafx.scene.paint.Color.RED);
 		}
-		
+
 		btnCreateNewExam.setDisable(true);
 
-    }
-    
-    public static void setExamState(Exam newExamInProgress) {
+	}
+
+	public static void setExamState(Exam newExamInProgress) {
 		newExam = newExamInProgress;
 	}
 
@@ -91,7 +95,7 @@ public class CreateNewExam_step3Controller implements Initializable{
 		textExamID.setText("");
 		textMsg_newExam.setVisible(false);
 		btnCreateNewExam.setDisable(false);
-		
+
 	}
 
 }

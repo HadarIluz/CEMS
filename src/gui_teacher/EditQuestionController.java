@@ -3,7 +3,6 @@ package gui_teacher;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import Server.CEMSserver;
 import client.CEMSClient;
 import client.ClientUI;
 import entity.Profession;
@@ -18,10 +17,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
+
+/**
+ * FIXME: ADD JAVADOC HERE
+ *
+ *
+ */
 
 public class EditQuestionController extends GuiCommon implements Initializable {
 
