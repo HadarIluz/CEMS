@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -469,8 +470,10 @@ public class CEMSserver extends AbstractServer {
 			return false;
 		}
 		activeExam.setStartTime(time);
-		long halfHourAfterStart = time.getTime() + 1800000;
-		if (System.currentTimeMillis() > halfHourAfterStart) {
+		LocalTime halfHourAfterStart = time.toLocalTime().plusMinutes(30);
+		LocalTime currentTime = (new Time(System.currentTimeMillis())).toLocalTime();
+		
+		if (currentTime.compareTo(halfHourAfterStart) >= 0 ) {
 			// it's half an hour past the starting time of the exam
 			// now check if some students are not done
 			int notSubmitted = dbController.getNumberOfNotSubmitted(activeExam.getExam().getExamID());
