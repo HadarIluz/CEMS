@@ -86,6 +86,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private String teacherComment;
 	private String studentComment;
 	private String timeAllocateForExam;
+	private static Boolean backFromStep2=false;
 
 	/**
 	 * @param event that occurs When clicking the back button, will take you to back
@@ -134,6 +135,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnSaveEditeExam(ActionEvent event) {
+		
 		if (getExamDetailsANDcheckCOndition()) {
 			// set the new parameters into editExam
 			exam.setCommentForStudents(studentComment);
@@ -169,13 +171,13 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 *         false.
 	 */
 	private boolean getExamDetailsANDcheckCOndition() {
-		if (textTeacherComment.getText() == null) {
+		if (textTeacherComment.getText().isEmpty()) {
 			teacherComment = "";
 		} else 
 		{
 			teacherComment = textTeacherComment.getText().trim();
 		}
-		if (textStudentComment.getText() == null) {
+		if (textStudentComment.getText().isEmpty()) {
 			studentComment = "";
 		} else {
 
@@ -254,6 +256,16 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 		if (screenStatus.equals(super.teacherStatusScreen)) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
+						
+			//Forces the teacher to switch between the 2 screens of editing an exam.
+			System.out.println(backFromStep2);
+			if(backFromStep2) {
+				btnSaveEditeExam.setDisable(false);
+			}
+			else {
+				btnSaveEditeExam.setDisable(true);
+			}		
+			
 		}
 
 		if (screenStatus.equals(super.principalStatusScreen)) {
@@ -273,7 +285,6 @@ public class EditExamController extends GuiCommon implements Initializable {
 			textTimeAllocateForExam.setEditable(false);
 			textTeacherComment.setEditable(false);
 			textStudentComment.setEditable(false);
-
 		}
 
 	}
@@ -285,10 +296,11 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 * @param qlist                 list with all update score to be update in DB
 	 *                              when teacher clicks on "save exam" button.
 	 */
-	public static void setprevScreenData(Exam exam2, boolean displayPrincipalView2, ArrayList<QuestionInExam> qlist) {
+	public static void setprevScreenData(Exam exam2, boolean displayPrincipalView2, ArrayList<QuestionInExam> qlist, boolean back) {
 		exam = exam2;
 		displayPrincipalView = displayPrincipalView2;
 		updatedQuestions = qlist;
+		backFromStep2=back;
 	}
 
 }

@@ -143,7 +143,7 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		// update!.
 		// when teacher will press on the save edit exam the data will saved in the DB
 		// by server.
-		EditExamController.setprevScreenData(exam, displayPrincipalView, existsQuestions);
+		EditExamController.setprevScreenData(exam, displayPrincipalView, existsQuestions, true);
 		if (!displayPrincipalView) {
 			displayNextScreen(teacher, "/gui_teacher/EditExam.fxml");
 
