@@ -323,9 +323,15 @@ public class SolveExamController implements Initializable {
 
 		if (currentQuestion == 0) {
 			btnPrev.setDisable(true);
+			if (newActiveExam.getExam().getExamQuestionsWithScores().size() != 1) {
+				btnNext.setDisable(false);
+			}
 		}
 		else if (currentQuestion == newActiveExam.getExam().getExamQuestionsWithScores().size() - 1) {
 			btnNext.setDisable(true);
+			if (newActiveExam.getExam().getExamQuestionsWithScores().size() != 1) {
+				btnPrev.setDisable(false);
+			}
 		} else {
 			btnPrev.setDisable(false);
 			btnNext.setDisable(false);
