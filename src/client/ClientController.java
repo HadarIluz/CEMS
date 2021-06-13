@@ -18,6 +18,7 @@ import common.CemsIF;
  * @author Dr Robert Lagani&egrave;re
  * @version July 2000
  */
+@SuppressWarnings("unused")
 public class ClientController implements CemsIF 
 {
   //Class variables *************************************************
