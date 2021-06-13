@@ -70,7 +70,7 @@ public class CEMSserver extends AbstractServer {
 	 * @param
 	 */
 
-	@SuppressWarnings("null")
+	@SuppressWarnings({ "null", "unchecked" })
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		StatusMsg status = new StatusMsg();
 
@@ -251,8 +251,8 @@ public class CEMSserver extends AbstractServer {
 		}
 			break;
 
-		case "chechExamExist": {
-			chechExamExist((String) req.getRequestData(), client);
+		case "checkExamExist": {
+			checkExamExist((String) req.getRequestData(), client);
 
 		}
 			break;
@@ -720,10 +720,10 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
-	private void chechExamExist(String ExamID, ConnectionToClient client) {
+	private void checkExamExist(String ExamID, ConnectionToClient client) {
 
 		ResponseFromServer response = new ResponseFromServer("CHECK EXAM EXIST");
-		response.setResponseData(dbController.chechExamExist(ExamID));
+		response.setResponseData(dbController.checkExamExist(ExamID));
 		// sent to client.
 		try {
 			client.sendToClient(response);
