@@ -1536,7 +1536,7 @@ public class DBController {
 		try {
 
 			pstmt = conn.prepareStatement(
-					"SELECT question, answer1, answer2, answer3, answer4, description FROM question WHERE questionID=?;");
+					"SELECT question, answer1, answer2, answer3, answer4, correctAnswerIndex, description FROM question WHERE questionID=?;");
 			pstmt.setString(1, questionID);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -1547,7 +1547,8 @@ public class DBController {
 				answers[2] = rs.getString(4);
 				answers[3] = rs.getString(5);
 				q.setAnswers(answers);
-				q.setDescription(rs.getString(6));
+				q.setCorrectAnswerIndex(rs.getInt(6));
+				q.setDescription(rs.getString(7));
 
 			}
 			rs.close();
