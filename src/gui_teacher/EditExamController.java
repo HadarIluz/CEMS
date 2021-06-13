@@ -23,17 +23,16 @@ import javafx.scene.text.Text;
 import logic.RequestToServer;
 
 /**
- * Class contains functionality for edit exam as part of 2 main steps.
- * This screen describes the first stage in which the teacher sees the exam
- * details which are not available like examID.
- * The teacher can edit the exam time and comments.
- * When clicking the BrowseQuestions button will take you to
- * the next screen to view the questions. And on this screen the teacher can save the updated exam.
+ * Class contains functionality for edit exam as part of 2 main steps. This
+ * screen describes the first stage in which the teacher sees the exam details
+ * which are not available like examID. The teacher can edit the exam time and
+ * comments. When clicking the BrowseQuestions button will take you to the next
+ * screen to view the questions. And on this screen the teacher can save the
+ * updated exam.
  * 
  * We reuse the screen to display any test details in the system that the
  * principal has chosen to see what the exam bank is. Therefore the screen
- * distinguishes between 2 types of users: 
- * Manager - viewing permissions only.
+ * distinguishes between 2 types of users: Manager - viewing permissions only.
  * Teacher - editing permissions as described.
  * 
  * @author Hadar Iluz
@@ -89,8 +88,8 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private String timeAllocateForExam;
 
 	/**
-	 * @param event that occurs When clicking the back button, will take you to
-	 * back to exam bank screen. 
+	 * @param event that occurs When clicking the back button, will take you to back
+	 *              to exam bank screen.
 	 */
 	@FXML
 	void btnBack(ActionEvent event) {
@@ -103,8 +102,9 @@ public class EditExamController extends GuiCommon implements Initializable {
 	}
 
 	/**
-	 * @param event that occurs When clicking the BrowseQuestions button will take you to
-	 * the next screen to view questions by principal or also update by teacher. 
+	 * @param event that occurs When clicking the BrowseQuestions button will take
+	 *              you to the next screen to view questions by principal or also
+	 *              update by teacher.
 	 */
 	@FXML
 	void btnBrowseQuestions(ActionEvent event) {
@@ -169,8 +169,19 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 *         false.
 	 */
 	private boolean getExamDetailsANDcheckCOndition() {
-		teacherComment = textTeacherComment.getText().trim();
-		studentComment = textStudentComment.getText().trim();
+		if (textTeacherComment.getText() == null) {
+			teacherComment = "";
+		} else 
+		{
+			teacherComment = textTeacherComment.getText().trim();
+		}
+		if (textStudentComment.getText() == null) {
+			studentComment = "";
+		} else {
+
+			studentComment = textStudentComment.getText().trim();
+		}
+		
 		timeAllocateForExam = textTimeAllocateForExam.getText().trim();
 		// Check that all fields that must be filled are filled correctly.
 		return checkConditionToStart(teacherComment, studentComment, timeAllocateForExam);
@@ -268,9 +279,11 @@ public class EditExamController extends GuiCommon implements Initializable {
 	}
 
 	/**
-	 * @param examData with all updated details.
-	 * @param displayPrincipalView2 the current screen mode according to logged user.
-	 * @param qlist list with all update score to be update in DB when teacher clicks on "save exam" button.
+	 * @param examData              with all updated details.
+	 * @param displayPrincipalView2 the current screen mode according to logged
+	 *                              user.
+	 * @param qlist                 list with all update score to be update in DB
+	 *                              when teacher clicks on "save exam" button.
 	 */
 	public static void setprevScreenData(Exam exam2, boolean displayPrincipalView2, ArrayList<QuestionInExam> qlist) {
 		exam = exam2;

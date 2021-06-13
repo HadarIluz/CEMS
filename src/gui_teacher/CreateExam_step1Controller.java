@@ -143,6 +143,10 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 				}
 				newExam.setExamStatus(ExamStatus.inActive);
 				if (continueNextScreen) {
+				
+					newExam.setProfession(selectedProfession);
+					newExam.setCourse(selectedCourse);
+					newExam.setTimeOfExam(Integer.parseInt(t));
 					startNextScreen(newExam);
 				}
 
