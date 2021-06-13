@@ -132,7 +132,8 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 				newQuestion.setDescription(textDescription.getText().trim());
 			}
 			newQuestion.setTeacher((Teacher) ClientUI.loggedInUser.getUser());
-			// newQuestion.setTeacher(currentTeacher);
+			if(newQuestion.getDescription()==null)
+				newQuestion.setDescription("");
 			RequestToServer req = new RequestToServer("createNewQuestion");
 			req.setRequestData(newQuestion);
 			ClientUI.cems.accept(req);
