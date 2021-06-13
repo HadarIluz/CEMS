@@ -41,8 +41,6 @@ import logic.RequestToServer;
 import logic.ResponseFromServer;
 import logic.StatusMsg;
 
-
-
 /**
  * @author CEMS_Team
  *
@@ -205,8 +203,10 @@ public class DBController {
 		}
 		return "TRUE";
 	}
+
 	/**
-	 *  Method return all students scores by examID given from User
+	 * Method return all students scores by examID given from User
+	 * 
 	 * @param examID the Exam we return his scores
 	 * @return hashmap with a key of stuidents id and exam score in value
 	 */
@@ -419,10 +419,12 @@ public class DBController {
 		}
 		return response;
 	}
+
 	/**
 	 * method return all teacher's exams
+	 * 
 	 * @param obj is the id of the teacher(User)
-	 * @return  A list og all teacher's exams
+	 * @return A list og all teacher's exams
 	 */
 
 	public ArrayList<Exam> GetTeacherExams(Object obj) {
@@ -458,8 +460,10 @@ public class DBController {
 		return examsOfTeacher;
 
 	}
+
 	/**
 	 * Method Delete question from DB
+	 * 
 	 * @param question we delete
 	 * @return true if deleted, else false
 	 */
@@ -478,8 +482,10 @@ public class DBController {
 		return true;
 
 	}
+
 	/**
 	 * method return all teacher's questions
+	 * 
 	 * @param obj for given techer ID
 	 * @return list of all teacher's questions
 	 */
@@ -574,8 +580,10 @@ public class DBController {
 			pstmt = conn.prepareStatement(
 					"SELECT exam,startTime, timeAllotedForTest, examType FROM active_exam WHERE examCode=? and startTime>=? and startTime<?;");
 			pstmt.setString(1, activeExam.getExamCode());
-			pstmt.setTime(2,new java.sql.Time(activeExam.getStartTime().getHours(),activeExam.getStartTime().getMinutes(),activeExam.getStartTime().getSeconds()));
-			pstmt.setTime(3, new java.sql.Time(activeExam.getEndTimeToTakeExam().getHours(),activeExam.getEndTimeToTakeExam().getMinutes(),activeExam.getEndTimeToTakeExam().getSeconds()));
+			pstmt.setTime(2, new java.sql.Time(activeExam.getStartTime().getHours(),
+					activeExam.getStartTime().getMinutes(), activeExam.getStartTime().getSeconds()));
+			pstmt.setTime(3, new java.sql.Time(activeExam.getEndTimeToTakeExam().getHours(),
+					activeExam.getEndTimeToTakeExam().getMinutes(), activeExam.getEndTimeToTakeExam().getSeconds()));
 			// Time Range for start the exam:
 			System.out.println(activeExam.getStartTime() + " - " + activeExam.getEndTimeToTakeExam());
 			System.out.println(pstmt.toString());
@@ -603,8 +611,10 @@ public class DBController {
 		return response;
 
 	}
+
 	/**
 	 * method return proffession instance by proffession ID
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -685,9 +695,11 @@ public class DBController {
 		}
 		return activeExam;
 	}
+
 	/**
 	 * mesthod delete exam from DB
-	 * @param exam  the exam that delete from DB
+	 * 
+	 * @param exam the exam that delete from DB
 	 * @return true if deleted' else false
 	 */
 
@@ -709,6 +721,7 @@ public class DBController {
 
 	/**
 	 * method return from DB all active exams
+	 * 
 	 * @return data of all active exams
 	 */
 	public ResponseFromServer getAllActiveExam() {
@@ -742,8 +755,10 @@ public class DBController {
 
 		return response;
 	}
+
 	/**
 	 * method for send question of teacher
+	 * 
 	 * @param requestData will give data of teacher and proffession
 	 * @return questions of techer
 	 */
@@ -786,8 +801,10 @@ public class DBController {
 		}
 		return response;
 	}
+
 	/**
-	 *  method return us the courses by proffession 
+	 * method return us the courses by proffession
+	 * 
 	 * @param requestData data of profession that courses presented in him
 	 * @return all courses in the proffession
 	 */
@@ -819,6 +836,7 @@ public class DBController {
 		}
 		return response;
 	}
+
 	/**
 	 * 
 	 * @return HashMap of all proffession Id as Key and name as Value
@@ -838,8 +856,10 @@ public class DBController {
 		}
 		return profName;
 	}
+
 	/**
 	 * method return Map og all courses by Proffession ID
+	 * 
 	 * @return HashMap of profession as Key and Value as Cousrse name
 	 * 
 	 */
@@ -875,8 +895,10 @@ public class DBController {
 
 		return courseMap;
 	}
+
 	/**
 	 * method check if exam exist in DB
+	 * 
 	 * @param ExamID given to check if exist
 	 * @return "TRUE" if exist, "FALSE" else
 	 */
@@ -899,10 +921,11 @@ public class DBController {
 
 	/**
 	 * method gets all scores from Exam given as input
-	 * @param examID exam given to check her average score 
-	 * @return  array list of grades
+	 * 
+	 * @param examID exam given to check her average score
+	 * @return array list of grades
 	 */
-	
+
 	public ArrayList<Integer> gradesAverageCalc(String examID) {
 		ArrayList<Integer> grades = new ArrayList<Integer>();
 		PreparedStatement pstmt;
@@ -920,6 +943,7 @@ public class DBController {
 
 	/**
 	 * method get all exam details
+	 * 
 	 * @param exam data of selected exam
 	 * @return all exam given's data
 	 */
@@ -956,19 +980,23 @@ public class DBController {
 
 		return response;
 	}
+
 	/**
 	 * method create new Active exam
+	 * 
 	 * @param newActiveExam insrted to DB
 	 * @return respond that create exam succes, else it will return exception
 	 */
 
+	@SuppressWarnings("deprecation")
 	public ResponseFromServer createNewActiveExam(ActiveExam newActiveExam) {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("INSERT INTO active_exam VALUES(?, ?, ?, ?, ?);");
 			pstmt.setString(1, newActiveExam.getExam().getExamID());
-			pstmt.setTime(2, newActiveExam.getStartTime());
+			pstmt.setTime(2, new java.sql.Time(newActiveExam.getStartTime().getHours(),
+					newActiveExam.getStartTime().getMinutes(), newActiveExam.getStartTime().getSeconds()));
 			pstmt.setInt(3, newActiveExam.getTimeAllotedForTest());
 			pstmt.setString(4, newActiveExam.getExamCode());
 			pstmt.setString(5, newActiveExam.getActiveExamType());
@@ -1020,8 +1048,10 @@ public class DBController {
 		return examsList;
 
 	}
+
 	/**
 	 * method save exam that edited
+	 * 
 	 * @param exam to be insrt after edited
 	 * @return massage if insert edired exam success or not
 	 */
@@ -1051,11 +1081,13 @@ public class DBController {
 		}
 		return response;
 	}
-/**
- * delete active exam from db
- * @param exam to be deleted
- * @return true if success/ else false
- */
+
+	/**
+	 * delete active exam from db
+	 * 
+	 * @param exam to be deleted
+	 * @return true if success/ else false
+	 */
 	public boolean deleteActiveExam(ActiveExam exam) {
 		PreparedStatement pstmt;
 		try {
@@ -1069,8 +1101,10 @@ public class DBController {
 		}
 		return false;
 	}
+
 	/**
 	 * method Update exam in db
+	 * 
 	 * @param exam exam that Updated
 	 * @return true if success, else false
 	 */
@@ -1090,12 +1124,13 @@ public class DBController {
 		}
 		return false;
 	}
+
 	/**
-	 * mestods check if there any Extenssion request 
+	 * mestods check if there any Extenssion request
+	 * 
 	 * @param extensionRequest for extention request of principal
 	 * @return true is there is, else false
 	 */
-	
 
 	public boolean checkIfExtensionRequestExists(ExtensionRequest extensionRequest) {
 		PreparedStatement pstmt;
@@ -1111,9 +1146,11 @@ public class DBController {
 		}
 		return true;
 	}
+
 	/**
 	 * method gets all teachers details
-	 * @return  list of all teachers
+	 * 
+	 * @return list of all teachers
 	 */
 
 	public ArrayList<Teacher> getTeachers() {
@@ -1137,9 +1174,11 @@ public class DBController {
 		}
 		return teachers;
 	}
+
 	/**
 	 * method gets all students details
-	 * @return  list of all students
+	 * 
+	 * @return list of all students
 	 */
 	public ArrayList<Student> getStudents() {
 		ArrayList<Student> students = new ArrayList<Student>();
@@ -1162,8 +1201,10 @@ public class DBController {
 		}
 		return students;
 	}
+
 	/**
 	 * method return all Student grades
+	 * 
 	 * @param id for Students ID
 	 * @return HashMap of all student scores
 	 */
@@ -1185,9 +1226,11 @@ public class DBController {
 		}
 		return ExamGrades;
 	}
+
 	/**
 	 * give all student's exams
-	 * @return  hash Map of all exams of student
+	 * 
+	 * @return hash Map of all exams of student
 	 */
 
 	public HashMap<String, ArrayList<Integer>> getAllStudentsExams() {
@@ -1216,12 +1259,13 @@ public class DBController {
 		}
 		return exams;
 	}
+
 	/**
-	 * method check students in active Exam 
+	 * method check students in active Exam
+	 * 
 	 * @param exam to check Students in the exam
-	 * @return arrayList of students ID's 
-	 */ 
-	
+	 * @return arrayList of students ID's
+	 */
 
 	public ArrayList<Integer> getStudentsInActiveExam(Exam exam) {
 		ArrayList<Integer> students = new ArrayList<Integer>();
@@ -1240,11 +1284,12 @@ public class DBController {
 		}
 		return students;
 	}
-/**
- * 
- * @param examOfStudent details of Exam Of Student to ne insert to DB
- * @return if inserted to DB or not
- */
+
+	/**
+	 * 
+	 * @param examOfStudent details of Exam Of Student to ne insert to DB
+	 * @return if inserted to DB or not
+	 */
 	public ResponseFromServer InsertExamOfStudent(ExamOfStudent examOfStudent) {
 		ResponseFromServer response = null;
 		PreparedStatement pstmt;
@@ -1358,11 +1403,12 @@ public class DBController {
 
 		return response;
 	}
-/**
- * 
- * @param questionID to get al question data
- * @return question with all data
- */
+
+	/**
+	 * 
+	 * @param questionID to get al question data
+	 * @return question with all data
+	 */
 	public Question getQuestionDataBy_questionID(String questionID) {
 		/*** Question Bank-Principal step2 ***/
 		Question q = new Question();
@@ -1580,7 +1626,7 @@ public class DBController {
 //		}
 //		return response;
 //	}
-	
+
 	/**
 	 * 
 	 * @param examOfStudent for verify exam
@@ -1605,11 +1651,12 @@ public class DBController {
 		}
 		return true;
 	}
-/**
- * 
- * @param requestData array with all student and examID
- * @return  arrayList of all scores
- */
+
+	/**
+	 * 
+	 * @param requestData array with all student and examID
+	 * @return arrayList of all scores
+	 */
 	public ArrayList<String> getStudentScore(String[] requestData) {
 		PreparedStatement pstmt;
 		ArrayList<String> Details = new ArrayList<>();
@@ -1646,12 +1693,12 @@ public class DBController {
 
 		return Details;
 	}
+
 	/**
 	 * 
-	 * @param details of student that  would like so see his solved exam
+	 * @param details of student that would like so see his solved exam
 	 * @return array list with all qustions
 	 */
-	 
 
 	public ArrayList<QuestionRow> getSolvedComputerizedExam(String[] details) {
 		ArrayList<QuestionRow> questionsOfExam = new ArrayList<QuestionRow>();
@@ -1675,8 +1722,10 @@ public class DBController {
 		}
 		return questionsOfExam;
 	}
+
 	/**
 	 * return the correct answer for question
+	 * 
 	 * @param questionID for answer
 	 * @return question with right answer
 	 */
@@ -1753,14 +1802,16 @@ public class DBController {
 	 * @param activeExam
 	 * @return true if documenting the exam was successfull
 	 */
+	@SuppressWarnings("deprecation")
 	public boolean documentExam(ActiveExam activeExam) {
 		int initiated = initiatedSubmitInActiveExam(activeExam.getExam().getExamID());
 		int forced = forcedSubmitInActiveExam(activeExam.getExam().getExamID());
+		Time endTime = new Time(System.currentTimeMillis());
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("INSERT INTO exam_records VALUES(?, ?, ?, ?, ?, ?, ?);");
 			pstmt.setString(1, activeExam.getExam().getExamID());
-			pstmt.setTime(2, new Time(System.currentTimeMillis()));
+			pstmt.setTime(2, new java.sql.Time(endTime.getHours(), endTime.getMinutes(), endTime.getSeconds()));
 			pstmt.setInt(3, activeExam.getTimeAllotedForTest());
 			LocalTime currentTime = (new Time(System.currentTimeMillis())).toLocalTime();
 			int actualTime = (currentTime.toSecondOfDay() - activeExam.getStartTime().toLocalTime().toSecondOfDay())
@@ -1825,6 +1876,7 @@ public class DBController {
 		}
 		return sum;
 	}
+
 	/**
 	 * 
 	 * @param question to be edited
@@ -1857,8 +1909,10 @@ public class DBController {
 
 		return "true";
 	}
+
 	/**
-	 *  check if active exam is exist
+	 * check if active exam is exist
+	 * 
 	 * @param activeExam to check if exust
 	 * @return true if exist, else else
 	 */
@@ -1877,6 +1931,7 @@ public class DBController {
 		}
 		return true;
 	}
+
 	/**
 	 * 
 	 * @param exam that belongs to the techer we return
@@ -1935,9 +1990,11 @@ public class DBController {
 
 		return examsID;
 	}
+
 	/**
 	 * method retirn list of students thet solve the test and suspected with copy
-	 * @param exams arrayList of exams of student 
+	 * 
+	 * @param exams arrayList of exams of student
 	 * @return array list with students that might br copy
 	 */
 
@@ -2039,6 +2096,7 @@ public class DBController {
 
 	/**
 	 * method update scores of question
+	 * 
 	 * @param updatedQuestions array of question
 	 * @return if updated or not
 	 */
@@ -2084,14 +2142,13 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		
-		
+
 		return examList;
 	}
 
 	public HashMap<QuestionInExam, Integer> getQuestionsAndAnswersByExamOfStudent(ExamOfStudent e) {
 		HashMap<QuestionInExam, Integer> qNa = new HashMap<>();
-		
+
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement(
@@ -2107,7 +2164,7 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		
+
 		return qNa;
 	}
 
