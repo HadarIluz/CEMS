@@ -384,6 +384,7 @@ public class CEMSserver extends AbstractServer {
 	 */
 	private void StudentFinishManualExam(ExamOfStudent studentExam, ConnectionToClient client) {
 		ResponseFromServer response = null;
+		int notSubmitted = -1;
 		if (dbController.updateStudentExam(studentExam)) {
 			response = new ResponseFromServer("EXAM OF STUDENT UPDATE");
 		}
@@ -393,9 +394,13 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
-		if (studentExam.getReasonOfSubmit() == ReasonOfSubmit.forced
-				|| checkIfExamFinished(studentExam.getActiveExam()))
+
+		if (studentExam.getReasonOfSubmit() == ReasonOfSubmit.forced)
+			notSubmitted = dbController.getNumberOfNotSubmitted(studentExam.getActiveExam().getExam().getExamID());
+
+		if (notSubmitted == 0 || checkIfExamFinished(studentExam.getActiveExam())) {
 			documentExam(studentExam.getActiveExam());
+		}
 	}
 
 	/**

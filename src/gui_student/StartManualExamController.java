@@ -97,6 +97,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	private Timer timer;
 	private ExamOfStudent examOfStudent;
 	private int timeLeft;
+	private int timeToDeduct;
 
 	/**
 	 * The method downloads the test form to the Downloads folder on the student's
@@ -172,7 +173,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 						RequestToServer req2 = new RequestToServer("StudentFinishManualExam");
 						examOfStudent.setExamType("manual");
 						examOfStudent.setTotalTime(
-								((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60
+								((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime() - timeToDeduct) * 60
 										- timeForTimer.get()) / 60);
 						req2.setRequestData(examOfStudent);
 						ClientUI.cems.accept(req2);
@@ -188,8 +189,8 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 			examOfStudent.setExamType("manual");
 			examOfStudent.setScore(0);
 			examOfStudent.setTotalTime(
-					((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime()) * 60 - timeForTimer.get())
-							/ 60);
+					((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime() - timeToDeduct) * 60
+							- timeForTimer.get()) / 60);
 			RequestToServer req = new RequestToServer("StudentFinishManualExam");
 			req.setRequestData(examOfStudent);
 			ClientUI.cems.accept(req);
@@ -232,8 +233,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 		addTime = 0;
 		// set the timer
 		LocalTime currentTime = (new Time(System.currentTimeMillis())).toLocalTime();
-		int timeToDeduct = (currentTime.toSecondOfDay() - newActiveExam.getStartTime().toLocalTime().toSecondOfDay())
-				/ 60;
+		timeToDeduct = (currentTime.toSecondOfDay() - newActiveExam.getStartTime().toLocalTime().toSecondOfDay()) / 60;
 		int timeForStudent = (newActiveExam.getTimeAllotedForTest() - timeToDeduct) * 60;
 		timeForTimer = new AtomicInteger(timeForStudent);
 		timer = new Timer();

@@ -95,10 +95,10 @@ public class SolveExamController implements Initializable {
 	private int[] studentAnswers;
 	private AtomicInteger timeForTimer;
 	private int timeLeft;
+	private int timeToDeduct;
 
 	/**
-	 * @param event
-	 * the method handles click on btnAnswer1
+	 * @param event the method handles click on btnAnswer1
 	 */
 	@FXML
 	void btnAnswer1(ActionEvent event) {
@@ -107,8 +107,7 @@ public class SolveExamController implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * the method handles click on btnAnswer2
+	 * @param event the method handles click on btnAnswer2
 	 */
 	@FXML
 	void btnAnswer2(ActionEvent event) {
@@ -116,8 +115,7 @@ public class SolveExamController implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * the method handles click on btnAnswer3
+	 * @param event the method handles click on btnAnswer3
 	 */
 	@FXML
 	void btnAnswer3(ActionEvent event) {
@@ -125,8 +123,7 @@ public class SolveExamController implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * the method handles click on btnAnswer4
+	 * @param event the method handles click on btnAnswer4
 	 */
 	@FXML
 	void btnAnswer4(ActionEvent event) {
@@ -134,8 +131,7 @@ public class SolveExamController implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * the method handles click on btnSubmitExam
+	 * @param event the method handles click on btnSubmitExam
 	 */
 	@FXML
 	void btnSubmitExam(ActionEvent event) {
@@ -143,8 +139,8 @@ public class SolveExamController implements Initializable {
 	}
 
 	/**
-	 * @param reasonOfSubmit
-	 * this method handles the submit of exam (if it's forced or initiated)
+	 * @param reasonOfSubmit this method handles the submit of exam (if it's forced
+	 *                       or initiated)
 	 */
 	private void submitExam(ReasonOfSubmit reasonOfSubmit) {
 		btnSubmitExam.setDisable(true);
@@ -163,7 +159,9 @@ public class SolveExamController implements Initializable {
 
 		ExamOfStudent examOfStudent = new ExamOfStudent(newActiveExam, (Student) ClientUI.loggedInUser.getUser());
 		examOfStudent.setQuestionsAndAnswers(studentQuestions);
-		examOfStudent.setTotalTime((newActiveExam.getTimeAllotedForTest() * 60 - timeForTimer.get()) / 60);
+		examOfStudent.setTotalTime(
+				((newActiveExam.getTimeAllotedForTest() + newActiveExam.getExtraTime() - timeToDeduct) * 60
+						- timeForTimer.get()) / 60);
 		examOfStudent.setExamType("computerized");
 		examOfStudent.setReasonOfSubmit(reasonOfSubmit);
 
@@ -179,8 +177,7 @@ public class SolveExamController implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * the method handles click on btnNext
+	 * @param event the method handles click on btnNext
 	 */
 	@FXML
 	void btnNext(ActionEvent event) {
@@ -190,8 +187,7 @@ public class SolveExamController implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * the method handles click on btnPrev
+	 * @param event the method handles click on btnPrev
 	 */
 	@FXML
 	void btnPrev(ActionEvent event) {
@@ -200,9 +196,9 @@ public class SolveExamController implements Initializable {
 		unselectRadioButton();
 	}
 
-	
 	/**
-	 * When moving between questions, this cleans the picking of answers. only if the it was not answered before
+	 * When moving between questions, this cleans the picking of answers. only if
+	 * the it was not answered before
 	 */
 	private void unselectRadioButton() {
 		btnAnswer1.setSelected(false);
@@ -230,8 +226,7 @@ public class SolveExamController implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * the method handles click on checkBoxShowTime
+	 * @param event the method handles click on checkBoxShowTime
 	 */
 	@FXML
 	void checkBoxShowTime(MouseEvent event) {
@@ -254,8 +249,7 @@ public class SolveExamController implements Initializable {
 		addTime = 0;
 		// set the timer
 		LocalTime currentTime = (new Time(System.currentTimeMillis())).toLocalTime();
-		int timeToDeduct = (currentTime.toSecondOfDay() - newActiveExam.getStartTime().toLocalTime().toSecondOfDay())
-				/ 60;
+		timeToDeduct = (currentTime.toSecondOfDay() - newActiveExam.getStartTime().toLocalTime().toSecondOfDay()) / 60;
 		int timeForStudent = (newActiveExam.getTimeAllotedForTest() - timeToDeduct) * 60;
 		timeForTimer = new AtomicInteger(timeForStudent);
 		timer = new Timer();
@@ -298,10 +292,8 @@ public class SolveExamController implements Initializable {
 		loadQuestion(currentQuestion);
 	}
 
-	
 	/**
-	 * @param i
-	 * this method loads question i to the screen
+	 * @param i this method loads question i to the screen
 	 */
 	private void loadQuestion(int i) {
 		int qNum = i + 1;
@@ -325,7 +317,6 @@ public class SolveExamController implements Initializable {
 		}
 	}
 
-	
 	/**
 	 * This method stops the exam in a case it's forced
 	 */
