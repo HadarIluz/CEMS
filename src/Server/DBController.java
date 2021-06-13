@@ -443,6 +443,7 @@ public class DBController {
 				exam.setCourse(new Course(rs.getString(3)));// addition
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
 				exam.setExamStatus(ExamStatus.valueOf(rs.getString(8))); // FIXME: enum
+				exam.setActiveExamType(rs.getString(9));
 				examsOfTeacher.add(exam);
 
 			}
