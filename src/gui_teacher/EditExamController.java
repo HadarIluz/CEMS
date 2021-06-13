@@ -86,6 +86,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private String teacherComment;
 	private String studentComment;
 	private String timeAllocateForExam;
+	private static Boolean backFromStep2=false;
 
 	/**
 	 * @param event that occurs When clicking the back button, will take you to back
@@ -110,12 +111,12 @@ public class EditExamController extends GuiCommon implements Initializable {
 	void btnBrowseQuestions(ActionEvent event) {
 		if (getExamDetailsANDcheckCOndition()) {
 			// set the new parameters into editExam
-			exam.setCommentForStudents(studentComment);
 			exam.setCommentForTeacher(teacherComment);
+			exam.setCommentForStudents(studentComment);
 			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
 
 			// sent to next screen exam with data info.
-			EditExam_questionsStep2Controller.setnextScreenData(exam, displayPrincipalView);
+			EditExam_questionsStep2Controller.setnextScreenData(exam, displayPrincipalView, updatedQuestions);
 			if (!displayPrincipalView) {
 				displayNextScreen(teacher, "/gui_teacher/EditExam_questionStep2.fxml");
 			} else {
@@ -134,6 +135,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnSaveEditeExam(ActionEvent event) {
+		
 		if (getExamDetailsANDcheckCOndition()) {
 			// set the new parameters into editExam
 			exam.setCommentForStudents(studentComment);
@@ -169,22 +171,23 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 *         false.
 	 */
 	private boolean getExamDetailsANDcheckCOndition() {
-		if (textTeacherComment.getText() == null) {
+		if ((textTeacherComment.getText().trim()).isEmpty()) {
 			teacherComment = "";
-		} else 
-		{
+		} 
+		else {
 			teacherComment = textTeacherComment.getText().trim();
 		}
-		if (textStudentComment.getText() == null) {
+		
+		if ((textStudentComment.getText().trim()).isEmpty()) {
 			studentComment = "";
-		} else {
-
+		} 
+		else {
 			studentComment = textStudentComment.getText().trim();
 		}
 		
 		timeAllocateForExam = textTimeAllocateForExam.getText().trim();
 		// Check that all fields that must be filled are filled correctly.
-		return checkConditionToStart(teacherComment, studentComment, timeAllocateForExam);
+		return checkConditionToStart(timeAllocateForExam);
 	}
 
 	/**
@@ -193,18 +196,9 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 * @param timeAllocateForExam input that the teacher can edit
 	 * @return true if all fields are correctly filled, Otherwise returns false
 	 */
-	private boolean checkConditionToStart(String teacherComment, String StudentComment, String timeAllocateForExam) {
+	private boolean checkConditionToStart(String timeAllocateForExam) {
 		StringBuilder strBuilder = new StringBuilder();
 		boolean flag = true;
-		if (teacherComment.length() == 0 || StudentComment.length() == 0) {
-			strBuilder.append("All fields must be filled !\n");
-			flag = false;
-		}
-		// return true if the String contains only digits.
-		if (!isOnlyDigits(timeAllocateForExam)) {
-			strBuilder.append("Exam time must contains only digits.\n");
-			flag = false;
-		}
 		if (textTimeAllocateForExam.getText().isEmpty() == false) {
 			int time = Integer.parseInt(timeAllocateForExam);
 
@@ -254,6 +248,16 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 		if (screenStatus.equals(super.teacherStatusScreen)) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
+						
+			//Forces the teacher to switch between the 2 screens of editing an exam.
+			System.out.println(backFromStep2);
+			if(backFromStep2) {
+				btnSaveEditeExam.setDisable(false);
+			}
+			else {
+				btnSaveEditeExam.setDisable(true);
+			}		
+			
 		}
 
 		if (screenStatus.equals(super.principalStatusScreen)) {
@@ -273,7 +277,6 @@ public class EditExamController extends GuiCommon implements Initializable {
 			textTimeAllocateForExam.setEditable(false);
 			textTeacherComment.setEditable(false);
 			textStudentComment.setEditable(false);
-
 		}
 
 	}
@@ -285,10 +288,11 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 * @param qlist                 list with all update score to be update in DB
 	 *                              when teacher clicks on "save exam" button.
 	 */
-	public static void setprevScreenData(Exam exam2, boolean displayPrincipalView2, ArrayList<QuestionInExam> qlist) {
+	public static void setDataFromStep2(Exam exam2, boolean displayPrincipalView2, ArrayList<QuestionInExam> qlist, boolean back) {
 		exam = exam2;
 		displayPrincipalView = displayPrincipalView2;
 		updatedQuestions = qlist;
+		backFromStep2=back;
 	}
 
 }

@@ -28,16 +28,15 @@ import javafx.scene.text.Text;
 import logic.RequestToServer;
 
 /**
- * Class contains functionality for edit exam as part of 2 main steps.
- * This screen describes the second stage where the teacher sees all the
- * questions that appears in the exam she has chosen and she can update the score
- * of all the questions in table.
+ * Class contains functionality for edit exam as part of 2 main steps. This
+ * screen describes the second stage where the teacher sees all the questions
+ * that appears in the exam she has chosen and she can update the score of all
+ * the questions in table.
  * 
  * We reuse the screen to display all the question details of any exam in the
- * system that the principal has chosen to see what exam bank is. 
- * Therefore the screen distinguishes between 2 types of users: 
- * Manager - viewing permissions only.
- * Teacher - editing permissions as described.
+ * system that the principal has chosen to see what exam bank is. Therefore the
+ * screen distinguishes between 2 types of users: Manager - viewing permissions
+ * only. Teacher - editing permissions as described.
  * 
  * @author Hadar Iluz
  *
@@ -143,7 +142,7 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		// update!.
 		// when teacher will press on the save edit exam the data will saved in the DB
 		// by server.
-		EditExamController.setprevScreenData(exam, displayPrincipalView, existsQuestions);
+		EditExamController.setDataFromStep2(exam, displayPrincipalView, existsQuestions, true);
 		if (!displayPrincipalView) {
 			displayNextScreen(teacher, "/gui_teacher/EditExam.fxml");
 
@@ -198,26 +197,23 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	}
 
 	/**
-	 * @param newExamInProgress include all data from previous screen.
-	 */
-	public static void setExamState(Exam newExamInProgress) {
-		exam = newExamInProgress;
-	}
-
-	/**
 	 * initialize function to prepare the screen after it is loaded. Tack user data
 	 * according to screen status from the previous action.
 	 *
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// bring all exam details (also questions and scores)
-		RequestToServer req = new RequestToServer("getFullExamDetails");
-		req.setRequestData(exam);
-		ClientUI.cems.accept(req);
+		// Handles the case teacher switches between the screens several
+		// times, we keep the latest updates she has made.
+		if (existsQuestions==null) {
+			// bring all exam details (also questions and scores)
+			RequestToServer req = new RequestToServer("getFullExamDetails");
+			req.setRequestData(exam);
+			ClientUI.cems.accept(req);
 
-		exam = (Exam) CEMSClient.responseFromServer.getResponseData();
-		existsQuestions = exam.getExamQuestionsWithScores(); // Return ArrayList<QuestionInExam>
+			exam = (Exam) CEMSClient.responseFromServer.getResponseData();
+			existsQuestions = exam.getExamQuestionsWithScores(); // Return ArrayList<QuestionInExam>
+		}
 
 		if (!displayPrincipalView) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
@@ -273,7 +269,7 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 		}
 		Qlist = FXCollections.observableArrayList(existsQuestions);
 
-		tableQuestion.getColumns().clear(); 
+		tableQuestion.getColumns().clear();
 		questionID.setCellValueFactory(new PropertyValueFactory<>("questionID"));
 		questionScore.setCellValueFactory(new PropertyValueFactory<>("score"));
 		question.setCellValueFactory(new PropertyValueFactory<>("questionDescription"));
@@ -284,13 +280,17 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	}
 
 	/**
-	 * @param examData with all updated details.
-	 * @param displayPrincipalView2 the current screen mode according to logged user.
+	 * @param examData              with all updated details.
+	 * @param displayPrincipalView2 the current screen mode according to logged
+	 *                              user.
 	 * 
 	 */
-	public static void setnextScreenData(Exam examData, boolean displayPrincipalView2) {
+	public static void setnextScreenData(Exam examData, boolean displayPrincipalView2,
+			ArrayList<QuestionInExam> updatedQuestions) {
 		exam = examData;
 		displayPrincipalView = displayPrincipalView2;
+		existsQuestions = updatedQuestions;
+
 	}
 
 }

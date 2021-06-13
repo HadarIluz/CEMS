@@ -904,8 +904,7 @@ public class DBController {
 	 * @return "TRUE" if exist, "FALSE" else
 	 */
 
-	public String chechExamExist(String ExamID) {
-		String answer = null;
+	public String checkExamExist(String ExamID) {
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement("SELECT * FROM exam_of_student WHERE exam=?;");
@@ -1024,23 +1023,10 @@ public class DBController {
 				Profession profession = new Profession(null);
 				profession.setProfessionID(rs.getString(2));
 
-//				Course course = new Course(null);
-//				course.setCourseID(rs.getString(3));
-				// exam.setCourse(new Course(rs.getString(3)));// addition
-
 				Exam exam = new Exam(rs.getString(1), profession, new Course(rs.getString(3)),
 						Integer.parseInt(rs.getString(4)));
 				examsList.add(exam);
-				// --------------------
 
-//				Exam exam = new Exam();
-//				exam.setExamID(rs.getString(1));
-//				Profession profession= new Profession(rs.getString(2));
-//				exam.setProfession(profession);
-//				Course course = new Course(rs.getString(3));
-//				exam.setCourse(course);
-//				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));		
-//				examsList.add(exam);
 			}
 			rs.close();
 		} catch (SQLException ex) {
@@ -1053,8 +1039,8 @@ public class DBController {
 	/**
 	 * method save exam that edited
 	 * 
-	 * @param exam to be insrt after edited
-	 * @return massage if insert edired exam success or not
+	 * @param exam to be insert after edited
+	 * @return massage if insert edited exam success or not
 	 */
 
 	public ResponseFromServer SaveEditExam(Exam exam) {
@@ -1127,9 +1113,9 @@ public class DBController {
 	}
 
 	/**
-	 * mestods check if there any Extenssion request
+	 * The method check if there any Extension request
 	 * 
-	 * @param extensionRequest for extention request of principal
+	 * @param extensionRequest for extension request of principal
 	 * @return true is there is, else false
 	 */
 

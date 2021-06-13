@@ -249,7 +249,7 @@ public class SolveExamController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		btnPrev.setVisible(false);
+		//btnPrev.setVisible(false);
 		// bring all exam details (also questions and scores)
 		RequestToServer req = new RequestToServer("getFullExamDetails");
 		req.setRequestData(newActiveExam.getExam());
@@ -322,13 +322,19 @@ public class SolveExamController implements Initializable {
 		btnAnswer4.setText(q.getQuestion().getAnswers()[3]);
 
 		if (currentQuestion == 0) {
-			btnPrev.setVisible(false);
+			btnPrev.setDisable(true);
+			if (newActiveExam.getExam().getExamQuestionsWithScores().size() != 1) {
+				btnNext.setDisable(false);
+			}
 		}
-		if (currentQuestion == newActiveExam.getExam().getExamQuestionsWithScores().size() - 1) {
-			btnNext.setVisible(false);
+		else if (currentQuestion == newActiveExam.getExam().getExamQuestionsWithScores().size() - 1) {
+			btnNext.setDisable(true);
+			if (newActiveExam.getExam().getExamQuestionsWithScores().size() != 1) {
+				btnPrev.setDisable(false);
+			}
 		} else {
-			btnPrev.setVisible(true);
-			btnNext.setVisible(true);
+			btnPrev.setDisable(false);
+			btnNext.setDisable(false);
 		}
 	}
 

@@ -46,8 +46,10 @@ public class TeacherStatisticsController extends GuiCommon {
 	boolean flag = true; // true when we need to initialize the histogram with chart and false when we
 							// already did that.
 
-	XYChart.Series chart = new XYChart.Series();// table of x and y
+	@SuppressWarnings("rawtypes")
+	private XYChart.Series chart = new XYChart.Series();// table of x and y
 
+	@SuppressWarnings("unused")
 	private TeacherController teacherController; // we will use it for load the next screen ! (using root).
 
 	ArrayList<Integer> grades;
@@ -64,7 +66,7 @@ public class TeacherStatisticsController extends GuiCommon {
 		String CourseID = "" + ExamID.charAt(2) + ExamID.charAt(3);
 		if (!checkForLegalID(ExamID))
 			return;
-		if (!chechExamExist(ExamID))
+		if (!checkExamExist(ExamID))
 			return;
 
 		getProffesionsNames();
@@ -166,9 +168,9 @@ public class TeacherStatisticsController extends GuiCommon {
 
 
 
-	public boolean chechExamExist(String ExamID) {
+	public boolean checkExamExist(String ExamID) {
 		boolean isExsit = true;
-		RequestToServer req = new RequestToServer("chechExamExist");
+		RequestToServer req = new RequestToServer("checkExamExist");
 		req.setRequestData(ExamID);
 		ClientUI.cems.accept(req);
 		if (CEMSClient.responseFromServer.getResponseData().equals("FALSE")) {

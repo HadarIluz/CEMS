@@ -215,6 +215,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	@FXML
 	void CreateNewExam(ActionEvent event) {
 		textExamID.clear();
+		CreateExam_step1Controller.setExamState(null);
 		displayNextScreen(teacher, "CreateExam_step1.fxml");
 
 	}
