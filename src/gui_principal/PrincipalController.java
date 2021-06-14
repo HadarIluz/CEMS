@@ -81,7 +81,6 @@ public class PrincipalController extends Application implements Initializable {
 	public static GridPane root;
 	public Scene scene;
 	@SuppressWarnings("unused")
-	private static int newRequest;
 	static ColorAdjust colorAdjust = new ColorAdjust();
 	private static String msgOfNotification = null;
 	private String saveMsg;
@@ -250,19 +249,10 @@ public class PrincipalController extends Application implements Initializable {
 		});
 
 	}
-
-	/**
-	 * FIXME: ADDJAVADOC
-	 * 
-	 * @param temp
-	 */
-	public static void getExtensionRequest(int temp) {
-		newRequest = temp;
-	}
 	
 	/**
-	 * FIXME: ADDJAVADOC
 	 * @param msg
+	 * saves a messages from another proccess in the system. the run thread will check for this message
 	 */
 	public static void CopyAlertNotification(String msg) {
 		msgOfNotification = msg;

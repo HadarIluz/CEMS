@@ -20,6 +20,11 @@ public class LoggedInUser {
 		this.user = user;
 	}
 
+	/**
+	 * @param user
+	 * @return the singleton instance of the logged in user
+	 * if the instance is null, will create a new one, by the singleton design pattern
+	 */
 	public static LoggedInUser getInstance(User user) {
 		if (instance == null) {
 			instance = new LoggedInUser(user);
@@ -27,6 +32,10 @@ public class LoggedInUser {
 		return instance;
 	}
 
+	
+	/**
+	 * @return the logged in user if the singleton object is not null
+	 */
 	public User getUser() {
 		if (instance != null) {
 			return user;
@@ -34,6 +43,10 @@ public class LoggedInUser {
 		return null;
 	}
 
+	
+	/**
+	 * in order to "logoff" the user, this method will put null in the singleton instance
+	 */
 	public void logOff() {
 		instance = null;
 	}

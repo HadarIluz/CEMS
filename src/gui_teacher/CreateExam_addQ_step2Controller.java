@@ -29,11 +29,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-/**
- * FIXME: ADD JAVADOC HERE
- * 
- *
- */
 
 public class CreateExam_addQ_step2Controller implements Initializable {
 

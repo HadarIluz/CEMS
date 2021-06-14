@@ -31,11 +31,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
-/**
- * FIXME: ADD JAVADOC HERE
- *
- *
- */
+
 public class CreateExam_step1Controller extends GuiCommon implements Initializable {
 
 	@FXML
@@ -84,6 +80,10 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 	private HashMap<String, Course> courseMap = null;
 	private static Exam newExam = null;
 
+	/**
+	 * @param event
+	 * handles click on radio button btnComputerizedPress
+	 */
 	@FXML
 	void btnComputerizedPress(ActionEvent event) {
 		btnComputerized.setSelected(true);
@@ -91,6 +91,10 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 		selectProffessionList.setDisable(false);
 	}
 
+	/**
+	 * @param event
+	 * handles click on radio button btnManualPress
+	 */
 	@FXML
 	void btnManualPress(ActionEvent event) {
 		btnComputerized.setSelected(false);
@@ -98,6 +102,10 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 		selectProffessionList.setDisable(false);
 	}
 
+	/**
+	 * @param event
+	 * handles click on btnNext
+	 */
 	@FXML
 	void btnNext(ActionEvent event) {
 		// check all fields:
@@ -159,6 +167,11 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 		}
 	}
 
+	
+	/**
+	 * @param newExam
+	 * starts the next screen and sets needed data
+	 */
 	private void startNextScreen(Exam newExam) {
 		try {
 			if (newExam.getActiveExamType().equals("computerized")) {
@@ -180,6 +193,10 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 
 	}
 
+	/**
+	 * @param event
+	 * handles click on combobox selectCourseList
+	 */
 	@FXML
 	void selectCourseList(ActionEvent event) {
 		if (courseMap.containsKey(selectCourseList.getValue())) {
@@ -187,6 +204,10 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 		}
 	}
 
+	/**
+	 * @param event
+	 * handles click on combobox selectProffessionList
+	 */
 	@SuppressWarnings("unchecked")
 	@FXML
 	void selectProffessionList(ActionEvent event) {
@@ -234,6 +255,9 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 
 	}
 
+	/**
+	 * loads the course list into the combobox
+	 */
 	private void loadCourseListIntoComboBox() {
 		courseMap = new HashMap<>();
 		for (Course c : courseList) {
@@ -278,11 +302,17 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 
 	}
 
+	/**
+	 * loads the profession list into the combobox
+	 */
 	private void loadProfessionsToCombobox() {
 		selectProffessionList.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
 
 	}
-
+	
+	/**
+	 * allows other screens to set the current new exam
+	 */
 	public static void setExamState(Exam newExam2) {
 		newExam = newExam2;
 	}
