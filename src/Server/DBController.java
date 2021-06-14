@@ -178,6 +178,11 @@ public class DBController {
 		return professionIDs;
 	}
 
+	/**
+	 * FIXME: ADD JAVADOC HERE
+	 *
+	 *
+	 */
 	public String UpdateScoreOfStudent(UpdateScoreRequest req) {
 
 		PreparedStatement pstmt;
@@ -199,7 +204,7 @@ public class DBController {
 	 * Method return all students scores by examID given from User
 	 * 
 	 * @param examID the Exam we return his scores
-	 * @return hashmap with a key of stuidents id and exam score in value
+	 * @return hashmap with a key of students id and exam score in value
 	 */
 
 	public HashMap<String, Integer> SetDetailsForScoreApprovel(String examID) {
@@ -477,13 +482,12 @@ public class DBController {
 	/**
 	 * method return all teacher's questions
 	 * 
-	 * @param obj for given techer ID
+	 * @param obj for given teacher ID
 	 * @return list of all teacher's questions
 	 */
 
 	public ArrayList<QuestionRow> GetTeacherQuestions(Object obj) {
 
-		Teacher teacher;
 		int id;
 
 		ArrayList<QuestionRow> examsOfTeacher = new ArrayList<QuestionRow>();
@@ -509,7 +513,7 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-		return examsOfTeacher;// return null if no exsiting tests
+		return examsOfTeacher;// return null if no existing tests
 
 	}
 
@@ -604,7 +608,7 @@ public class DBController {
 	}
 
 	/**
-	 * method return proffession instance by proffession ID
+	 * method return profession instance by profession ID
 	 * 
 	 * @param id
 	 * @return
@@ -689,7 +693,7 @@ public class DBController {
 	}
 
 	/**
-	 * mesthod delete exam from DB
+	 * method delete exam from DB
 	 * 
 	 * @param exam the exam that delete from DB
 	 * @return true if deleted' else false
@@ -751,8 +755,8 @@ public class DBController {
 	/**
 	 * method for send question of teacher
 	 * 
-	 * @param requestData will give data of teacher and proffession
-	 * @return questions of techer
+	 * @param requestData will give data of teacher and profession
+	 * @return questions of teacher
 	 */
 
 	public ResponseFromServer getQuestionByProfessionAndTeacher(Question requestData) {
@@ -795,10 +799,10 @@ public class DBController {
 	}
 
 	/**
-	 * method return us the courses by proffession
+	 * method return us the courses by profession
 	 * 
 	 * @param requestData data of profession that courses presented in him
-	 * @return all courses in the proffession
+	 * @return all courses in the profession
 	 */
 
 	public ResponseFromServer getCoursesByProfession(Profession requestData) {
@@ -831,7 +835,7 @@ public class DBController {
 
 	/**
 	 * 
-	 * @return HashMap of all proffession Id as Key and name as Value
+	 * @return HashMap of all profession Id as Key and name as Value
 	 */
 
 	public HashMap<String, String> getProfNames() {
@@ -850,9 +854,9 @@ public class DBController {
 	}
 
 	/**
-	 * method return Map og all courses by Proffession ID
+	 * method return Map og all courses by Profession ID
 	 * 
-	 * @return HashMap of profession as Key and Value as Cousrse name
+	 * @return HashMap of profession as Key and Value as Course name
 	 * 
 	 */
 
@@ -975,8 +979,8 @@ public class DBController {
 	/**
 	 * method create new Active exam
 	 * 
-	 * @param newActiveExam insrted to DB
-	 * @return respond that create exam succes, else it will return exception
+	 * @param newActiveExam inserted to DB
+	 * @return respond that create exam success, else it will return exception
 	 */
 
 	@SuppressWarnings("deprecation")
@@ -1384,7 +1388,7 @@ public class DBController {
 
 	/**
 	 * 
-	 * @param questionID to get al question data
+	 * @param questionID to get all question data
 	 * @return question with all data
 	 */
 	public Question getQuestionDataBy_questionID(String questionID) {
@@ -1565,51 +1569,10 @@ public class DBController {
 		return false;
 	}
 
-//	public ResponseFromServer GetAllQuestionsData() {
-//		ArrayList<Question> qList = new ArrayList<Question>();
-//		ResponseFromServer response = null;
-//		/*** Question Bank-Principal ***/
-//		try {
-//			PreparedStatement pstmt;
-//			pstmt = conn.prepareStatement("SELECT * FROM cems.question");
-//			ResultSet rs = pstmt.executeQuery();
-//			while (rs.next()) {
-//				Question q = new Question();
-//				q.setQuestionID(rs.getString(2));
-//				q.setQuestion(rs.getString(4));
-//				
-//				Profession p = new Profession(null);
-//				p.setProfessionID(rs.getString(3));
-//				q.setProfession(p);
-//				
-//				String[] answers = new String[4];
-//				answers[0] = rs.getString(5);
-//				answers[1] = rs.getString(6);
-//				answers[2] = rs.getString(7);
-//				answers[3] = rs.getString(8);
-//				q.setAnswers(answers);
-//				q.setCorrectAnswerIndex(rs.getInt(9));
-//				q.setDescription(rs.getString(10));
-//
-//				qList.add(q);
-//			}
-//			rs.close();
-//		} catch (SQLException ex) {
-//			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-//		}
-//		if (qList.size() > 0) {
-//			response = new ResponseFromServer("Question bank FOUND");
-//			response.setResponseData(qList);
-//		} else {
-//			response = new ResponseFromServer("No Question Bank");
-//		}
-//		return response;
-//	}
-
 	/**
 	 * 
 	 * @param examOfStudent for verify exam
-	 * @return true if vrified. else,false
+	 * @return true if verified. else,false
 	 */
 
 	public Boolean verifyExamOfStudentByExamID(ExamOfStudent examOfStudent) {
@@ -1676,7 +1639,7 @@ public class DBController {
 	/**
 	 * 
 	 * @param details of student that would like so see his solved exam
-	 * @return array list with all qustions
+	 * @return array list with all questions
 	 */
 
 	public ArrayList<QuestionRow> getSolvedComputerizedExam(String[] details) {
@@ -1779,7 +1742,7 @@ public class DBController {
 
 	/**
 	 * @param activeExam
-	 * @return true if documenting the exam was successfull
+	 * @return true if documenting the exam was successful
 	 */
 	@SuppressWarnings("deprecation")
 	public boolean documentExam(ActiveExam activeExam) {
@@ -1892,7 +1855,7 @@ public class DBController {
 	/**
 	 * check if active exam is exist
 	 * 
-	 * @param activeExam to check if exust
+	 * @param activeExam to check if exist
 	 * @return true if exist, else else
 	 */
 
@@ -1913,7 +1876,7 @@ public class DBController {
 
 	/**
 	 * 
-	 * @param exam that belongs to the techer we return
+	 * @param exam that belongs to the teacher we return
 	 * @return id of teacher the create that exam
 	 */
 
@@ -1971,10 +1934,10 @@ public class DBController {
 	}
 
 	/**
-	 * method retirn list of students thet solve the test and suspected with copy
+	 * method return list of students that solve the test and suspected with copy
 	 * 
 	 * @param exams arrayList of exams of student
-	 * @return array list with students that might br copy
+	 * @return array list with students that might be copy
 	 */
 
 	public ArrayList<Integer> getPotentialCopyList(ArrayList<ExamOfStudent> exams) {
@@ -1995,22 +1958,13 @@ public class DBController {
 		}
 
 		ArrayList<String> questionOfExam = new ArrayList<String>();
-		int numberOfquestion = exams.get(0).getQuestionsAndAnswers().size();
-
 		Set<QuestionInExam> questioninExam = exams.get(0).getQuestionsAndAnswers().keySet();
-
 		String SpecificExam = exams.get(0).getActiveExam().getExam().getExamID();
-
 		for (QuestionInExam q : questioninExam) {
-
 			questionOfExam.add(q.getQuestion().getQuestionID());
-
 		}
 
-		for (String q : questionOfExam)
-
-		{
-
+		for (String q : questionOfExam) {
 			try {
 				pstmt = conn.prepareStatement(
 						"SELECT * FROM cems.student_answers_in_exam where exam=? and question=? and correct=0;");
@@ -2018,66 +1972,43 @@ public class DBController {
 				pstmt.setString(2, q);
 				ResultSet rs = pstmt.executeQuery();
 				while (rs.next()) {
-
 					switch (rs.getInt(4)) {
-
 					case 1: {
-
 						Answer1.add(rs.getInt(1));
-
 					}
 						break;
 					case 2: {
-
 						Answer2.add(rs.getInt(1));
-
 					}
 						break;
-
 					case 3: {
 						Answer3.add(rs.getInt(1));
-
 					}
 						break;
-
 					case 4: {
-
 						Answer4.add(rs.getInt(1));
-
 					}
-
 					}
 				}
-
-			} catch (
-
-			SQLException ex) {
+			} catch (SQLException ex) {
 				serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			}
-
 			for (int i = 1; i < 5; i++) {
 				if (studentsAns.get(i).size() > 1) {
-
 					suspectedInCopy.addAll(studentsAns.get(i));
-
 				}
-
 			}
-
 			Answer1.clear();
 			Answer2.clear();
 			Answer3.clear();
 			Answer4.clear();
-
 		}
-		
+
 		ArrayList<Integer> suspectedInCopyDistinct = new ArrayList<Integer>();
-		for(Integer curr:suspectedInCopy)
-			if(!suspectedInCopyDistinct.contains(curr))
+		for (Integer curr : suspectedInCopy)
+			if (!suspectedInCopyDistinct.contains(curr))
 				suspectedInCopyDistinct.add(curr);
-		
 		suspectedInCopyDistinct.add(Integer.parseInt(SpecificExam));
-		
 		return suspectedInCopyDistinct;
 	}
 
@@ -2093,7 +2024,6 @@ public class DBController {
 		PreparedStatement pstmt;
 		try {
 			for (QuestionInExam qID : updatedQuestions) {
-
 				pstmt = conn.prepareStatement("UPDATE question_in_exam SET score=? WHERE question=?");
 				pstmt.setInt(1, qID.getScore());
 				pstmt.setString(2, qID.getQuestionID());
@@ -2106,13 +2036,10 @@ public class DBController {
 					response = new ResponseFromServer("Edit_Exam_Scores_NOT_Updated");
 				}
 			}
-
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-
 		return response;
-
 	}
 
 	public ArrayList<ExamOfStudent> getExamsOfStudentsByExamID(ActiveExam activeExam) {
