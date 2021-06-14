@@ -614,6 +614,10 @@ public class DBController {
 	 * @return
 	 */
 
+	/**
+	 * @param id
+	 * @return a Profession name for a given profesion ID
+	 */
 	public Profession getProfessionByID(String id) {
 		Profession p = new Profession(id);
 		try {
@@ -1295,6 +1299,9 @@ public class DBController {
 	}
 
 
+	/**
+	 * @return a response for the server will all of the questions from the DB
+	 */
 	public ResponseFromServer GetAllQuestions_ToQuestionsBank() {
 		ResponseFromServer response = null;
 		ArrayList<QuestionRow> allQuestionList = new ArrayList<QuestionRow>();
@@ -1980,6 +1987,10 @@ public class DBController {
 		return response;
 	}
 
+	/**
+	 * @param activeExam
+	 * @return a list of examOfStudent for a given active exam
+	 */
 	public ArrayList<ExamOfStudent> getExamsOfStudentsByExamID(ActiveExam activeExam) {
 		ArrayList<ExamOfStudent> examList = new ArrayList<>();
 		PreparedStatement pstmt;
@@ -1998,6 +2009,10 @@ public class DBController {
 		return examList;
 	}
 
+	/**
+	 * @param e an exam of student
+	 * @return a hashmap for each question in exam -> the student answer
+	 */
 	public HashMap<QuestionInExam, Integer> getQuestionsAndAnswersByExamOfStudent(ExamOfStudent e) {
 		HashMap<QuestionInExam, Integer> qNa = new HashMap<>();
 
