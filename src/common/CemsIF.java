@@ -14,7 +14,6 @@ public interface CemsIF {
 	/**
 	 * @param message to display
 	 * Method that when overridden is used to display objects onto a UI.
-	 *@param message to display
 	 */
 	public abstract void display(String message);
 }
