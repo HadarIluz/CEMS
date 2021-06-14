@@ -549,6 +549,11 @@ public class CEMSserver extends AbstractServer {
 	}
 	
 
+	/**
+	 * @param requestData
+	 * @param client
+	 * sends to the client a list with all questions from a student's solved exam
+	 */
 	private void getSolvedComputerizedExam(String[] requestData, ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Solved Computerized Exam");
@@ -775,6 +780,10 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	/**
+	 * @param client
+	 * method send to client all active exams
+	 */
 	private void getAllActiveExamBeforEnterToExam(ConnectionToClient client) {
 		// logic for 'EnterToExam'
 		ResponseFromServer response = null;
@@ -1040,6 +1049,19 @@ public class CEMSserver extends AbstractServer {
 		serverFrame.printToTextArea("Server has stopped listening for connections.");
 	}
 
+	/**
+<<<<<<< HEAD
+	 * this method update the time allotted for taking an exam
+	 * 
+	 * @param activeExam
+	 * @param client
+	 *
+=======
+	 * @param activeExam we want to add time to
+	 * @param client
+	 * This method checks if we can add time to the active exam. sends the answer to clients
+>>>>>>> branch 'main' of https://github.com/yuval96/CEMS.git
+	 */
 	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer responForTeacher = dbController.verifyActiveExam((ActiveExam) activeExam);
 		ResponseFromServer responForPrincipal = new ResponseFromServer("NOTIFICATION_PRINCIPAL_REQUEST_RECEIVED");
@@ -1054,6 +1076,13 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", responForTeacher);// print to server log.
 	}
 
+	/**
+	 * this method create a new Extension Requests in db
+	 * 
+	 * @param extensionRequest
+	 * @param client
+	 *
+	 */
 	private void createNewExtensionRequest(ExtensionRequest extensionRequest, ConnectionToClient client) {
 		ResponseFromServer res;
 		if (!dbController.checkIfExtensionRequestExists(extensionRequest)) {
@@ -1068,6 +1097,12 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", res);// print to server log.
 	}
 
+	/**
+	 * gets from the db Extension Request
+	 * 
+	 * @param client
+	 *
+	 */
 	private void getExtensionRequests(ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("EXTENSION REQUEST");
 		try {
@@ -1079,6 +1114,17 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
 
+	/**
+	 * In this method a principal approves a extension request. The extension
+	 * request is deleted from the request table in the DB and updates the time
+	 * allotted for the exam. In addition, a notification is sent to the teacher who
+	 * created the request and an alert is sent to all students who solve the exam
+	 * that has been added time.
+	 * 
+	 * @param activeExam
+	 * @param client
+	 *
+	 */
 	private void approvalTimeExtension(ActiveExam activeExam, ConnectionToClient client) {
 		// update time alloted for test in active exam after the principal approves the
 		// request.
@@ -1102,6 +1148,14 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", responForPrincipal);// print to server log.
 	}
 
+	/**
+	 * In this method, a principal refuses a extension request. The extension
+	 * request is deleted from the DB request table.
+	 * 
+	 * @param activeExam
+	 * @param client
+	 *
+	 */
 	private void declineTimeExtension(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer respon = null;
 		try {
@@ -1113,6 +1167,14 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", respon);// print to server log.
 	}
 
+	/**
+	 * This method downloads to the student's computer the form of the manual test
+	 * he wants to solve according to the information in examOfStudent.
+	 * 
+	 * @param examOfStudent
+	 * @param client
+	 *
+	 */
 	private void downloadManualExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
 		String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_exam.docx";
 		MyFile exam = new MyFile(fileName);
@@ -1162,6 +1224,14 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	/**
+	 * This method downloads to the student's computer the form of the manual test
+	 * he wants to solve according to the information in examOfStudent.
+	 * 
+	 * @param examOfStudent
+	 * @param client
+	 *
+	 */
 	private void submitManualExam(MyFile msg, ConnectionToClient client) {
 		ResponseFromServer respon = new ResponseFromServer("SUBMIT EXAM");
 		MyFile submitExam = (MyFile) msg;
@@ -1370,3 +1440,4 @@ public class CEMSserver extends AbstractServer {
 	}
 
 }
+>>>>>>> 6ffbc9ce45996c23dde867963b583ba14ca27360
