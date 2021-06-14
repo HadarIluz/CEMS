@@ -549,6 +549,11 @@ public class CEMSserver extends AbstractServer {
 	}
 	
 
+	/**
+	 * @param requestData
+	 * @param client
+	 * sends to the client a list with all questions from a student's solved exam
+	 */
 	private void getSolvedComputerizedExam(String[] requestData, ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Solved Computerized Exam");
@@ -776,6 +781,10 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	/**
+	 * @param client
+	 * method send to client all active exams
+	 */
 	private void getAllActiveExamBeforEnterToExam(ConnectionToClient client) {
 		// logic for 'EnterToExam'
 		ResponseFromServer response = null;
@@ -1042,6 +1051,11 @@ public class CEMSserver extends AbstractServer {
 		serverFrame.printToTextArea("Server has stopped listening for connections.");
 	}
 
+	/**
+	 * @param activeExam we want to add time to
+	 * @param client
+	 * This method checks if we can add time to the active exam. sends the answer to clients
+	 */
 	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer responForTeacher = dbController.verifyActiveExam((ActiveExam) activeExam);
 		ResponseFromServer responForPrincipal = new ResponseFromServer("NOTIFICATION_PRINCIPAL_REQUEST_RECEIVED");
