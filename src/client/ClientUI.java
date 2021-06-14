@@ -2,6 +2,7 @@ package client;
 
 import java.io.IOException;
 
+import common.CemsIF;
 import gui_cems.LoginController;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -16,7 +17,7 @@ import logic.LoggedInUser;
 */
 
 public class ClientUI extends Application {
-	public static ClientController cems; // only one instance
+	public static CemsIF cems; // only one instance
 	public static LoggedInUser loggedInUser;
 
 	public static void main(String args[]) throws Exception {
