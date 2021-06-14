@@ -127,7 +127,7 @@ public class ServerFrameController {
 
 	/**
 	 * @param event that occurs when the user presses on exit button, the server clear all log in the test area.
-	 * @throws Exception
+	 * @throws Exception which thrown in case the screen cannot be clear.
 	 */
 	public void ClearLogTextArea(ActionEvent event) throws Exception {
 		txtArea.clear();

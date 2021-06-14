@@ -110,6 +110,7 @@ public class DBController {
 	 * addition to the user.
 	 * 
 	 * @param student include all data of student that hold by User object.
+	 * @return student with data
 	 */
 	public Student getStudentData_Logged(Student student) {
 
@@ -133,6 +134,7 @@ public class DBController {
 
 	/**
 	 * @param student include all data of this logged student.
+	 * @return student with data
 	 */
 	public Student getStudentCourses_Logged(Student student) {
 
@@ -156,7 +158,8 @@ public class DBController {
 	}
 
 	/**
-	 * @param teacherObj include all data of this logged teacher.
+	 * @param teacher include all data of this logged teacher.
+	 * @return professionIDs with all the professions of the teacher
 	 */
 	public ArrayList<String> getTeacherProfessionIDs(Teacher teacher) {
 
@@ -179,8 +182,8 @@ public class DBController {
 	}
 
 	/**
-	 *@param request to update score of student exam
-	 *@return true id updated successfully and other return false
+	 * @param req to update score of student exam
+	 * @return true id updated successfully and other return false
 	 *
 	 */
 	public String UpdateScoreOfStudent(UpdateScoreRequest req) {
@@ -204,7 +207,7 @@ public class DBController {
 	 * Method return all students scores by examID given from User
 	 * 
 	 * @param examID the Exam we return his scores
-	 * @return hashmap with a key of students id and exam score in value
+	 * @return stdScore hashmap with a key of students id and exam score in value
 	 */
 
 	public HashMap<String, Integer> SetDetailsForScoreApprovel(String examID) {
@@ -232,7 +235,7 @@ public class DBController {
 
 	/**
 	 * @param question inserts new question to DB
-	 * @return
+	 * @return true if the question was created. Otherwise false
 	 */
 	public boolean createNewQuestion(Question question) {
 		PreparedStatement pstmt;
@@ -261,7 +264,7 @@ public class DBController {
 	}
 
 	/**
-	 * @param professionID
+	 * @param professionID which includes profession id
 	 * @return int, the number of questions in this profession
 	 */
 	public int getNumOfQuestionsInProfession(String professionID) {
@@ -281,7 +284,7 @@ public class DBController {
 	}
 
 	/**
-	 * @param courseID
+	 * @param courseID which includes course id
 	 * @return the number of exams with this courseID
 	 */
 	public int getNumOfExamsInCourse(String courseID) {
@@ -303,7 +306,7 @@ public class DBController {
 	}
 
 	/**
-	 * @param exam
+	 * @param exam which contains information for exam
 	 * @return true/false if creating a new exam in DB succeeded
 	 */
 	public boolean createNewExam(Exam exam) {
@@ -331,8 +334,9 @@ public class DBController {
 	}
 
 	/**
-	 * @param examID
-	 * @param arrayList
+	 * @param examID                  which includes exam id
+	 * @param examQuestionsWithScores arrayList Of all the questions we would like
+	 *                                to add to exam
 	 * @return true/false if inserting all questions and scores of exam with examID
 	 *         into table question_in_exam succeeded
 	 */
@@ -360,6 +364,7 @@ public class DBController {
 	 * check if the activeExam exist in the DB
 	 * 
 	 * @param obj of ActiveExam which include exam to verify if exists.
+	 * @return response to client
 	 */
 	public ResponseFromServer verifyActiveExam(Object obj) {
 		ActiveExam existActiveExam = (ActiveExam) obj;
@@ -392,7 +397,8 @@ public class DBController {
 
 	/**
 	 * 
-	 * @param extensionRequest
+	 * @param extensionRequest which contains information about a extension request
+	 *                         we would like to add to DB
 	 * @return true if creating a new extension request in DB succeeded, else return
 	 *         false
 	 */
@@ -443,7 +449,7 @@ public class DBController {
 				exam.setProfession(new Profession(rs.getString(2)));
 				exam.setCourse(new Course(rs.getString(3)));// addition
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
-				exam.setExamStatus(ExamStatus.valueOf(rs.getString(8))); 
+				exam.setExamStatus(ExamStatus.valueOf(rs.getString(8)));
 				exam.setActiveExamType(rs.getString(9));
 				examsOfTeacher.add(exam);
 
@@ -518,7 +524,8 @@ public class DBController {
 	}
 
 	/**
-	 * @param activeExam
+	 * @param activeExam Which contains information about an active exam that we
+	 *                   would like to change the time allotted for its solution
 	 * @return true if the additional Time for activeExam has been updated at table
 	 *         active_exam in DB. else, return false
 	 */
@@ -541,9 +548,9 @@ public class DBController {
 
 	/**
 	 * 
-	 * @param activeExam
-	 * @return true if deleting request for activeExam from table active_exam in DB
-	 *         succeeded, else return false
+	 * @param activeExam Which contains information for an active exam for which
+	 *                   there is a extension request we would like to delete
+	 * @return response for client
 	 */
 	public ResponseFromServer deleteExtensionRequest(ActiveExam activeExam) {
 		ResponseFromServer response = null;
@@ -564,6 +571,7 @@ public class DBController {
 	/**
 	 * @param activeExam object which include 2 parameters of date and examcode for
 	 *                   Query.
+	 * @return response to client
 	 */
 	@SuppressWarnings("deprecation")
 	public ResponseFromServer verifyActiveExam_byDate_and_Code(ActiveExam activeExam) {
@@ -610,14 +618,10 @@ public class DBController {
 	/**
 	 * method return profession instance by profession ID
 	 * 
-	 * @param id
-	 * @return
+	 * @param id of profession
+	 * @return profession instance
 	 */
 
-	/**
-	 * @param id
-	 * @return a Profession name for a given profession ID
-	 */
 	public Profession getProfessionByID(String id) {
 		Profession p = new Profession(id);
 		try {
@@ -667,7 +671,7 @@ public class DBController {
 	}
 
 	/**
-	 * @param An active exam that is initialized with a exam only
+	 * @param activeExam that is initialized with a exam only
 	 * @return Initializes the rest of the fields of an active exam and returns it
 	 */
 	public ActiveExam getActiveExam(ActiveExam activeExam) {
@@ -1297,7 +1301,6 @@ public class DBController {
 
 	}
 
-
 	/**
 	 * @return a response for the server will all of the questions from the DB
 	 */
@@ -1371,7 +1374,7 @@ public class DBController {
 	}
 
 	/**
-	 * @param studentExam
+	 * @param studentExam contains information about a student who solved an exam
 	 * @return true if success inserting all students questions with answers from
 	 *         exam
 	 */
@@ -1427,7 +1430,7 @@ public class DBController {
 	}
 
 	/**
-	 * @param examID
+	 * @param examID which include exam id
 	 * @return array list of questions in exam including the question ID and score
 	 */
 	public ArrayList<QuestionInExam> getQuestionsOfExam(String examID) {
@@ -1452,7 +1455,7 @@ public class DBController {
 	}
 
 	/**
-	 * @param questionID
+	 * @param questionID which include question id
 	 * @return a question with all the info (description, answers etc)
 	 */
 	public Question getFullQuestion(String questionID) {
@@ -1487,7 +1490,7 @@ public class DBController {
 	}
 
 	/**
-	 * @param studentExam
+	 * @param studentExam Which contains information about a student who solves exam
 	 * @return true or false if success in update the new exam of student to the DB
 	 */
 	public boolean updateStudentExam(ExamOfStudent studentExam) {
@@ -1640,7 +1643,7 @@ public class DBController {
 	}
 
 	/**
-	 * @param examID
+	 * @param examID which include exam id
 	 * @return the time when an active exam with ID exam id started
 	 */
 	public Time getStartTimeOfActiveExam(String examID) {
@@ -1662,7 +1665,7 @@ public class DBController {
 	}
 
 	/**
-	 * @param examID
+	 * @param examID which include exam id
 	 * @return the number of students that didn't submit the exam
 	 */
 	public int getNumberOfNotSubmitted(String examID) {
@@ -1685,7 +1688,7 @@ public class DBController {
 	}
 
 	/**
-	 * @param activeExam
+	 * @param activeExam which contains information about an active exam
 	 * @return true if documenting the exam was successful
 	 */
 	@SuppressWarnings("deprecation")
@@ -1990,7 +1993,7 @@ public class DBController {
 	}
 
 	/**
-	 * @param activeExam
+	 * @param activeExam which contains information about an active test
 	 * @return a list of examOfStudent for a given active exam
 	 */
 	public ArrayList<ExamOfStudent> getExamsOfStudentsByExamID(ActiveExam activeExam) {
@@ -2013,7 +2016,7 @@ public class DBController {
 
 	/**
 	 * @param e an exam of student
-	 * @return a hashmap for each question in exam -> the student answer
+	 * @return a hashmap for each question in exam - the student answer
 	 */
 	public HashMap<QuestionInExam, Integer> getQuestionsAndAnswersByExamOfStudent(ExamOfStudent e) {
 		HashMap<QuestionInExam, Integer> qNa = new HashMap<>();
