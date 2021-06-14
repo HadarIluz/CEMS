@@ -179,8 +179,8 @@ public class DBController {
 	}
 
 	/**
-	 * FIXME: ADD JAVADOC HERE
-	 *
+	 *@param request to update score of student exam
+	 *@return true id updated successfully and other return false
 	 *
 	 */
 	public String UpdateScoreOfStudent(UpdateScoreRequest req) {
