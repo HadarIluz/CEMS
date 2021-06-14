@@ -342,11 +342,6 @@ public class CEMSserver extends AbstractServer {
 			StudentFinishManualExam((ExamOfStudent) req.getRequestData(), client);
 		}
 			break;
-
-		case "getQuestionsByIDForEditExam": {
-			getQuestionsByIDForEditExam((String) req.getRequestData(), client);
-		}
-			break;
 		case "getAllQuestionsStoredInSystem": {
 			getAllQuestionsStoredInSystem(client);
 		}
@@ -433,6 +428,11 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
+	/**
+	 * send to Client massage with the edited question
+	 * @param question the question befeore edit
+	 * @param client the User that get the massage
+	 */
 
 	private void EditQuestion(Question question, ConnectionToClient client) {
 		try {
@@ -443,6 +443,11 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * sent to client all exams created by him
+	 * 
+	 * @param client techer that expect to get all exams he created
+	 */
 
 	private void getAllExams(ConnectionToClient client) {
 		try {
@@ -542,6 +547,7 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
+	
 
 	private void getSolvedComputerizedExam(String[] requestData, ConnectionToClient client) {
 		try {
@@ -552,6 +558,12 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * method return to client the correct answer for specific question
+	 * @param questionID id of the question
+	 * @param client User that get the info of answers.
+	 */
+	 
 
 	private void getAnswersOfMistakeQuestion(String questionID, ConnectionToClient client) {
 		try {
@@ -562,7 +574,10 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-
+/**
+ * method send to client all the solved exams of students
+ * @param client  User that get the info of student's exams.
+ */
 	private void getAllStudentsExams(ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("AllStudentsExams");
@@ -573,6 +588,11 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
+	/**
+	 * method send to client all the  grades of student's exams
+	 * @param client User that get the info of student's grades
+	 * @param requestData contains student id and exam id
+	 */
 
 	private void getStudentGrade(ConnectionToClient client, String[] requestData) {
 		try {
@@ -584,6 +604,11 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
+	/**
+	 * method send to client all the  grades of specific  student
+	 * @param studentID the id of the student 
+	 * @param client User that get the info of student's grades
+	 */
 
 	private void getStudentGrades(int studentID, ConnectionToClient client) {
 		try {
@@ -594,6 +619,10 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * method send to client all the grades of specific  teacher's exams
+	 * @param client User that get the info of teacher's exams
+	 */
 
 	private void getTeachers(ConnectionToClient client) {
 		try {
@@ -605,6 +634,10 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
+	/**
+	 * method send to client all the students in systen
+	 * @param client User that get the info of students
+	 */
 
 	private void getStudents(ConnectionToClient client) {
 		try {
@@ -628,6 +661,12 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * method sent to client the average of specific exam 
+	 * @param ExamID the exam that we return to client average
+	 * @param client User that get the exam's average
+	 */
 
 	private void gradesAverageCalc(String ExamID, ConnectionToClient client) {
 		try {
@@ -717,6 +756,11 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
+	/**
+	 * method check if exam exist in the database
+	 * @param ExamID the exam to check if exist
+	 * @param client the User that get the response if exist or not
+	 */
 
 	private void checkExamExist(String ExamID, ConnectionToClient client) {
 
@@ -1297,34 +1341,6 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
-	// TODO: CHECK----->DELETE AND TACK FROM YUVAL
-	private void getQuestionsByIDForEditExam(String examID, ConnectionToClient client) {
-		/* logic for- EditExam _step2 */
-		ResponseFromServer response = null;
-		ArrayList<QuestionInExam> questionIDList_InExam;
-		HashMap<String, Question> allQuestionInExam;
-		// HashMap<questionID, QuestionInExam>
-
-		// Set<QuestionInExam> questionIDList_InExam = new HashSet<>();
-		// Map<String, Set<QuestionInExam>> allQuestionInExam = new HashMap<>();
-		// //Map<questionID, Set<QuestionInExam>>
-		try {
-			// DELETE
-			questionIDList_InExam = (ArrayList<QuestionInExam>) dbController.getQuestionsID_byExamID(examID);
-			allQuestionInExam = (HashMap<String, Question>) dbController.allQuestionInExam(questionIDList_InExam);
-			if (allQuestionInExam != null) {
-				response = new ResponseFromServer("All Question In ExamID: " + examID);
-				response.setResponseData(allQuestionInExam);
-			} else {
-				response = new ResponseFromServer("NOT Found All Question In Exam");
-			}
-
-			client.sendToClient(response);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void getAllQuestionsStoredInSystem(ConnectionToClient client) {
 		ResponseFromServer response = null;
 		response = dbController.GetAllQuestions_ToQuestionsBank();
@@ -1363,7 +1379,11 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 	}
-
+/**
+ * method send to client all the students that solve spcific exam
+ * @param requestData contains  examid
+ * @param client User that get the info of students
+ */
 	private void getStudentsByExamID(String requestData, ConnectionToClient client) {
 		ResponseFromServer response = new ResponseFromServer("SCORE APPROVAL");
 		try {
@@ -1375,6 +1395,11 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
+	/**
+	 * method sent to client all the question the belong the specific teacher
+	 * @param requestData contains teacher id
+	 * @param client to sent all info
+	 */
 
 	private void getQuestions(Integer requestData, ConnectionToClient client) {
 		ResponseFromServer response = new ResponseFromServer("TEACHER QUESTIONS");

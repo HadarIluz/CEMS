@@ -18,9 +18,10 @@ import javafx.scene.input.MouseEvent;
 import logic.RequestToServer;
 
 /**
- * FIXME: ADD JAVADOC HERE
- *
- *
+ * Class used as controller for the screen of teacher's statistics.
+ * 
+ * @author Nadav Dery & Yadin Amsalem
+ * @version 1.0 10/06/2021
  */
 
 public class TeacherStatisticsController extends GuiCommon {
@@ -63,8 +64,14 @@ public class TeacherStatisticsController extends GuiCommon {
 	HashMap<String, String> ProfName = new HashMap<String, String>();
 	// profID,profName
 	HashMap<String, ProfessionCourseName> ProfCourseName = new HashMap<String, ProfessionCourseName>();
-	// profID,CourseID+name
 
+	// profID,CourseID+name
+	/**
+	 * method check the if the exam id given by the user is legal and present
+	 * Histogram of grades
+	 * 
+	 * @param event occurs when clicking on button " Show"
+	 */
 	@FXML
 	void btnShowStatistic(MouseEvent event) {
 		String ExamID = textExamID.getText();
@@ -82,6 +89,11 @@ public class TeacherStatisticsController extends GuiCommon {
 		textAverage.setText(String.valueOf(gradesAverageCalc(ExamID)));
 		setGradesInHistogram(ExamID);
 	}
+	/**
+	 * set all grades in histogram
+	 * @param ExamID use for set Exam id in Histogram
+	 */
+	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setGradesInHistogram(String ExamID) {
@@ -128,7 +140,10 @@ public class TeacherStatisticsController extends GuiCommon {
 		}
 
 	}
-
+/**
+ * method calculate median of grades
+ * @param grades list of all grade 
+ */
 	public void medianCalc(ArrayList<Integer> grades) {
 
 		Collections.sort(grades);
@@ -142,7 +157,13 @@ public class TeacherStatisticsController extends GuiCommon {
 			textMedian.setText(String.valueOf((float) grades.get((grades.size() + 1) / 2 - 1)));
 
 	}
-
+/**
+ * method calculate average of grades
+ * @param ExamID use for Exam id for the grades given
+ * @return average of grades
+ */
+	
+	
 	@SuppressWarnings("unchecked")
 	public float gradesAverageCalc(String ExamID) {
 
@@ -157,22 +178,29 @@ public class TeacherStatisticsController extends GuiCommon {
 		medianCalc(grades);
 		return sum;
 	}
-
+/**
+ * methods set in HashMap datails of proffesion Names with proffession id as key
+ */
 	@SuppressWarnings("unchecked")
 	public void getProffesionsNames() {
 		RequestToServer req = new RequestToServer("getProfNames");
 		ClientUI.cems.accept(req);
 		ProfName = (HashMap<String, String>) CEMSClient.responseFromServer.getResponseData();
 	}
-
+/**
+ * method get all courses names 
+ */
 	@SuppressWarnings("unchecked")
 	public void getCoursesNames() {
 		RequestToServer req = new RequestToServer("getCoursesNames");
 		ClientUI.cems.accept(req);
 		ProfCourseName = (HashMap<String, ProfessionCourseName>) CEMSClient.responseFromServer.getResponseData();
 	}
-
-
+	/**method checl if exam Id is exist
+	 * 
+	 * @param ExamID for check if exist
+	 * @return true if exist, else return false
+	 */
 
 	public boolean checkExamExist(String ExamID) {
 		boolean isExsit = true;

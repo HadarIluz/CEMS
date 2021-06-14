@@ -179,8 +179,8 @@ public class DBController {
 	}
 
 	/**
-	 * FIXME: ADD JAVADOC HERE
-	 *
+	 *@param request to update score of student exam
+	 *@return true id updated successfully and other return false
 	 *
 	 */
 	public String UpdateScoreOfStudent(UpdateScoreRequest req) {
@@ -614,6 +614,10 @@ public class DBController {
 	 * @return
 	 */
 
+	/**
+	 * @param id
+	 * @return a Profession name for a given profesion ID
+	 */
 	public Profession getProfessionByID(String id) {
 		Profession p = new Profession(id);
 		try {
@@ -1294,69 +1298,10 @@ public class DBController {
 
 	}
 
-//TODO:CHECK
-	// return ArrayList of questionID and score by ExamID.
-	public ArrayList<QuestionInExam> getQuestionsID_byExamID(String examID) {
-		ArrayList<QuestionInExam> questionInExam = new ArrayList<>();
 
-		try {
-			PreparedStatement pstmt;
-			pstmt = conn.prepareStatement("SELECT question, score FROM question_in_exam WHERE exam=?");
-			pstmt.setString(1, examID);
-
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				Question question = new Question(rs.getString(1));
-				QuestionInExam qInExam = new QuestionInExam(rs.getInt(2), question);
-				questionInExam.add(qInExam);
-			}
-			rs.close();
-
-		} catch (SQLException ex) {
-			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-		}
-		return questionInExam;
-	}
-
-	// OLD:
-	public HashMap<String, Question> allQuestionInExam(ArrayList<QuestionInExam> questionIDList_InExam) {
-
-		HashMap<String, Question> allQuestionInExam = new HashMap<String, Question>();
-
-		PreparedStatement pstmt;
-		try {
-			for (QuestionInExam q : questionIDList_InExam) {
-				pstmt = conn.prepareStatement(
-						"SELECT question, answer1, answer2, answer3, answer4, correctAnswerIndex, description FROM question WHERE questionID=?;");
-				pstmt.setString(1, q.getQuestion().getQuestionID());
-				ResultSet rs = pstmt.executeQuery();
-				// public Question(String questionID, String question, String[] answers, int
-				// correctAnswerIndex, String description) {
-				if (rs.next()) {
-					Question qInExam = new Question(q.getQuestion().getQuestionID());
-					qInExam.setQuestion(rs.getString(1));
-					String[] answers = new String[4];
-					answers[0] = rs.getString(2);
-					answers[1] = rs.getString(3);
-					answers[2] = rs.getString(4);
-					answers[3] = rs.getString(5);
-					qInExam.setAnswers(answers);
-					qInExam.setCorrectAnswerIndex(rs.getInt(6));
-					qInExam.setDescription(rs.getString(7));
-
-					allQuestionInExam.put(qInExam.getQuestionID(), qInExam); // add to HashMap.
-					rs.close();
-				}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-		return allQuestionInExam;
-
-	}
-
+	/**
+	 * @return a response for the server will all of the questions from the DB
+	 */
 	public ResponseFromServer GetAllQuestions_ToQuestionsBank() {
 		ResponseFromServer response = null;
 		ArrayList<QuestionRow> allQuestionList = new ArrayList<QuestionRow>();
@@ -2042,6 +1987,10 @@ public class DBController {
 		return response;
 	}
 
+	/**
+	 * @param activeExam
+	 * @return a list of examOfStudent for a given active exam
+	 */
 	public ArrayList<ExamOfStudent> getExamsOfStudentsByExamID(ActiveExam activeExam) {
 		ArrayList<ExamOfStudent> examList = new ArrayList<>();
 		PreparedStatement pstmt;
@@ -2060,6 +2009,10 @@ public class DBController {
 		return examList;
 	}
 
+	/**
+	 * @param e an exam of student
+	 * @return a hashmap for each question in exam -> the student answer
+	 */
 	public HashMap<QuestionInExam, Integer> getQuestionsAndAnswersByExamOfStudent(ExamOfStudent e) {
 		HashMap<QuestionInExam, Integer> qNa = new HashMap<>();
 
@@ -2078,7 +2031,6 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-
 		return qNa;
 	}
 

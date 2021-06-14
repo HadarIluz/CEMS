@@ -22,9 +22,10 @@ import javafx.stage.FileChooser;
 import logic.RequestToServer;
 
 /**
- * FIXME: ADD JAVADOC HERE
- *
- *
+ * class allow to user to uplaod menual exam to the system
+ * @author Yadin Amsalem
+ * @author Nadav Dery
+ * 
  */
 public class UploadManualExam extends GuiCommon {
 
@@ -52,15 +53,31 @@ public class UploadManualExam extends GuiCommon {
 	private static Exam newExam;
 	
 	private File selectedExamFile;
+	
+	/**
+	 *  method return new exam that save in "newExam" static variable
+	 * @return new Exam from type Exam
+	 */
+	
 
 	public static Exam getNewExam() {
 		return newExam;
 	}
+	/**
+	 * method set new exam  in "newExam" static variable
+	 * @param newExam to set in "newExam" variable
+	 */
+	
 
 	public static void setNewExam(Exam newExam) {
 		UploadManualExam.newExam = newExam;
 	}
-
+/**
+ * method return user to previous screen
+ * @param event occurs when pressing "Back" button
+ */
+	
+	
 	@FXML
 	void btnBack(ActionEvent event) {
 		try {
@@ -73,6 +90,11 @@ public class UploadManualExam extends GuiCommon {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * method create new manual exam and save in system
+	 * @param event occurs when pressing "Upload" button
+	 */
 
 	@SuppressWarnings("resource")
 	@FXML
@@ -123,6 +145,12 @@ public class UploadManualExam extends GuiCommon {
 		}
 	}
 
+	/**
+	 * method to choose file from the user's computer
+	 * @param event occurs when pressing "Browse File" button
+	 */
+	
+	
 	@FXML
 	void onClickBroswe(ActionEvent event) {
 		FileChooser fc = new FileChooser();

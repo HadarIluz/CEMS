@@ -81,6 +81,12 @@ public class ViewExamController extends GuiCommon {
 
 	@SuppressWarnings("unchecked")
 	@FXML
+	/**
+	 * method present for the student the exam that he solved. if its compuetrized , its open a new screen with
+	 * table of all details and the results. if manual, the file is downloaded as a form.
+	 * @param event occurs when student press " get Copy" button
+	 */
+		
 	void btnGetCopyOfExam(ActionEvent event) {
 
 		if (examType.equals("computerized")) {
@@ -130,6 +136,10 @@ public class ViewExamController extends GuiCommon {
 		}
 
 	}
+	/**
+	 * method check if the exam id that the student insert is legal and  available in database.
+	 * @param event ocuurs when student press" View Grade" button 
+	 */
 
 	@FXML
 	void btnViewGrade(ActionEvent event) {
@@ -170,6 +180,10 @@ public class ViewExamController extends GuiCommon {
 		}
 
 	}
+	/**
+	 * method refresh the screen for view Exam grades
+	 * @param event occurs when User press on refresh sign
+	 */
 
 	@FXML
 	void RefreshPage(MouseEvent event) {
