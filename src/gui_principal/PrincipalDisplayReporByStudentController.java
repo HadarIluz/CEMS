@@ -57,8 +57,8 @@ public class PrincipalDisplayReporByStudentController extends GuiCommon implemen
 	 * This method initialize the histogram of specific student with the grades of
 	 * all the exam he took.
 	 * 
-	 * @param location
-	 * @param resources
+	 * @param location of javafx
+	 * @param resources of javafx
 	 * 
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })

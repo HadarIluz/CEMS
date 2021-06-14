@@ -163,13 +163,11 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 	}
 
 	/**
-	 * @param examData              with all updated details.
-	 * @param displayPrincipalView2 the current screen mode according to logged
-	 *                              user.
-	 * 
+	 * @param exam              with all updated details.
+	 * @param displayPrincipalView the current screen mode according to logged user.
+	 * @param updatedQuestions the new questions
 	 */
-	public static void setnextScreenData(Exam exam, boolean displayPrincipalView,
-			ArrayList<QuestionInExam> updatedQuestions) {
+	public static void setnextScreenData(Exam exam, boolean displayPrincipalView, ArrayList<QuestionInExam> updatedQuestions) {
 		newExam = exam;
 	}
 

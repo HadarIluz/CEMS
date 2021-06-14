@@ -315,14 +315,14 @@ public class EditExamController extends GuiCommon implements Initializable {
 	}
 
 	/**
-	 * @param examData              with all updated details.
+	 * @param exam2              with all updated details.
 	 * @param displayPrincipalView2 the current screen mode according to logged
 	 *                              user.
 	 * @param qlist                 list with all update score to be update in DB
 	 *                              when teacher clicks on "save exam" button.
+	 * @param back 					if we are back from step 2
 	 */
-	public static void setDataFromStep2(Exam exam2, boolean displayPrincipalView2, ArrayList<QuestionInExam> qlist,
-			boolean back) {
+	public static void setDataFromStep2(Exam exam2, boolean displayPrincipalView2, ArrayList<QuestionInExam> qlist, boolean back) {
 		exam = exam2;
 		displayPrincipalView = displayPrincipalView2;
 		updatedQuestions = qlist;

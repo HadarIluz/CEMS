@@ -265,8 +265,8 @@ public class LoginController extends GuiCommon{
 	/**
 	 * Display HomePage after client connection.
 	 * 
-	 * @param primaryStage
-	 * @throws IOException
+	 * @param primaryStage the primary stage
+	 * @throws IOException when start isn't working
 	 */
 	public void start(Stage primaryStage) throws IOException {
 		try {

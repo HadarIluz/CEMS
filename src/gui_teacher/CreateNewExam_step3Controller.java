@@ -95,6 +95,7 @@ public class CreateNewExam_step3Controller implements Initializable {
 	}
 
 	/**
+	 * @param newExamInProgress exam we want to set
 	 * allows other screens to set the current new exam
 	 */
 	public static void setExamState(Exam newExamInProgress) {

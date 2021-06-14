@@ -370,7 +370,7 @@ public class SolveExamController implements Initializable {
 	/**
 	 * Receive ActiveExam from the previous screen.
 	 * 
-	 * @param newActiveExamInProgress
+	 * @param newActiveExamInProgress the new exam
 	 */
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
 		newActiveExam = newActiveExamInProgress;
@@ -379,7 +379,7 @@ public class SolveExamController implements Initializable {
 	/**
 	 * Receive temp = true from the server when a teacher locks up the test
 	 * 
-	 * @param Boolean temp
+	 * @param temp if to lock
 	 */
 	public static void setFlagToLockExam(Boolean temp) {
 		lock = temp;
@@ -388,7 +388,7 @@ public class SolveExamController implements Initializable {
 	/**
 	 * Receives from the server the time the teacher added to the test
 	 * 
-	 * @param time
+	 * @param time to add
 	 */
 	public static void addTimeToExam(int time) {
 		addTime = time;

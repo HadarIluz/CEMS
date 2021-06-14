@@ -60,9 +60,10 @@ public class ClientController implements CemsIF
   /**
    * This method waits for input from the console.  Once it is 
    * received, it sends it to the client's message handler.
+   * 
+   * @param str to send to server
    */
   
-  //prototype: we sand string in order to check if exist.
   public void accept(String str) 
   {
 	  client.handleMessageFromClientUI(str);

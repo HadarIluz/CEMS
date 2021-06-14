@@ -20,7 +20,7 @@ public class LoggedInUser {
 	}
 
 	/**
-	 * @param user
+	 * @param user that logs in
 	 * @return the singleton instance of the logged in user
 	 * if the instance is null, will create a new one, by the singleton design pattern
 	 */
