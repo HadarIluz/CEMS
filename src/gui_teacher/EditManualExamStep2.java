@@ -72,6 +72,7 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnBack(ActionEvent event) {
+		EditExamController.setDataFromStep2(newExam, false, null, true);
 		try {
 			Pane newPaneRight = FXMLLoader.load(getClass().getResource("EditExam.fxml"));
 			newPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -82,7 +83,6 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 			e.printStackTrace();
 		}
 
-		EditExamController.setDataFromStep2(newExam, false, null, true);
 	}
 
 	/**

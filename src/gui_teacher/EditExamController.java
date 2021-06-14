@@ -39,8 +39,9 @@ import logic.RequestToServer;
  * Teacher - editing permissions as described.
  * 
  * @author Hadar Iluz
- * @lior karish
+ *@author lior karish
  */
+@SuppressWarnings("unused")
 public class EditExamController extends GuiCommon implements Initializable {
 
 	@FXML
@@ -95,8 +96,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private static Boolean backFromStep2 = false;
 	private static boolean emptyText = false;
 
-	@SuppressWarnings("unused")
-	private static Boolean displayEditManualExam = null;
+	private static Boolean displayEditManualExam = false;
 
 	/**
 	 * @param event that occurs When clicking the back button, will take you to back
@@ -156,8 +156,10 @@ public class EditExamController extends GuiCommon implements Initializable {
 				exam.setCommentForStudents(studentComment);
 			}
 			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
-
-			if (displayEditManualExam == false) {
+			
+			System.out.println("displayEditManualExam: ");
+			System.out.println(displayEditManualExam);
+			if (!displayEditManualExam) {
 
 				// Request from server to update scores Of edited Exam.
 				RequestToServer reqUpdate = new RequestToServer("updateScoresOfEditExam");
@@ -195,12 +197,12 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 *         false.
 	 */
 	private boolean getExamDetailsANDcheckCondition() {
-		if ((textTeacherComment.getText().trim()).isEmpty()|| textTeacherComment.getText()==null) {
+		if (textTeacherComment.getText()==null || (textTeacherComment.getText().trim()).isEmpty() ) {
 			teacherComment = "";
 		} else {
 			teacherComment = textTeacherComment.getText().trim();
 		}
-		if ((textStudentComment.getText().trim()).isEmpty()||textStudentComment.getText()==null) {
+		if (textStudentComment.getText()==null || (textStudentComment.getText().trim()).isEmpty()) {
 			studentComment = "";
 			emptyText = true;
 		} else {
@@ -263,8 +265,8 @@ public class EditExamController extends GuiCommon implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// load data of the selected exam for edit/view according to logged user..
-		if(exam.getActiveExamType().equals("manual")) //matar
-			btnBrowseQuestions.setVisible(false); //matar
+		if(exam.getActiveExamType().equals("manual"))
+			btnBrowseQuestions.setVisible(false); 
 		textExamID.setText(exam.getExamID());
 		textTimeAllocateForExam.setText(Integer.toString(exam.getTimeOfExam()));
 		textTeacherComment.setText(exam.getCommentForTeacher());
@@ -273,7 +275,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 		if (screenStatus.equals(super.teacherStatusScreen)) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 
-			// Forces the teacher to switch between the 2 screens of editing an exam.
+			// Forces the teacher to switch between the 2 screens of editing an exam.			
 			if (backFromStep2) {
 				btnSaveEditeExam.setDisable(false);
 			} else {
