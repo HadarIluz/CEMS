@@ -96,7 +96,7 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private static boolean emptyText = false;
 
 	@SuppressWarnings("unused")
-	private static Boolean displayEditManualExam = null;
+	private static Boolean displayEditManualExam = false;
 
 	/**
 	 * @param event that occurs When clicking the back button, will take you to back
@@ -156,8 +156,10 @@ public class EditExamController extends GuiCommon implements Initializable {
 				exam.setCommentForStudents(studentComment);
 			}
 			exam.setTimeOfExam(Integer.valueOf(timeAllocateForExam));
-
-			if (displayEditManualExam == false) {
+			
+			System.out.println("displayEditManualExam: ");
+			System.out.println(displayEditManualExam);
+			if (!displayEditManualExam) {
 
 				// Request from server to update scores Of edited Exam.
 				RequestToServer reqUpdate = new RequestToServer("updateScoresOfEditExam");
@@ -195,12 +197,12 @@ public class EditExamController extends GuiCommon implements Initializable {
 	 *         false.
 	 */
 	private boolean getExamDetailsANDcheckCondition() {
-		if ((textTeacherComment.getText().trim()).isEmpty()|| textTeacherComment.getText()==null) {
+		if (textTeacherComment.getText()==null || (textTeacherComment.getText().trim()).isEmpty() ) {
 			teacherComment = "";
 		} else {
 			teacherComment = textTeacherComment.getText().trim();
 		}
-		if ((textStudentComment.getText().trim()).isEmpty()||textStudentComment.getText()==null) {
+		if (textStudentComment.getText()==null || (textStudentComment.getText().trim()).isEmpty()) {
 			studentComment = "";
 			emptyText = true;
 		} else {
@@ -274,6 +276,9 @@ public class EditExamController extends GuiCommon implements Initializable {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 
 			// Forces the teacher to switch between the 2 screens of editing an exam.
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11");
+			System.out.println(backFromStep2);
+			
 			if (backFromStep2) {
 				btnSaveEditeExam.setDisable(false);
 			} else {

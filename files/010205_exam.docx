@@ -1,0 +1,5 @@
+REDME:
+
+set global time_zone= '+3:00';
+or
+set global time_zone= '+2:00';
