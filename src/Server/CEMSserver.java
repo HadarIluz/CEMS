@@ -549,6 +549,11 @@ public class CEMSserver extends AbstractServer {
 	}
 	
 
+	/**
+	 * @param requestData
+	 * @param client
+	 * sends to the client a list with all questions from a student's solved exam
+	 */
 	private void getSolvedComputerizedExam(String[] requestData, ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Solved Computerized Exam");
@@ -776,6 +781,10 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	/**
+	 * @param client
+	 * method send to client all active exams
+	 */
 	private void getAllActiveExamBeforEnterToExam(ConnectionToClient client) {
 		// logic for 'EnterToExam'
 		ResponseFromServer response = null;
@@ -1043,11 +1052,17 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * this method update the time allotted for taking an exam
 	 * 
 	 * @param activeExam
 	 * @param client
 	 *
+=======
+	 * @param activeExam we want to add time to
+	 * @param client
+	 * This method checks if we can add time to the active exam. sends the answer to clients
+>>>>>>> branch 'main' of https://github.com/yuval96/CEMS.git
 	 */
 	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer responForTeacher = dbController.verifyActiveExam((ActiveExam) activeExam);
