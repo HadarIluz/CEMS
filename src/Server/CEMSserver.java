@@ -71,14 +71,12 @@ public class CEMSserver extends AbstractServer {
 	 * @param
 	 */
 
-	@SuppressWarnings({ "null", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		StatusMsg status = new StatusMsg();
 
 		serverFrame.printToTextArea("Message received: " + msg + " from " + client);
 
 		RequestToServer req = (RequestToServer) msg;
-		ResponseFromServer respon = null;
 
 		switch (req.getRequestType()) {
 
@@ -433,7 +431,7 @@ public class CEMSserver extends AbstractServer {
 			documentExam(studentExam.getActiveExam());
 			checkForCopying(studentExam.getActiveExam());
 		}
-			
+
 	}
 	/**
 	 * send to Client massage with the edited question
@@ -481,8 +479,8 @@ public class CEMSserver extends AbstractServer {
 		activeExam.setStartTime(time);
 		LocalTime halfHourAfterStart = time.toLocalTime().plusMinutes(30);
 		LocalTime currentTime = (new Time(System.currentTimeMillis())).toLocalTime();
-		
-		if (currentTime.compareTo(halfHourAfterStart) >= 0 ) {
+
+		if (currentTime.compareTo(halfHourAfterStart) >= 0) {
 			// it's half an hour past the starting time of the exam
 			// now check if some students are not done
 			int notSubmitted = dbController.getNumberOfNotSubmitted(activeExam.getExam().getExamID());
@@ -533,7 +531,6 @@ public class CEMSserver extends AbstractServer {
 		try {
 			client.sendToClient(res);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -551,7 +548,6 @@ public class CEMSserver extends AbstractServer {
 		try {
 			client.sendToClient(dbController.getQuestionByProfessionAndTeacher(requestData));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -660,8 +656,8 @@ public class CEMSserver extends AbstractServer {
 
 	/**
 	 * @param requestData - details about profession
-	 * @param client
-	 * this method returns all the courses that belong to given profession.
+	 * @param client      this method returns all the courses that belong to given
+	 *                    profession.
 	 */
 	private void getCoursesByProfession(Profession requestData, ConnectionToClient client) {
 		try {
@@ -733,8 +729,7 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/**
-	 * @param client
-	 * sends to the client names of professions
+	 * @param client sends to the client names of professions
 	 */
 	private void getProfNames(ConnectionToClient client) {
 
@@ -751,8 +746,7 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/**
-	 * @param client
-	 * sends to the client names of courses
+	 * @param client sends to the client names of courses
 	 */
 	private void getCoursesNames(ConnectionToClient client) {
 
@@ -803,8 +797,7 @@ public class CEMSserver extends AbstractServer {
 
 	/**
 	 * @param requestData
-	 * @param client
-	 * handles when a client disconnects from the system
+	 * @param client      handles when a client disconnects from the system
 	 */
 	private void clientDisconected(Object requestData, ConnectionToClient client) {
 		if (requestData instanceof User) {
