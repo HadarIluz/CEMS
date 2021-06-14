@@ -429,8 +429,11 @@ public class CEMSserver extends AbstractServer {
 		}
 		if (studentExam.getReasonOfSubmit() == ReasonOfSubmit.forced)
 			notSubmitted = dbController.getNumberOfNotSubmitted(studentExam.getActiveExam().getExam().getExamID());
-		if (notSubmitted == 0 || checkIfExamFinished(studentExam.getActiveExam()))
+		if (notSubmitted == 0 || checkIfExamFinished(studentExam.getActiveExam())) {
 			documentExam(studentExam.getActiveExam());
+			checkForCopying(studentExam.getActiveExam());
+		}
+			
 	}
 
 	private void EditQuestion(Question question, ConnectionToClient client) {
