@@ -21,8 +21,8 @@ import logic.RequestToServer;
 /**
  * The class contains the functionality for certifying scores of a exam
  * completed in the system. The system displays for each student his or her own
- * command and allows the teacher to make a change. 
- * If a change has been made in the order, the system requires writing a reason for the change and only then
+ * command and allows the teacher to make a change. If a change has been made in
+ * the order, the system requires writing a reason for the change and only then
  * saves the new score in the system.
  * 
  * @author Yadin Amsalem
@@ -64,8 +64,14 @@ public class ScoreApprovalController extends GuiCommon {
 	private Label lblCheat;
 
 	HashMap<String, Integer> stdScore = new HashMap<>();
-	// <StudentID,Score>
 
+	// <StudentID,Score>
+	/**
+	 * method check if score insert is legal
+	 * 
+	 * @param score the input of User for update score
+	 * @return true if legal, else false
+	 */
 	public boolean isLegalScore(String score) {
 
 		for (int i = 0; i < score.length(); i++) {
@@ -86,6 +92,11 @@ public class ScoreApprovalController extends GuiCommon {
 		}
 		return true;
 	}
+
+	/**
+	 * method Update score changing and reason for change
+	 * @param event occurs when pressing "Update"
+	 */
 
 	@FXML
 	void btnUpdate(ActionEvent event) {
@@ -131,10 +142,10 @@ public class ScoreApprovalController extends GuiCommon {
 		}
 	}
 
-	@FXML
-	void btnViewStudentExam(ActionEvent event) {
-
-	}
+	/**
+	 * select student from combobox
+	 * @param event occurs when choosing sudent from combo box
+	 */
 
 	@FXML
 	void selectStudent(ActionEvent event) {
@@ -143,10 +154,13 @@ public class ScoreApprovalController extends GuiCommon {
 	}
 
 	private void CheatingDetection(String selectedStudentID) {
-		// here we would implement query to check if he suspected as cheater
+		
 
 	}
-
+/**
+ * method present all student that take the exam by exam id that teacher enter
+ * @param event occurs when user press "Show"
+ */
 	@SuppressWarnings("unchecked")
 	@FXML
 	void ShowStudentByExamID(ActionEvent event) {

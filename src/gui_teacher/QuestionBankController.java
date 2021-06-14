@@ -160,6 +160,10 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 			displayNextScreen(teacher, "EditQuestion.fxml");
 		}
 	}
+	/**
+	 * method open screen with all question info
+	 * @param event occure when user want to edit question
+	 */
 
 	@FXML
 	void btnOpenQuestionInfo(ActionEvent event) {
@@ -217,7 +221,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	}
 
 	/**
-	 * FIXME: ADD JAVADOC HERE
+	 *method fill datails of question in principal screen
 	 *
 	 *
 	 */

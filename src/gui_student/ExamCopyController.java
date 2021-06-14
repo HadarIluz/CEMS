@@ -50,6 +50,12 @@ public class ExamCopyController extends GuiCommon implements Initializable {
 
 	private ObservableList<Question> data;
 
+	/**
+	 * method open previous screen 
+	 * @param event coours when User press "back" button
+	 */
+	
+	
 	@FXML
 	void BackBtn(ActionEvent event) {
 		displayNextScreen((User) ClientUI.loggedInUser.getUser(), "ViewExam.fxml");
@@ -57,6 +63,10 @@ public class ExamCopyController extends GuiCommon implements Initializable {
 
 	/**
 	 * initialize function to prepare the screen after it is loaded.
+	 * 
+	 * @param laoction The location used to resolve relative paths for the root object
+	 * @param resources The resources used to localize the root object, or null if the root object was not localized.
+	 * 
 	 */
 	@SuppressWarnings("unchecked")
 	@Override

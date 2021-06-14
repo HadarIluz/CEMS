@@ -22,10 +22,13 @@ import javafx.scene.text.Text;
 import logic.RequestToServer;
 
 /**
- * FIXME: ADD JAVADOC HERE
+ * the class used us for let the techer the option the edit a question. the question details in data base 
+ *given to teacher that create the question and he is the User that can edit the question. User get all the
+ *neccesary info of question and he can update parameters and send updated question to database.
  *
+ *@author Yadin Amsalem & Nadav Dery
  *
- */
+ * */
 
 public class EditQuestionController extends GuiCommon implements Initializable {
 
@@ -70,12 +73,20 @@ public class EditQuestionController extends GuiCommon implements Initializable {
 
 	 @FXML
 	    private Label msgLabel;
-
+/**
+ * method send us to prevoius screen
+ * @param event occurs when User press "Back"
+ */
 	@FXML
 	void btnBack(ActionEvent event) {
 		displayNextScreen((Teacher) ClientUI.loggedInUser.getUser(), "QuestionBank.fxml");
 	}
-
+/**
+ * method check all parameters that the User fill all details, also check if is legal, and update
+ * @param event occur when user click "Save"
+ */
+	
+	
 	@FXML
 	void btnSaveEditQuestion(ActionEvent event) {
 		if (!checkAllFieldsNotEmpty())
@@ -107,6 +118,11 @@ public class EditQuestionController extends GuiCommon implements Initializable {
 		
 		
 	}
+	
+	/**
+	 * method check if all neccesary details in form is not empty
+	 * @return true if all full, else return false
+	 */
 
 	private boolean checkAllFieldsNotEmpty() {
 		if (textTheQuestion.getText().isEmpty()) {
@@ -140,6 +156,10 @@ public class EditQuestionController extends GuiCommon implements Initializable {
 	void selectCorrectAnswer(ActionEvent event) {
 
 	}
+	/**initialize all parameter and details of question to edit
+	 * @param URLlocation  Called to initialize a controller after its root element has been completely processed.
+	 * @param ResourceBundle resources resolve relative paths for the root object
+	 */
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
