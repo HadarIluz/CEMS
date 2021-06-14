@@ -27,6 +27,7 @@ import javafx.scene.text.Text;
 import logic.RequestToServer;
 
 /**
+ * The class contains functionality for creating a new question.
  * @author Yuval Hayan
  * @author Hadar Iluz
  *
@@ -180,7 +181,7 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 
 	
 	/**
-	 * This method loads the proffesion into the combobox
+	 * This method loads the profession into the combo box
 	 */
 	private void loadProfessionsToCombobox() {
 		selectProfession.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
@@ -241,7 +242,7 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 	}
 
 	/**
-	 * gets the selected question dta from the server an dloads it to the screen
+	 * gets the selected question data from the server an loads it to the screen
 	 */
 	private void loadSelectedQuestionDataToView() {
 		RequestToServer req = new RequestToServer("getQuestionDataBy_questionID");
@@ -249,9 +250,6 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 		ClientUI.cems.accept(req);
 
 		Question questionForView = (Question) CEMSClient.responseFromServer.getResponseData();
-		// questionForView
-		// textAnswer1 4 textCorrectAnswerIndex
-
 		textTheQuestion.setText(questionForView.getQuestion());
 		textProfession.setText(questionForView.getProfession().getProfessionID());
 		String ans[] = questionForView.getAnswers();

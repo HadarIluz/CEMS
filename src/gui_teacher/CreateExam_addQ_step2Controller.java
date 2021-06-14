@@ -29,7 +29,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
+/**
+ * The class contains functionality for step 2 of creating a test, you can add
+ * questions and update a score for each question. You can delete a question
+ * Beyond step 3 is done only when the score of the questions is equal to 100.
+ * 
+ * @author Yuval Hayam
+ *
+ */
 public class CreateExam_addQ_step2Controller implements Initializable {
 
 	@FXML
@@ -96,8 +103,7 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 	private ObservableList<QuestionInExamRow> Qlist;
 
 	/**
-	 * @param event
-	 * handles click on button delete
+	 * @param event handles click on button delete
 	 */
 	@FXML
 	void DeleteFromExam(ActionEvent event) {
@@ -108,8 +114,7 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * handles click on button update score
+	 * @param event handles click on button update score
 	 */
 	@FXML
 	void UpdateScore(ActionEvent event) {
@@ -128,8 +133,7 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * handles click on button back
+	 * @param event handles click on button back
 	 */
 	@FXML
 	void btnBack(ActionEvent event) {
@@ -148,8 +152,7 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * handles click on button browse questions
+	 * @param event handles click on button browse questions
 	 */
 	@FXML
 	void btnBrowseQuestions(ActionEvent event) {
@@ -189,7 +192,8 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 	}
 
 	/**
-	 * handles the update of the total score of exam after teacher changes score of q
+	 * handles the update of the total score of exam after teacher changes score of
+	 * q
 	 */
 	private void updateTotalScore() {
 		int sum = 0;
@@ -209,8 +213,7 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * handles click on button next
+	 * @param event handles click on button next
 	 */
 	@FXML
 	void btnNext(ActionEvent event) {
@@ -228,7 +231,6 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 
 	}
 
-	
 	/**
 	 * copies the questions the teacher chose to the new exam
 	 */
@@ -241,8 +243,7 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * handles click on a question in the table
+	 * @param event handles click on a question in the table
 	 */
 	@FXML
 	void chooseQ(MouseEvent event) {
@@ -275,10 +276,8 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 
 	}
 
-	
 	/**
-	 * @param q
-	 * puts question q in the table
+	 * @param q puts question q in the table
 	 */
 	private void insertRow(QuestionInExam q) {
 		selectedQuestionsRows.add(
@@ -290,8 +289,7 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 	}
 
 	/**
-	 * @param questionBank
-	 * allows other screens to load available questions 
+	 * @param questionBank allows other screens to load available questions
 	 */
 	public static void loadAvailableQuestions(ArrayList<Question> questionBank) {
 		availableQuestions = questionBank;

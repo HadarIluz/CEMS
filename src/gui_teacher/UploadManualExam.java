@@ -22,7 +22,7 @@ import javafx.stage.FileChooser;
 import logic.RequestToServer;
 
 /**
- * class allow to user to uplaod menual exam to the system
+ * class allow to user to upload manual exam to the system
  * @author Yadin Amsalem
  * @author Nadav Dery
  * 

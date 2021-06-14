@@ -31,7 +31,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
-
+/**
+ * 
+ * The class contains functionality for step 2 of creating a test, you can add
+ * questions and update a score for each question. You can delete a question
+ * Moving to step 3 is only done when the score of all the questions is 100.
+ * 
+ * @author Yuval Hayam
+ *
+ */
 public class CreateExam_step1Controller extends GuiCommon implements Initializable {
 
 	@FXML
@@ -81,8 +89,7 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 	private static Exam newExam = null;
 
 	/**
-	 * @param event
-	 * handles click on radio button btnComputerizedPress
+	 * @param event handles click on radio button btnComputerizedPress
 	 */
 	@FXML
 	void btnComputerizedPress(ActionEvent event) {
@@ -92,8 +99,7 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 	}
 
 	/**
-	 * @param event
-	 * handles click on radio button btnManualPress
+	 * @param event handles click on radio button btnManualPress
 	 */
 	@FXML
 	void btnManualPress(ActionEvent event) {
@@ -103,8 +109,7 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 	}
 
 	/**
-	 * @param event
-	 * handles click on btnNext
+	 * @param event handles click on btnNext
 	 */
 	@FXML
 	void btnNext(ActionEvent event) {
@@ -167,10 +172,8 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 		}
 	}
 
-	
 	/**
-	 * @param newExam
-	 * starts the next screen and sets needed data
+	 * @param newExam starts the next screen and sets needed data
 	 */
 	private void startNextScreen(Exam newExam) {
 		try {
@@ -194,8 +197,7 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 	}
 
 	/**
-	 * @param event
-	 * handles click on combobox selectCourseList
+	 * @param event handles click on combobox selectCourseList
 	 */
 	@FXML
 	void selectCourseList(ActionEvent event) {
@@ -205,8 +207,7 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 	}
 
 	/**
-	 * @param event
-	 * handles click on combobox selectProffessionList
+	 * @param event handles click on combobox selectProffessionList
 	 */
 	@SuppressWarnings("unchecked")
 	@FXML
@@ -309,7 +310,7 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 		selectProffessionList.setItems(FXCollections.observableArrayList(professionsMap.keySet()));
 
 	}
-	
+
 	/**
 	 * allows other screens to set the current new exam
 	 */
