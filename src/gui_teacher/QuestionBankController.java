@@ -269,23 +269,4 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);		
 	}
 
-	
-
-	
-	//FIXME: NEED THIS?
-	/**
-	 * @param questionID
-	 * @return
-	 */
-	private Boolean isExistQuestion(String questionID) {	
-		for (QuestionRow q : data) {
-			if (q.getQuestionID().equals(questionID)) {				
-				return true;
-			}
-		}
-		return false;
-	}
-
-
-
 }

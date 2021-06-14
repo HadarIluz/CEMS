@@ -19,7 +19,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -201,12 +200,10 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	void btnEditExam(ActionEvent event) {
 		if (!textExamID.getText().isEmpty()) {
 			Exam selectedExam = getExistExamDetails(textExamID.getText());
-			if(selectedExam.getActiveExamType().equals("computerized")) {
-			EditExamController.setActiveExamState(selectedExam, super.teacherStatusScreen);
-			displayNextScreen(teacher, "EditExam.fxml");
-			}
-			else
-			{
+			if (selectedExam.getActiveExamType().equals("computerized")) {
+				EditExamController.setActiveExamState(selectedExam, super.teacherStatusScreen);
+				displayNextScreen(teacher, "EditExam.fxml");
+			} else {
 				EditExamController.setActiveExamState(selectedExam, super.teacherStatusScreen);
 				displayNextScreen(teacher, "EditExam.fxml");
 			}
@@ -236,6 +233,7 @@ public class ExamBankController extends GuiCommon implements Initializable {
 	 * 
 	 */
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		tableExam.setEditable(false);
@@ -392,9 +390,8 @@ public class ExamBankController extends GuiCommon implements Initializable {
 		if (textExamID.getText().isEmpty())
 			popUp("Please select a exam.");
 		else {
-			ObservableList<Exam> Qlist;
 			Exam examToLock = GetTableDetails(textExamID.getText());
-			Qlist = tableExam.getSelectionModel().getSelectedItems();
+			ObservableList<Exam> Qlist = tableExam.getSelectionModel().getSelectedItems();
 			RequestToServer req = new RequestToServer("getStudentsInActiveExam");
 			req.setRequestData(examToLock);
 			ClientUI.cems.accept(req);

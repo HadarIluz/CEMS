@@ -14,7 +14,10 @@ import javafx.scene.control.TextField;
 import logic.RequestToServer;
 
 /**
- * FIXME: ADD JAVADOC HERE
+ * This class includes a function where a teacher submits to the principal a
+ * request for extra time for an exam. the request is added to the table of
+ * extension requests in the database and is awaiting a response from the principal as to
+ * whether the request was received or denied.
  *
  * @author Matar Asaf
  *

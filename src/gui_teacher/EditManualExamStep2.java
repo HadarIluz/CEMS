@@ -22,12 +22,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import logic.RequestToServer;
 
+/**
+ * Class contains functionality for edit manual exam as part of 2 main steps.
+ * This screen describes the second stage where the teacher uploads a new exam
+ * form to the system.
+ * 
+ * @author Matar Asaf
+ *
+ */
 public class EditManualExamStep2 extends GuiCommon implements Initializable {
 
 	@FXML
@@ -54,10 +61,7 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 	private static Exam newExam;
 	private File selectedExamFile;
 
-	public static Exam getNewExam() {
-		return newExam;
-	}
-
+	/* set Exam */
 	public static void setNewExam(Exam exam) {
 		newExam = exam;
 	}
@@ -77,11 +81,14 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 			System.out.println("Couldn't load!");
 			e.printStackTrace();
 		}
-		
+
 		EditExamController.setDataFromStep2(newExam, false, null, true);
 	}
 
-	@SuppressWarnings("resource")
+	/**
+	 * @param event that occurs When clicking the Upload button, will save the file
+	 *              the teacher selected in the system "files" folder named examId_exam
+	 */
 	@FXML
 	void btnUploadPress(ActionEvent event) {
 
@@ -121,13 +128,13 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 			msgLabel.setText("File Upload Failed");
 			msgLabel.setVisible(true);
 		}
-		
-				
+
 	}
 
 	/**
-	 * @param event that occurs When clicking of Browse File button, the the teacher can 
-	 * choose a file and the file of the exists exam will update to the new file.
+	 * @param event that occurs When clicking of Browse File button, the the teacher
+	 *              can choose a file and the file of the exists exam will update to
+	 *              the new file.
 	 */
 	@FXML
 	void onClickBroswe(ActionEvent event) {
@@ -141,20 +148,25 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 
 	}
 
+	/**
+	 * initialize function to prepare the screen after it is loaded. Tack user data
+	 * according to screen status from the previous action.
+	 *
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		btnBack.setDisable(false);
 	}
 
+	/**
+	 * @param examData              with all updated details.
+	 * @param displayPrincipalView2 the current screen mode according to logged
+	 *                              user.
+	 * 
+	 */
 	public static void setnextScreenData(Exam exam, boolean displayPrincipalView,
 			ArrayList<QuestionInExam> updatedQuestions) {
-		newExam=exam;
+		newExam = exam;
 	}
-	
-	
-	
-	
-	
-	
 
 }
