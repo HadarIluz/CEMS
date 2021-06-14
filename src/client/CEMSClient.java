@@ -6,6 +6,7 @@ package client;
 
 import ocsf.client.*;
 import common.CemsIF;
+import common.ICEMSClient;
 import common.MyFile;
 import gui_cems.GuiCommon;
 import logic.ResponseFromServer;
@@ -18,7 +19,7 @@ import java.io.*;
  *
  * @author CEMS_TEAM
  */
-public class CEMSClient extends AbstractClient {
+public class CEMSClient extends AbstractClient implements ICEMSClient{
 	// Instance variables **********************************************
 
 	/**
@@ -160,6 +161,12 @@ public class CEMSClient extends AbstractClient {
 		} catch (IOException e) {
 		}
 		System.exit(0);
+	}
+
+	@Override
+	public ResponseFromServer getResponseFromServer() {
+		// TODO Auto-generated method stub
+		return responseFromServer;
 	}
 }
 //End of cemsClient class
