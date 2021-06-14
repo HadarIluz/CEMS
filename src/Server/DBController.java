@@ -443,7 +443,7 @@ public class DBController {
 				exam.setProfession(new Profession(rs.getString(2)));
 				exam.setCourse(new Course(rs.getString(3)));// addition
 				exam.setTimeOfExam(Integer.parseInt(rs.getString(4)));
-				exam.setExamStatus(ExamStatus.valueOf(rs.getString(8))); // FIXME: enum
+				exam.setExamStatus(ExamStatus.valueOf(rs.getString(8))); 
 				exam.setActiveExamType(rs.getString(9));
 				examsOfTeacher.add(exam);
 
@@ -630,7 +630,6 @@ public class DBController {
 				rs.close();
 			}
 
-			// TODO: remove boolean return Exam object.
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -1843,7 +1842,7 @@ public class DBController {
 
 	/**
 	 * 
-	 * @return id of principal
+	 * @return id of principal in order to send a message alert.
 	 */
 
 	public int getPrincipalId() {
@@ -1862,6 +1861,9 @@ public class DBController {
 		return 0;
 	}
 
+	/**
+	 * @return ArrayList of all examsID
+	 */
 	public ArrayList<String> getAllExams() {
 		ArrayList<String> examsID = new ArrayList<String>();
 		PreparedStatement pstmt;

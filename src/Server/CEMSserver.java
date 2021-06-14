@@ -432,9 +432,8 @@ public class CEMSserver extends AbstractServer {
 
 	/**
 	 * send to Client massage with the edited question
-	 * 
 	 * @param question the question befeore edit
-	 * @param client   the User that get the massage
+	 * @param client the User that get the massage
 	 */
 
 	private void EditQuestion(Question question, ConnectionToClient client) {
@@ -450,7 +449,7 @@ public class CEMSserver extends AbstractServer {
 	/**
 	 * sent to client all exams created by him
 	 * 
-	 * @param client techer that expect to get all exams he created
+	 * @param client teacher that expect to get all exams he created
 	 */
 
 	private void getAllExams(ConnectionToClient client) {
@@ -551,7 +550,13 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
+	
 
+	/**
+	 * @param requestData
+	 * @param client
+	 * sends to the client a list with all questions from a student's solved exam
+	 */
 	private void getSolvedComputerizedExam(String[] requestData, ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("Solved Computerized Exam");
@@ -564,10 +569,10 @@ public class CEMSserver extends AbstractServer {
 
 	/**
 	 * method return to client the correct answer for specific question
-	 * 
 	 * @param questionID id of the question
-	 * @param client     User that get the info of answers.
+	 * @param client User that get the info of answers.
 	 */
+	 
 
 	private void getAnswersOfMistakeQuestion(String questionID, ConnectionToClient client) {
 		try {
@@ -578,12 +583,11 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * method send to client all the solved exams of students
-	 * 
-	 * @param client User that get the info of student's exams.
-	 */
+	
+/**
+ * method send to client all the solved exams of students
+ * @param client  User that get the info of student's exams.
+ */
 	private void getAllStudentsExams(ConnectionToClient client) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("AllStudentsExams");
@@ -594,14 +598,14 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
-
+	
 	/**
 	 * method send to client all the grades of student's exams
 	 * 
 	 * @param client      User that get the info of student's grades
 	 * @param requestData contains student id and exam id
 	 */
-
+	
 	private void getStudentGrade(ConnectionToClient client, String[] requestData) {
 		try {
 			ResponseFromServer Res = new ResponseFromServer("StudentScore");
@@ -614,10 +618,9 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/**
-	 * method send to client all the grades of specific student
-	 * 
-	 * @param studentID the id of the student
-	 * @param client    User that get the info of student's grades
+	 * method send to client all the  grades of specific  student
+	 * @param studentID the id of the student 
+	 * @param client User that get the info of student's grades
 	 */
 
 	private void getStudentGrades(int studentID, ConnectionToClient client) {
@@ -631,8 +634,7 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/**
-	 * method send to client all the grades of specific teacher's exams
-	 * 
+	 * method send to client all the grades of specific  teacher's exams
 	 * @param client User that get the info of teacher's exams
 	 */
 
@@ -648,8 +650,7 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/**
-	 * method send to client all the students in systen
-	 * 
+	 * method send to client all the students in system
 	 * @param client User that get the info of students
 	 */
 
@@ -677,8 +678,7 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/**
-	 * method sent to client the average of specific exam
-	 * 
+	 * method sent to client the average of specific exam 
 	 * @param ExamID the exam that we return to client average
 	 * @param client User that get the exam's average
 	 */
@@ -712,7 +712,6 @@ public class CEMSserver extends AbstractServer {
 		try {
 			loogedClients.get(teacherID).sendToClient(res);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -774,7 +773,6 @@ public class CEMSserver extends AbstractServer {
 
 	/**
 	 * method check if exam exist in the database
-	 * 
 	 * @param ExamID the exam to check if exist
 	 * @param client the User that get the response if exist or not
 	 */
@@ -793,6 +791,10 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	/**
+	 * @param client
+	 * method send to client all active exams
+	 */
 	private void getAllActiveExamBeforEnterToExam(ConnectionToClient client) {
 		// logic for 'EnterToExam'
 		ResponseFromServer response = null;
@@ -998,7 +1000,6 @@ public class CEMSserver extends AbstractServer {
 		try {
 			client.sendToClient(res);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -1060,11 +1061,9 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/**
-	 * this method update the time allotted for taking an exam
-	 * 
-	 * @param activeExam
+	 * @param activeExam we want to add time to
 	 * @param client
-	 *
+	 * This method checks if we can add time to the active exam. sends the answer to clients
 	 */
 	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer responForTeacher = dbController.verifyActiveExam((ActiveExam) activeExam);
@@ -1229,9 +1228,10 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/**
-	 * This method saves a file that the client uploads and saves it in the system.
+	 * This method downloads to the student's computer the form of the manual test
+	 * he wants to solve according to the information in examOfStudent.
 	 * 
-	 * @param msg
+	 * @param examOfStudent
 	 * @param client
 	 *
 	 */
@@ -1275,6 +1275,7 @@ public class CEMSserver extends AbstractServer {
 	 * @param Status
 	 * @return Returns an answer according to inputs function.
 	 */
+	@SuppressWarnings("unused")
 	private ResponseFromServer createResponse(String responseType, String status) {
 		ResponseFromServer response = null;
 		response = new ResponseFromServer(responseType);
@@ -1396,12 +1397,11 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 	}
 
-	/**
-	 * method send to client all the students that solve spcific exam
-	 * 
-	 * @param requestData contains examid
-	 * @param client      User that get the info of students
-	 */
+/**
+ * method send to client all the students that solve specific exam
+ * @param requestData contains  examid
+ * @param client User that get the info of students
+ */
 	private void getStudentsByExamID(String requestData, ConnectionToClient client) {
 		ResponseFromServer response = new ResponseFromServer("SCORE APPROVAL");
 		try {
@@ -1416,9 +1416,8 @@ public class CEMSserver extends AbstractServer {
 
 	/**
 	 * method sent to client all the question the belong the specific teacher
-	 * 
 	 * @param requestData contains teacher id
-	 * @param client      to sent all info
+	 * @param client to sent all info
 	 */
 
 	private void getQuestions(Integer requestData, ConnectionToClient client) {
@@ -1447,3 +1446,4 @@ public class CEMSserver extends AbstractServer {
 	}
 
 }
+
