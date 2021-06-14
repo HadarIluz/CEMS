@@ -50,11 +50,19 @@ public class BrowseQuestionController implements Initializable {
 	private static ArrayList<Question> availableQuestions;
 	private ObservableList<Question> Qlist;
 
+	/**
+	 * @param event
+	 * handles click on table row
+	 */
 	@FXML
 	void clickOnTableRow(MouseEvent event) {
 		Qlist = tableQuestion.getSelectionModel().getSelectedItems();
 	}
 
+	/**
+	 * @param event
+	 * handles click on button selectQuestion
+	 */
 	@FXML
 	void selectQuestion(ActionEvent event) {
 		if (!textQuestionScore.getText().trim().isEmpty()) {
@@ -71,6 +79,9 @@ public class BrowseQuestionController implements Initializable {
 
 	}
 
+	/**
+	 * @return the selcted question
+	 */
 	public QuestionInExam getSelectedQuestion() {
 		if (selectedQ != null) {
 			return selectedQ;
@@ -91,6 +102,11 @@ public class BrowseQuestionController implements Initializable {
 
 	}
 
+	
+	/**
+	 * @param availableQ
+	 * sets the available questions for the teacher
+	 */
 	public static void setAvailableQuestions(ArrayList<Question> availableQ) {
 		availableQuestions = availableQ;
 	}
