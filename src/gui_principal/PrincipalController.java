@@ -80,6 +80,7 @@ public class PrincipalController extends Application implements Initializable {
 	protected User principal;
 	public static GridPane root;
 	public Scene scene;
+	@SuppressWarnings("unused")
 	private static int newRequest;
 	static ColorAdjust colorAdjust = new ColorAdjust();
 	private static String msgOfNotification = null;
@@ -259,6 +260,10 @@ public class PrincipalController extends Application implements Initializable {
 		newRequest = temp;
 	}
 	
+	/**
+	 * FIXME: ADDJAVADOC
+	 * @param msg
+	 */
 	public static void CopyAlertNotification(String msg) {
 		msgOfNotification = msg;
 	}

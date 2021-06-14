@@ -114,7 +114,7 @@ public class ServerFrameController {
 	 * @param event that occurs when the user presses on exit button, the server
 	 *              stops listening and exit.
 	 * @throws InterruptedException that indicates conditions that a
-	 *                              reasonableapplication might want to catch.
+	 *                              reasonable application might want to catch.
 	 */
 	@FXML
 	void ExitFromServer(ActionEvent event) throws InterruptedException {

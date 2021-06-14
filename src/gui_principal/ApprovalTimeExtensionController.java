@@ -20,7 +20,15 @@ import javafx.scene.control.TextArea;
 import logic.RequestToServer;
 
 /**
- * FIXME: ADD JAVADOC HERE
+ * The class contains the functionality of approving the extra time of an
+ * active exam that solve now by group of students. 
+ * The request is sent from the teacher to the principal. 
+ * The principal receives a real-time alert when she
+ * has a new request and thus knows to enter this screen.
+ * 
+ * All active tests will be presented to the principal, if the principal enters
+ * and the test ends the application is irrelevant and therefore will not be
+ * presented.
  * 
  * @author Matar Asaf
  *

@@ -399,7 +399,6 @@ public class ExamBankController extends GuiCommon implements Initializable {
 			req.setRequestData(examToLock);
 			ClientUI.cems.accept(req);
 			if (CEMSClient.responseFromServer.getResponseType().equals("EXAM LOCKED")) {
-				TeacherController.root.getChildren().remove((Node) btnCreateActiveExam.getParent());
 				popUp("The exam was successfully locked");
 			} else {
 				popUp("lock exam failed");

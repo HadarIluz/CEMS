@@ -20,7 +20,9 @@ import javafx.scene.control.RadioButton;
 import logic.RequestToServer;
 
 /**
- * FIXME:ADD JAVADOC
+ * The class contains functionality for selecting a report type according to
+ * various parameters. The department is tested in such a way that it will be
+ * possible to update in a minimal way and thus add similar types of reports.
  * 
  * @author Yadin Amsalem
  * @author Nadav Dery
@@ -52,7 +54,6 @@ public class PrincipalGetReportsController extends GuiCommon {
 	@FXML
 	private ComboBox<String> selectProfession;
 
-	private static PrincipalController principalController;
 	private static User principal = (User) ClientUI.loggedInUser.getUser();
 	HashMap<String, String> professions;
 	static ArrayList<Course> courses;

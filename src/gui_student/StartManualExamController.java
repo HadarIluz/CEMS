@@ -36,7 +36,11 @@ import javafx.scene.text.Text;
 import logic.RequestToServer;
 
 /**
- * FIXME: ADD JAVADOC HERE
+ * The class contains functionality for solving a student's manual exam. 
+ * The student downloads a file to his personal computer and can upload a file at
+ * the end of the exam, a timer is displayed that can be displayed and removed.
+ * If the teacher informs the student that there is extra time for the exam, he
+ * receives a alert by real-time event.
  * 
  * @author Matar Asaf
  *
@@ -89,7 +93,6 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	@FXML
 	private Text txtDownloadSucceed;
 
-	private static StudentController studentController;
 	private static ActiveExam newActiveExam;
 	private static Boolean lock;
 	private static int addTime;
