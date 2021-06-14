@@ -64,7 +64,7 @@ public class ExamCopyController extends GuiCommon implements Initializable {
 	/**
 	 * initialize function to prepare the screen after it is loaded.
 	 * 
-	 * @param laoction The location used to resolve relative paths for the root object
+	 * @param location The location used to resolve relative paths for the root object
 	 * @param resources The resources used to localize the root object, or null if the root object was not localized.
 	 * 
 	 */

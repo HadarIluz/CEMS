@@ -283,7 +283,7 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 
 	/**
 	 * Receive the list of active tests from the previous screen.
-	 * @param activeExamListFromDB
+	 * @param activeExamListFromDB the exams to save
 	 */
 	public static void setAllActiveExamBeforEnterToExam(ArrayList<ActiveExam> activeExamListFromDB) {
 		activeExamtList = activeExamListFromDB;

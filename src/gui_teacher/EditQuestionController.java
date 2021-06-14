@@ -26,7 +26,7 @@ import logic.RequestToServer;
  * given to teacher that create the question and he is the User that can edit the question. User get all the
  * necessary info of question and he can update parameters and send updated question to database.
  *
- *@author Yadin Amsalem & Nadav Dery
+ *@author Yadin Amsalem and Nadav Dery
  *
  * */
 
@@ -157,8 +157,8 @@ public class EditQuestionController extends GuiCommon implements Initializable {
 
 	}
 	/**initialize all parameter and details of question to edit
-	 * @param URLlocation  Called to initialize a controller after its root element has been completely processed.
-	 * @param ResourceBundle resources resolve relative paths for the root object
+	 * @param location  Called to initialize a controller after its root element has been completely processed.
+	 * @param resources resolve relative paths for the root object
 	 */
 
 	@Override

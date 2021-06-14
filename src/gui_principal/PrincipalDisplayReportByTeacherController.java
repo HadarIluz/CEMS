@@ -51,7 +51,7 @@ public class PrincipalDisplayReportByTeacherController implements Initializable 
 	HashMap<String, String> idNamecourses = new HashMap<String, String>();
 
 	/**
-	 * initialize the screen with the chosen teacher ID & Name and the histogram of
+	 * initialize the screen with the chosen teacher ID and Name and the histogram of
 	 * the exams he created and their median and average.
 	 * 
 	 */

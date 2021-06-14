@@ -283,7 +283,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	/**
 	 * Receive ActiveExam from the previous screen.
 	 * 
-	 * @param newActiveExamInProgress
+	 * @param newActiveExamInProgress the exam to save
 	 */
 	public static void setActiveExamState(ActiveExam newActiveExamInProgress) {
 		newActiveExam = newActiveExamInProgress;
@@ -292,7 +292,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	/**
 	 * Receive temp = true from the server when a teacher locks up the test
 	 * 
-	 * @param Boolean temp
+	 * @param temp to lock or not
 	 */
 	public static void setFlagToLockExam(Boolean temp) {
 		lock = temp;
@@ -301,7 +301,7 @@ public class StartManualExamController extends GuiCommon implements Initializabl
 	/**
 	 * Receives from the server the time the teacher added to the test
 	 * 
-	 * @param time
+	 * @param time to add
 	 */
 	public static void addTimeToExam(int time) {
 		addTime = time;

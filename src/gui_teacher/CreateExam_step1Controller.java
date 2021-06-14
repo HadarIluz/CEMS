@@ -312,6 +312,7 @@ public class CreateExam_step1Controller extends GuiCommon implements Initializab
 	}
 
 	/**
+	 * @param newExam2 new exam to save
 	 * allows other screens to set the current new exam
 	 */
 	public static void setExamState(Exam newExam2) {

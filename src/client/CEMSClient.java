@@ -40,6 +40,7 @@ public class CEMSClient extends AbstractClient {
 	 * @param host     The server to connect to.
 	 * @param port     The port number to connect on.
 	 * @param clientUI The interface type variable.
+	 * @throws IOException when port or host not good
 	 */
 
 	public CEMSClient(String host, int port, CemsIF clientUI) throws IOException {

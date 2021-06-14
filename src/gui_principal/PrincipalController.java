@@ -116,8 +116,8 @@ public class PrincipalController extends Application implements Initializable {
 	}
 
 	/**
-	 * @param primaryStage
-	 * @throws Exception
+	 * @param primaryStage the primary stage
+	 * @throws Exception when stage not working
 	 */
 	public void start(Stage primaryStage) throws Exception {
 		root = new GridPane();

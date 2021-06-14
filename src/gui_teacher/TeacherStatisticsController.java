@@ -20,7 +20,7 @@ import logic.RequestToServer;
 /**
  * Class used as controller for the screen of teacher's statistics.
  * 
- * @author Nadav Dery & Yadin Amsalem
+ * @author Nadav Dery and Yadin Amsalem
  * @version 1.0 10/06/2021
  */
 

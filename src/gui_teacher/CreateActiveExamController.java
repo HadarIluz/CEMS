@@ -128,7 +128,7 @@ public class CreateActiveExamController extends GuiCommon implements Initializab
 	/**
 	 * Receive the selected Exam from previous screen.
 	 * 
-	 * @param selectedExam
+	 * @param selectedExam the exam we selected
 	 */
 	public static void setActiveExamState(Exam selectedExam) {
 		exam = selectedExam;

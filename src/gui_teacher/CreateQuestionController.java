@@ -190,8 +190,8 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 	
 	
 	/**
-	 * @param location
-	 * @param resources
+	 * @param location location of URL
+	 * @param resources resources of javafx
 	 * this method runs when the screen is being initialized
 	 */
 	@Override
@@ -235,6 +235,7 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 	}
 
 	/**
+	 * @param questionIDselected the ID we selected
 	 * allows other screens to set data for this screen
 	 */
 	public static void setNextScreenData(String questionIDselected) {

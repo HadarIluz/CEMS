@@ -256,6 +256,7 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 	}
 
 	/**
+	 * @param newExamInProgress new exam to save
 	 * allows other screens to set the current new exam
 	 */
 	public static void setExamState(Exam newExamInProgress) {

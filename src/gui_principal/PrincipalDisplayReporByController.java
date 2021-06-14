@@ -55,7 +55,7 @@ public class PrincipalDisplayReporByController extends GuiCommon implements Init
 	 * the histogram with the average and median of any exam took at this course
 	 * 
 	 * @param  location The location used to resolve relative paths
-	 * @param  The resources used to localize the root object
+	 * @param  resources used to localize the root object
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override

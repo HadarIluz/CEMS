@@ -122,7 +122,7 @@ public class GuiCommon {
 	 * when the exam is locked or time has been added to solve the exam. Depending
 	 * on the information in res
 	 * 
-	 * @param res
+	 * @param res the response from server
 	 */
 	public static void handleNotifications(ResponseFromServer res) {
 		if (res.getResponseType().startsWith("NOTIFICATION_STUDENT"))

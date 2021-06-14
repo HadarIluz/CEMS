@@ -292,7 +292,7 @@ public class EditExam_questionsStep2Controller extends GuiCommon implements Init
 	 * @param examData              with all updated details.
 	 * @param displayPrincipalView2 the current screen mode according to logged
 	 *                              user.
-	 * 
+	 * @param updatedQuestions the new questions
 	 */
 	public static void setnextScreenData(Exam examData, boolean displayPrincipalView2,
 			ArrayList<QuestionInExam> updatedQuestions) {
