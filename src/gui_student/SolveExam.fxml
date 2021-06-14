@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_student.SolveExamController">
+<AnchorPane prefHeight="585.0" prefWidth="761.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui_student.SolveExamController">
    <children>
       <Button fx:id="btnSubmitExam" layoutX="517.0" layoutY="495.0" mnemonicParsing="false" onAction="#btnSubmitExam" prefHeight="40.0" prefWidth="100.0" text="Submit">
          <font>
