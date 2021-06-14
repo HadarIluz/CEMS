@@ -39,7 +39,7 @@ import logic.RequestToServer;
  * Teacher - editing permissions as described.
  * 
  * @author Hadar Iluz
- *
+ *@author lior karish
  */
 @SuppressWarnings("unused")
 public class EditExamController extends GuiCommon implements Initializable {
