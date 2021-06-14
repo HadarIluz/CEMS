@@ -2031,7 +2031,6 @@ public class DBController {
 		} catch (SQLException ex) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 		}
-
 		return qNa;
 	}
 
