@@ -1382,7 +1382,7 @@ public class CEMSserver extends AbstractServer {
 	}
 	/**
 	 * method sent to client all the question the belong the specific teacher
-	 * @param requestData contains techer id
+	 * @param requestData contains teacher id
 	 * @param client to sent all info
 	 */
 
