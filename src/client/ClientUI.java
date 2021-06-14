@@ -33,4 +33,8 @@ public class ClientUI extends Application {
 
 	}
 	
+	public static CemsIF getCemsIF() {
+		return cems;
+	}
+	
 }

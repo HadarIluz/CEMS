@@ -28,6 +28,8 @@ public class CEMSClient extends AbstractClient implements ICEMSClient{
 	 */
 	CemsIF clientUI;
 
+	private static CEMSClient instance;
+
 	// define transfer of data of client-server.
 	public static ResponseFromServer responseFromServer = new ResponseFromServer(null);
 	public static StatusMsg statusMsg = new StatusMsg();
@@ -47,6 +49,7 @@ public class CEMSClient extends AbstractClient implements ICEMSClient{
 	public CEMSClient(String host, int port, CemsIF clientUI) throws IOException {
 		super(host, port); // Call the superclass constructor
 		this.clientUI = clientUI;
+		this.instance = this;
 		// openConnection();
 	}
 
@@ -167,6 +170,10 @@ public class CEMSClient extends AbstractClient implements ICEMSClient{
 	public ResponseFromServer getResponseFromServer() {
 		// TODO Auto-generated method stub
 		return responseFromServer;
+	}
+
+	public static ICEMSClient getInstance() {
+		return instance;
 	}
 }
 //End of cemsClient class
