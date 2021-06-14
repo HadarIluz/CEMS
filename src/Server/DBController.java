@@ -1843,7 +1843,7 @@ public class DBController {
 
 	/**
 	 * 
-	 * @return id of principal
+	 * @return id of principal in order to send a message alert.
 	 */
 
 	public int getPrincipalId() {
@@ -1862,6 +1862,9 @@ public class DBController {
 		return 0;
 	}
 
+	/**
+	 * @return ArrayList of all examsID
+	 */
 	public ArrayList<String> getAllExams() {
 		ArrayList<String> examsID = new ArrayList<String>();
 		PreparedStatement pstmt;
