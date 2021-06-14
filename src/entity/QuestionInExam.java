@@ -9,6 +9,7 @@ import java.io.Serializable;
  * details and question`s details.
  * 
  * @author Yuval Hayam
+ * @author lior karish
  *
  */
 @SuppressWarnings("serial")
