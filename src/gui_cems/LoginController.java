@@ -107,6 +107,7 @@ public class LoginController extends GuiCommon{
 	private static StudentController studentController;
 	private static PrincipalController principalController;
 	private static TeacherController teacherController;
+	private LoginLogic loginLogic = new LoginLogic(null);
 
 	/**
 	 * @param event that occurs when clicking on 'login' button
@@ -128,26 +129,10 @@ public class LoginController extends GuiCommon{
 				&& isOnlyDigits(userID)) {
 
 			int id = Integer.parseInt(txtUserName.getText().trim());
-			user = new User(id, userPassword);
-			// create in 'Serializable' class my request from server.
-			RequestToServer req = new RequestToServer("getUser");
-			req.setRequestData(user);
-			ClientUI.cems.accept(req); // send server pk(id) to DB in order to checks if user exist or not.
-
-			if (CEMSClient.responseFromServer.getStatusMsg().getStatus().equals("USER NOT FOUND")) {
-				System.out.println("press on login button and server returns: -->USER NOT FOUND");
-				popUp("This user doesn`t exist in CEMS system.");
-			}
-
-			// handle case that user found and checks password
-			else {
-				user = (User) CEMSClient.responseFromServer.getResponseData();
-				if (userPassword.equals(user.getPassword()) == false) {
-					popUp("The password insert is incorrect. Please try again.");
-				} else if (userID.equals(String.valueOf(user.getId())) == false) {
-					popUp("The id insert is incorrect. Please try again.");
-				} else {
-
+			user = loginLogic.checkDetails(new User(id, userPassword));
+			if (user != null) {
+				
+			
 					user.setLogged(1);
 
 					Stage primaryStage = new Stage();
@@ -226,17 +211,9 @@ public class LoginController extends GuiCommon{
 					// print to console
 					System.out.println(user.getId() + " login Successfully as: " + user.getUserType().toString());
 
-					// sent to server pk(id) in order to change the login status of this user.
-					RequestToServer reqLogged = new RequestToServer("UpdateUserLoggedIn");
-					reqLogged.setRequestData(user);
-					ClientUI.cems.accept(reqLogged);
-
 				}
-
+				
 			}
-			return;
-
-		}
 
 		// handle case that one of the parameters is invalid.
 		else {
@@ -279,7 +256,8 @@ public class LoginController extends GuiCommon{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
+		
 		listenToCloseWindow(primaryStage);
 	}
 
