@@ -430,7 +430,7 @@ public class CEMSserver extends AbstractServer {
 	}
 	/**
 	 * send to Client massage with the edited question
-	 * @param question the question befeore edit
+	 * @param question the question before edit
 	 * @param client the User that get the massage
 	 */
 
@@ -446,7 +446,7 @@ public class CEMSserver extends AbstractServer {
 	/**
 	 * sent to client all exams created by him
 	 * 
-	 * @param client techer that expect to get all exams he created
+	 * @param client teacher that expect to get all exams he created
 	 */
 
 	private void getAllExams(ConnectionToClient client) {
@@ -640,7 +640,7 @@ public class CEMSserver extends AbstractServer {
 
 	}
 	/**
-	 * method send to client all the students in systen
+	 * method send to client all the students in system
 	 * @param client User that get the info of students
 	 */
 
@@ -1050,17 +1050,9 @@ public class CEMSserver extends AbstractServer {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * this method update the time allotted for taking an exam
-	 * 
-	 * @param activeExam
-	 * @param client
-	 *
-=======
 	 * @param activeExam we want to add time to
 	 * @param client
 	 * This method checks if we can add time to the active exam. sends the answer to clients
->>>>>>> branch 'main' of https://github.com/yuval96/CEMS.git
 	 */
 	private void addTimeToExam(ActiveExam activeExam, ConnectionToClient client) {
 		ResponseFromServer responForTeacher = dbController.verifyActiveExam((ActiveExam) activeExam);
@@ -1272,6 +1264,7 @@ public class CEMSserver extends AbstractServer {
 	 * @param Status
 	 * @return Returns an answer according to inputs function.
 	 */
+	@SuppressWarnings("unused")
 	private ResponseFromServer createResponse(String responseType, String status) {
 		ResponseFromServer response = null;
 		response = new ResponseFromServer(responseType);
@@ -1393,7 +1386,7 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 	}
 /**
- * method send to client all the students that solve spcific exam
+ * method send to client all the students that solve specific exam
  * @param requestData contains  examid
  * @param client User that get the info of students
  */
@@ -1440,4 +1433,4 @@ public class CEMSserver extends AbstractServer {
 	}
 
 }
->>>>>>> 6ffbc9ce45996c23dde867963b583ba14ca27360
+
