@@ -100,6 +100,10 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 	private ObservableList<QuestionInExamRow> selectedQuestionsRows = FXCollections.observableArrayList();
 	private ObservableList<QuestionInExamRow> Qlist;
 
+	/**
+	 * @param event
+	 * handles click on button delete
+	 */
 	@FXML
 	void DeleteFromExam(ActionEvent event) {
 		if (Qlist != null) {
@@ -108,6 +112,10 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 		}
 	}
 
+	/**
+	 * @param event
+	 * handles click on button update score
+	 */
 	@FXML
 	void UpdateScore(ActionEvent event) {
 		if (!(txtChangeScore.getText().trim().isEmpty())) {
@@ -124,6 +132,10 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 		}
 	}
 
+	/**
+	 * @param event
+	 * handles click on button back
+	 */
 	@FXML
 	void btnBack(ActionEvent event) {
 		try {
@@ -140,6 +152,10 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 
 	}
 
+	/**
+	 * @param event
+	 * handles click on button browse questions
+	 */
 	@FXML
 	void btnBrowseQuestions(ActionEvent event) {
 		BrowseQuestionController.setAvailableQuestions(availableQuestions);
@@ -177,6 +193,9 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 
 	}
 
+	/**
+	 * handles the update of the total score of exam after teacher changes score of q
+	 */
 	private void updateTotalScore() {
 		int sum = 0;
 		for (QuestionInExamRow q : selectedQuestionsRows) {
@@ -194,6 +213,10 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 
 	}
 
+	/**
+	 * @param event
+	 * handles click on button next
+	 */
 	@FXML
 	void btnNext(ActionEvent event) {
 		setQuestionsInNewExam();
@@ -210,6 +233,10 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 
 	}
 
+	
+	/**
+	 * copies the questions the teacher chose to the new exam
+	 */
 	private void setQuestionsInNewExam() {
 		ArrayList<QuestionInExam> finaleQusetionList = new ArrayList<QuestionInExam>();
 		for (QuestionInExamRow q : selectedQuestionsRows) {
@@ -218,6 +245,10 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 		newExam.setExamQuestionsWithScores(finaleQusetionList);
 	}
 
+	/**
+	 * @param event
+	 * handles click on a question in the table
+	 */
 	@FXML
 	void chooseQ(MouseEvent event) {
 		Qlist = tableAddedQuestions.getSelectionModel().getSelectedItems();
@@ -228,6 +259,9 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 
 	}
 
+	/**
+	 * allows other screens to set the current new exam
+	 */
 	public static void setExamState(Exam newExamInProgress) {
 		newExam = newExamInProgress;
 	}
@@ -246,6 +280,11 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 
 	}
 
+	
+	/**
+	 * @param q
+	 * puts question q in the table
+	 */
 	private void insertRow(QuestionInExam q) {
 		selectedQuestionsRows.add(
 				new QuestionInExamRow(q.getQuestion().getQuestionID(), q.getScore(), q.getQuestion().getQuestion(), q));
@@ -255,10 +294,17 @@ public class CreateExam_addQ_step2Controller implements Initializable {
 
 	}
 
+	/**
+	 * @param questionBank
+	 * allows other screens to load available questions 
+	 */
 	public static void loadAvailableQuestions(ArrayList<Question> questionBank) {
 		availableQuestions = questionBank;
 	}
 
+	/**
+	 * creates the table columns
+	 */
 	@SuppressWarnings("unchecked")
 	public void initTableCols() {
 		tableAddedQuestions.getColumns().clear();

@@ -620,6 +620,11 @@ public class CEMSserver extends AbstractServer {
 		}
 	}
 
+	/**
+	 * @param requestData - details about profession
+	 * @param client
+	 * this method returns all the courses that belong to given profession.
+	 */
 	private void getCoursesByProfession(Profession requestData, ConnectionToClient client) {
 		try {
 			client.sendToClient(dbController.getCoursesByProfession(requestData));
@@ -663,17 +668,6 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
-//	private void CheckSameMistakeOfStudent(ArrayList<ExamOfStudent> exams, ConnectionToClient client) {
-//		try {
-//			ResponseFromServer Res = new ResponseFromServer("Check Copy of Exam");
-//			Res.setResponseData(dbController.getPotentialCopyList(exams));
-//			client.sendToClient(Res);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//	}
-
 	/**
 	 * Verify if activeExam exist at this time, set ActiveExam object if found.
 	 * 
@@ -694,6 +688,10 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	/**
+	 * @param client
+	 * sends to the client names of professions
+	 */
 	private void getProfNames(ConnectionToClient client) {
 
 		ResponseFromServer response = new ResponseFromServer("getProffesionsName");
@@ -708,6 +706,10 @@ public class CEMSserver extends AbstractServer {
 
 	}
 
+	/**
+	 * @param client
+	 * sends to the client names of courses
+	 */
 	private void getCoursesNames(ConnectionToClient client) {
 
 		ResponseFromServer response = new ResponseFromServer("getCoursesNames");
@@ -753,6 +755,7 @@ public class CEMSserver extends AbstractServer {
 	/**
 	 * @param requestData
 	 * @param client
+	 * handles when a client disconnects from the system
 	 */
 	private void clientDisconected(Object requestData, ConnectionToClient client) {
 		if (requestData instanceof User) {
