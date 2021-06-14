@@ -697,7 +697,6 @@ public class CEMSserver extends AbstractServer {
 		try {
 			loogedClients.get(teacherID).sendToClient(res);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -981,7 +980,6 @@ public class CEMSserver extends AbstractServer {
 		try {
 			client.sendToClient(res);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

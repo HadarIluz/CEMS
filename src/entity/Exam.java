@@ -45,8 +45,6 @@ public class Exam implements Serializable {
 		this.profession = profession;
 		this.timeOfExam = timeOfExam;
 	}
-	// FIXME: why we need this?
-	// the constructor includes variable (Course) which and don`t do nothing with them, Can I delete?
 	/* constructor */
 	public Exam(Profession profession, Course course, int timeOfExam) {
 		this.examID = "";
