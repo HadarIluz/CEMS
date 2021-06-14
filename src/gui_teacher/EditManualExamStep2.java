@@ -91,6 +91,10 @@ public class EditManualExamStep2 extends GuiCommon implements Initializable {
 	 */
 	@FXML
 	void btnUploadPress(ActionEvent event) {
+		if(!selectedExamFile.getAbsolutePath().endsWith(".docx")) {
+			popUp("You Must Upload Word Document !");
+			return;
+		}
 
 		MyFile uploadFile = new MyFile(newExam.getExamID() + "_exam.docx");
 		File fileToDelete = new File(uploadFile.getFileName());

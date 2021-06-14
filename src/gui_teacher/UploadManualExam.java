@@ -99,6 +99,10 @@ public class UploadManualExam extends GuiCommon {
 	@SuppressWarnings("resource")
 	@FXML
 	void btnUploadPress(ActionEvent event) {
+		if(!selectedExamFile.getAbsolutePath().endsWith(".docx")) {
+			popUp("You Must Upload Word Document !");
+			return;
+		}
 		RequestToServer req = new RequestToServer("createNewExam");
 		req.setRequestData(newExam);
 		ClientUI.cems.accept(req);
@@ -158,7 +162,8 @@ public class UploadManualExam extends GuiCommon {
 		if (selectedExamFile != null) {
 			txtPath.setText(selectedExamFile.getAbsolutePath());
 
-		} else
+		} 
+		else
 			popUp("File is not valid !");
 
 	}
