@@ -107,7 +107,7 @@ public class LoginController extends GuiCommon{
 	private static StudentController studentController;
 	private static PrincipalController principalController;
 	private static TeacherController teacherController;
-	private LoginLogic loginLogic = new LoginLogic(null);
+	private LoginLogic loginLogic = new LoginLogic();
 
 	/**
 	 * @param event that occurs when clicking on 'login' button
