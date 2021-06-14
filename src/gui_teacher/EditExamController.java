@@ -41,6 +41,7 @@ import logic.RequestToServer;
  * @author Hadar Iluz
  *
  */
+@SuppressWarnings("unused")
 public class EditExamController extends GuiCommon implements Initializable {
 
 	@FXML
@@ -95,7 +96,6 @@ public class EditExamController extends GuiCommon implements Initializable {
 	private static Boolean backFromStep2 = false;
 	private static boolean emptyText = false;
 
-	@SuppressWarnings("unused")
 	private static Boolean displayEditManualExam = false;
 
 	/**
@@ -265,8 +265,8 @@ public class EditExamController extends GuiCommon implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// load data of the selected exam for edit/view according to logged user..
-		if(exam.getActiveExamType().equals("manual")) //matar
-			btnBrowseQuestions.setVisible(false); //matar
+		if(exam.getActiveExamType().equals("manual"))
+			btnBrowseQuestions.setVisible(false); 
 		textExamID.setText(exam.getExamID());
 		textTimeAllocateForExam.setText(Integer.toString(exam.getTimeOfExam()));
 		textTeacherComment.setText(exam.getCommentForTeacher());

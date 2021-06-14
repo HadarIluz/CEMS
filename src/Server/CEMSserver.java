@@ -1236,34 +1236,6 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
-//
-//	// TODO: CHECK----->DELETE AND TACK FROM YUVAL
-//	private void getQuestionsByIDForEditExam(String examID, ConnectionToClient client) {
-//		/* logic for- EditExam _step2 */
-//		ResponseFromServer response = null;
-//		ArrayList<QuestionInExam> questionIDList_InExam;
-//		HashMap<String, Question> allQuestionInExam;
-//		// HashMap<questionID, QuestionInExam>
-//
-//		// Set<QuestionInExam> questionIDList_InExam = new HashSet<>();
-//		// Map<String, Set<QuestionInExam>> allQuestionInExam = new HashMap<>();
-//		// //Map<questionID, Set<QuestionInExam>>
-//		try {
-//			// DELETE
-//			questionIDList_InExam = (ArrayList<QuestionInExam>) dbController.getQuestionsID_byExamID(examID);
-//			allQuestionInExam = (HashMap<String, Question>) dbController.allQuestionInExam(questionIDList_InExam);
-//			if (allQuestionInExam != null) {
-//				response = new ResponseFromServer("All Question In ExamID: " + examID);
-//				response.setResponseData(allQuestionInExam);
-//			} else {
-//				response = new ResponseFromServer("NOT Found All Question In Exam");
-//			}
-//
-//			client.sendToClient(response);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
 
 	private void getAllQuestionsStoredInSystem(ConnectionToClient client) {
 		ResponseFromServer response = null;

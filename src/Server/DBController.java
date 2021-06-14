@@ -1294,68 +1294,6 @@ public class DBController {
 
 	}
 
-////TODO:CHECK
-//	// return ArrayList of questionID and score by ExamID.
-//	public ArrayList<QuestionInExam> getQuestionsID_byExamID(String examID) {
-//		ArrayList<QuestionInExam> questionInExam = new ArrayList<>();
-//
-//		try {
-//			PreparedStatement pstmt;
-//			pstmt = conn.prepareStatement("SELECT question, score FROM question_in_exam WHERE exam=?");
-//			pstmt.setString(1, examID);
-//
-//			ResultSet rs = pstmt.executeQuery();
-//			while (rs.next()) {
-//				Question question = new Question(rs.getString(1));
-//				QuestionInExam qInExam = new QuestionInExam(rs.getInt(2), question);
-//				questionInExam.add(qInExam);
-//			}
-//			rs.close();
-//
-//		} catch (SQLException ex) {
-//			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
-//		}
-//		return questionInExam;
-//	}
-
-//	// OLD:
-//	public HashMap<String, Question> allQuestionInExam(ArrayList<QuestionInExam> questionIDList_InExam) {
-//
-//		HashMap<String, Question> allQuestionInExam = new HashMap<String, Question>();
-//
-//		PreparedStatement pstmt;
-//		try {
-//			for (QuestionInExam q : questionIDList_InExam) {
-//				pstmt = conn.prepareStatement(
-//						"SELECT question, answer1, answer2, answer3, answer4, correctAnswerIndex, description FROM question WHERE questionID=?;");
-//				pstmt.setString(1, q.getQuestion().getQuestionID());
-//				ResultSet rs = pstmt.executeQuery();
-//				// public Question(String questionID, String question, String[] answers, int
-//				// correctAnswerIndex, String description) {
-//				if (rs.next()) {
-//					Question qInExam = new Question(q.getQuestion().getQuestionID());
-//					qInExam.setQuestion(rs.getString(1));
-//					String[] answers = new String[4];
-//					answers[0] = rs.getString(2);
-//					answers[1] = rs.getString(3);
-//					answers[2] = rs.getString(4);
-//					answers[3] = rs.getString(5);
-//					qInExam.setAnswers(answers);
-//					qInExam.setCorrectAnswerIndex(rs.getInt(6));
-//					qInExam.setDescription(rs.getString(7));
-//
-//					allQuestionInExam.put(qInExam.getQuestionID(), qInExam); // add to HashMap.
-//					rs.close();
-//				}
-//			}
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//		return allQuestionInExam;
-//
-//	}
 
 	public ResponseFromServer GetAllQuestions_ToQuestionsBank() {
 		ResponseFromServer response = null;
