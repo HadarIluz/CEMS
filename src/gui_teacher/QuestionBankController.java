@@ -27,29 +27,27 @@ import javafx.scene.text.Text;
 import logic.RequestToServer;
 
 /**
+ * The class contains functionality for presenting all the questions belonging
+ * to the teacher, you can create a new question and edit it.
  * 
  * @author Nadav Dery
  * @author Yadin Amsalem
  * @version 1.0 build 07/07/2021
-*
- * FIXME: ADD JAVADOC HERE
- *
- *
  */
 
 public class QuestionBankController extends GuiCommon implements Initializable {
 
-    @FXML
-    private Button btnEditQuestion;
+	@FXML
+	private Button btnEditQuestion;
 
-    @FXML
-    private Button btnDeleteQuestion;
+	@FXML
+	private Button btnDeleteQuestion;
 
-    @FXML
-    private TextField textQuestionID;
+	@FXML
+	private TextField textQuestionID;
 
-    @FXML
-    private TableView<QuestionRow> tableQuestion;
+	@FXML
+	private TableView<QuestionRow> tableQuestion;
 
 	@FXML
 	private TableColumn<QuestionRow, String> QuestionID;
@@ -60,28 +58,28 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	@FXML
 	private TableColumn<QuestionRow, String> Question;
 
-    @FXML
-    private Text textMsg1;
+	@FXML
+	private Text textMsg1;
 
-    @FXML
-    private Text textMsg2;
+	@FXML
+	private Text textMsg2;
 
-    @FXML
-    private Button btnCreateNewQuestion;
+	@FXML
+	private Button btnCreateNewQuestion;
 
-    @FXML
-    private Text textNavigation;
+	@FXML
+	private Text textNavigation;
 
-    @FXML
-    private Button btnOpenQuestionInfo;
+	@FXML
+	private Button btnOpenQuestionInfo;
 
-    
 	private ObservableList<QuestionRow> data;
 	private static boolean displayPrincipalView = false;
 	private static Teacher teacher;
 	private static User principal;
 	protected static String chosenQuestionID;
 	private HashMap<String, String> profName;
+
 	/**
 	 * method set text of questionID when user select a question row from table
 	 * 
@@ -92,7 +90,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 	void MouseC(MouseEvent event) {
 		ObservableList<QuestionRow> Qlist;
 		Qlist = tableQuestion.getSelectionModel().getSelectedItems();
-		if(!Qlist.isEmpty()) {
+		if (!Qlist.isEmpty()) {
 			textQuestionID.setText(Qlist.get(0).getQuestionID());
 		}
 	}
@@ -105,7 +103,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 
 	@FXML
 	void btnCreateNewQuestion(ActionEvent event) {
-			displayNextScreen(teacher, "CreateQuestion.fxml");
+		displayNextScreen(teacher, "CreateQuestion.fxml");
 	}
 
 	/**
@@ -152,16 +150,17 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		if ((textQuestionID.getText().isEmpty())) {
 			btnCreateNewQuestion.setDisable(true);
 
-
 		} else {
 			if (!checkForLegalquestionID(textQuestionID.getText()))
 				return;
-			chosenQuestionID=textQuestionID.getText();
+			chosenQuestionID = textQuestionID.getText();
 			displayNextScreen(teacher, "EditQuestion.fxml");
 		}
 	}
+
 	/**
 	 * method open screen with all question info
+	 * 
 	 * @param event occure when user want to edit question
 	 */
 
@@ -191,7 +190,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		textQuestionID.setEditable(false);
 		RequestToServer req = new RequestToServer("getProfNames");
 		ClientUI.cems.accept(req);
-		profName =(HashMap<String, String>) CEMSClient.responseFromServer.getResponseData();
+		profName = (HashMap<String, String>) CEMSClient.responseFromServer.getResponseData();
 		if (ClientUI.loggedInUser.getUser() instanceof Teacher) {
 			teacher = (Teacher) ClientUI.loggedInUser.getUser();
 			initTableRows();
@@ -203,7 +202,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 
 			btnOpenQuestionInfo.setDisable(false);
 			btnOpenQuestionInfo.setVisible(true);
-			
+
 			textMsg1.setVisible(false);
 			textMsg2.setVisible(false);
 			btnCreateNewQuestion.setVisible(false);
@@ -213,15 +212,15 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 			btnDeleteQuestion.setVisible(false);
 			btnDeleteQuestion.setVisible(false);
 			textNavigation.setVisible(true);
-			textQuestionID.setEditable(false);//CHECK!!!
+			textQuestionID.setEditable(false);// CHECK!!!
 			fillTableForPrincipal_ALLQuestionsInSystem(); // set all exams in cems system into the table
-			
+
 		}
 
 	}
 
 	/**
-	 *method fill datails of question in principal screen
+	 * method fill datails of question in principal screen
 	 *
 	 *
 	 */
@@ -232,9 +231,9 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		ClientUI.cems.accept(req);
 
 		questionList = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
-		for(QuestionRow curr:questionList) 
-			curr.setProfession(profName.get(curr.getQuestionID().substring(0,2)));
-		
+		for (QuestionRow curr : questionList)
+			curr.setProfession(profName.get(curr.getQuestionID().substring(0, 2)));
+
 		data = FXCollections.observableArrayList(questionList);
 
 		tableQuestion.getColumns().clear();
@@ -259,8 +258,8 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 
 		ClientUI.cems.accept(req);
 		questionList = (ArrayList<QuestionRow>) CEMSClient.responseFromServer.getResponseData();
-		for(QuestionRow curr:questionList) 
-			curr.setProfession(profName.get(curr.getQuestionID().substring(0,2)));		
+		for (QuestionRow curr : questionList)
+			curr.setProfession(profName.get(curr.getQuestionID().substring(0, 2)));
 
 		data = FXCollections.observableArrayList(questionList);
 
@@ -270,7 +269,7 @@ public class QuestionBankController extends GuiCommon implements Initializable {
 		Question.setCellValueFactory(new PropertyValueFactory<>("Question"));
 
 		tableQuestion.setItems(data);
-		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);		
+		tableQuestion.getColumns().addAll(QuestionID, Proffesion, Question);
 	}
 
 }

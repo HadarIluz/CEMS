@@ -30,12 +30,14 @@ import logic.RequestToServer;
 
 /**
  * The class contains the functionality for various operations that can be
- * performed in the system in the context of exams that are in the database: -
- * Conducting an existing test that is in inactive status. - Lock an active
- * exam. - Deleting an existing exam from the database. - Creating an active
- * test in cems system. This screen combines the various operations and allows
- * you to centralize all the operations in a simple and convenient way for the
- * user. The operations are not lost between the various screens.
+ * performed in the system in the context of exams that are in the database: 
+ * -Conducting an existing test that is in inactive status. 
+ * - Lock an active exam.
+ * - Deleting an existing exam from the database. 
+ * - Creating an active test in cems system. 
+ * This screen combines the various operations and allows
+ * you to centralize all the operations in a simple and convenient way for the user. 
+ * The operations are not lost between the various screens.
  * 
  * In addition, the screen was used by us for the reuse of displaying all the
  * tests that are in the system for the principal, the identification is done by

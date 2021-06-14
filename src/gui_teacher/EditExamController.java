@@ -177,6 +177,9 @@ public class EditExamController extends GuiCommon implements Initializable {
 
 	}
 
+	/**
+	 * Request from server to save edit exam.
+	 */
 	private void SaveEditExamRequestToServer() {
 		// Request from server to update data of this exam.
 		RequestToServer req = new RequestToServer("SaveEditExam");
@@ -326,6 +329,9 @@ public class EditExamController extends GuiCommon implements Initializable {
 		backFromStep2 = back;
 	}
 
+	/**
+	 * @param event that occurs when the teacher choose to edit manual exam and click on loadNewManualExam.
+	 */
 	@FXML
 	void btnLoadNewManualExam(ActionEvent event) {
 		if (getExamDetailsANDcheckCondition()) {

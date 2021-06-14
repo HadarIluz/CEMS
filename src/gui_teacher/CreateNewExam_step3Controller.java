@@ -17,6 +17,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
+/**
+ * The class contains functionality for step 3 of creating a test, the teacher
+ * must confirm that she wants to create a new exam and then she is presented
+ * with the examID of the new test she has created.
+ * 
+ * @author Yuval Hayam
+ *
+ */
 public class CreateNewExam_step3Controller implements Initializable {
 
 	@FXML
@@ -46,8 +54,7 @@ public class CreateNewExam_step3Controller implements Initializable {
 	private static Exam newExam;
 
 	/**
-	 * @param event
-	 * handles click on button back
+	 * @param event handles click on button back
 	 */
 	@FXML
 	void btnBack(ActionEvent event) {
@@ -66,8 +73,7 @@ public class CreateNewExam_step3Controller implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * handles click on button btnCreateNewExam
+	 * @param event handles click on button btnCreateNewExam
 	 */
 	@FXML
 	void btnCreateNewExam(ActionEvent event) {

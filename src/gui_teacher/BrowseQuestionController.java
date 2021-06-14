@@ -21,8 +21,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
 /**
- * FIXME: ADD JAVADOC HERE
- * 
+ * The class contains functionality for displaying all the relevant questions of
+ * a selected test
  *
  */
 
@@ -51,8 +51,7 @@ public class BrowseQuestionController implements Initializable {
 	private ObservableList<Question> Qlist;
 
 	/**
-	 * @param event
-	 * handles click on table row
+	 * @param event handles click on table row
 	 */
 	@FXML
 	void clickOnTableRow(MouseEvent event) {
@@ -60,15 +59,14 @@ public class BrowseQuestionController implements Initializable {
 	}
 
 	/**
-	 * @param event
-	 * handles click on button selectQuestion
+	 * @param event handles click on button selectQuestion
 	 */
 	@FXML
 	void selectQuestion(ActionEvent event) {
 		if (!textQuestionScore.getText().trim().isEmpty()) {
 			int changeScore = Integer.parseInt(textQuestionScore.getText().trim());
 			if (changeScore > 0 && changeScore < 101) {
-				if (Qlist != null || selectedQ!=null) {
+				if (Qlist != null || selectedQ != null) {
 					selectedQ = new QuestionInExam(Integer.parseInt(textQuestionScore.getText()), Qlist.get(0), null);
 					btnSelectQuestion.getScene().getWindow().hide();
 				}
@@ -102,10 +100,8 @@ public class BrowseQuestionController implements Initializable {
 
 	}
 
-	
 	/**
-	 * @param availableQ
-	 * sets the available questions for the teacher
+	 * @param availableQ sets the available questions for the teacher
 	 */
 	public static void setAvailableQuestions(ArrayList<Question> availableQ) {
 		availableQuestions = availableQ;

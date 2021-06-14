@@ -22,9 +22,9 @@ import javafx.scene.text.Text;
 import logic.RequestToServer;
 
 /**
- * the class used us for let the techer the option the edit a question. the question details in data base 
- *given to teacher that create the question and he is the User that can edit the question. User get all the
- *neccesary info of question and he can update parameters and send updated question to database.
+ * the class used us for let the teacher the option the edit a question. the question details in data base 
+ * given to teacher that create the question and he is the User that can edit the question. User get all the
+ * necessary info of question and he can update parameters and send updated question to database.
  *
  *@author Yadin Amsalem & Nadav Dery
  *
@@ -74,7 +74,7 @@ public class EditQuestionController extends GuiCommon implements Initializable {
 	 @FXML
 	    private Label msgLabel;
 /**
- * method send us to prevoius screen
+ * method send us to previous screen
  * @param event occurs when User press "Back"
  */
 	@FXML
@@ -120,7 +120,7 @@ public class EditQuestionController extends GuiCommon implements Initializable {
 	}
 	
 	/**
-	 * method check if all neccesary details in form is not empty
+	 * method check if all necessary details in form is not empty
 	 * @return true if all full, else return false
 	 */
 

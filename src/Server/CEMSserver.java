@@ -1196,7 +1196,7 @@ public class CEMSserver extends AbstractServer {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * @param examOfStudent
 	 * @param client
@@ -1260,7 +1260,7 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
-	
+
 	/**
 	 * @param exam
 	 * @param client
@@ -1290,7 +1290,7 @@ public class CEMSserver extends AbstractServer {
 		response.getStatusMsg().setStatus(status);
 		return response;
 	}
-	
+
 	/**
 	 * @param newActiveExam
 	 * @param client
@@ -1310,7 +1310,7 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 
 	}
-	
+
 	/**
 	 * @param client
 	 * gets all exams from DB
@@ -1324,7 +1324,7 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * @param exam
 	 * @param client
@@ -1371,7 +1371,7 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);
 	}
-	
+
 	/**
 	 * @param editExam
 	 * @param client
@@ -1389,7 +1389,7 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
-	
+
 	/**
 	 * @param client
 	 * gets all the questions from the DB
@@ -1405,7 +1405,7 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 
 	}
-	
+
 	/**
 	 * @param questionID
 	 * @param client
@@ -1422,7 +1422,7 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 
 	}
-	
+
 	/**
 	 * @param examOfStudent
 	 * @param client
@@ -1477,7 +1477,7 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
-	
+
 	/**
 	 * @param updatedQuestions
 	 * @param client
@@ -1494,7 +1494,6 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 		printMessageInLogFramServer("Message to Client:", response);
-
 	}
 
 }

@@ -179,7 +179,7 @@ public class TeacherStatisticsController extends GuiCommon {
 		return sum;
 	}
 /**
- * methods set in HashMap datails of proffesion Names with proffession id as key
+ * methods set in HashMap details of profession Names with profession id as key
  */
 	@SuppressWarnings("unchecked")
 	public void getProffesionsNames() {
