@@ -17,12 +17,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
-/**
- * FIXME: ADD JAVADOC HERE
- * 
- *
- */
-
 public class CreateNewExam_step3Controller implements Initializable {
 
 	@FXML
@@ -51,6 +45,10 @@ public class CreateNewExam_step3Controller implements Initializable {
 
 	private static Exam newExam;
 
+	/**
+	 * @param event
+	 * handles click on button back
+	 */
 	@FXML
 	void btnBack(ActionEvent event) {
 		CreateExam_addQ_step2Controller.setExamState(newExam);
@@ -67,6 +65,10 @@ public class CreateNewExam_step3Controller implements Initializable {
 		}
 	}
 
+	/**
+	 * @param event
+	 * handles click on button btnCreateNewExam
+	 */
 	@FXML
 	void btnCreateNewExam(ActionEvent event) {
 		RequestToServer req = new RequestToServer("createNewExam");
@@ -86,6 +88,9 @@ public class CreateNewExam_step3Controller implements Initializable {
 
 	}
 
+	/**
+	 * allows other screens to set the current new exam
+	 */
 	public static void setExamState(Exam newExamInProgress) {
 		newExam = newExamInProgress;
 	}

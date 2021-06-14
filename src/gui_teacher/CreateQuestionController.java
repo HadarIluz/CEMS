@@ -224,18 +224,24 @@ public class CreateQuestionController extends GuiCommon implements Initializable
 
 	}
 
+	
+	/**
+	 * @param questionBankController
+	 * sets the data from the question back controller
+	 */
 	public void setData_From_QuestionBankController(QuestionBankController questionBankController) {
 		this.questionBankController = questionBankController;
 	}
 
+	/**
+	 * allows other screens to set data for this screen
+	 */
 	public static void setNextScreenData(String questionIDselected) {
 		questionID = questionIDselected;
 	}
-	
+
 	/**
-	 * FIXME: ADD JAVADOC HERE
-	 *
-	 *
+	 * gets the selected question dta from the server an dloads it to the screen
 	 */
 	private void loadSelectedQuestionDataToView() {
 		RequestToServer req = new RequestToServer("getQuestionDataBy_questionID");
