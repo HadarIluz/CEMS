@@ -91,7 +91,7 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 			 */
 			long now = System.currentTimeMillis();
 			Time sqlEndRangeTimeToTakeExam = new Time(now);
-			// now add half an hour, 1 800 000 miliseconds = 30 minutes
+			// now add half an hour, 1 800 000 milliseconds = 30 minutes
 			long halfAnHourBefore = (long) now - 1800000;
 			Time sqlTime = new Time(halfAnHourBefore);
 			System.out.println(sqlTime);
@@ -277,7 +277,6 @@ public class EnterToExamController extends GuiCommon implements Initializable {
 	void selectActiveExam(ActionEvent event) {
 		if (activeExamtMap.containsKey(selectActiveExamFromCB.getValue())) {
 			activeExam_selection = activeExamtMap.get(selectActiveExamFromCB.getValue());
-			System.out.println(activeExam_selection.getExam().getExamID()); // DEBUG
 		}
 
 	}

@@ -252,7 +252,7 @@ public class PrincipalController extends Application implements Initializable {
 	
 	/**
 	 * @param msg
-	 * saves a messages from another proccess in the system. the run thread will check for this message
+	 * saves a messages from another process in the system. the run thread will check for this message
 	 */
 	public static void CopyAlertNotification(String msg) {
 		msgOfNotification = msg;

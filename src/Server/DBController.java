@@ -309,7 +309,7 @@ public class DBController {
 	public boolean createNewExam(Exam exam) {
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement("INSERT INTO exam VALUES(?, ?, ?, ?, ?, ?, ?,?,?);");// matar
+			pstmt = conn.prepareStatement("INSERT INTO exam VALUES(?, ?, ?, ?, ?, ?, ?,?,?);");
 			pstmt.setString(1, exam.getExamID());
 			pstmt.setString(2, exam.getProfession().getProfessionID());
 			pstmt.setString(3, exam.getCourse().getCourseID());
@@ -616,7 +616,7 @@ public class DBController {
 
 	/**
 	 * @param id
-	 * @return a Profession name for a given profesion ID
+	 * @return a Profession name for a given profession ID
 	 */
 	public Profession getProfessionByID(String id) {
 		Profession p = new Profession(id);

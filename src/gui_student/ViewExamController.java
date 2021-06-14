@@ -21,7 +21,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import logic.RequestToServer;
 
-//FIXME:
 
 /**
  * The department contains functionality for presenting the exam questions and
@@ -138,7 +137,7 @@ public class ViewExamController extends GuiCommon {
 	}
 	/**
 	 * method check if the exam id that the student insert is legal and  available in database.
-	 * @param event ocuurs when student press" View Grade" button 
+	 * @param event occurs when student press" View Grade" button 
 	 */
 
 	@FXML

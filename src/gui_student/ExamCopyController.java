@@ -52,7 +52,7 @@ public class ExamCopyController extends GuiCommon implements Initializable {
 
 	/**
 	 * method open previous screen 
-	 * @param event coours when User press "back" button
+	 * @param event occurs when User press "back" button
 	 */
 	
 	

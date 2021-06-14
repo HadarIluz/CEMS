@@ -432,7 +432,7 @@ public class CEMSserver extends AbstractServer {
 
 	/**
 	 * send to Client massage with the edited question
-	 * @param question the question befeore edit
+	 * @param question the question before edit
 	 * @param client the User that get the massage
 	 */
 
@@ -465,7 +465,7 @@ public class CEMSserver extends AbstractServer {
 	/**
 	 * @param activeExam
 	 * @return true or false if the exam is finished a finished exam is 30 minutes
-	 *         after start time & all students submitted (forced ot initiated)
+	 *         after start time & all students submitted (forced or initiated)
 	 */
 	private boolean checkIfExamFinished(ActiveExam activeExam) {
 		// first check if it's after half an hour of beginning of exam
@@ -848,7 +848,7 @@ public class CEMSserver extends AbstractServer {
 		serverFrame.printToTextArea("--->" + str + " ");
 	}
 
-	//
+	
 	/**
 	 * @param user   is who server needs to identify the details.
 	 * @param client
@@ -878,8 +878,7 @@ public class CEMSserver extends AbstractServer {
 		loogedClients.put(user.getId(), client); // add this client to HashMao by key: ID
 		// Response:
 		ResponseFromServer response = new ResponseFromServer("USER LOGIN !");
-		System.out.println("print new list for DEBUG");
-		printLoggedInUsersList(); // for DEBUG
+		printLoggedInUsersList(); 
 		try {
 			client.sendToClient(response);
 		} catch (IOException e) {
@@ -899,8 +898,7 @@ public class CEMSserver extends AbstractServer {
 		ResponseFromServer response = new ResponseFromServer("USER LOGOUT");
 		loggedInUsers.remove(user.getId()); // remove this user from list.
 		loogedClients.remove(user.getId());
-		printLoggedInUsersList(); // for DEBUG- print current list.
-
+		printLoggedInUsersList(); 
 		// sent to client.
 		try {
 			client.sendToClient(response);
@@ -1198,7 +1196,12 @@ public class CEMSserver extends AbstractServer {
 			ex.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * @param examOfStudent
+	 * @param client
+	 * sends a solved manual exam to the client
+	 */
 	private void downloadSolvedManualExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
 		String fileName = examOfStudent.getActiveExam().getExam().getExamID() + "_" + examOfStudent.getStudent().getId()
 				+ ".docx";
@@ -1257,7 +1260,12 @@ public class CEMSserver extends AbstractServer {
 		}
 
 	}
-
+	
+	/**
+	 * @param exam
+	 * @param client
+	 * gets all data of an exam
+	 */
 	private void getSelectedExamData_byID(Exam exam, ConnectionToClient client) {
 		ResponseFromServer response = null;
 		response = dbController.getSelectedExamData_byID(exam);
@@ -1282,7 +1290,12 @@ public class CEMSserver extends AbstractServer {
 		response.getStatusMsg().setStatus(status);
 		return response;
 	}
-
+	
+	/**
+	 * @param newActiveExam
+	 * @param client
+	 * creates a new active exam in the DB
+	 */
 	private void createNewActiveExam(ActiveExam newActiveExam, ConnectionToClient client) {
 		ResponseFromServer response = dbController.createNewActiveExam(newActiveExam);
 		Boolean ans = dbController.updateExamStatus(newActiveExam.getExam());
@@ -1297,7 +1310,11 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 
 	}
-
+	
+	/**
+	 * @param client
+	 * gets all exams from DB
+	 */
 	private void getAllExamsStoredInSystem(ConnectionToClient client) {
 		ResponseFromServer respond = new ResponseFromServer("ALL EXAMS");
 		respond.setResponseData((ArrayList<Exam>) dbController.GetAllExams());
@@ -1307,7 +1324,12 @@ public class CEMSserver extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * @param exam
+	 * @param client
+	 * gets students that are in active exam and sends them notification
+	 */
 	private void getStudentsInActiveExam(Exam exam, ConnectionToClient client) {
 		ResponseFromServer responForStudents = new ResponseFromServer("NOTIFICATION_STUDENT_EXAM_LOCKED");
 		responForStudents.setResponseData(exam);
@@ -1333,6 +1355,11 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", responForStudents); // print to server log.
 	}
 
+	/**
+	 * @param examOfStudent
+	 * @param client
+	 * inserts an exam student started to the DB
+	 */
 	private void InsertExamOfStudent(ExamOfStudent examOfStudent, ConnectionToClient client) {
 		/* logic for EnterToExam */
 		ResponseFromServer response = null;
@@ -1344,7 +1371,12 @@ public class CEMSserver extends AbstractServer {
 		}
 		printMessageInLogFramServer("Message to Client:", response);
 	}
-
+	
+	/**
+	 * @param editExam
+	 * @param client
+	 * saves details of edited exam
+	 */
 	private void SaveEditExam(Exam editExam, ConnectionToClient client) {
 		/* logic for EditExam */
 		ResponseFromServer response = null;
@@ -1357,7 +1389,11 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
-
+	
+	/**
+	 * @param client
+	 * gets all the questions from the DB
+	 */
 	private void getAllQuestionsStoredInSystem(ConnectionToClient client) {
 		ResponseFromServer response = null;
 		response = dbController.GetAllQuestions_ToQuestionsBank();
@@ -1369,7 +1405,12 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 
 	}
-
+	
+	/**
+	 * @param questionID
+	 * @param client
+	 * gets all the details of question by ID
+	 */
 	private void getQuestionDataBy_questionID(String questionID, ConnectionToClient client) {
 		ResponseFromServer response = new ResponseFromServer("Question Data");
 		response.setResponseData((Question) dbController.getQuestionDataBy_questionID(questionID));
@@ -1381,7 +1422,12 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);// print to server log.
 
 	}
-
+	
+	/**
+	 * @param examOfStudent
+	 * @param client
+	 * checks if a student didn't already start the exam he is asking to start
+	 */
 	private void checkExam_of_student_NotExistsBeforeStartExam(ExamOfStudent examOfStudent, ConnectionToClient client) {
 		ResponseFromServer response = null;
 		if (dbController.verifyExamOfStudentByExamID(examOfStudent)) {
@@ -1431,7 +1477,13 @@ public class CEMSserver extends AbstractServer {
 		printMessageInLogFramServer("Message to Client:", response);
 
 	}
-
+	
+	/**
+	 * @param updatedQuestions
+	 * @param client
+	 * 
+	 * updates the scores when editing an exam
+	 */
 	private void updateScoresOfEditExam(ArrayList<QuestionInExam> updatedQuestions, ConnectionToClient client) {
 		/* logic for EditExam */
 		ResponseFromServer response = null;

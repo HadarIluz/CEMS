@@ -3,7 +3,6 @@ package logic;
 import entity.User;
 
 /**
- * FIXME: ADD MORE JAVADOC TO FUNCTION
  * The class ensures the creation of a single user object in the system using
  * Singleton. In addition ensures that a user will log in at any given time from
  * a single account.

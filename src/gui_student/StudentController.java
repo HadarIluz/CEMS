@@ -192,7 +192,6 @@ public class StudentController extends Application implements Initializable {
 		ArrayList<ActiveExam> activeExamList= new ArrayList<ActiveExam>();
 		RequestToServer req = new RequestToServer("getAllActiveExamBeforEnterToExam");
 		ClientUI.cems.accept(req);
-		//DEBUG:
 		activeExamList= (ArrayList<ActiveExam>) CEMSClient.responseFromServer.getResponseData();
 		return activeExamList;
 	}

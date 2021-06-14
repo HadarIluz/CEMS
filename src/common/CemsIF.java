@@ -12,7 +12,7 @@ package common;
  */
 public interface CemsIF {
 	/**
-	 * Method that when overriden is used to display objects onto a UI.
+	 * Method that when overridden is used to display objects onto a UI.
 	 */
 	public abstract void display(String message);
 }
