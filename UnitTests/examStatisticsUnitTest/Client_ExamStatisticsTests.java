@@ -18,7 +18,7 @@ import gui_teacher.TeacherStatisticsController;
 import logic.RequestToServer;
 import logic.ResponseFromServer;
 
-public class ExamStatisticsTests {
+public class Client_ExamStatisticsTests {
 
 	class StubCemsIF implements CemsIF {
 

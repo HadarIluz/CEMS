@@ -56,6 +56,7 @@ public class ServerFrameController {
 	@FXML
 	private TextArea txtArea;
 
+
 	@FXML
 	private Button ClearLogBtn;
 
@@ -151,6 +152,14 @@ public class ServerFrameController {
 	 */
 	public void printToTextArea(String msg) {
 		txtArea.appendText(msg + "\n");
+	}
+	
+	public TextArea getTxtArea() {
+		return txtArea;
+	}
+
+	public void setTxtArea(TextArea txtArea) {
+		this.txtArea = txtArea;
 	}
 
 }

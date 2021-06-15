@@ -45,20 +45,25 @@ public class DBController {
 		try {
 			this.serverFrame = serverFrame;
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			if(serverFrame!=null)
 			serverFrame.printToTextArea("Driver definition succeed");
 		} catch (Exception ex) {
 			/* handle the error */
+			if(serverFrame!=null)
 			serverFrame.printToTextArea("Driver definition failed");
 		}
 
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cems?useTime_zone=false", "root",
 					"Aa123456");
+			if(serverFrame!=null)
 			serverFrame.printToTextArea("SQL connection succeed");
 		} catch (SQLException ex) {/* handle any errors */
+			if(serverFrame!=null) {
 			serverFrame.printToTextArea("SQLException: " + ex.getMessage());
 			serverFrame.printToTextArea("SQLState: " + ex.getSQLState());
 			serverFrame.printToTextArea("VendorError: " + ex.getErrorCode());
+		}
 		}
 	}
 
