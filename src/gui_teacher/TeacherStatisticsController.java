@@ -50,7 +50,7 @@ public class TeacherStatisticsController extends GuiCommon {
 	@FXML
 	private Label textAverage;
 
-	boolean flag = true; // true when we need to initialize the histogram with chart and false when we
+	private boolean flag = true; // true when we need to initialize the histogram with chart and false when we
 							// already did that.
 
 	@SuppressWarnings("rawtypes")
@@ -59,7 +59,23 @@ public class TeacherStatisticsController extends GuiCommon {
 	@SuppressWarnings("unused")
 	private TeacherController teacherController; // we will use it for load the next screen ! (using root).
 
-	ArrayList<Integer> grades;
+	private ArrayList<Integer> grades;
+
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
+
+	public ArrayList<Integer> getGrades() {
+		return grades;
+	}
+
+	public void setGrades(ArrayList<Integer> grades) {
+		this.grades = grades;
+	}
 
 	HashMap<String, String> ProfName = new HashMap<String, String>();
 	// profID,profName
@@ -87,16 +103,18 @@ public class TeacherStatisticsController extends GuiCommon {
 		textProfession.setText(ProfName.get(ProfID) + "(" + ProfID + ")");
 		textCourse.setText(ProfCourseName.get(ProfID).getCourses().get(CourseID) + "(" + CourseID + ")");
 		textAverage.setText(String.valueOf(gradesAverageCalc(ExamID)));
+		textMedian.setText(String.valueOf(medianCalc(grades)));
 		setGradesInHistogram(ExamID);
 	}
+
 	/**
 	 * set all grades in histogram
+	 * 
 	 * @param ExamID use for set Exam id in Histogram
 	 */
-	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void setGradesInHistogram(String ExamID) {
+	public int[] setGradesInHistogram(String ExamID) {
 		chart.getData().clear();
 		int[] amountOfstudents = new int[10];
 		for (Integer curr : grades) {
@@ -138,32 +156,39 @@ public class TeacherStatisticsController extends GuiCommon {
 			chart.setName("Amount of student");
 			ExamHisto.getData().add(chart);
 		}
+		
+		return amountOfstudents;
 
 	}
-/**
- * method calculate median of grades
- * @param grades list of all grade 
- */
-	public void medianCalc(ArrayList<Integer> grades) {
+
+	/**
+	 * method calculate median of grades
+	 * 
+	 * @param grades list of all grade
+	 */
+	public float medianCalc(ArrayList<Integer> grades) {
 
 		Collections.sort(grades);
+		
+		if(grades.size()==0)return 0;
 
 		if (grades.size() % 2 == 0) {
 			int first, second;
 			first = grades.size() / 2 - 1;
 			second = (grades.size() + 2) / 2 - 1;
-			textMedian.setText(String.valueOf(((float) grades.get(first) + grades.get(second)) / 2));
-		} else
-			textMedian.setText(String.valueOf((float) grades.get((grades.size() + 1) / 2 - 1)));
+			return (float) (grades.get(first) + grades.get(second)) / 2;
+		}
+		return (float) grades.get((grades.size() + 1) / 2 - 1);
 
 	}
-/**
- * method calculate average of grades
- * @param ExamID use for Exam id for the grades given
- * @return average of grades
- */
-	
-	
+
+	/**
+	 * method calculate average of grades
+	 * 
+	 * @param ExamID use for Exam id for the grades given
+	 * @return average of grades
+	 */
+
 	@SuppressWarnings("unchecked")
 	public float gradesAverageCalc(String ExamID) {
 
@@ -171,32 +196,36 @@ public class TeacherStatisticsController extends GuiCommon {
 		RequestToServer req = new RequestToServer("gradesAverageCalc");
 		req.setRequestData(ExamID);
 		ClientUI.cems.accept(req);
-		grades = (ArrayList<Integer>) CEMSClient.responseFromServer.getResponseData();
+		grades = (ArrayList<Integer>) CEMSClient.getInstance().getResponseFromServer().getResponseData();
 		for (Integer a : grades)
 			sum += a;
 		sum /= grades.size();
-		medianCalc(grades);
+
 		return sum;
 	}
-/**
- * methods set in HashMap details of profession Names with profession id as key
- */
+
+	/**
+	 * methods set in HashMap details of profession Names with profession id as key
+	 */
 	@SuppressWarnings("unchecked")
 	public void getProffesionsNames() {
 		RequestToServer req = new RequestToServer("getProfNames");
 		ClientUI.cems.accept(req);
 		ProfName = (HashMap<String, String>) CEMSClient.responseFromServer.getResponseData();
 	}
-/**
- * method get all courses names 
- */
+
+	/**
+	 * method get all courses names
+	 */
 	@SuppressWarnings("unchecked")
 	public void getCoursesNames() {
 		RequestToServer req = new RequestToServer("getCoursesNames");
 		ClientUI.cems.accept(req);
 		ProfCourseName = (HashMap<String, ProfessionCourseName>) CEMSClient.responseFromServer.getResponseData();
 	}
-	/**method checl if exam Id is exist
+
+	/**
+	 * method checl if exam Id is exist
 	 * 
 	 * @param ExamID for check if exist
 	 * @return true if exist, else return false
@@ -207,7 +236,7 @@ public class TeacherStatisticsController extends GuiCommon {
 		RequestToServer req = new RequestToServer("checkExamExist");
 		req.setRequestData(ExamID);
 		ClientUI.cems.accept(req);
-		if (CEMSClient.responseFromServer.getResponseData().equals("FALSE")) {
+		if (CEMSClient.getInstance().getResponseFromServer().getResponseData().equals("FALSE")) {
 			popUp("No detail for that exam!");
 			isExsit = false;
 		}

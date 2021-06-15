@@ -28,7 +28,7 @@ public class CEMSClient extends AbstractClient implements ICEMSClient{
 	 */
 	CemsIF clientUI;
 
-	private static CEMSClient instance;
+	public static ICEMSClient instance;
 
 	// define transfer of data of client-server.
 	public static ResponseFromServer responseFromServer = new ResponseFromServer(null);
