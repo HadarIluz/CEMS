@@ -16,12 +16,12 @@ public class Server_ExamStatisticsTests {
 	/* -------------- Server Side Tests Only! ----------------- */
 	/* ----- for client side, please see Client_ExamStatisticsTests.java ---- */
 
-	ServerFrameController SFC=null;
-	DBController DBC;
-	String ExamID;
-	ArrayList<Integer> DBgradesOfExam,expectedArray;
+	private ServerFrameController SFC=null;
+	private DBController DBC;
+	private String ExamID;
+	private ArrayList<Integer> DBgradesOfExam,expectedArray;
 	
-	TeacherStatisticsController TSC;
+	private TeacherStatisticsController TSC;
 
 	@Before
 	public void setUp() throws Exception {	
