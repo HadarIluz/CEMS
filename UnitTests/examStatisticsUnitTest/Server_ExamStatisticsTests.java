@@ -12,7 +12,9 @@ import gui_server.ServerFrameController;
 
 public class Server_ExamStatisticsTests {
 
-	
+	/* -------------- Client Side Tests Only! ----------------- */
+	/* ----- for client side, please see Client_ExamStatisticsTests.java ---- */
+
 	ServerFrameController SFC=null;
 	DBController DBC;
 	String ExamID;
@@ -25,6 +27,10 @@ public class Server_ExamStatisticsTests {
 		expectedArray = new ArrayList<>();
 	}
 
+	/* testing GradesAverageCalc method. check case of correct amount of student from specific exam
+	 * expected: return 1 student
+	 * input: ExamID=010203
+	 */
 	@Test
 	public void testMethodGradesAverageCalcReturSuccessAmountOfStudent() {
 		ExamID="010203";
@@ -37,6 +43,11 @@ public class Server_ExamStatisticsTests {
 		assertTrue(true);
 	}
 	
+	/* testing GradesAverageCalc method. check case of correct amount of student from specific exam 
+	 * (check that dataBase took the amount of student from the right exam )
+	 * expected: return 1 student
+	 * input: ExamID=010203
+	 */
 	@Test
 	public void testMethodGradesAverageCalcReturnWrongAmountOfStudent() {
 		ExamID="010203";
@@ -48,6 +59,10 @@ public class Server_ExamStatisticsTests {
 
 	}
 	
+	/* testing GradesAverageCalc method. check case of correct scores of students from specific exam 
+	 * expected: return student with grade = 40
+	 * input: ExamID=010203
+	 */
 	@Test
 	public void testMethodGradesAverageCalcReturnExpectedScores() {
 		ExamID="010203";
@@ -56,6 +71,11 @@ public class Server_ExamStatisticsTests {
 		assertTrue(expectedArray.equals(DBgradesOfExam));
 	}
 	//-------------------------------------------------------------------
+	
+	/* testing GradesAverageCalc method. check case of correct amount of student from specific exam
+	 * expected: return 3 student
+	 * input: ExamID=010202
+	 */
 	@Test
 	public void testMethodGradesAverageCalcReturSuccessAmountOfStudent2() {
 		ExamID="010202";
@@ -65,6 +85,11 @@ public class Server_ExamStatisticsTests {
 		assertEquals(expectedArraySize,DBgradesOfExam.size());
 	}
 	
+	/* testing GradesAverageCalc method. check case of correct amount of student from specific exam
+	 * (check that dataBase took the amount of student from the right exam )
+	 * expected: return 3 student
+	 * input: ExamID=010202
+	 */
 	@Test
 	public void testMethodGradesAverageCalcReturnWrongAmountOfStudent2() {
 		ExamID="010202";
@@ -76,6 +101,10 @@ public class Server_ExamStatisticsTests {
 
 	}
 	
+	/* testing GradesAverageCalc method. check case of correct scores of students from specific exam 
+	 * expected: return 3 student with grades = 100, 40 , 25 
+	 * input: ExamID=010202
+	 */
 	@Test
 	public void testMethodGradesAverageCalcReturnExpectedScores2() {
 		ExamID="010202";
