@@ -27,6 +27,13 @@ public class Server_ExamStatisticsTests {
 		DBC.connectDB(SFC);
 		expectedArray = new ArrayList<>();
 	}
+	
+
+	
+	/* testing gradesAverageCalc method. return Array List of studwent's grades
+	 * expected: same amount of student between our expected array to the array that return from DBController class
+	 * input: Exam id containing grade of student
+	 */
 
 	@Test
 	public void testMethodGradesAverageCalcReturSuccessAmountOfStudent() {
@@ -40,6 +47,10 @@ public class Server_ExamStatisticsTests {
 		assertTrue(true);
 	}
 	
+	/* testing gradesAverageCalc method. return Array List of studwent's grades
+	 * expected: not the same amount of student between our expected array to the array that return from DBController class
+	 * input: Exam id containing grade of student
+	 */
 	@Test
 	public void testMethodGradesAverageCalcReturnWrongAmountOfStudent() {
 		ExamID="010203";
@@ -51,6 +62,11 @@ public class Server_ExamStatisticsTests {
 
 	}
 	
+	/* testing gradesAverageCalc method. return Array List of studwent's grades
+	 * expected:  same grades of students between our expected array to the array that return from DBController class
+	 * input: Exam id containing grade of student
+	 */
+	
 	@Test
 	public void testMethodGradesAverageCalcReturnExpectedScores() {
 		ExamID="010203";
@@ -58,7 +74,10 @@ public class Server_ExamStatisticsTests {
 		expectedArray.add(40);
 		assertTrue(expectedArray.equals(DBgradesOfExam));
 	}
-	//-------------------------------------------------------------------
+	/* testing gradesAverageCalc method. return Array List of studwent's grades
+	 * expected:  same value of student between  expectedArraySize assamption  to the array that reutrn from DBController class
+	 * input: Exam id containing grade of student
+	 */
 	@Test
 	public void testMethodGradesAverageCalcReturSuccessAmountOfStudent2() {
 		ExamID="010202";
@@ -67,6 +86,10 @@ public class Server_ExamStatisticsTests {
 		int expectedArraySize=3;
 		assertEquals(expectedArraySize,DBgradesOfExam.size());
 	}
+	/* testing gradesAverageCalc method. return Array List of studwent's grades
+	 * expected:  Not equal amount of student between  expectedArraySize assamption  to the array that reutrn from DBController class
+	 * input: Exam id containing grade of student
+	 */
 	
 	@Test
 	public void testMethodGradesAverageCalcReturnWrongAmountOfStudent2() {
@@ -78,6 +101,11 @@ public class Server_ExamStatisticsTests {
 		assertNotEquals(expectedSize,DBgradesOfExam.size());
 
 	}
+	
+	/* testing gradesAverageCalc method. return Array List of studwent's grades
+	 * expected:  true if the condition in loop is never accepted, which mean that arrays not qual
+	 * input: Exam id containing grade of student
+	 */
 	
 	@Test
 	public void testMethodGradesAverageCalcReturnExpectedScores2() {
