@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import Server.DBController;
 import gui_server.ServerFrameController;
+import gui_teacher.TeacherStatisticsController;
 
 public class Server_ExamStatisticsTests {
 
@@ -17,6 +18,8 @@ public class Server_ExamStatisticsTests {
 	DBController DBC;
 	String ExamID;
 	ArrayList<Integer> DBgradesOfExam,expectedArray;
+	
+	TeacherStatisticsController TSC;
 
 	@Before
 	public void setUp() throws Exception {	
