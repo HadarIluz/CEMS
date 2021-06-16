@@ -64,16 +64,22 @@ public class Client_ExamStatisticsTests {
 		}
 
 	}
+	
+	/* -------------- Client Side Tests Only! ----------------- */
+	/* ----- for server side, please see Server_ExamStatisticsTests.java ---- */
 
-	private ResponseFromServer responseFromServer;
+	// stub class needed for test
 	private CemsIF cemsIFM;
-	private TeacherStatisticsController TSC;
+	
+	// variables needed to test
+	private ResponseFromServer responseFromServer;	
 	private String boolCheck;// for check if exam exist- not neccessary for project
 	private ArrayList<Integer> GradesArrayForCheck;
 	
+	//class under test
+	private TeacherStatisticsController TSC;
 
 	@Before
-
 	public void setUp() throws Exception {
 	
 		cemsIFM = new StubCemsIF();
@@ -85,6 +91,11 @@ public class Client_ExamStatisticsTests {
 		TSC.setFlag(false);
 	}
 
+	//-------------------------
+	/* testing checkDetails method. throw exception when user is null
+	 * expected: exception - "user object is null"
+	 * input: null user
+	 */
 	@Test
 	public void testCheckExamExistReturnTrue() {
 
@@ -93,6 +104,13 @@ public class Client_ExamStatisticsTests {
 		assertTrue(TSC.checkExamExist("123456"));
 	}
 
+	
+	//--------------------
+	
+	/* testing gradesAverageCalc method. success case
+	 * expected: average calculation (expected = 75)
+	 * input: GradesArrayForCheck = {74,76,75}
+	 */
 	@Test
 	public void testAverageSuccess() {
 		GradesArrayForCheck = new ArrayList<Integer>();
@@ -108,6 +126,10 @@ public class Client_ExamStatisticsTests {
 		assertEquals(expected, acctualRes, 0.1);
 	}
 
+	/* testing gradesAverageCalc method. checking case of the limit above the returning range from method
+	 * expected: average calculation (expected = 75.2)
+	 * input: GradesArrayForCheck = {74,76,75}
+	 */
 	@Test
 	public void testAverageNotSuccessAboveTheRange() {
 
@@ -124,6 +146,10 @@ public class Client_ExamStatisticsTests {
 		assertNotEquals(expected, acctualRes, 0.1);
 	}
 
+	/* testing gradesAverageCalc method. checking case of the limit below the returning range from method
+	 * expected: average calculation (expected = 74.89)
+	 * input: GradesArrayForCheck = {74,76,75}
+	 */
 	@Test
 	public void testAverageNotSuccessBelowTheRange() {
 
@@ -140,6 +166,10 @@ public class Client_ExamStatisticsTests {
 		assertNotEquals(expected, acctualRes, 0.1);
 	}
 
+	/* testing gradesAverageCalc method. checking case of empty array sent to method
+	 * expected: average calculation (expected = 0)
+	 * input: GradesArrayForCheck = {}
+	 */
 	@Test
 	public void testAverageEmptyGradesArray() {
 
@@ -153,6 +183,10 @@ public class Client_ExamStatisticsTests {
 		assertNotEquals(expected, acctualRes, 0.1);
 	}
 
+	/* testing gradesAverageCalc method. checking case of null array sent to method
+	 * expected: Null Pointer Exception throw
+	 * input: GradesArrayForCheck = null
+	 */
 	@Test
 	public void testAverageNullGradesArray() {
 
@@ -167,6 +201,10 @@ public class Client_ExamStatisticsTests {
 
 	}
 
+	/* testing medianCalc method. checking case of odd amount of grades in array sent to method
+	 * expected: median calculation (expected = 75)
+	 * input: GradesArrayForCheck = {74,76,75}
+	 */
 	@Test
 	public void testMedianSuccessWithOddAmountOfValues() {
 
@@ -184,6 +222,10 @@ public class Client_ExamStatisticsTests {
 
 	}
 
+	/* testing medianCalc method. checking case of even amount of grades in array sent to method
+	 * expected: median calculation (expected = 75.5)
+	 * input: GradesArrayForCheck = {74,76,80,75}
+	 */
 	@Test
 	public void testMedianSuccessWithEvenAmountOfValues() {
 
@@ -202,6 +244,10 @@ public class Client_ExamStatisticsTests {
 
 	}
 
+	/* testing medianCalc method. checking case of even amount of grades in array sent to method above the limit range (0.1)
+	 * expected: median calculation (expected = 75)
+	 * input: GradesArrayForCheck = {74,76,80,75}
+	 */
 	@Test
 	public void testMedianNotSuccessWithEvenAmountOfValuesAbove() {
 
@@ -220,6 +266,10 @@ public class Client_ExamStatisticsTests {
 
 	}
 
+	/* testing medianCalc method. checking case of even amount of grades in array sent to method below the limit range (0.1)
+	 * expected: median calculation (expected = 75)
+	 * input: GradesArrayForCheck = {74,76,80,75}
+	 */
 	@Test
 	public void testMedianNotSuccessWithEvenAmountOfValuesBelow() {
 
@@ -238,6 +288,10 @@ public class Client_ExamStatisticsTests {
 
 	}
 
+	/* testing medianCalc method. checking case of odd amount of grades in array sent to method above the limit range (0.1)
+	 * expected: median calculation (expected = 76)
+	 * input: GradesArrayForCheck = {74,76,75}
+	 */
 	@Test
 	public void testMedianNotSuccessWithOddAmountOfValuesAboveTheMedian() {
 
@@ -255,6 +309,10 @@ public class Client_ExamStatisticsTests {
 
 	}
 
+	/* testing medianCalc method. checking case of odd amount of grades in array sent to method ,below the limit range (0.1)
+	 * expected: median calculation (expected = 74)
+	 * input: GradesArrayForCheck = {74,76,75}
+	 */
 	@Test
 	public void testMedianNotSuccessWithOddAmountOfValuesBelowTheMedian() {
 
@@ -272,6 +330,10 @@ public class Client_ExamStatisticsTests {
 
 	}
 
+	/* testing medianCalc method. checking case of empty array sent to method.
+	 * expected: median calculation (expected = 0)
+	 * input: GradesArrayForCheck = {}
+	 */
 	@Test
 	public void testMedianSuccessWithEmptyGradesArray() {
 		GradesArrayForCheck = new ArrayList<Integer>();
@@ -282,6 +344,10 @@ public class Client_ExamStatisticsTests {
 
 	}
 
+	/* testing medianCalc method. checking case of null array sent to method.
+	 * expected: Null Pointer Exception
+	 * input: GradesArrayForCheck = null
+	 */
 	@Test
 	public void testMedianSuccessWithNullGradesArray() {
 		GradesArrayForCheck = null;
@@ -295,6 +361,10 @@ public class Client_ExamStatisticsTests {
 
 	}
 
+	/* testing setGradesInHistogram method. checking case of putting the number at the correct place in array that representing the histogram bars(deciles).
+	 * expected: 3 in correct place in array (cell 7)
+	 * input: GradesArrayForCheck = {74,76,75}
+	 */
 	@Test
 	public void testForAppropriateDecilesValue() {
 
@@ -313,6 +383,10 @@ public class Client_ExamStatisticsTests {
 
 	}
 	
+	/* testing setGradesInHistogram method. case of border check (0,100) placed in array that representing the histogram bars(deciles).
+	 * expected: every grade in correct cell
+	 * input: GradesArrayForCheck = {0,100,54}
+	 */
 	@Test
 	public void testForAppropriateDecilesValueDifferntIndexes() {
 
@@ -331,6 +405,10 @@ public class Client_ExamStatisticsTests {
 
 	}
 
+	/* testing setGradesInHistogram method. case of near the limit grade.
+	 * expected: 80 go to 8 cell
+	 * input: GradesArrayForCheck = {80}
+	 */
 	@Test
 	public void testForWrongAppropriateDecilesValueAbove() {
 
@@ -348,12 +426,15 @@ public class Client_ExamStatisticsTests {
 
 	}
 	
-	
+	/* testing setGradesInHistogram method. case of negative grades.
+	 * expected: all array cells equals 0
+	 * input: GradesArrayForCheck = {-1}
+	 */
 	@Test
 	public void testForWrongAppropriateDecilesValueNeg() {
 
 		GradesArrayForCheck = new ArrayList<Integer>();
-		GradesArrayForCheck.add(-1);// should Not retrun to any index in Histogram
+		GradesArrayForCheck.add(-1);// should Not return to any index in Histogram
 		TSC.setGrades(GradesArrayForCheck);
 		
 		int expected = 0;
@@ -364,12 +445,15 @@ public class Client_ExamStatisticsTests {
 
 	}
 	
-	
+	/* testing setGradesInHistogram method. case of grade above 100.
+	 * expected: every grade in correct cell
+	 * input: GradesArrayForCheck = {101}
+	 */
 	@Test
 	public void testForWrongAppropriateDecilesValueAbove100() {
 
 		GradesArrayForCheck = new ArrayList<Integer>();
-		GradesArrayForCheck.add(101);// should Not retrun to any index in Histogram
+		GradesArrayForCheck.add(101);// should Not return to any index in Histogram
 		TSC.setGrades(GradesArrayForCheck);
 		
 		int expected = 0;
