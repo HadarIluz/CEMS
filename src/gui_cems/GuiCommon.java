@@ -60,7 +60,7 @@ public class GuiCommon {
 	 * @param str input to method to check if legal
 	 * @return true if the String contains only digits.
 	 */
-	public boolean isOnlyDigits(String str) {
+	public static boolean isOnlyDigits(String str) {
 		boolean onlyDigits = true;
 		for (char ch : str.toCharArray()) {
 			if (!Character.isDigit(ch)) {

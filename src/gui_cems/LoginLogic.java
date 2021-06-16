@@ -22,8 +22,13 @@ public class LoginLogic {
 		this.cems = cems;
 	}
 
-	public User checkDetails(User user) {
-		// TODO Auto-generated method stub
+	public User checkDetails(User user) throws NullPointerException {
+		
+		if (user == null) {
+			throw new NullPointerException("user object is null");
+		}
+		
+		
 //		// create in 'Serializable' class my request from server.
 		RequestToServer req = new RequestToServer("getUser");
 		req.setRequestData(user);
@@ -54,6 +59,14 @@ public class LoginLogic {
 		return null;
 
 	}
+
+	public boolean checkIdFieldVaild(String userID) {
+		if (userID.length() != 9)
+			return false;
+		return GuiCommon.isOnlyDigits(userID);
+	}
+
+
 
 
 	

@@ -125,11 +125,16 @@ public class LoginController extends GuiCommon{
 			showMsg(reqFieldPassword, "Password is required field.");
 		}
 		// in case fields not empty checks if exist in DB
-		if (!userID.trim().isEmpty() && !userPassword.trim().isEmpty() && userID.length() == 9
-				&& isOnlyDigits(userID)) {
+		if (!userID.trim().isEmpty() && !userPassword.trim().isEmpty() && loginLogic.checkIdFieldVaild(userID)) {
 
 			int id = Integer.parseInt(txtUserName.getText().trim());
+			try {
 			user = loginLogic.checkDetails(new User(id, userPassword));
+			}
+			catch (NullPointerException e) {
+				System.out.println("Error in log in");
+				user = null;
+			}
 			if (user != null) {
 				
 			
