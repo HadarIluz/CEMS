@@ -4,6 +4,8 @@ import client.CEMSClient;
 import client.ClientUI;
 import common.CemsIF;
 import common.ICEMSClient;
+import entity.Student;
+import entity.Teacher;
 import entity.User;
 import logic.RequestToServer;
 
@@ -64,6 +66,33 @@ public class LoginLogic {
 		if (userID.length() != 9)
 			return false;
 		return GuiCommon.isOnlyDigits(userID);
+	}
+
+	public Student getStudentData(User user) throws NullPointerException{
+		if (user == null) {
+			throw new NullPointerException();
+		}
+		Student student = new Student(user, 0, null);
+		RequestToServer reqStudentData = new RequestToServer("getStudentData_Login");
+		reqStudentData.setRequestData(student);
+		ClientUI.cems.accept(reqStudentData);
+
+		// Response from server = (Student)
+		return (Student) CEMSClient.responseFromServer.getResponseData(); // response: "STUDENT DATA"
+	}
+
+	public Teacher getTeacherData(User user) throws NullPointerException {
+		if (user == null) {
+			throw new NullPointerException();
+		}
+		Teacher teacher = new Teacher(user, null);
+		RequestToServer reqTeacherData = new RequestToServer("getTeacherData_Login");
+		reqTeacherData.setRequestData(teacher);
+		ClientUI.cems.accept(reqTeacherData);
+
+		// response from server teacher = (Teacher);
+		return (Teacher) CEMSClient.responseFromServer.getResponseData(); // response: "TEACHER DATA"
+
 	}
 
 

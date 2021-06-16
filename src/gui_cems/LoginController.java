@@ -54,7 +54,7 @@ import logic.RequestToServer;
  * @author Hadar_Iluz
  *
  */
-public class LoginController extends GuiCommon{
+public class LoginController extends GuiCommon {
 
 	@FXML
 	private MenuItem pressQuit;
@@ -129,35 +129,27 @@ public class LoginController extends GuiCommon{
 
 			int id = Integer.parseInt(txtUserName.getText().trim());
 			try {
-			user = loginLogic.checkDetails(new User(id, userPassword));
-			}
-			catch (NullPointerException e) {
+				user = loginLogic.checkDetails(new User(id, userPassword));
+			} catch (NullPointerException e) {
 				System.out.println("Error in log in");
 				user = null;
 			}
 			if (user != null) {
-				
-			
-					user.setLogged(1);
 
-					Stage primaryStage = new Stage();
-					GridPane root = new GridPane();
-					@SuppressWarnings("unused")
-					Scene scene = new Scene(root, 988, 586); // define screens size
-					primaryStage.setTitle("CEMS-Computerized Exam Management System");
-					user = (User) CEMSClient.responseFromServer.getResponseData();
+				user.setLogged(1);
 
+				Stage primaryStage = new Stage();
+				GridPane root = new GridPane();
+				@SuppressWarnings("unused")
+				Scene scene = new Scene(root, 988, 586); // define screens size
+				primaryStage.setTitle("CEMS-Computerized Exam Management System");
+				user = (User) CEMSClient.responseFromServer.getResponseData();
+				try {
 					switch (user.getUserType().toString()) {
 
 					case "Student": {
 
-						Student student = new Student(user, 0, null);
-						RequestToServer reqStudentData = new RequestToServer("getStudentData_Login");
-						reqStudentData.setRequestData(student);
-						ClientUI.cems.accept(reqStudentData);
-
-						// Response from server = (Student)
-						student = (Student) CEMSClient.responseFromServer.getResponseData(); // response: "STUDENT DATA"
+						Student student = loginLogic.getStudentData(user);
 						// Create new Student
 						Student newStudent = new Student(user, student.getStudentAvg(), student.getCourses());
 						ClientUI.loggedInUser = LoggedInUser.getInstance(newStudent);
@@ -174,13 +166,7 @@ public class LoginController extends GuiCommon{
 						break;
 					case "Teacher": {
 
-						Teacher teacher = new Teacher(user, null);
-						RequestToServer reqTeacherData = new RequestToServer("getTeacherData_Login");
-						reqTeacherData.setRequestData(teacher);
-						ClientUI.cems.accept(reqTeacherData);
-
-						// response from server teacher = (Teacher);
-						teacher = (Teacher) CEMSClient.responseFromServer.getResponseData(); // response: "TEACHER DATA"
+						Teacher teacher = loginLogic.getTeacherData(user);
 						// Create new teacher
 						Teacher newTeacher = new Teacher(user, teacher.getProfessions());
 						ClientUI.loggedInUser = LoggedInUser.getInstance(newTeacher);
@@ -216,9 +202,12 @@ public class LoginController extends GuiCommon{
 					// print to console
 					System.out.println(user.getId() + " login Successfully as: " + user.getUserType().toString());
 
+				} catch (NullPointerException e) {
+					System.out.println("Failed to get user data");
 				}
-				
+
 			}
+		}
 
 		// handle case that one of the parameters is invalid.
 		else {
@@ -242,8 +231,6 @@ public class LoginController extends GuiCommon{
 		label.setText(msg);
 	}
 
-
-
 	/**
 	 * Display HomePage after client connection.
 	 * 
@@ -261,11 +248,9 @@ public class LoginController extends GuiCommon{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		listenToCloseWindow(primaryStage);
 	}
-
 
 	/**
 	 * @param user object given to send as a request to server to update this user
