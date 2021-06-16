@@ -9,16 +9,19 @@ import org.junit.Before;
 import org.junit.Test;
 import Server.DBController;
 import gui_server.ServerFrameController;
+import gui_teacher.TeacherStatisticsController;
 
 public class Server_ExamStatisticsTests {
 
-	/* -------------- Client Side Tests Only! ----------------- */
+	/* -------------- Server Side Tests Only! ----------------- */
 	/* ----- for client side, please see Client_ExamStatisticsTests.java ---- */
 
 	ServerFrameController SFC=null;
 	DBController DBC;
 	String ExamID;
 	ArrayList<Integer> DBgradesOfExam,expectedArray;
+	
+	TeacherStatisticsController TSC;
 
 	@Before
 	public void setUp() throws Exception {	
@@ -26,10 +29,11 @@ public class Server_ExamStatisticsTests {
 		DBC.connectDB(SFC);
 		expectedArray = new ArrayList<>();
 	}
+	
 
-	/* testing GradesAverageCalc method. check case of correct amount of student from specific exam
-	 * expected: return 1 student
-	 * input: ExamID=010203
+	/* testing gradesAverageCalc method. return Array List of student's grades
+	 * expected: same amount of student between our expected array to the array that return from DBController class
+	 * input: Exam id containing grade of student
 	 */
 	@Test
 	public void testMethodGradesAverageCalcReturSuccessAmountOfStudent() {
@@ -43,10 +47,9 @@ public class Server_ExamStatisticsTests {
 		assertTrue(true);
 	}
 	
-	/* testing GradesAverageCalc method. check case of correct amount of student from specific exam 
-	 * (check that dataBase took the amount of student from the right exam )
-	 * expected: return 1 student
-	 * input: ExamID=010203
+	/* testing gradesAverageCalc method. return Array List of student's grades
+	 * expected: not the same amount of student between our expected array to the array that return from DBController class
+	 * input: Exam id containing grade of student
 	 */
 	@Test
 	public void testMethodGradesAverageCalcReturnWrongAmountOfStudent() {
@@ -59,9 +62,9 @@ public class Server_ExamStatisticsTests {
 
 	}
 	
-	/* testing GradesAverageCalc method. check case of correct scores of students from specific exam 
-	 * expected: return student with grade = 40
-	 * input: ExamID=010203
+	/* testing gradesAverageCalc method. return Array List of student's grades
+	 * expected:  same grades of students between our expected array to the array that return from DBController class
+	 * input: Exam id containing grade of student
 	 */
 	@Test
 	public void testMethodGradesAverageCalcReturnExpectedScores() {
@@ -70,12 +73,13 @@ public class Server_ExamStatisticsTests {
 		expectedArray.add(40);
 		assertTrue(expectedArray.equals(DBgradesOfExam));
 	}
-	//-------------------------------------------------------------------
 	
-	/* testing GradesAverageCalc method. check case of correct amount of student from specific exam
-	 * expected: return 3 student
-	 * input: ExamID=010202
+	
+	/* testing gradesAverageCalc method. return Array List of studwent's grades
+	 * expected:  same value of student between  expectedArraySize assamption  to the array that reutrn from DBController class
+	 * input: Exam id containing grade of student
 	 */
+	
 	@Test
 	public void testMethodGradesAverageCalcReturSuccessAmountOfStudent2() {
 		ExamID="010202";
@@ -84,12 +88,11 @@ public class Server_ExamStatisticsTests {
 		int expectedArraySize=3;
 		assertEquals(expectedArraySize,DBgradesOfExam.size());
 	}
-	
-	/* testing GradesAverageCalc method. check case of correct amount of student from specific exam
-	 * (check that dataBase took the amount of student from the right exam )
-	 * expected: return 3 student
-	 * input: ExamID=010202
+	/* testing gradesAverageCalc method. return Array List of studwent's grades
+	 * expected:  Not equal amount of student between  expectedArraySize assamption  to the array that reutrn from DBController class
+	 * input: Exam id containing grade of student
 	 */
+
 	@Test
 	public void testMethodGradesAverageCalcReturnWrongAmountOfStudent2() {
 		ExamID="010202";
@@ -101,9 +104,9 @@ public class Server_ExamStatisticsTests {
 
 	}
 	
-	/* testing GradesAverageCalc method. check case of correct scores of students from specific exam 
-	 * expected: return 3 student with grades = 100, 40 , 25 
-	 * input: ExamID=010202
+	/* testing gradesAverageCalc method. return Array List of student's grades
+	 * expected:  true if the condition in loop is never accepted, which mean that arrays not qual
+	 * input: Exam id containing grade of student
 	 */
 	@Test
 	public void testMethodGradesAverageCalcReturnExpectedScores2() {
