@@ -70,28 +70,28 @@ public class LoginLogic {
 
 	public Student getStudentData(User user) throws NullPointerException{
 		if (user == null) {
-			throw new NullPointerException();
+			throw new NullPointerException("user object is null");
 		}
 		Student student = new Student(user, 0, null);
 		RequestToServer reqStudentData = new RequestToServer("getStudentData_Login");
 		reqStudentData.setRequestData(student);
-		ClientUI.cems.accept(reqStudentData);
+		cems.accept(reqStudentData);
 
 		// Response from server = (Student)
-		return (Student) CEMSClient.responseFromServer.getResponseData(); // response: "STUDENT DATA"
+		return (Student) cemsClient.getResponseFromServer().getResponseData(); // response: "STUDENT DATA"
 	}
 
 	public Teacher getTeacherData(User user) throws NullPointerException {
 		if (user == null) {
-			throw new NullPointerException();
+			throw new NullPointerException("user object is null");
 		}
 		Teacher teacher = new Teacher(user, null);
 		RequestToServer reqTeacherData = new RequestToServer("getTeacherData_Login");
 		reqTeacherData.setRequestData(teacher);
-		ClientUI.cems.accept(reqTeacherData);
+		cems.accept(reqTeacherData);
 
 		// response from server teacher = (Teacher);
-		return (Teacher) CEMSClient.responseFromServer.getResponseData(); // response: "TEACHER DATA"
+		return (Teacher) cemsClient.getResponseFromServer().getResponseData(); // response: "TEACHER DATA"
 
 	}
 

@@ -2,11 +2,15 @@ package loginUnitTests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import common.CemsIF;
 import common.ICEMSClient;
+import entity.Student;
+import entity.Teacher;
 import entity.User;
 import gui_cems.LoginLogic;
 import logic.ResponseFromServer;
@@ -60,6 +64,8 @@ public class Client_LoginTest {
 		
 		login = new LoginLogic(CemsClient, ClientController);
 	}
+	
+	/* ------------------------- checkDetails --------------------------- */
 
 	/* testing checkDetails method. throw exception when user is null
 	 * expected: exception - "user object is null"
@@ -145,6 +151,9 @@ public class Client_LoginTest {
 		}
 	}
 	
+	/* ------------------------- checkIdFieldVaild --------------------------- */
+
+	
 	/* testing checkIdFieldVaild method. return false when length of given id is not 9
 	 * expected: false
 	 * input: userID = "1111"
@@ -182,6 +191,86 @@ public class Client_LoginTest {
 		boolean actual = login.checkIdFieldVaild(userID);
 		
 		assertEquals(expected, actual);
+	}
+	
+	/* ------------------------- getStudentData --------------------------- */
+
+	/* testing getStudentData method. throw exception when user is null
+	 * expected: exception - "user object is null"
+	 * input: null user
+	 */
+	@Test
+	public void testFailStudentData_NullUser() {		
+		user = null;
+		String expected = "user object is null";
+		
+		try {
+			login.getStudentData(user);
+		} catch (NullPointerException e) {
+			assertEquals(expected, e.getMessage());
+		}
+	}
+	
+	/* testing getStudentData method. return student with details
+	 * expected: student
+	 * input: user
+	 */
+	@Test
+	public void testSuccessStudentData() {
+		// create objects for test
+		user = new User(111111111, "password");
+		Student expected = new Student(user, 88, null);
+		Student actual;
+		// prepare objects for stub
+		responseFromServer = new ResponseFromServer("STUDENT DATA");
+		responseFromServer.setResponseData(expected);
+		
+		try {
+			actual = login.getStudentData(user);
+			assertEquals(expected, actual);
+		} catch (NullPointerException e) {
+			//e.printStackTrace();
+		}
+	}
+	
+	/* ------------------------- getTeacherData --------------------------- */
+
+	/* testing getTeacherData method. throw exception when user is null
+	 * expected: exception - "user object is null"
+	 * input: null user
+	 */
+	@Test
+	public void testFailTeacherData_NullUser() {		
+		user = null;
+		String expected = "user object is null";
+		
+		try {
+			login.getTeacherData(user);
+		} catch (NullPointerException e) {
+			assertEquals(expected, e.getMessage());
+		}
+	}
+	
+	/* testing getTeacherData method. return teacher with details
+	 * expected: teacher
+	 * input: user
+	 */
+	@Test
+	public void testSuccessTeacherData() {
+		// create objects for test
+		user = new User(111111111, "password");
+		Teacher expected = new Teacher(user, null);
+		Teacher actual;
+		// prepare objects for stub
+		responseFromServer = new ResponseFromServer("TEACHER DATA");
+		responseFromServer.setResponseData(expected);
+		
+		try {
+			actual = login.getTeacherData(user);
+			assertEquals(expected, actual);
+		} catch (NullPointerException e) {
+			//e.printStackTrace();
+		}
 	}
 
 }
