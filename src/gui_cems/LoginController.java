@@ -184,7 +184,7 @@ public class LoginController extends GuiCommon {
 
 					case "Principal": {
 						// Create new principal
-						User principal = (User) CEMSClient.responseFromServer.getResponseData();
+						User principal = user;
 						ClientUI.loggedInUser = LoggedInUser.getInstance(principal);
 						principalController = new PrincipalController();
 						((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary(Main) window
