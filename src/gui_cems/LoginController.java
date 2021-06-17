@@ -143,8 +143,8 @@ public class LoginController extends GuiCommon {
 				@SuppressWarnings("unused")
 				Scene scene = new Scene(root, 988, 586); // define screens size
 				primaryStage.setTitle("CEMS-Computerized Exam Management System");
-				user = (User) CEMSClient.responseFromServer.getResponseData();
-				try {
+				//user = (User) CEMSClient.responseFromServer.getResponseData();
+				
 					switch (user.getUserType().toString()) {
 
 					case "Student": {
@@ -201,10 +201,6 @@ public class LoginController extends GuiCommon {
 					}
 					// print to console
 					System.out.println(user.getId() + " login Successfully as: " + user.getUserType().toString());
-
-				} catch (NullPointerException e) {
-					System.out.println("Failed to get user data");
-				}
 
 			}
 		}
